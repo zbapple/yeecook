@@ -99,7 +99,7 @@
           <view class="right">
             <view class="text">
               <text class="name">{{item.name}}</text>
-              <text class="desc">{{item.goods_brief}}</text>
+              <text class="desc">{{item.goods_brief||""}}</text>
               <text class="price">￥{{item.retail_price}}</text>
             </view>
           </view>

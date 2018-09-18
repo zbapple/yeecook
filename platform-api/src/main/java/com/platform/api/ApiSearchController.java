@@ -67,7 +67,7 @@ public class ApiSearchController extends ApiBaseAction {
         //
         param = new HashMap();
         param.put("user_id", loginUser.getUserId());
-        param.put("fields", "distinct keyword");
+        param.put("fields", "distinct keyword,id");
         param.put("page", 1);
         param.put("limit", 10);
         param.put("sidx", "id");

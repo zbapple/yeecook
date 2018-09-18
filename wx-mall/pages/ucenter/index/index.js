@@ -59,7 +59,7 @@ Page({
             //用户按了拒绝按钮
             wx.showModal({
                 title: '警告通知',
-                content: '您点击了拒绝授权,将无法正常显示个人信息,点击确定重新获取授权。',
+                content: '您点击了拒绝授s110无法正常显示个人信息,点击确定重新获取授权。',
                 success: function (res) {
                     if (res.confirm) {
                         wx.openSetting({

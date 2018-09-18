@@ -11,7 +11,7 @@
     <view class="cate-item">
         <view class="h">
             <text class="name">{{currentCategory.name}}</text>
-            <text class="desc">{{currentCategory.front_name}}</text>
+            <text class="desc">{{currentCategory.front_name||""}}</text>
         </view>
         <view class="b">
             <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}"   url="/pages/goods/goods?id={{iitem.id}}" wx:for="{{goodsList}}" wx:for-item="iitem" wx:for-index="iindex" >

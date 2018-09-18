@@ -6,11 +6,9 @@ import com.platform.service.SysDeptService;
 import com.platform.utils.Constant;
 import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +40,24 @@ public class SysDeptController extends AbstractController {
         if (getUserId() != Constant.SUPER_ADMIN) {
             map.put("deptFilter", sysDeptService.getSubDeptIdList(getDeptId()));
         }
+        List<SysDeptEntity> deptList = sysDeptService.queryList(map);
+        return R.ok().put("list", deptList);
+    }
+
+    /**
+     * 根据上级部门列表查询下级部门列表
+     *
+     * @return R
+     */
+    @RequestMapping("/list/{parentId}")
+
+    public R lists(@PathVariable ("parentId") Long parentId) {
+        Map<String, Object> map = new HashMap<>();
+        //如果不是超级管理员，则只能查询本部门及子部门数据
+        if (getUserId() != Constant.SUPER_ADMIN) {
+            map.put("deptFilter", sysDeptService.getSubDeptIdList(getDeptId()));
+        }
+        map.put("parentId",parentId);
         List<SysDeptEntity> deptList = sysDeptService.queryList(map);
         return R.ok().put("list", deptList);
     }

@@ -1,10 +1,14 @@
 package com.platform.api;
 
+import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
 import com.platform.cache.J2CacheUtils;
 import com.platform.entity.OrderGoodsVo;
 import com.platform.entity.OrderVo;
 import com.platform.entity.UserVo;
+import com.platform.printer.PrinterTanks;
+import com.platform.printer.PrinterTemplate;
+import com.platform.printer.vo.YeecookVo;
 import com.platform.service.ApiOrderGoodsService;
 import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
@@ -56,12 +60,11 @@ public class ApiPayController extends ApiBaseAction {
     public Object payPrepay(@LoginUser UserVo loginUser, Integer orderId) {
         //
         OrderVo orderInfo = orderService.queryObject(orderId);
-
         if (null == orderInfo) {
             return toResponsObject(400, "订单已取消", "");
         }
 
-        if (orderInfo.getPay_status() != 0) {
+        if (orderInfo.getPay_status() >= 2 || orderInfo.getPay_status() < 0) {
             return toResponsObject(400, "订单已支付，请不要重复操作", "");
         }
 
@@ -79,7 +82,7 @@ public class ApiPayController extends ApiBaseAction {
             // 随机字符串
             parame.put("nonce_str", randomStr);
             // 商户订单编号
-            parame.put("out_trade_no", orderId);
+            parame.put("out_trade_no", orderInfo.getOrder_sn());
             Map orderGoodsParam = new HashMap();
             orderGoodsParam.put("order_id", orderId);
             // 商品描述
@@ -87,7 +90,7 @@ public class ApiPayController extends ApiBaseAction {
             //订单的商品
             List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
             if (null != orderGoods) {
-                String body = "超市-";
+                String body = "宜厨-";
                 for (OrderGoodsVo goodsVo : orderGoods) {
                     body = body + goodsVo.getGoods_name() + "、";
                 }
@@ -149,13 +152,24 @@ public class ApiPayController extends ApiBaseAction {
         return toResponsFail("下单失败");
     }
 
+    private void printerOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsVoList) {
+        YeecookVo yeecookVo = new YeecookVo();
+        yeecookVo.setOrderVo(orderVo);
+        yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
+        PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo);
+        PrinterTanks printerTanks = new PrinterTanks(printerTemplate);
+        printerTanks.run();
+    }
+
     /**
      * 微信查询订单状态
      */
     @ApiOperation(value = "查询订单状态")
     @GetMapping("query")
     public Object orderQuery(@LoginUser UserVo loginUser, Integer orderId) {
-        if (orderId == null) {
+        OrderVo orderInfo = orderService.queryObject(orderId);
+
+        if (null == orderId || null == orderInfo) {
             return toResponsFail("订单不存在");
         }
 
@@ -167,7 +181,7 @@ public class ApiPayController extends ApiBaseAction {
         // 随机字符串
         parame.put("nonce_str", randomStr);
         // 商户订单编号
-        parame.put("out_trade_no", orderId);
+        parame.put("out_trade_no", orderInfo.getOrder_sn());
 
         String sign = WechatUtil.arraySign(parame, ResourceUtil.getConfigByName("wx.paySignKey"));
         // 数字签证
@@ -186,38 +200,57 @@ public class ApiPayController extends ApiBaseAction {
         String return_code = MapUtils.getString("return_code", resultUn);
         String return_msg = MapUtils.getString("return_msg", resultUn);
 
-        if (!"SUCCESS".equals(return_code)) {
-            return toResponsFail("查询失败,error=" + return_msg);
-        }
+        if (return_code.equals("SUCCESS")) {
+            String trade_state = MapUtils.getString("trade_state", resultUn);
+            if (trade_state.equals("SUCCESS")) {
+                // 更改订单状态
+                // 业务处理
+                if (orderInfo.getPay_status() == 1) {
+                    OrderVo orderInfo1 = new OrderVo();
+                    orderInfo1.setId(orderId);
+                    orderInfo1.setPay_status(2);
+                    orderInfo1.setOrder_status(201);
+                    orderInfo1.setShipping_status(0);
+                    orderInfo1.setPay_time(new Date());
+                    orderInfo1.setIs_printer(1);
+                    orderService.update(orderInfo1);
+                    Map orderGoodsParam = new HashMap();
+                    orderGoodsParam.put("order_id", orderInfo.getId());
+                    List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+                    printerOrder(orderInfo, orderGoods);
+                    logger.error("订单" + orderInfo.getOrder_sn() + "打印成功-orderQuery");
+                }
+                return toResponsMsgSuccess("支付成功");
+            } else if (trade_state.equals("USERPAYING")) {
+                // 重新查询 正在支付中
+                Integer num = (Integer) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId + "");
+                if (num == null) {
+                    J2CacheUtils.put(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId + "", 1);
+                    this.orderQuery(loginUser, orderId);
+                } else if (num <= 3) {
+                    J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId);
+                    this.orderQuery(loginUser, orderId);
+                } else {
+                    return toResponsFail("查询失败,error=" + trade_state);
+                }
 
-        String trade_state = MapUtils.getString("trade_state", resultUn);
-        if ("SUCCESS".equals(trade_state)) {
-            // 更改订单状态
-            // 业务处理
-            OrderVo orderInfo = new OrderVo();
-            orderInfo.setId(orderId);
-            orderInfo.setPay_status(2);
-            orderInfo.setOrder_status(201);
-            orderInfo.setShipping_status(0);
-            orderInfo.setPay_time(new Date());
-            orderService.update(orderInfo);
-            return toResponsMsgSuccess("支付成功");
-        } else if ("USERPAYING".equals(trade_state)) {
-            // 重新查询 正在支付中
-            Integer num = (Integer) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId + "");
-            if (num == null) {
-                J2CacheUtils.put(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId + "", 1);
-                this.orderQuery(loginUser, orderId);
-            } else if (num <= 3) {
-                J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, "queryRepeatNum" + orderId);
-                this.orderQuery(loginUser, orderId);
+            } else if (trade_state.equals("NOTPAY")) {
+                // 更改订单状态
+                // 业务处理
+                OrderVo orderInfo1 = new OrderVo();
+                orderInfo1.setId(orderId);
+                orderInfo1.setPay_status(0);
+                orderInfo1.setOrder_status(0);
+                orderInfo1.setShipping_status(0);
+                orderInfo1.setPay_time(new Date());
+                orderService.update(orderInfo1);
+                return toResponsMsgSuccess("NOTPAY");
             } else {
+                // 失败
                 return toResponsFail("查询失败,error=" + trade_state);
             }
-
         } else {
-            // 失败
-            return toResponsFail("查询失败,error=" + trade_state);
+            return toResponsFail("查询失败,error=" + return_msg);
         }
 
         return toResponsFail("查询失败，未知错误");
@@ -231,6 +264,7 @@ public class ApiPayController extends ApiBaseAction {
     @ApiOperation(value = "微信订单回调接口")
     @RequestMapping(value = "/notify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
     @ResponseBody
+    @IgnoreAuth
     public void notify(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setCharacterEncoding("UTF-8");
@@ -259,15 +293,39 @@ public class ApiPayController extends ApiBaseAction {
             } else if (result_code.equalsIgnoreCase("SUCCESS")) {
                 //订单编号
                 String out_trade_no = result.getOut_trade_no();
-                logger.error("订单" + out_trade_no + "支付成功");
+
                 // 业务处理
-                OrderVo orderInfo = orderService.queryObject(Integer.valueOf(out_trade_no));
-                orderInfo.setPay_status(2);
-                orderInfo.setOrder_status(201);
-                orderInfo.setShipping_status(0);
-                orderInfo.setPay_time(new Date());
-                orderService.update(orderInfo);
-                response.getWriter().write(setXml("SUCCESS", "OK"));
+                Map params = new HashMap();
+                params.put("orderSn", out_trade_no);
+                params.put("page", 1);
+                params.put("limit", 10);
+                params.put("sidx", "id");
+                params.put("order", "asc");
+                //查询列表数据
+                Query query = new Query(params);
+                List<OrderVo> orderVoList = orderService.queryList(query);
+                if (null != orderVoList && orderVoList.size() > 0) {
+                    OrderVo orderInfo = orderVoList.get(0);
+
+                    if (orderInfo.getPay_status() == 1) {
+                        orderInfo.setPay_status(2);
+                        orderInfo.setOrder_status(201);
+                        orderInfo.setShipping_status(0);
+                        orderInfo.setPay_time(new Date());
+                        orderInfo.setIs_printer(1);
+                        orderService.update(orderInfo);
+                        response.getWriter().write(setXml("SUCCESS", "OK"));
+                        logger.error("订单" + out_trade_no + "支付成功");
+                        Map orderGoodsParam = new HashMap();
+                        orderGoodsParam.put("order_id", orderInfo.getId());
+                        List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+                        printerOrder(orderInfo, orderGoods);
+                        logger.error("订单" + out_trade_no + "打印成功-notify");
+                    }
+
+                } else {
+                    logger.error("订单" + out_trade_no + "支付失败找不到更新订单");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -292,14 +350,14 @@ public class ApiPayController extends ApiBaseAction {
             return toResponsObject(400, "订单已退款", "");
         }
 
-//        if (orderInfo.getPay_status() != 2) {
-//            return toResponsObject(400, "订单未付款，不能退款", "");
-//        }
+        if (orderInfo.getPay_status() != 2) {
+            return toResponsObject(400, "订单未付款，不能退款", "");
+        }
 
-//        WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
-//                orderInfo.getActual_price().doubleValue(), orderInfo.getActual_price().doubleValue());
         WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
-                10.01, 10.01);
+                orderInfo.getActual_price().doubleValue(), orderInfo.getActual_price().doubleValue());
+//        WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
+//                10.01, 10.01);
         if (result.getResult_code().equals("SUCCESS")) {
             if (orderInfo.getOrder_status() == 201) {
                 orderInfo.setOrder_status(401);

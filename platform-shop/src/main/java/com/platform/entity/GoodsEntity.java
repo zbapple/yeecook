@@ -91,6 +91,15 @@ public class GoodsEntity implements Serializable {
      * 用户ID
      */
     private Long updateUserId;
+    /**
+     * 供应商 ID
+     */
+    private Long supplierId;
+
+    /**
+     * 供应商名称
+     */
+    private String companyName;
 
     List<GoodsAttributeEntity> attributeEntityList = new ArrayList<>();
 
@@ -603,5 +612,21 @@ public class GoodsEntity implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

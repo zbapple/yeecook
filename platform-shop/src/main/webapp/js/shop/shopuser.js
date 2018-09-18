@@ -4,6 +4,12 @@ $(function () {
         colModel: [{
             label: 'id', name: 'id', index: 'id', key: true, hidden: true
         }, {
+            label: '头像', name: 'avatar', index: 'avatar', width: 80, formatter: function (value) {
+                return transImg(value);
+            }
+        },{
+            label: '微信名', name: 'nickname', index: 'nickname', width: 80
+        },{
             label: '会员名称', name: 'username', index: 'username', width: 80
         }, {
             label: '会员密码', name: 'password', index: 'password', hidden: true
@@ -27,17 +33,11 @@ $(function () {
             label: '最后登录Ip', name: 'lastLoginIp', index: 'last_login_ip', hidden: true
         }, {
             label: '会员等级', name: 'levelName', width: 40
-        }, {
-            label: '微信名', name: 'nickname', index: 'nickname', width: 80
-        }, {
+        },  {
             label: '手机号码', name: 'mobile', index: 'mobile', width: 120
         }, {
             label: '注册Ip', name: 'registerIp', index: 'register_ip', hidden: true
-        }, {
-            label: '头像', name: 'avatar', index: 'avatar', width: 80, formatter: function (value) {
-                return transImg(value);
-            }
-        }, {
+        },  {
             label: '微信Id', name: 'weixinOpenid', index: 'weixin_openid', width: 80, hidden: true
         }]
     });

@@ -170,7 +170,7 @@ public class ApiOrderController extends ApiBaseAction {
      * 获取订单列表
      */
     @ApiOperation(value = "取消订单")
-    @PostMapping("cancelOrder")
+    @GetMapping("cancelOrder")
     public Object cancelOrder(Integer orderId) {
         try {
             OrderVo orderVo = orderService.queryObject(orderId);
@@ -180,6 +180,7 @@ public class ApiOrderController extends ApiBaseAction {
                 return toResponsFail("已收货，不能取消");
             }
             // 需要退款
+            //todo 退款
             if (orderVo.getPay_status() == 2) {
                 WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId().toString(),
                         0.01, 0.01);
@@ -210,7 +211,7 @@ public class ApiOrderController extends ApiBaseAction {
      * 确认收货
      */
     @ApiOperation(value = "确认收货")
-    @PostMapping("confirmOrder")
+    @GetMapping("confirmOrder")
     public Object confirmOrder(Integer orderId) {
         try {
             OrderVo orderVo = orderService.queryObject(orderId);

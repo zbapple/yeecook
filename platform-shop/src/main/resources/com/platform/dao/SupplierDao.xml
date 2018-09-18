@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.SupplierDao">
+
+    <resultMap type="com.platform.entity.SupplierEntity" id="supplierMap">
+        <result property="id" column="id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="openingBank" column="opening_bank"/>
+        <result property="bankAccount" column="bank_account"/>
+        <result property="beneficiaryName" column="beneficiary_name"/>
+        <result property="telephone" column="telephone"/>
+        <result property="mobile" column="mobile"/>
+        <result property="deptId" column="dept_id"/>
+		<result property="deptName" column="dept_name"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.SupplierEntity">
+		select
+			`id`,
+			`company_name`,
+			`opening_bank`,
+			`bank_account`,
+			`beneficiary_name`,
+			`telephone`,
+			`mobile`,
+			`dept_id`,
+			`dept_name`,
+			`address`
+		from nideshop_supplier
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.SupplierEntity">
+		select
+    		`id`,
+    		`company_name`,
+    		`opening_bank`,
+    		`bank_account`,
+    		`beneficiary_name`,
+    		`telephone`,
+    		`mobile`,
+    		`dept_id`,
+			`dept_name`,
+    		`address`
+		from nideshop_supplier
+		WHERE 1=1
+		<!--  数据过滤  -->
+		${filterSql}
+		<if test="companyName != null and companyName.trim() != ''">
+			AND `company_name` LIKE concat('%',#{companyName},'%')
+		</if>
+		<if test="deptName != null and deptName.trim() != ''">
+			AND `dept_name` LIKE concat('%',#{deptName},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_supplier
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.SupplierEntity">
+		insert into nideshop_supplier(
+			`id`,
+			`company_name`,
+			`opening_bank`,
+			`bank_account`,
+			`beneficiary_name`,
+			`telephone`,
+			`mobile`,
+			`dept_id`,
+			`dept_name`,
+			`address`)
+		values(
+			#{id},
+			#{companyName},
+			#{openingBank},
+			#{bankAccount},
+			#{beneficiaryName},
+			#{telephone},
+			#{mobile},
+			#{deptId},
+			#{deptName},
+			#{address})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.SupplierEntity">
+		update nideshop_supplier 
+		<set>
+			<if test="companyName != null">`company_name` = #{companyName}, </if>
+			<if test="openingBank != null">`opening_bank` = #{openingBank}, </if>
+			<if test="bankAccount != null">`bank_account` = #{bankAccount}, </if>
+			<if test="beneficiaryName != null">`beneficiary_name` = #{beneficiaryName}, </if>
+			<if test="telephone != null">`telephone` = #{telephone}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="deptName != null">`dept_name` = #{deptName}, </if>
+			<if test="address != null">`address` = #{address}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_supplier where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_supplier where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

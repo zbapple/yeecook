@@ -39,6 +39,8 @@
         <result property="createUserId" column="create_user_id"/>
         <result property="createUserDeptId" column="create_user_dept_id"/>
         <result property="updateUserId" column="update_user_id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="supplierId" column="supplier_id"/>
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.GoodsEntity">
@@ -82,19 +84,25 @@
         nideshop_goods.create_user_id,
         nideshop_goods.create_user_dept_id,
         nideshop_goods.update_user_id,
+        nideshop_goods.supplier_id,
         nideshop_category.name category_name,
         nideshop_attribute_category.name attribute_category_name,
-        nideshop_brand.name brand_name
+        nideshop_brand.name brand_name,
+        nideshop_supplier.company_name company_name
         from nideshop_goods
         LEFT JOIN nideshop_category
         ON nideshop_goods.category_id = nideshop_category.id
         LEFT JOIN nideshop_attribute_category ON nideshop_goods.attribute_category = nideshop_attribute_category.id
         LEFT JOIN nideshop_brand ON nideshop_brand.id = nideshop_goods.brand_id
+        LEFT JOIN nideshop_supplier on nideshop_supplier.id =nideshop_goods.supplier_id
         WHERE 1=1
         <!--  数据过滤  -->
         ${filterSql}
         <if test="name != null and name != ''">
             AND nideshop_goods.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="supplierId != null and supplierId != ''">
+            AND nideshop_goods.supplier_id LIKE concat('%',#{supplierId},'%')
         </if>
         AND nideshop_goods.is_Delete = #{isDelete}
         <choose>
@@ -157,7 +165,8 @@
         `market_price`,
         `create_user_id`,
         `create_user_dept_id`,
-        `update_user_id`
+        `update_user_id`,
+        `supplier_id`
         )
         values
         (
@@ -195,7 +204,8 @@
         #{marketPrice},
         #{createUserId},
         #{createUserDeptId},
-        #{updateUserId}
+        #{updateUserId},
+        #{supplierId}
         )
     </insert>
 
@@ -236,6 +246,7 @@
             <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
             <if test="createUserId != null">`create_user_dept_id` = #{createUserDeptId},</if>
             <if test="updateUserId != null">`update_user_id` = #{updateUserId},</if>
+            <if test="supplierId != null">`supplier_id` = #{supplierId},</if>
         </set>
         where id = #{id}
     </update>

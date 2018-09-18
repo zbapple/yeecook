@@ -19,11 +19,11 @@
     </resultMap>
 
     <select id="queryObject" resultMap="footprintMap">
-		select f.id,f.user_id,f.goods_id,f.add_time add_time,f.referrer from nideshop_footprint f where id = #{value}
+		select f.id,f.user_id,f.goods_id,f.add_time,f.referrer from nideshop_footprint f where id = #{value}
 	</select>
 
     <select id="queryList" resultMap="footprintMap">
-        select f.id,f.user_id,f.goods_id,f.add_time add_time,f.referrer,
+        select f.id,f.user_id,f.goods_id,f.add_time,f.referrer,
         g.name as name, g.list_pic_url as list_pic_url, g.goods_brief as goods_brief, g.retail_price as
         retail_price
         from nideshop_footprint f
@@ -57,7 +57,7 @@
 				MAX(f.id) id,
 				f.user_id,
 				f.goods_id,
-				f.add_time add_time,
+				f.add_time,
 				f.referrer,
 				g. NAME AS NAME,
 				g.list_pic_url AS list_pic_url,
@@ -67,7 +67,7 @@
 				nideshop_footprint f
 			  LEFT JOIN nideshop_goods g ON f.goods_id = g.id
 			WHERE
-				f.user_id = #{0} GROUP BY goods_id
+				f.user_id = #{0} GROUP BY goods_id,add_time,referrer
 			 ORDER BY
 				 id DESC
     </select>
@@ -134,7 +134,7 @@
     </delete>
 
     <select id="shareList" resultMap="footprintMap">
-        select f.id,f.user_id,f.goods_id,f.add_time add_time,f.referrer,
+        select f.id,f.user_id,f.goods_id,f.add_time,f.referrer,
         g.name as name, g.list_pic_url as list_pic_url, g.goods_brief as goods_brief,
         g.retail_price as retail_price,
         u.nickname as nickname,u.avatar as avatar

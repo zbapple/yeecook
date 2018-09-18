@@ -8,9 +8,9 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>platform-framework</artifactId>
+    <artifactId>shop</artifactId>
     <packaging>war</packaging>
-    <name>platform-framework</name>
+    <name>shop</name>
     <description>
         此项目为系统WEB合并，
         合并项目可以根据需要自己配置。
@@ -54,7 +54,7 @@
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
-        <finalName>platform-framework</finalName>
+        <finalName>shop</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

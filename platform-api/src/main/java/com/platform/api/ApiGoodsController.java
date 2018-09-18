@@ -504,6 +504,7 @@ public class ApiGoodsController extends ApiBaseAction {
         Map<String, Object> resultObj = new HashMap();
         Map param = new HashMap();
         param.put("goods_id", id);
+        param.put("is_show", "1");
         param.put("fields", "related_goods_id");
         List<RelatedGoodsVo> relatedGoodsEntityList = relatedGoodsService.queryList(param);
 
@@ -518,8 +519,9 @@ public class ApiGoodsController extends ApiBaseAction {
             //查找同分类下的商品
             GoodsVo goodsCategory = goodsService.queryObject(id);
             Map paramRelated = new HashMap();
-            paramRelated.put("fields", "id, name, list_pic_url, retail_price");
+            paramRelated.put("fields", "id, name, list_pic_url, retail_price,is_delete");
             paramRelated.put("category_id", goodsCategory.getCategory_id());
+            paramRelated.put("is_delete","0");
             relatedGoods = goodsService.queryList(paramRelated);
         } else {
             Map paramRelated = new HashMap();

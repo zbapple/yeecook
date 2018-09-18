@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>美平超市票据</title>
+    <title>宜厨优品票据</title>
     #parse("sys/header.html")
 </head>
 <body class="gray-bg">
@@ -13,7 +13,7 @@
                     <div class="col-sm-6">
                         <address>
                             <strong>{{order.consignee}}</strong><br>
-                            {{order.address}}<br>
+                            {{order.city}}{{order.district}}{{order.address}}<br>
                             <abbr title="Phone">联系方式：</abbr> {{order.mobile}}
                         </address>
                     </div>
@@ -22,8 +22,8 @@
                         <h4>单据编号：</h4>
                         <h4 class="text-navy">{{order.orderSn}}</h4>
                         <address>
-                            <strong>美平超市</strong><br>
-                            美平超市地址<br>
+                            <strong>宜厨优品</strong><br>
+                            宜厨地址<br>
                             <abbr title="Phone">总机：</abbr> (86) xxxxxxxx
                         </address>
                         <p>
@@ -46,6 +46,7 @@
                         <tr v-for="goods in orderGoods">
                             <td>
                                 <div><strong>{{goods.goodsName}}</strong>
+                                    <strong>{{goods.goodsSpecifitionNameValue}}</strong>
                                 </div>
                             </td>
                             <td>{{goods.number}}</td>

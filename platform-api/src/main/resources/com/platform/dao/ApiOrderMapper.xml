@@ -40,6 +40,7 @@
         <result property="coupon_price" column="coupon_price"/>
         <result property="callback_status" column="callback_status"/>
         <result property="full_cut_price" column="full_cut_price"/>
+        <result property="is_printer" column="is_printer"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -50,12 +51,13 @@
 	</select>
 
     <select id="queryList" resultMap="orderMap">
-        select * from nideshop_order
-        <where>
-            <if test="user_id != null">
-                and user_id = #{user_id}
-            </if>
-        </where>
+        select * from nideshop_order WHERE 1=1
+        <if test="orderSn != null and orderSn.trim() != ''">
+            AND order_sn LIKE concat('%',#{orderSn},'%')
+        </if>
+        <if test="user_id != null">
+             and user_id = #{user_id}
+        </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -108,7 +110,8 @@
 			`coupon_price`,
 			`callback_status`,
 			`full_cut_price`,
-			`order_type`
+			`order_type`,
+			`is_printer`
 		)
 		values
 		(
@@ -144,7 +147,8 @@
 			#{coupon_price},
 			#{callback_status},
 			#{full_cut_price},
-			#{order_type}
+			#{order_type},
+			#{is_printer}
 		)
 	</insert>
 
@@ -181,8 +185,10 @@
             <if test="coupon_id != null">`coupon_id` = #{coupon_id},</if>
             <if test="parent_id != null">`parent_id` = #{parent_id},</if>
             <if test="coupon_price != null">`coupon_price` = #{coupon_price},</if>
-            <if test="callback_status != null">`callback_status` = #{callback_status}</if>
+            <if test="callback_status != null">`callback_status` = #{callback_status},</if>
             <if test="full_cut_price != null">`full_cut_price` = #{full_cut_price},</if>
+            <if test="is_printer != null">`is_printer` = #{is_printer}</if>
+
         </set>
         where id = #{id}
     </update>

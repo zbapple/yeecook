@@ -38,16 +38,16 @@ Page({
   getCheckoutInfo: function () {
     let that = this;
     var url = api.CartCheckout
-    let buyType = this.data.isBuy ? 'buy' : 'cart'
-    util.request(url, { addressId: that.data.addressId, couponId: that.data.couponId, type: buyType }).then(function (res) {
+    let buyType1 = this.data.isBuy ? 'buy' : 'cart'
+    util.request(url, { addressId: that.data.addressId, couponId: that.data.couponId, buyType: buyType1 },'POST').then(function (res) {
       if (res.errno === 0) {
         console.log(res.data);
         that.setData({
           checkedGoodsList: res.data.checkedGoodsList,
           checkedAddress: res.data.checkedAddress,
           actualPrice: res.data.actualPrice,
-          checkedCoupon: res.data.checkedCoupon,
-          couponList: res.data.couponList,
+          checkedCoupon: res.data.checkedCoupon || '',
+          couponList: res.data.couponList || '',
           couponPrice: res.data.couponPrice,
           freightPrice: res.data.freightPrice,
           goodsTotalPrice: res.data.goodsTotalPrice,

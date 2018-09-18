@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @version 1.0
  * @since 1.0.0
  */
+
 public class SmsConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 

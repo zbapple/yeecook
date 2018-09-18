@@ -394,11 +394,13 @@ public class ApiCartController extends ApiBaseAction {
      * 订单提交前的检验和填写相关订单信息
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
-    @GetMapping("checkout")
-    public Object checkout(@LoginUser UserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type) {
+    @PostMapping("checkout")
+    public Object checkout(@LoginUser UserVo loginUser) {
+        JSONObject jsonParam = getJsonRequest();
+        Integer couponId = jsonParam.getInteger("couponId");
+        String buyType = jsonParam.getString("buyType");
         Map<String, Object> resultObj = new HashMap();
-        //根据收货地址计算运费
-
+        //todo 根据收货地址计算运费
         BigDecimal freightPrice = new BigDecimal(0.00);
         //默认收货地址
         Map param = new HashMap();
@@ -413,7 +415,7 @@ public class ApiCartController extends ApiBaseAction {
         // * 获取要购买的商品和总价
         ArrayList checkedGoodsList = new ArrayList();
         BigDecimal goodsTotalPrice;
-        if (type.equals("cart")) {
+        if (buyType.equals("cart")) {
             Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
 
             for (CartVo cartEntity : (List<CartVo>) cartData.get("cartList")) {
@@ -428,12 +430,27 @@ public class ApiCartController extends ApiBaseAction {
             //计算订单的费用
             //商品总价
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
-
+            //添加规格名和值
+            String[] goodsSepcifitionValue = null;
+            if (null != productInfo.getGoods_specification_ids()) {
+                Map specificationParam = new HashMap();
+                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
+                specificationParam.put("goodsId", goodsVO.getGoodsId());
+                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+                goodsSepcifitionValue = new String[specificationEntities.size()];
+                for (int i = 0; i < specificationEntities.size(); i++) {
+                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+                }
+            }
             CartVo cartVo = new CartVo();
             cartVo.setGoods_name(productInfo.getGoods_name());
             cartVo.setNumber(goodsVO.getNumber());
             cartVo.setRetail_price(productInfo.getRetail_price());
             cartVo.setList_pic_url(productInfo.getList_pic_url());
+            cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            if (null != goodsSepcifitionValue) {
+                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+            }
             checkedGoodsList.add(cartVo);
         }
 
@@ -454,7 +471,6 @@ public class ApiCartController extends ApiBaseAction {
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
 
         resultObj.put("freightPrice", freightPrice);
-
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", checkedGoodsList);
         resultObj.put("goodsTotalPrice", goodsTotalPrice);

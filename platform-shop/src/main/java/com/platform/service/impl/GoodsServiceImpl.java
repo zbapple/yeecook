@@ -1,16 +1,10 @@
 package com.platform.service.impl;
 
 import com.platform.annotation.DataFilter;
-import com.platform.dao.GoodsAttributeDao;
-import com.platform.dao.GoodsDao;
-import com.platform.dao.GoodsGalleryDao;
-import com.platform.dao.ProductDao;
-import com.platform.entity.GoodsGalleryEntity;
-import com.platform.entity.GoodsAttributeEntity;
-import com.platform.entity.GoodsEntity;
-import com.platform.entity.ProductEntity;
-import com.platform.entity.SysUserEntity;
+import com.platform.dao.*;
+import com.platform.entity.*;
 import com.platform.service.GoodsService;
+import com.platform.utils.Constant;
 import com.platform.utils.RRException;
 import com.platform.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +33,8 @@ public class GoodsServiceImpl implements GoodsService {
     private ProductDao productDao;
     @Autowired
     private GoodsGalleryDao goodsGalleryDao;
+    @Autowired
+    private SupplierDao supplierDao;
 
     @Override
     public GoodsEntity queryObject(Integer id) {
@@ -102,11 +98,25 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         goods.setIsDelete(0);
-        goods.setCreateUserDeptId(user.getDeptId());
+        setDeptID(goods,user);
         goods.setCreateUserId(user.getUserId());
         goods.setUpdateUserId(user.getUserId());
         goods.setUpdateTime(new Date());
         return goodsDao.save(goods);
+    }
+
+    //如果是超级管理员则根据供应商配置部门id设置数据权限，运行供应商管理角色修改商品数据
+    private void setDeptID(GoodsEntity goods,SysUserEntity user){
+        Long deptId=user.getDeptId();
+        if (user.getUserId() == Constant.SUPER_ADMIN) {
+
+           SupplierEntity supplierEntity =supplierDao.queryObject(goods.getSupplierId());
+           if(null==supplierEntity){
+               throw new RRException("供应商信息为空，请配置供应商信息！");
+           }
+            deptId=supplierEntity.getDeptId();
+        }
+        goods.setCreateUserDeptId(deptId);
     }
 
     @Override
@@ -137,6 +147,7 @@ public class GoodsServiceImpl implements GoodsService {
                 goodsGalleryDao.save(galleryEntity);
             }
         }
+        setDeptID(goods,user);
         return goodsDao.update(goods);
     }
 
@@ -202,4 +213,5 @@ public class GoodsServiceImpl implements GoodsService {
         goodsEntity.setUpdateTime(new Date());
         return goodsDao.update(goodsEntity);
     }
+
 }

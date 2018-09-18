@@ -159,7 +159,10 @@ Page({
       return v.valueText;
     });
     if (checkedValue.length > 0) {
+      let checkedProduct = this.getCheckedProductItem(this.getCheckedSpecKey());
       this.setData({
+        'goods.list_pic_url': checkedProduct[0].list_pic_url,
+        'goods.retail_price': checkedProduct[0].retail_price,
         'checkedSpecText': checkedValue.join('　')
       });
     } else {
@@ -363,12 +366,18 @@ Page({
       let checkedProduct = this.getCheckedProductItem(this.getCheckedSpecKey());
       if (!checkedProduct || checkedProduct.length <= 0) {
         //找不到对应的product信息，提示没有库存
+        wx.showToast({
+          title: "没有SKU"
+        });
         return false;
       }
 
       //验证库存
       if (checkedProduct.goods_number < this.data.number) {
         //找不到对应的product信息，提示没有库存
+        wx.showToast({
+          title: "没有库存"
+        });
         return false;
       }
 

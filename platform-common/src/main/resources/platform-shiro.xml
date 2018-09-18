@@ -11,8 +11,8 @@
     <bean id="cluterShiroSessionDao" class="com.platform.shiro.CluterShiroSessionDao"/>
 
 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-		<!-- 设置session过期时间为1小时(单位：毫秒)，默认为30分钟 -->
-		<property name="globalSessionTimeout" value="3600000"></property>
+		<!-- 设置session过期时间为10小时(单位：毫秒)，默认为30分钟 -->
+		<property name="globalSessionTimeout" value="36000000"></property>
 		<property name="sessionValidationSchedulerEnabled" value="true"></property>
 		<property name="sessionIdUrlRewritingEnabled" value="false"></property>
         <property name="sessionDAO" ref="cluterShiroSessionDao"/>

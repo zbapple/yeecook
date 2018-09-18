@@ -40,7 +40,7 @@
     </resultMap>
 
     <select id="queryObject" resultMap="goodsMap">
-		select * from nideshop_goods where id = #{value}
+		select * from nideshop_goods where id = #{value} and is_delete ='0'
 	</select>
 
     <select id="queryList" resultMap="goodsMap">
@@ -52,7 +52,7 @@
             *
         </if>
         from nideshop_goods
-        where 1 = 1
+        where 1 = 1 and is_delete = '0'
         <if test="is_new != null and is_new != ''">
             and is_new = #{is_new}
         </if>

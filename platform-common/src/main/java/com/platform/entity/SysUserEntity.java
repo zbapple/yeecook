@@ -67,6 +67,9 @@ public class SysUserEntity implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * 部门id
+     */
     private Long deptId;
 
     /**

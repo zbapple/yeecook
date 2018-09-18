@@ -54,6 +54,13 @@
                 <i-col span="4">
                     <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                 </i-col>
+                <i-col span="4">
+                    <i-select v-model="q.supplierId" filterable  placeholder="供应商"  clearable=true >
+                        <i-option v-for="supplier in suppliers" :value="supplier.id"
+                                  :key="supplier.id">{{supplier.companyName}}
+                        </i-option>
+                    </i-select>
+                </i-col>
                 <i-button @click="query">查询</i-button>
             </div>
             <div class="buttons-group">
@@ -88,6 +95,13 @@
                     </Form-item>
                     <Form-item label="商品序列号" prop="goodsSn">
                         <i-input v-model="goods.goodsSn" placeholder="商品序列号"/>
+                    </Form-item>
+                    <Form-item label="供应商" prop="supplierId">
+                    <i-select v-model="goods.supplierId" filterable  placeholder="供应商"  clearable=true >
+                        <i-option v-for="supplier in suppliers" :value="supplier.id"
+                                  :key="supplier.id">{{supplier.companyName}}
+                        </i-option>
+                    </i-select>
                     </Form-item>
                     <Form-item label="名称" prop="name">
                         <i-input v-model="goods.name" placeholder="名称"/>
@@ -138,7 +152,7 @@
                     <Row>
                         <i-col span="16">
                             <Form-item label="商品主图" prop="primaryPicUrl">
-                                <i-input v-model="goods.primaryPicUrl" placeholder="商品主图" readonly/>
+                                <i-input v-model="goods.primaryPicUrl" placeholder="商品主图" />
                             </Form-item>
                         </i-col>
                         <i-col span="3">
@@ -161,7 +175,7 @@
                     <Row>
                         <i-col span="16">
                             <Form-item label="商品列表图" prop="listPicUrl">
-                                <i-input v-model="goods.listPicUrl" placeholder="商品列表图" readonly/>
+                                <i-input v-model="goods.listPicUrl" placeholder="商品列表图" />
                             </Form-item>
                         </i-col>
                         <i-col span="3">

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.*;
+import com.qiniu.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +21,6 @@ import com.platform.dao.ApiCartMapper;
 import com.platform.dao.ApiCouponMapper;
 import com.platform.dao.ApiOrderGoodsMapper;
 import com.platform.dao.ApiOrderMapper;
-import com.platform.entity.AddressVo;
-import com.platform.entity.BuyGoodsVo;
-import com.platform.entity.CartVo;
-import com.platform.entity.CouponVo;
-import com.platform.entity.OrderGoodsVo;
-import com.platform.entity.OrderVo;
-import com.platform.entity.ProductVo;
-import com.platform.entity.UserVo;
 import com.platform.util.CommonUtil;
 
 
@@ -46,7 +40,8 @@ public class ApiOrderService {
     private ApiOrderGoodsMapper apiOrderGoodsMapper;
     @Autowired
     private ApiProductService productService;
-
+    @Autowired
+    private ApiGoodsSpecificationService goodsSpecificationService;
 
     public OrderVo queryObject(Integer id) {
         return orderDao.queryObject(id);
@@ -121,11 +116,25 @@ public class ApiOrderService {
             //计算订单的费用
             //商品总价
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVo.getNumber()));
-
+            String[] goodsSepcifitionValue = null;
+            if (null != productInfo.getGoods_specification_ids()) {
+                Map specificationParam = new HashMap();
+                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
+                specificationParam.put("goodsId", goodsVo.getGoodsId());
+                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+                goodsSepcifitionValue = new String[specificationEntities.size()];
+                for (int i = 0; i < specificationEntities.size(); i++) {
+                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+                }
+            }
             CartVo cartVo = new CartVo();
             BeanUtils.copyProperties(productInfo, cartVo);
             cartVo.setNumber(goodsVo.getNumber());
             cartVo.setProduct_id(goodsVo.getProductId());
+            if (null != goodsSepcifitionValue) {
+                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+            }
+            cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
             checkedGoodsList.add(cartVo);
         }
 

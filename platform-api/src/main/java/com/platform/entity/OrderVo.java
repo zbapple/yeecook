@@ -99,6 +99,7 @@ public class OrderVo implements Serializable {
     private BigDecimal full_cut_price; //订单满减
     private String full_region;//区县
     private String order_type; // 订单状态
+    private int is_printer;//是否打印
 
     public String getFull_region() {
     //    return full_region;
@@ -516,5 +517,13 @@ public class OrderVo implements Serializable {
 
     public void setShipping_no(String shipping_no) {
         this.shipping_no = shipping_no;
+    }
+
+    public int getIs_printer() {
+        return is_printer;
+    }
+
+    public void setIs_printer(int is_printer) {
+        this.is_printer = is_printer;
     }
 }

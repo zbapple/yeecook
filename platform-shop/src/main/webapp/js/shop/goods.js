@@ -5,6 +5,7 @@ $(function () {
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '商品类型', name: 'categoryName', index: 'category_id', width: 80},
             {label: '名称', name: 'name', index: 'name', width: 160},
+            {label: '供应商', name: 'companyName', index: 'supplier_id', width: 160},
             {label: '品牌', name: 'brandName', index: 'brand_id', width: 120},
             {
                 label: '上架', name: 'isOnSale', index: 'is_on_sale', width: 50,
@@ -28,6 +29,7 @@ $(function () {
                 }
             }]
     });
+    vm.getSuppliers();
     $('#goodsDesc').editable({
         inlineMode: false,
         alwaysBlank: true,
@@ -42,7 +44,7 @@ $(function () {
         imageUploadURL: '../sys/oss/upload',
         imageUploadParams: {id: "edit"},
         imagesLoadURL: '../sys/oss/queryAll'
-    })
+    });
 });
 
 var ztree;
@@ -82,11 +84,16 @@ var vm = new Vue({
         ruleValidate: {
             name: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
+            ],
+            supplierId: [
+                {required: true, message: '供应商不能为空', trigger: 'blur'}
             ]
         },
         q: {
-            name: ''
+            name: '',
+            supplierId:''
         },
+        suppliers:[],//供应商名称
         brands: [],//品牌
         macros: [],//商品单位
         attributeCategories: []//属性类别
@@ -134,6 +141,18 @@ var vm = new Vue({
             vm.getMacro();
             vm.getAttributeCategories();
             vm.getGoodsGallery(id);
+        },
+        /**
+         * 获取供应商
+         */
+        getSuppliers: function () {
+            Ajax.request({
+                url: "../supplier/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.suppliers = r.list;
+                }
+            });
         },
         /**
          * 获取品牌
@@ -293,7 +312,9 @@ var vm = new Vue({
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'name': vm.q.name,
+                    'supplierId': vm.q.supplierId
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

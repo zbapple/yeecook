@@ -134,6 +134,7 @@ public class ApiIndexController extends ApiBaseAction {
             //
             param = new HashMap<String, Object>();
             param.put("categoryIds", childCategoryIds);
+            param.put("is_delete","0");
             param.put("fields", "id as id, name as name, list_pic_url as list_pic_url, retail_price as retail_price");
             PageHelper.startPage(0, 7, false);
             List<GoodsVo> categoryGoods = goodsService.queryList(param);
@@ -230,7 +231,7 @@ public class ApiIndexController extends ApiBaseAction {
         Map<String, Object> param = new HashMap<String, Object>();
         param = new HashMap<String, Object>();
         param.put("parent_id", 0);
-        param.put("notName", "推荐");//<>
+        param.put("notName", "推荐");
         List<CategoryVo> categoryList = categoryService.queryList(param);
         List<Map<String, Object>> newCategoryList = new ArrayList<>();
 
@@ -248,6 +249,7 @@ public class ApiIndexController extends ApiBaseAction {
             //
             param = new HashMap<String, Object>();
             param.put("categoryIds", childCategoryIds);
+            param.put("is_delete","0");
             param.put("fields", "id as id, name as name, list_pic_url as list_pic_url, retail_price as retail_price");
             PageHelper.startPage(0, 7, false);
             List<GoodsVo> categoryGoods = goodsService.queryList(param);
@@ -291,7 +293,6 @@ public class ApiIndexController extends ApiBaseAction {
         List<ChannelVo> channel = channelService.queryList(param);
         resultObj.put("channel", channel);
         //
-
         return toResponsSuccess(resultObj);
     }
 }

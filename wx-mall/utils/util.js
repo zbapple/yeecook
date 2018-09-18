@@ -92,9 +92,14 @@ function login() {
     wx.login({
       success: function (res) {
         if (res.code) {
-          //登录远程服务器
-          console.log(res)
-          resolve(res);
+          var code = res.code;
+          wx.getUserInfo({
+            success: function (res) {
+              //登录远程服务器
+              res.code = code;
+              resolve(res);
+            }
+          })
         } else {
           reject(res);
         }

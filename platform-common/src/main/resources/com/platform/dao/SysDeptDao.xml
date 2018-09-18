@@ -13,6 +13,9 @@
 		<if test="deptFilter != null">
 			and d.dept_id in (${deptFilter})
 		</if>
+		<if test="parentId != null">
+			and d.parent_id = #{parentId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by d.${sidx} ${order}

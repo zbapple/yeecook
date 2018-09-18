@@ -15,6 +15,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,26 @@ public class SysUserController extends AbstractController {
     }
 
     /**
+     * 所有用户列表
+     */
+    /**
+     * 查看所有列表
+     */
+    @RequestMapping("/queryAll")
+    public R queryAll(@RequestParam Map<String, Object> params) {
+         //只有超级管理员，才能查看所有管理员列表
+        if (getUserId() != Constant.SUPER_ADMIN) {
+            params.put("createUserId", getUserId());
+        }
+        List<SysUserEntity> list = sysUserService.queryList(params);
+
+        return R.ok().put("list", list);
+    }
+
+    /**
      * 获取登录的用户信息
      */
+
     @RequestMapping("/info")
     public R info() {
         return R.ok().put("user", getUser());
