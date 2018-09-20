@@ -111,7 +111,8 @@
 			`callback_status`,
 			`full_cut_price`,
 			`order_type`,
-			`is_printer`
+			`is_printer`,
+			`supplier_list`
 		)
 		values
 		(
@@ -148,7 +149,8 @@
 			#{callback_status},
 			#{full_cut_price},
 			#{order_type},
-			#{is_printer}
+			#{is_printer},
+			#{supplier_list}
 		)
 	</insert>
 
@@ -187,7 +189,8 @@
             <if test="coupon_price != null">`coupon_price` = #{coupon_price},</if>
             <if test="callback_status != null">`callback_status` = #{callback_status},</if>
             <if test="full_cut_price != null">`full_cut_price` = #{full_cut_price},</if>
-            <if test="is_printer != null">`is_printer` = #{is_printer}</if>
+            <if test="is_printer != null">`is_printer` = #{is_printer},</if>
+            <if test="supplier_list != null">`supplier_list` = #{supplier_list}</if>
 
         </set>
         where id = #{id}

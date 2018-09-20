@@ -40,6 +40,8 @@
         <result property="callbackStatus" column="callback_status"/>
         <result property="orderType" column="order_type"/>
         <result property="userName" column="username"/>
+        <result property="supplierist" column="supplier_list"/>
+
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.OrderEntity">
@@ -136,7 +138,8 @@
 			`parent_id`, 
 			`coupon_price`, 
 			`callback_status`,
-			`order_type`
+			`order_type`,
+			`supplier_list`
 		)
 		values
 		(
@@ -172,7 +175,8 @@
 			#{parentId}, 
 			#{couponPrice}, 
 			#{callbackStatus},
-			#{orderType}
+			#{orderType},
+			#{supplierList}
 		)
 	</insert>
 
@@ -211,7 +215,8 @@
             <if test="parentId != null">`parent_id` = #{parentId},</if>
             <if test="couponPrice != null">`coupon_price` = #{couponPrice},</if>
             <if test="callbackStatus != null">`callback_status` = #{callbackStatus},</if>
-            <if test="orderType != null">`order_type` = #{orderType}</if>
+            <if test="orderType != null">`order_type` = #{orderType},</if>
+            <if test="supplierList != null">`supplier_list` = #{supplierList}</if>
         </set>
         where id = #{id}
     </update>

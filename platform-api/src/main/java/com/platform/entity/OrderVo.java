@@ -1,6 +1,8 @@
 package com.platform.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
@@ -100,6 +102,9 @@ public class OrderVo implements Serializable {
     private String full_region;//区县
     private String order_type; // 订单状态
     private int is_printer;//是否打印
+    @Getter
+    @Setter
+    private String supplier_list;
 
     public String getFull_region() {
     //    return full_region;

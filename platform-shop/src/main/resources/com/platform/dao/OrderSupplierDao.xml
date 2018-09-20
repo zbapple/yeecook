@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.OrderSupplierDao">
+
+    <resultMap type="com.platform.entity.OrderSupplierEntity" id="orderSupplierMap">
+        <result property="id" column="id"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="orderSupSn" column="order_sup_sn"/>
+        <result property="orderSn" column="order_sn"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="consignee" column="consignee"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="address" column="address"/>
+        <result property="mobile" column="mobile"/>
+        <result property="postscript" column="postscript"/>
+        <result property="shippingId" column="shipping_id"/>
+        <result property="shippingName" column="shipping_name"/>
+        <result property="shippingFee" column="shipping_fee"/>
+        <result property="actualPrice" column="actual_price"/>
+        <result property="orderPrice" column="order_price"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="addTime" column="add_time"/>
+        <result property="confirmTime" column="confirm_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="freightPrice" column="freight_price"/>
+        <result property="couponId" column="coupon_id"/>
+        <result property="couponPrice" column="coupon_price"/>
+        <result property="shippingNo" column="shipping_no"/>
+        <result property="fullCutPrice" column="full_cut_price"/>
+        <result property="orderType" column="order_type"/>
+        <result property="isPrinter" column="is_printer"/>
+        <result property="deptId" column="dept_id"/>
+		<result property="supplierName" column="supplier_name"/>
+		<result property="payStatus" column="pay_status"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.OrderSupplierEntity">
+		select
+			a.`id`,
+			a.`supplier_id`,
+			c.`company_name` as `supplier_name`,
+			a.`order_sup_sn`,
+			a.`order_sn`,
+			a.`user_id`,
+			b.`order_status`,
+			b.`pay_status`,
+			a.`shipping_status`,
+			a.`consignee`,
+			a.`country`,
+			a.`province`,
+			a.`city`,
+			a.`district`,
+			a.`address`,
+			a.`mobile`,
+			a.`postscript`,
+			a.`shipping_id`,
+			a.`shipping_name`,
+			a.`shipping_fee`,
+			b.`actual_price`,
+			a.`order_price`,
+			a.`goods_price`,
+			a.`add_time`,
+			b.`confirm_time`,
+			b.`pay_time`,
+			a.`freight_price`,
+			b.`coupon_id`,
+			b.`coupon_price`,
+			b.`shipping_no`,
+			b.`full_cut_price`,
+			b.`order_type`,
+			a.`is_printer`,
+			a.`dept_id`
+		from nideshop_order_supplier a
+		LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn
+		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
+		where a.id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.OrderSupplierEntity">
+		select
+			a.`id`,
+			a.`supplier_id`,
+			c.`company_name` as `supplier_name`,
+			a.`order_sup_sn`,
+			a.`order_sn`,
+		    b.`pay_status`,
+			a.`user_id`,
+			b.`order_status`,
+			a.`shipping_status`,
+			a.`consignee`,
+			a.`country`,
+			a.`province`,
+			a.`city`,
+			a.`district`,
+			a.`address`,
+			a.`mobile`,
+			a.`postscript`,
+			a.`shipping_id`,
+			a.`shipping_name`,
+			a.`shipping_fee`,
+			b.`actual_price`,
+			a.`order_price`,
+			a.`goods_price`,
+			a.`add_time`,
+			b.`confirm_time`,
+			b.`pay_time`,
+			a.`freight_price`,
+			b.`coupon_id`,
+			b.`coupon_price`,
+			b.`shipping_no`,
+			b.`full_cut_price`,
+			b.`order_type`,
+			a.`is_printer`,
+			a.`dept_id`
+		from nideshop_order_supplier a
+		LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn
+		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
+		WHERE 1=1
+		<if test="orderSupSn != null and orderSupSn.trim() != ''">
+			AND a.order_sup_sn LIKE concat('%',#{orderSupSn},'%')
+		</if>
+		<if test="shippingStatus != null and shippingStatus.trim() != ''">
+			AND a.shipping_status = #{shippingStatus}
+		</if>
+		<if test="payStatus != null and payStatus.trim() != ''">
+			AND b.pay_status = #{payStatus}
+		</if>
+		<if test="orderStatus != null and orderStatus.trim() != ''">
+			AND b.order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null and orderType.trim() != ''">
+			AND b.order_type = #{orderType}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by a.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_order_supplier a LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn WHERE 1=1
+		<if test="orderSupSn != null and orderSupSn.trim() != ''">
+			AND a.order_sup_sn LIKE concat('%',#{orderSupSn},'%')
+		</if>
+		<if test="orderSn != null and orderSn.trim() != ''">
+			AND a.order_sn LIKE concat('%',#{orderSn},'%')
+		</if>
+		<if test="shippingStatus != null and shippingStatus.trim() != ''">
+			AND a.shipping_status = #{shippingStatus}
+		</if>
+		<if test="payStatus != null and payStatus.trim() != ''">
+			AND b.pay_status = #{payStatus}
+		</if>
+		<if test="orderStatus != null and orderStatus.trim() != ''">
+			AND b.order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null and orderType.trim() != ''">
+			AND b.order_type = #{orderType}
+		</if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.OrderSupplierEntity">
+		insert into nideshop_order_supplier(
+			`id`,
+			`supplier_id`,
+			`order_sup_sn`,
+			`order_sn`,
+			`user_id`,
+			`shipping_status`,
+			`consignee`,
+			`country`,
+			`province`,
+			`city`,
+			`district`,
+			`address`,
+			`mobile`,
+			`postscript`,
+			`shipping_id`,
+			`shipping_name`,
+			`shipping_fee`,
+			`order_price`,
+			`goods_price`,
+			`add_time`,
+			`freight_price`,
+			`shipping_no`,
+			`full_cut_price`,
+			`is_printer`,
+			`dept_id`)
+		values(
+			#{id},
+			#{supplierId},
+			#{orderSupSn},
+			#{orderSn},
+			#{userId},
+			#{shippingStatus},
+			#{consignee},
+			#{country},
+			#{province},
+			#{city},
+			#{district},
+			#{address},
+			#{mobile},
+			#{postscript},
+			#{shippingId},
+			#{shippingName},
+			#{shippingFee},
+			#{orderPrice},
+			#{goodsPrice},
+			#{addTime},
+			#{freightPrice},
+			#{shippingNo},
+			#{fullCutPrice},
+			#{isPrinter},
+			#{deptId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.OrderSupplierEntity">
+		update nideshop_order_supplier
+		<set>
+			<if test="supplierId != null">`supplier_id` = #{supplierId}, </if>
+			<if test="orderSupSn != null">`order_sup_sn` = #{orderSupSn}, </if>
+			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="shippingStatus != null">`shipping_status` = #{shippingStatus}, </if>
+			<if test="consignee != null">`consignee` = #{consignee}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="district != null">`district` = #{district}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="postscript != null">`postscript` = #{postscript}, </if>
+			<if test="shippingId != null">`shipping_id` = #{shippingId}, </if>
+			<if test="shippingName != null">`shipping_name` = #{shippingName}, </if>
+			<if test="shippingFee != null">`shipping_fee` = #{shippingFee}, </if>
+			<if test="orderPrice != null">`order_price` = #{orderPrice}, </if>
+			<if test="goodsPrice != null">`goods_price` = #{goodsPrice}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="freightPrice != null">`freight_price` = #{freightPrice}, </if>
+			<if test="shippingNo != null">`shipping_no` = #{shippingNo}, </if>
+			<if test="fullCutPrice != null">`full_cut_price` = #{fullCutPrice}, </if>
+			<if test="isPrinter != null">`is_printer` = #{isPrinter}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_order_supplier where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_order_supplier where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

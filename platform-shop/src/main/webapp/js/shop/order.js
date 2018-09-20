@@ -86,6 +86,8 @@ $(function () {
                         return '付款中';
                     } else if (value == '2') {
                         return '已付款';
+                    } else if (value == '4') {
+                        return '已退款';
                     }
                     return value;
                 }

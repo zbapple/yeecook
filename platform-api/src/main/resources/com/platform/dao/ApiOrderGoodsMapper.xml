@@ -18,14 +18,34 @@
         <result property="is_real" column="is_real"/>
         <result property="goods_specifition_ids" column="goods_specifition_ids"/>
         <result property="list_pic_url" column="list_pic_url"/>
+        <result property="dept_id" column="dept_id"/>
+        <result property="supplier_id" column="supplier_id"/>
+        <result property="supplierName" column="supplier_name"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderGoodsMap">
-		select * from nideshop_order_goods where id = #{value}
+		SELECT
+			a.*,
+			b.create_user_dept_id dept_id,
+			b.supplier_id supplier_id,
+			c.`company_name` as `supplier_name`
+		FROM
+			nideshop_order_goods a
+		LEFT JOIN nideshop_goods b ON b.id = a.goods_id
+		LEFT JOIN nideshop_supplier c ON c.id=b.supplier_id
+		where id = #{value}
 	</select>
 
     <select id="queryList" resultMap="orderGoodsMap">
-        select * from nideshop_order_goods
+        SELECT
+        a.*,
+        b.create_user_dept_id dept_id,
+        b.supplier_id supplier_id,
+        c.`company_name` as `supplier_name`
+        FROM
+        nideshop_order_goods a
+        LEFT JOIN nideshop_goods b ON b.id = a.goods_id
+        LEFT JOIN nideshop_supplier c ON c.id=b.supplier_id
         <where>
             <if test="order_id != null and order_id != ''">
                 and order_id = #{order_id}

@@ -86,19 +86,26 @@ public class ApiPayController extends ApiBaseAction {
             Map orderGoodsParam = new HashMap();
             orderGoodsParam.put("order_id", orderId);
             // 商品描述
-            parame.put("body", "超市-支付");
+            parame.put("body", "宜厨小程序-支付");
             //订单的商品
             List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
+
             if (null != orderGoods) {
-                String body = "宜厨-";
+                List<HashMap> list =new ArrayList<>();
+
                 for (OrderGoodsVo goodsVo : orderGoods) {
-                    body = body + goodsVo.getGoods_name() + "、";
+                    HashMap hashMap =new HashMap();
+                    hashMap.put("goods_id",String.valueOf(goodsVo.getGoods_id()));
+                    hashMap.put("quantity",goodsVo.getNumber());
+                    hashMap.put("goods_name",goodsVo.getGoods_name());
+                    hashMap.put("price",goodsVo.getRetail_price().multiply(new BigDecimal(100)).intValue());
+                    list.add(hashMap);
                 }
-                if (body.length() > 0) {
-                    body = body.substring(0, body.length() - 1);
-                }
+
+                Map map=new HashMap();
+                map.put("goods_detail",JsonUtil.getJsonByObj(list));
                 // 商品描述
-                parame.put("body", body);
+                parame.put("detail",JsonUtil.getJsonByObj(map));
             }
             //支付金额
             parame.put("total_fee", orderInfo.getActual_price().multiply(new BigDecimal(100)).intValue());

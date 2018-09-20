@@ -7,66 +7,56 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 /**
- * @author lipengjun
- * @email 939961241@qq.com
- * @date 2017-08-13 10:41:09
+ * 实体
+ * 表名 nideshop_order_supplier
+ *
+ * @author zoubin
+ * @email 9379248@qq.com
+ * @date 2018-09-19 12:23:49
  */
-public class OrderEntity implements Serializable {
+public class OrderSupplierVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //主键
+    //
     private Integer id;
-    //订单序列号
+    //供应商id
+    private Long supplierId;
+    //供应商名称
+    @Setter@Getter
+    private String supplierName;
+    //供应商订单号
+    private String orderSupSn;
+    //用户订单编号
     private String orderSn;
-    //会员Id
+    //用户id
     private Integer userId;
     //订单状态
-    //订单相关状态字段设计，采用单个字段表示全部的订单状态
-    //1xx 表示订单取消和删除等状态 0订单创建成功等待付款，　101订单已取消，　102订单已删除
-    //2xx 表示订单支付状态　201订单已付款，等待发货
-    //3xx 表示订单物流相关状态　300订单已发货， 301用户确认收货
-    //4xx 表示订单退换货相关的状态　401 没有发货，退款　402 已收货，退款退货
     private Integer orderStatus;
-    //发货状态 商品配送情况;0未发货,1已发货,2已收货,4退货
-    private Integer shippingStatus;
-    //付款状态 支付状态;0未付款;1付款中;2已付款
-    private Integer payStatus;
-    //收货人
+    //收件人
     private String consignee;
     //国家
     private String country;
-    //省
+    //省份
     private String province;
-    //地市
+    //城市
     private String city;
-    //区县
+    //地区
     private String district;
-    //收货地址
+    //详细地址
     private String address;
-    //联系电话
+    //手机号码
     private String mobile;
-    //补充说明
+    //用户备注
     private String postscript;
-    //快递公司Id
+    //快递公司ID
     private Integer shippingId;
-    //快递公司名称
+    //快递公司
     private String shippingName;
-    //快递单号
-    private String shippingNo;
-    //付款
-    private String payId;
-    //
-    private String payName;
-    //快递费用
+    //运费
     private BigDecimal shippingFee;
     //实际需要支付的金额
     private BigDecimal actualPrice;
-    //
-    private Integer integral;
-    //
-    private BigDecimal integralMoney;
     //订单总价
     private BigDecimal orderPrice;
     //商品总价
@@ -81,72 +71,143 @@ public class OrderEntity implements Serializable {
     private Integer freightPrice;
     //使用的优惠券id
     private Integer couponId;
-    //
-    private Integer parentId;
     //优惠价格
     private BigDecimal couponPrice;
-    //
-    private String callbackStatus;
-
+    //快递单号
+    private String shippingNo;
+    //配送费用
+    private BigDecimal fullCutPrice;
     //订单类型 1：普通订单 2：团购订单 3：砍价订单 4: 直接购买
     private String orderType;
+    //是否已经打印：0未打印，1已打印
+    private Integer isPrinter;
+    //供应商部门id
+    private Integer deptId;
+    //发货状态
+    @Setter
+    @Getter
+    private Integer shippingStatus;
 
-    //
-    private String userName;
-    //供应商状态描述为json格式
-    @Getter@Setter
-    private String supplierList;
 
-    public String getOrderType() {
-        return orderType;
-    }
+    public OrderSupplierVo(OrderVo vo){
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
+        this.setOrderSn(vo.getOrder_sn());
+
+        this.setUserId(vo.getUser_id().intValue());
+
+        this.setOrderStatus(vo.getOrder_status());
+
+        this.setConsignee(vo.getConsignee());
+
+        this.setCountry(vo.getCountry());
+
+        this.setProvince(vo.getProvince());
+
+        this.setCity(vo.getCity());
+
+        this.setDistrict(vo.getDistrict());
+
+        this.setAddress(vo.getAddress());
+
+        this.setMobile(vo.getMobile());
+
+        this.setPostscript(vo.getPostscript());
+
+        this.setShippingId(vo.getShipping_id());
+
+        this.setShippingName(vo.getShipping_name());
+
+        this.setShippingFee(vo.getShipping_fee());
+
+        this.setActualPrice(vo.getActual_price());
+
+        this.setOrderPrice(vo.getOrder_price());
+
+        this.setGoodsPrice(vo.getGoods_price());
+
+        this.setAddTime(vo.getAdd_time());
+
+        this.setConfirmTime(vo.getConfirm_time());
+
+        this.setPayTime(vo.getPay_time());
+
+        this.setFreightPrice(vo.getFreight_price());
+
+        this.setCouponId(vo.getCoupon_id());
+
+        this.setCouponPrice(vo.getCoupon_price());
+
+        this.setFullCutPrice(vo.getFull_cut_price());
+
+        this.setOrderType(vo.getOrder_type());
+
     }
 
     /**
-     * 设置：主键
+     * 设置：
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     * 获取：主键
+     * 获取：
      */
     public Integer getId() {
         return id;
     }
+    /**
+     * 设置：供应商id
+     */
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
 
     /**
-     * 设置：订单序列号
+     * 获取：供应商id
+     */
+    public Long getSupplierId() {
+        return supplierId;
+    }
+    /**
+     * 设置：供应商订单号
+     */
+    public void setOrderSupSn(String orderSupSn) {
+        this.orderSupSn = orderSupSn;
+    }
+
+    /**
+     * 获取：供应商订单号
+     */
+    public String getOrderSupSn() {
+        return orderSupSn;
+    }
+    /**
+     * 设置：用户订单编号
      */
     public void setOrderSn(String orderSn) {
         this.orderSn = orderSn;
     }
 
     /**
-     * 获取：订单序列号
+     * 获取：用户订单编号
      */
     public String getOrderSn() {
         return orderSn;
     }
-
     /**
-     * 设置：会员Id
+     * 设置：用户id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     /**
-     * 获取：会员Id
+     * 获取：用户id
      */
     public Integer getUserId() {
         return userId;
     }
-
     /**
      * 设置：订单状态
      */
@@ -160,49 +221,19 @@ public class OrderEntity implements Serializable {
     public Integer getOrderStatus() {
         return orderStatus;
     }
-
     /**
-     * 设置：发货状态
-     */
-    public void setShippingStatus(Integer shippingStatus) {
-        this.shippingStatus = shippingStatus;
-    }
-
-    /**
-     * 获取：发货状态
-     */
-    public Integer getShippingStatus() {
-        return shippingStatus;
-    }
-
-    /**
-     * 设置：付款状态
-     */
-    public void setPayStatus(Integer payStatus) {
-        this.payStatus = payStatus;
-    }
-
-    /**
-     * 获取：付款状态
-     */
-    public Integer getPayStatus() {
-        return payStatus;
-    }
-
-    /**
-     * 设置：收货人
+     * 设置：收件人
      */
     public void setConsignee(String consignee) {
         this.consignee = consignee;
     }
 
     /**
-     * 获取：收货人
+     * 获取：收件人
      */
     public String getConsignee() {
         return consignee;
     }
-
     /**
      * 设置：国家
      */
@@ -216,169 +247,123 @@ public class OrderEntity implements Serializable {
     public String getCountry() {
         return country;
     }
-
     /**
-     * 设置：省
+     * 设置：省份
      */
     public void setProvince(String province) {
         this.province = province;
     }
 
     /**
-     * 获取：省
+     * 获取：省份
      */
     public String getProvince() {
         return province;
     }
-
     /**
-     * 设置：地市
+     * 设置：城市
      */
     public void setCity(String city) {
         this.city = city;
     }
 
     /**
-     * 获取：地市
+     * 获取：城市
      */
     public String getCity() {
         return city;
     }
-
     /**
-     * 设置：区县
+     * 设置：地区
      */
     public void setDistrict(String district) {
         this.district = district;
     }
 
     /**
-     * 获取：区县
+     * 获取：地区
      */
     public String getDistrict() {
         return district;
     }
-
-    public String getShippingNo() {
-        return shippingNo;
-    }
-
-    public void setShippingNo(String shippingNo) {
-        this.shippingNo = shippingNo;
-    }
-
     /**
-     * 设置：收货地址
+     * 设置：详细地址
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * 获取：收货地址
+     * 获取：详细地址
      */
     public String getAddress() {
         return address;
     }
-
     /**
-     * 设置：联系电话
+     * 设置：手机号码
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
     /**
-     * 获取：联系电话
+     * 获取：手机号码
      */
     public String getMobile() {
         return mobile;
     }
-
     /**
-     * 设置：补充说明
+     * 设置：用户备注
      */
     public void setPostscript(String postscript) {
         this.postscript = postscript;
     }
 
     /**
-     * 获取：补充说明
+     * 获取：用户备注
      */
     public String getPostscript() {
         return postscript;
     }
-
     /**
-     * 设置：快递公司Id
+     * 设置：快递公司ID
      */
     public void setShippingId(Integer shippingId) {
         this.shippingId = shippingId;
     }
 
     /**
-     * 获取：快递公司Id
+     * 获取：快递公司ID
      */
     public Integer getShippingId() {
         return shippingId;
     }
-
     /**
-     * 设置：快递公司名称
+     * 设置：快递公司
      */
     public void setShippingName(String shippingName) {
         this.shippingName = shippingName;
     }
 
     /**
-     * 获取：快递公司名称
+     * 获取：快递公司
      */
     public String getShippingName() {
         return shippingName;
     }
-
     /**
-     * 设置：付款
-     */
-    public void setPayId(String payId) {
-        this.payId = payId;
-    }
-
-    /**
-     * 获取：付款
-     */
-    public String getPayId() {
-        return payId;
-    }
-
-    /**
-     * 设置：
-     */
-    public void setPayName(String payName) {
-        this.payName = payName;
-    }
-
-    /**
-     * 获取：
-     */
-    public String getPayName() {
-        return payName;
-    }
-
-    /**
-     * 设置：快递费用
+     * 设置：运费
      */
     public void setShippingFee(BigDecimal shippingFee) {
         this.shippingFee = shippingFee;
     }
 
     /**
-     * 获取：快递费用
+     * 获取：运费
      */
     public BigDecimal getShippingFee() {
         return shippingFee;
     }
-
     /**
      * 设置：实际需要支付的金额
      */
@@ -392,35 +377,6 @@ public class OrderEntity implements Serializable {
     public BigDecimal getActualPrice() {
         return actualPrice;
     }
-
-    /**
-     * 设置：
-     */
-    public void setIntegral(Integer integral) {
-        this.integral = integral;
-    }
-
-    /**
-     * 获取：
-     */
-    public Integer getIntegral() {
-        return integral;
-    }
-
-    /**
-     * 设置：
-     */
-    public void setIntegralMoney(BigDecimal integralMoney) {
-        this.integralMoney = integralMoney;
-    }
-
-    /**
-     * 获取：
-     */
-    public BigDecimal getIntegralMoney() {
-        return integralMoney;
-    }
-
     /**
      * 设置：订单总价
      */
@@ -434,7 +390,6 @@ public class OrderEntity implements Serializable {
     public BigDecimal getOrderPrice() {
         return orderPrice;
     }
-
     /**
      * 设置：商品总价
      */
@@ -448,7 +403,6 @@ public class OrderEntity implements Serializable {
     public BigDecimal getGoodsPrice() {
         return goodsPrice;
     }
-
     /**
      * 设置：新增时间
      */
@@ -462,7 +416,6 @@ public class OrderEntity implements Serializable {
     public Date getAddTime() {
         return addTime;
     }
-
     /**
      * 设置：确认时间
      */
@@ -476,7 +429,6 @@ public class OrderEntity implements Serializable {
     public Date getConfirmTime() {
         return confirmTime;
     }
-
     /**
      * 设置：付款时间
      */
@@ -490,7 +442,6 @@ public class OrderEntity implements Serializable {
     public Date getPayTime() {
         return payTime;
     }
-
     /**
      * 设置：配送费用
      */
@@ -504,7 +455,6 @@ public class OrderEntity implements Serializable {
     public Integer getFreightPrice() {
         return freightPrice;
     }
-
     /**
      * 设置：使用的优惠券id
      */
@@ -518,21 +468,6 @@ public class OrderEntity implements Serializable {
     public Integer getCouponId() {
         return couponId;
     }
-
-    /**
-     * 设置：
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * 获取：
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
     /**
      * 设置：优惠价格
      */
@@ -546,26 +481,69 @@ public class OrderEntity implements Serializable {
     public BigDecimal getCouponPrice() {
         return couponPrice;
     }
+    /**
+     * 设置：快递单号
+     */
+    public void setShippingNo(String shippingNo) {
+        this.shippingNo = shippingNo;
+    }
 
     /**
-     * 设置：
+     * 获取：快递单号
      */
-    public void setCallbackStatus(String callbackStatus) {
-        this.callbackStatus = callbackStatus;
+    public String getShippingNo() {
+        return shippingNo;
+    }
+    /**
+     * 设置：配送费用
+     */
+    public void setFullCutPrice(BigDecimal fullCutPrice) {
+        this.fullCutPrice = fullCutPrice;
     }
 
     /**
-     * 获取：
+     * 获取：配送费用
      */
-    public String getCallbackStatus() {
-        return callbackStatus;
+    public BigDecimal getFullCutPrice() {
+        return fullCutPrice;
+    }
+    /**
+     * 设置：订单类型 1：普通订单 2：团购订单 3：砍价订单 4: 直接购买
+     */
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 
-    public String getUserName() {
-        return userName;
+    /**
+     * 获取：订单类型 1：普通订单 2：团购订单 3：砍价订单 4: 直接购买
+     */
+    public String getOrderType() {
+        return orderType;
+    }
+    /**
+     * 设置：是否已经打印：0未打印，1已打印
+     */
+    public void setIsPrinter(Integer isPrinter) {
+        this.isPrinter = isPrinter;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    /**
+     * 获取：是否已经打印：0未打印，1已打印
+     */
+    public Integer getIsPrinter() {
+        return isPrinter;
+    }
+    /**
+     * 设置：供应商部门id
+     */
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    /**
+     * 获取：供应商部门id
+     */
+    public Integer getDeptId() {
+        return deptId;
     }
 }

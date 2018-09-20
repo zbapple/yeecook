@@ -1,5 +1,8 @@
 package com.platform.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -39,6 +42,12 @@ public class OrderGoodsVo implements Serializable {
     private String goods_specifition_ids;
     //图片链接
     private String list_pic_url;
+    private Integer supplier_id;
+    private Integer dept_id;
+    //供应商名称
+    @Setter
+    @Getter
+    private String supplierName;
 
     public Integer getId() {
         return id;
@@ -142,5 +151,21 @@ public class OrderGoodsVo implements Serializable {
 
     public void setList_pic_url(String list_pic_url) {
         this.list_pic_url = list_pic_url;
+    }
+
+    public Integer getSupplier_id() {
+        return supplier_id;
+    }
+
+    public void setSupplier_id(Integer supplier_id) {
+        this.supplier_id = supplier_id;
+    }
+
+    public Integer getDept_id() {
+        return dept_id;
+    }
+
+    public void setDept_id(Integer dept_id) {
+        this.dept_id = dept_id;
     }
 }

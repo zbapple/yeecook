@@ -105,7 +105,7 @@ public class ApiOrderController extends ApiBaseAction {
         //订单最后支付时间
         if (orderInfo.getOrder_status() == 0) {
             // if (moment().subtract(60, 'minutes') < moment(orderInfo.add_time)) {
-//            orderInfo.final_pay_time = moment("001234", "Hmmss").format("mm:ss")
+            // orderInfo.final_pay_time = moment("001234", "Hmmss").format("mm:ss")
             // } else {
             //     //超过时间不支付，更新订单状态为取消
             // }
@@ -182,8 +182,8 @@ public class ApiOrderController extends ApiBaseAction {
             // 需要退款
             //todo 退款
             if (orderVo.getPay_status() == 2) {
-                WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getId().toString(),
-                        0.01, 0.01);
+                WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getOrder_sn(),
+                        orderVo.getOrder_price().doubleValue(), orderVo.getOrder_price().doubleValue());
                 if (result.getResult_code().equals("SUCCESS")) {
                     if (orderVo.getOrder_status() == 201) {
                         orderVo.setOrder_status(401);
