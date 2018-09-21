@@ -50,6 +50,12 @@
             <if test="order_id != null and order_id != ''">
                 and order_id = #{order_id}
             </if>
+            <if test="dept_id != null and dept_id != ''">
+                and b.create_user_dept_id = #{dept_id}
+            </if>
+            <if test="supplier_id != null and supplier_id != ''">
+                and b.supplier_id = #{supplier_id}
+            </if>
         </where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

@@ -36,13 +36,19 @@
         <result property="isPrinter" column="is_printer"/>
         <result property="deptId" column="dept_id"/>
 		<result property="supplierName" column="supplier_name"/>
+		<result property="supplierAddress" column="supplier_address"/>
+		<result property="supplierTelephone" column="supplier_telephone"/>
+		<result property="supplierMobile" column="supplier_mobile"/>
     </resultMap>
 
 	<select id="queryObject" resultMap="orderSupplierMap">
 		select
 			a.`id`,
 			a.`supplier_id`,
-			c.`company_name` as `supplierName`,
+			c.`company_name` as `supplier_name`,
+			c.`address` as `supplier_address`,
+			c.`telephone` as `supplier_telephone`,
+			c.`mobile` as `supplier_mobile`,
 			a.`order_sup_sn`,
 			a.`order_sn`,
 			a.`user_id`,
@@ -83,7 +89,10 @@
 		select
 		a.`id`,
 		a.`supplier_id`,
-		c.`company_name` as `supplierName`,
+		c.`company_name` as `supplier_name`,
+		c.`address` as `supplier_address`,
+		c.`telephone` as `supplier_telephone`,
+		c.`mobile` as `supplier_mobile`,
 		a.`order_sup_sn`,
 		a.`order_sn`,
 		a.`user_id`,
@@ -119,7 +128,7 @@
 		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
 		WHERE 1=1
 		<if test="orderSn != null and orderSn.trim() != ''">
-			AND order_sn LIKE concat('%',#{orderSn},'%')
+			AND a.`order_sn` LIKE concat('%',#{orderSn},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

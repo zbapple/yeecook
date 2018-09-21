@@ -39,11 +39,12 @@ public class TestSysUserController extends BaseSpringTestCase {
 
     @Test
     public void queryOrderSupplieList() {
-      //  getGroupByGoosforDept(102);
-       OrderSupplierEntity orderSupplierEntity= orderSupplierService.queryObject(3);
-        orderSupplierService.sendGoods(orderSupplierEntity);
- //       orderSupplierService.confirm(5);
+        //getGroupByGoosforDept(102);
+        //OrderSupplierEntity orderSupplierEntity= orderSupplierService.queryObject(3);
+        //orderSupplierService.sendGoods(orderSupplierEntity);
+        //orderSupplierService.confirm(5);
 
+        apiOrderService.printerSupplierOrder(102);
     }
 
     private void  getGroupByGoosforDept(Integer orderId){

@@ -35,8 +35,13 @@
         <result property="orderType" column="order_type"/>
         <result property="isPrinter" column="is_printer"/>
         <result property="deptId" column="dept_id"/>
-		<result property="supplierName" column="supplier_name"/>
 		<result property="payStatus" column="pay_status"/>
+		<result property="userName" column="username"/>
+		<result property="supplierName" column="supplier_name"/>
+		<result property="supplierAddress" column="supplier_address"/>
+		<result property="supplierTelephone" column="supplier_telephone"/>
+		<result property="supplierMobile" column="supplier_mobile"/>
+
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.OrderSupplierEntity">
@@ -44,6 +49,9 @@
 			a.`id`,
 			a.`supplier_id`,
 			c.`company_name` as `supplier_name`,
+			c.`address` as `supplier_address`,
+			c.`telephone` as `supplier_telephone`,
+			c.`mobile` as `supplier_mobile`,
 			a.`order_sup_sn`,
 			a.`order_sn`,
 			a.`user_id`,
@@ -70,57 +78,66 @@
 			a.`freight_price`,
 			b.`coupon_id`,
 			b.`coupon_price`,
-			b.`shipping_no`,
+			a.`shipping_no`,
 			b.`full_cut_price`,
 			b.`order_type`,
 			a.`is_printer`,
-			a.`dept_id`
+			a.`dept_id`,
+			u.`nickname` as `username`
 		from nideshop_order_supplier a
 		LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn
 		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
+		LEFT JOIN nideshop_user u on a.user_id = u.id
 		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.OrderSupplierEntity">
 		select
-			a.`id`,
-			a.`supplier_id`,
-			c.`company_name` as `supplier_name`,
-			a.`order_sup_sn`,
-			a.`order_sn`,
-		    b.`pay_status`,
-			a.`user_id`,
-			b.`order_status`,
-			a.`shipping_status`,
-			a.`consignee`,
-			a.`country`,
-			a.`province`,
-			a.`city`,
-			a.`district`,
-			a.`address`,
-			a.`mobile`,
-			a.`postscript`,
-			a.`shipping_id`,
-			a.`shipping_name`,
-			a.`shipping_fee`,
-			b.`actual_price`,
-			a.`order_price`,
-			a.`goods_price`,
-			a.`add_time`,
-			b.`confirm_time`,
-			b.`pay_time`,
-			a.`freight_price`,
-			b.`coupon_id`,
-			b.`coupon_price`,
-			b.`shipping_no`,
-			b.`full_cut_price`,
-			b.`order_type`,
-			a.`is_printer`,
-			a.`dept_id`
+		a.`id`,
+		a.`supplier_id`,
+		c.`company_name` as `supplier_name`,
+		c.`address` as `supplier_address`,
+		c.`telephone` as `supplier_telephone`,
+		c.`mobile` as `supplier_mobile`,
+		a.`order_sup_sn`,
+		a.`order_sn`,
+		a.`user_id`,
+		b.`order_status`,
+		b.`pay_status`,
+		a.`shipping_status`,
+		a.`consignee`,
+		a.`country`,
+		a.`province`,
+		a.`city`,
+		a.`district`,
+		a.`address`,
+		a.`mobile`,
+		a.`postscript`,
+		a.`shipping_id`,
+		a.`shipping_name`,
+		a.`shipping_fee`,
+		b.`actual_price`,
+		a.`order_price`,
+		a.`goods_price`,
+		a.`add_time`,
+		b.`confirm_time`,
+		b.`pay_time`,
+		a.`freight_price`,
+		b.`coupon_id`,
+		b.`coupon_price`,
+		a.`shipping_no`,
+		b.`full_cut_price`,
+		b.`order_type`,
+		a.`is_printer`,
+		a.`dept_id`,
+		u.`nickname` as `username`
 		from nideshop_order_supplier a
 		LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn
 		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
+		LEFT JOIN nideshop_user u on a.user_id = u.id
 		WHERE 1=1
+		<!--  数据过滤  -->
+		${filterSql}
 		<if test="orderSupSn != null and orderSupSn.trim() != ''">
 			AND a.order_sup_sn LIKE concat('%',#{orderSupSn},'%')
 		</if>

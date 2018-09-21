@@ -1,140 +1,231 @@
 $(function () {
+    let shippingStatus = getQueryString("shippingStatus");
+    let payStatus = getQueryString("payStatus");
+    let orderStatus = getQueryString("orderStatus");
+    let orderType = getQueryString("orderType");
+    let url = '../ordersupplier/list';
+    if (shippingStatus) {
+        url += '?shippingStatus=' + shippingStatus;
+    }
+    if (payStatus) {
+        url += '?payStatus=' + payStatus;
+    }
+    if (orderStatus) {
+        url += '?orderStatus=' + orderStatus;
+    }
+    if (orderType) {
+        url += '?orderType=' + orderType;
+    }
     $("#jqGrid").Grid({
-        url: '../ordersupplier/list',
+        url: url,
+        datatype: "json",
         colModel: [
-			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '供应商id', name: 'supplierId', index: 'supplier_id', width: 80},
-			{label: '供应商订单号', name: 'orderSupSn', index: 'order_sup_sn', width: 80},
-			{label: '用户订单编号', name: 'orderSn', index: 'order_sn', width: 80},
-			{label: '用户id', name: 'userId', index: 'user_id', width: 80},
-			{label: '订单状态', name: 'orderStatus', index: 'order_status', width: 80},
-			{label: '收件人', name: 'consignee', index: 'consignee', width: 80},
-			{label: '国家', name: 'country', index: 'country', width: 80},
-			{label: '省份', name: 'province', index: 'province', width: 80},
-			{label: '城市', name: 'city', index: 'city', width: 80},
-			{label: '地区', name: 'district', index: 'district', width: 80},
-			{label: '详细地址', name: 'address', index: 'address', width: 80},
-			{label: '手机号码', name: 'mobile', index: 'mobile', width: 80},
-			{label: '用户备注', name: 'postscript', index: 'postscript', width: 80},
-			{label: '快递公司ID', name: 'shippingId', index: 'shipping_id', width: 80},
-			{label: '快递公司', name: 'shippingName', index: 'shipping_name', width: 80},
-			{label: '运费', name: 'shippingFee', index: 'shipping_fee', width: 80},
-			{label: '实际需要支付的金额', name: 'actualPrice', index: 'actual_price', width: 80},
-			{label: '订单总价', name: 'orderPrice', index: 'order_price', width: 80},
-			{label: '商品总价', name: 'goodsPrice', index: 'goods_price', width: 80},
-			{label: '新增时间', name: 'addTime', index: 'add_time', width: 80},
-			{label: '确认时间', name: 'confirmTime', index: 'confirm_time', width: 80},
-			{label: '付款时间', name: 'payTime', index: 'pay_time', width: 80},
-			{label: '配送费用', name: 'freightPrice', index: 'freight_price', width: 80},
-			{label: '使用的优惠券id', name: 'couponId', index: 'coupon_id', width: 80},
-			{label: '优惠价格', name: 'couponPrice', index: 'coupon_price', width: 80},
-			{label: '快递单号', name: 'shippingNo', index: 'shipping_no', width: 80},
-			{label: '配送费用', name: 'fullCutPrice', index: 'full_cut_price', width: 80},
-			{label: '订单类型 1：普通订单 2：团购订单 3：砍价订单 4: 直接购买', name: 'orderType', index: 'order_type', width: 80},
-			{label: '是否已经打印：0未打印，1已打印', name: 'isPrinter', index: 'is_printer', width: 80},
-			{label: '供应商部门id', name: 'deptId', index: 'dept_id', width: 80}]
+            {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: '供应商订单号', name: 'orderSupSn', index: 'order_sup_sn', width: 150},
+            {label: '供应商名称', name: 'supplierName', index: 'supplier_name', width: 100},
+            {label: '会员', name: 'userName', index: 'user_name', width: 80},
+            {label: '订单总价', name: 'orderPrice', index: 'order_price', width: 80},
+            {label: '商品总价', name: 'goodsPrice', index: 'goods_price', width: 80},
+            {
+                label: '订单类型', name: 'orderType', index: 'order_type', width: 80, formatter: function (value) {
+                if (value == '1') {
+                    return '普通订单';
+                } else if (value == '2') {
+                    return '团购订单';
+                } else if (value == '3') {
+                    return '砍价订单';
+                } else if (value == '4') {
+                    return '立即购买';
+                }
+                return '-';
+            }
+            },
+            {
+                label: '订单状态', name: 'orderStatus', index: 'order_status', width: 110, formatter: function (value) {
+                if (value == '0') {
+                    return '待付款';
+                } else if (value == '101') {
+                    return '订单已取消';
+                } else if (value == '102') {
+                    return '订单已删除';
+                } else if (value == '201') {
+                    return '订单已付款';
+                } else if (value == '300') {
+                    return '订单已发货';
+                } else if (value == '301') {
+                    return '用户确认收货';
+                } else if (value == '401') {
+                    return '退款';
+                } else if (value == '402') {
+                    return '完成';
+                }
+                return value;
+            }
+            },
+            {
+                label: '发货状态',
+                name: 'shippingStatus',
+                index: 'shipping_status',
+                width: 100,
+                formatter: function (value) {
+                    if (value == '0') {
+                        return '未发货';
+                    } else if (value == '1') {
+                        return '已发货';
+                    } else if (value == '2') {
+                        return '已收货';
+                    } else if (value == '4') {
+                        return '退货';
+                    }
+                    return value;
+                }
+            },
+            {
+                label: '付款状态', name: 'payStatus', index: 'pay_status', width: 80,
+                formatter: function (value) {
+                    if (value == '0') {
+                        return '未付款';
+                    } else if (value == '1') {
+                        return '付款中';
+                    } else if (value == '2') {
+                        return '已付款';
+                    } else if (value == '4') {
+                        return '已退款';
+                    }
+                    return value;
+                }
+            },
+            {label: '快递公司', name: 'shippingName', index: 'shipping_name', width: 120},
+            {label: '快递单号', name: 'shippingNo', index: 'shipping_no', width: 120},
+            {label: '供应商地址', name: 'supplierAddress', index: 'supplier_address', width: 200},
+            {label: '供应商电话', name: 'supplierTelephone', index: 'supplier_telephone', width: 100},
+            {label: '供应商手机', name: 'supplierMobile', index: 'supplier_mobile', width: 100},
+         //   {label: '实际支付金额', name: 'actualPrice', index: 'actual_price', width: 80},
+
+            {
+                label: '下单时间', name: 'addTime', index: 'add_time', width: 80,
+                formatter: function (value) {
+                    return transDate(value);
+                }
+            }
+            //,
+            // {
+            //     label: '操作', width: 160, align: 'center', sortable: false, formatter: function (value, col, row) {
+            //     return '<button class="btn btn-outline btn-info" onclick="vm.lookDetail(' + row.id + ')"><i class="fa fa-info-circle"></i>&nbsp;详情</button>' +
+            //         '<button class="btn btn-outline btn-primary" style="margin-top: 10px;" onclick="vm.printDetail(' + row.id + ')"><i class="fa fa-print"></i>&nbsp;打印</button>';
+            // }
+            // }
+        ]
     });
 });
 
 let vm = new Vue({
-	el: '#rrapp',
-	data: {
+    el: '#rrapp',
+    data: {
         showList: true,
+        detail: false,
         title: null,
-		orderSupplier: {},
-		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
-			]
-		},
-		q: {
-		    name: ''
-		}
-	},
-	methods: {
-		query: function () {
-			vm.reload();
-		},
-		add: function () {
-			vm.showList = false;
-			vm.title = "新增";
-			vm.orderSupplier = {};
-		},
-		update: function (event) {
+        orderSupplier: {},
+        shippings: [],
+        q: {
+            orderSupSn: '',
+            orderStatus: '',
+            orderType: ''
+        }
+    },
+    methods: {
+        query: function () {
+            vm.reload();
+        },
+        sendGoods: function (event) {
             let id = getSelectedRow("#jqGrid");
-			if (id == null) {
-				return;
-			}
-			vm.showList = false;
-            vm.title = "修改";
-
-            vm.getInfo(id)
-		},
-		saveOrUpdate: function (event) {
-            let url = vm.orderSupplier.id == null ? "../ordersupplier/save" : "../ordersupplier/update";
+            if (id == null) {
+                return;
+            }
+            vm.showList = false;
+            vm.title = "发货";
             Ajax.request({
-			    url: url,
-                params: JSON.stringify(vm.orderSupplier),
-                type: "POST",
-			    contentType: "application/json",
-                successCallback: function (r) {
-                    alert('操作成功', function (index) {
-                        vm.reload();
-                    });
-                }
-			});
-		},
-		del: function (event) {
-            let ids = getSelectedRows("#jqGrid");
-			if (ids == null){
-				return;
-			}
-
-			confirm('确定要删除选中的记录？', function () {
-                Ajax.request({
-				    url: "../ordersupplier/delete",
-                    params: JSON.stringify(ids),
-                    type: "POST",
-				    contentType: "application/json",
-                    successCallback: function () {
-                        alert('操作成功', function (index) {
-                            vm.reload();
-                        });
-					}
-				});
-			});
-		},
-		getInfo: function(id){
-            Ajax.request({
-                url: "../ordersupplier/info/"+id,
+                url: "../ordersupplier/info/" + id,
                 async: true,
                 successCallback: function (r) {
                     vm.orderSupplier = r.orderSupplier;
                 }
             });
-		},
-		reload: function (event) {
-			vm.showList = true;
-            let page = $("#jqGrid").jqGrid('getGridParam', 'page');
-			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
-                page: page
-            }).trigger("reloadGrid");
-            vm.handleReset('formValidate');
-		},
-        reloadSearch: function() {
-            vm.q = {
-                name: ''
-            }
-            vm.reload();
         },
-        handleSubmit: function (name) {
-            handleSubmitValidate(this, name, function () {
-                vm.saveOrUpdate()
+        confirm: function (event) {
+            let id = getSelectedRow("#jqGrid");
+            if (id == null) {
+                return;
+            }
+            confirm('确定收货？', function () {
+                Ajax.request({
+                    type: "POST",
+                    url: "../ordersupplier/confirm",
+                    contentType: "application/json",
+                    params: JSON.stringify(id),
+                    successCallback: function (r) {
+                        if (r.code == 0) {
+                            alert('操作成功', function (index) {
+                                vm.reload();
+                            });
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
             });
         },
-        handleReset: function (name) {
-            handleResetForm(this, name);
+        saveOrUpdate: function (event) {
+            Ajax.request({
+                type: "POST",
+                url: "../ordersupplier/sendGoods",
+                contentType: "application/json",
+                params: JSON.stringify(vm.orderSupplier),
+                successCallback: function (r) {
+                    vm.reload();
+                }
+            });
+        },
+        reload: function (event) {
+            vm.showList = true;
+            vm.detail = false;
+            let page = $("#jqGrid").jqGrid('getGridParam', 'page');
+            $("#jqGrid").jqGrid('setGridParam', {
+                postData: {
+                    'orderSupSn': vm.q.orderSupSn,
+                    'orderStatus': vm.q.orderStatus,
+                    'orderType': vm.q.orderType
+                },
+                page: page
+            }).trigger("reloadGrid");
+        },
+        lookDetail: function (rowId) { //第三步：定义编辑操作
+            vm.detail = true;
+            vm.title = "详情";
+            Ajax.request({
+                url: "../ordersupplier/info/" + rowId,
+                async: true,
+                successCallback: function (r) {
+                    vm.orderSupplier = r.orderSupplier;
+                }
+            });
+        },
+        printDetail: function (rowId) {
+            // openWindow({
+            //     type: 2,
+            //     title: '<i class="fa fa-print"></i>打印票据',
+            //     content: '../shop/orderPrint.html?orderId=' + rowId
+            // })
         }
-	}
+    },
+    created: function () {
+        let vue = this;
+        Ajax.request({
+            url: "../shipping/queryAll",
+            async: true,
+            successCallback: function (r) {
+                vue.shippings = r.list;
+            }
+        });
+    }
 });

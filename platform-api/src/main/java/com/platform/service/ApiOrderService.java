@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.platform.entity.*;
+import com.platform.printer.PrinterSupplierTanks;
+import com.platform.printer.PrinterSupplierTemplate;
+import com.platform.printer.PrinterTanks;
+import com.platform.printer.PrinterTemplate;
+import com.platform.printer.vo.YeecookSupplierVo;
+import com.platform.printer.vo.YeecookVo;
 import com.platform.utils.JsonUtil;
 import com.platform.xss.SQLFilter;
 import com.qiniu.util.StringUtils;
@@ -299,5 +305,40 @@ public class ApiOrderService {
         apiOrderService.update(orderVo);
 
     }
+
+    /**供应商订单打印*/
+    public void printerSupplierOrder(Integer orderId) {
+        OrderVo orderVo =apiOrderService.queryObject(orderId);
+        if(null==orderVo){
+            return;
+        }
+        YeecookSupplierVo yeecookVo = new YeecookSupplierVo();
+        Map map =new HashMap();
+        map.put("orderSn",orderVo.getOrder_sn());
+        List<OrderSupplierVo> orderSupplierVoList=apiOrderSupplierService.queryList(map);
+        for (OrderSupplierVo orderSupplierVo:orderSupplierVoList
+             ) {
+            map.put("order_id",String.valueOf(orderVo.getId()));
+            map.put("supplier_id",String.valueOf(orderSupplierVo.getSupplierId()));
+            List<OrderGoodsVo> orderGoodsVoList=apiOrderGoodsService.queryList(map);
+            yeecookVo.setOrderVo(orderSupplierVo);
+            yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
+            PrinterSupplierTemplate printerTemplate = new PrinterSupplierTemplate(yeecookVo);
+            PrinterSupplierTanks printerTanks = new PrinterSupplierTanks(printerTemplate);
+            printerTanks.run();
+        }
+
+    }
+
+    /**用户订单打印*/
+    public void printerOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsVoList) {
+        YeecookVo yeecookVo = new YeecookVo();
+        yeecookVo.setOrderVo(orderVo);
+        yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
+        PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo);
+        PrinterTanks printerTanks = new PrinterTanks(printerTemplate);
+        printerTanks.run();
+    }
+
 
 }

@@ -160,12 +160,8 @@ public class ApiPayController extends ApiBaseAction {
     }
 
     private void printerOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsVoList) {
-        YeecookVo yeecookVo = new YeecookVo();
-        yeecookVo.setOrderVo(orderVo);
-        yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
-        PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo);
-        PrinterTanks printerTanks = new PrinterTanks(printerTemplate);
-        printerTanks.run();
+        orderService.printerOrder(orderVo, orderGoodsVoList);
+        orderService.printerSupplierOrder(orderVo.getId());
     }
 
     /**

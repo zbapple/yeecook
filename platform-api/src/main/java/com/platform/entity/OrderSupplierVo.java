@@ -87,8 +87,17 @@ public class OrderSupplierVo implements Serializable {
     @Setter
     @Getter
     private Integer shippingStatus;
+    @Setter
+    @Getter
+    private String supplierAddress;
+    @Setter
+    @Getter
+    private String supplierTelephone;
+    @Setter
+    @Getter
+    private String supplierMobile;
 
-
+    public OrderSupplierVo(){}
     public OrderSupplierVo(OrderVo vo){
 
         this.setOrderSn(vo.getOrder_sn());

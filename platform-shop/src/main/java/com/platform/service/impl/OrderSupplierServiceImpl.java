@@ -1,5 +1,6 @@
 package com.platform.service.impl;
 
+import com.platform.annotation.DataFilter;
 import com.platform.dao.OrderDao;
 import com.platform.dao.ShippingDao;
 import com.platform.entity.OrderEntity;
@@ -34,11 +35,13 @@ public class OrderSupplierServiceImpl implements OrderSupplierService {
     private ShippingDao shippingDao;
 
     @Override
+    @DataFilter(deptAlias = "a.dept_id")
     public OrderSupplierEntity queryObject(Integer id) {
         return orderSupplierDao.queryObject(id);
     }
 
     @Override
+    @DataFilter(deptAlias = "a.dept_id")
     public List<OrderSupplierEntity> queryList(Map<String, Object> map) {
         return orderSupplierDao.queryList(map);
     }

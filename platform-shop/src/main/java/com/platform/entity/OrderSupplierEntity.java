@@ -83,6 +83,15 @@ public class OrderSupplierEntity extends OrderEntity implements Serializable {
     @Getter
     @Setter
     private String supplierName;
+    @Getter
+    @Setter
+    private String supplierAddress;
+    @Getter
+    @Setter
+	private String supplierTelephone;
+    @Getter
+    @Setter
+	private String supplierMobile;
 
     /**
      * 设置：
