@@ -259,6 +259,22 @@ public class ApiPayController extends ApiBaseAction {
         return toResponsFail("查询失败，未知错误");
     }
 
+    @ApiOperation(value = "更新网络异常情况下订单状态为支付中的订单。")
+    @GetMapping("refresh")
+    public  void checkOrderErr(@LoginUser UserVo loginUser){
+
+        Map params = new HashMap();
+        params.put("user_id", loginUser.getUserId());
+        params.put("pay_status", 1);//支付中
+       List<OrderVo> list=orderService.queryList(params);
+        if(null!=list&&list.size()>0){
+            for (OrderVo orderVo : list){
+                orderQuery(loginUser,orderVo.getId());
+            }
+        }
+    }
+
+
     /**
      * 微信订单回调接口
      *
@@ -359,8 +375,6 @@ public class ApiPayController extends ApiBaseAction {
 
         WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
                 orderInfo.getActual_price().doubleValue(), orderInfo.getActual_price().doubleValue());
-//        WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
-//                10.01, 10.01);
         if (result.getResult_code().equals("SUCCESS")) {
             if (orderInfo.getOrder_status() == 201) {
                 orderInfo.setOrder_status(401);

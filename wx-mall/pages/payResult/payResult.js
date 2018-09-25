@@ -35,6 +35,7 @@ Page({
   updateSuccess: function () {
     let that = this
     util.request(api.OrderQuery, { orderId: this.data.orderId}).then(function (res) {
+      
     })
   },
 

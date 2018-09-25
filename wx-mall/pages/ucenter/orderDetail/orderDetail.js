@@ -140,6 +140,7 @@ Page({
           'paySign': payParam.paySign,
           'success': function (res) {
             console.log(res);
+            getOrderDetail();
           },
           'fail': function (res) {
             console.log(res);
@@ -237,6 +238,7 @@ Page({
   },
   onShow: function () {
     // 页面显示
+    
   },
   onHide: function () {
     // 页面隐藏

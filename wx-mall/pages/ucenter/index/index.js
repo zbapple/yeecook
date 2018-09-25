@@ -24,12 +24,14 @@ Page({
         if (userInfo && token) {
             app.globalData.userInfo = userInfo;
             app.globalData.token = token;
+            
         }
 
         this.setData({
             userInfo: app.globalData.userInfo,
         });
 
+        
     },
     onHide: function () {
         // 页面隐藏

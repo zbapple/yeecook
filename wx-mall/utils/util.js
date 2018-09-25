@@ -52,6 +52,9 @@ function request(url, data = {}, method = "GET") {
                     }
                 }
             });
+            if (wx.showLoading){
+              wx.hideLoading();
+            }
           } else {
             resolve(res.data);
           }

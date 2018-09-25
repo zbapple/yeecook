@@ -1,5 +1,6 @@
 var util = require('../../../utils/util.js');
 var api = require('../../../config/api.js');
+var user = require('../../../services/user.js');
 
 Page({
   data:{
@@ -15,13 +16,16 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
     // 页面显示
 
+
     wx.showLoading({
       title: '加载中...',
       success: function () {
 
       }
     });
+    util.request(api.OrderStatusRefresh).then(function (res) {});
     this.getOrderList();
+    
   },
 
   /**

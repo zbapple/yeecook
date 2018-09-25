@@ -55,8 +55,11 @@
         <if test="orderSn != null and orderSn.trim() != ''">
             AND order_sn LIKE concat('%',#{orderSn},'%')
         </if>
+        <if test="pay_status != null">
+             and pay_status = #{pay_status}
+        </if>
         <if test="user_id != null">
-             and user_id = #{user_id}
+            and user_id = #{user_id}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

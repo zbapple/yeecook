@@ -80,5 +80,6 @@ module.exports = {
     GoodsCouponList: API_BASE_URL + 'coupon/listByGoods', // 商品优惠券列表
     OrderQuery: API_BASE_URL + 'pay/query',
     OrderSuccess: API_BASE_URL + 'order/updateSuccess',
+    OrderStatusRefresh: API_BASE_URL + 'pay/refresh',  //订单支付中状态更新
 
 };
