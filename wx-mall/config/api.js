@@ -52,16 +52,15 @@ module.exports = {
     TopicRelated: API_BASE_URL + 'topic/related',  //相关专题
 
     SearchIndex: API_BASE_URL + 'search/index',  //搜索页面数据
-    SearchResult: API_BASE_URL + 'search/result',  //搜索数据
     SearchHelper: API_BASE_URL + 'search/helper',  //搜索帮助
     SearchClearHistory: API_BASE_URL + 'search/clearhistory',  //搜索帮助
 
     AddressList: API_BASE_URL + 'address/list',  //收货地址列表
     AddressDetail: API_BASE_URL + 'address/detail',  //收货地址详情
     AddressSave: API_BASE_URL + 'address/save',  //保存收货地址
-    AddressDelete: API_BASE_URL + 'address/delete',  //保存收货地址
+    AddressDelete: API_BASE_URL + 'address/delete',  //删除收货地址
 
-    RegionList: API_BASE_URL + 'region/list',  //获取区域列表
+    RegionList: API_BASE_URL + 'rergion/list',  //获取区域列表
 
     OrderList: API_BASE_URL + 'order/list',  //订单列表
     OrderDetail: API_BASE_URL + 'order/detail',  //订单详情

@@ -47,7 +47,7 @@ public class ApiCartController extends ApiBaseAction {
      * 获取购物车中的数据
      */
     @ApiOperation(value = "获取购物车中的数据")
-    @GetMapping("getCart")
+    @PostMapping("getCart")
     public Object getCart(@LoginUser UserVo loginUser) {
         Map<String, Object> resultObj = new HashMap();
         //查询列表数据
@@ -123,7 +123,7 @@ public class ApiCartController extends ApiBaseAction {
      * 获取购物车信息，所有对购物车的增删改操作，都要重新返回购物车的信息
      */
     @ApiOperation(value = "获取购物车信息")
-    @GetMapping("index")
+    @PostMapping("index")
     public Object index(@LoginUser UserVo loginUser) {
         return toResponsSuccess(getCart(loginUser));
     }
@@ -366,7 +366,7 @@ public class ApiCartController extends ApiBaseAction {
 
     //  获取购物车商品的总件件数
     @ApiOperation(value = "获取购物车商品的总件件数")
-    @GetMapping("goodscount")
+    @PostMapping("goodscount")
     public Object goodscount(@LoginUser UserVo loginUser) {
         if (null == loginUser || null == loginUser.getUserId()) {
             return toResponsFail("未登录");
