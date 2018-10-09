@@ -153,10 +153,10 @@ public class ApiOrderController extends ApiBaseAction {
      */
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
-    public Object submit(@LoginUser UserVo loginUser) {
+    public Object submit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId) {
         Map resultObj = null;
         try {
-            resultObj = orderService.submit(getJsonRequest(), loginUser);
+            resultObj = orderService.submit(getJsonRequest(), loginUser,couponId,type,postscript,addressId);
             if (null != resultObj) {
                 return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
             }
@@ -170,7 +170,7 @@ public class ApiOrderController extends ApiBaseAction {
      * 获取订单列表
      */
     @ApiOperation(value = "取消订单")
-    @GetMapping("cancelOrder")
+    @PostMapping("cancelOrder")
     public Object cancelOrder(Integer orderId) {
         try {
             OrderVo orderVo = orderService.queryObject(orderId);
@@ -180,7 +180,6 @@ public class ApiOrderController extends ApiBaseAction {
                 return toResponsFail("已收货，不能取消");
             }
             // 需要退款
-            //todo 退款
             if (orderVo.getPay_status() == 2) {
                 WechatRefundApiResult result = WechatUtil.wxRefund(orderVo.getOrder_sn(),
                         orderVo.getOrder_price().doubleValue(), orderVo.getOrder_price().doubleValue());
@@ -211,7 +210,7 @@ public class ApiOrderController extends ApiBaseAction {
      * 确认收货
      */
     @ApiOperation(value = "确认收货")
-    @GetMapping("confirmOrder")
+    @PostMapping("confirmOrder")
     public Object confirmOrder(Integer orderId) {
         try {
             OrderVo orderVo = orderService.queryObject(orderId);

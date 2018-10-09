@@ -19,8 +19,7 @@ module.exports = {
     GoodsList: API_BASE_URL + 'goods/list',  //获得商品列表
     GoodsCategory: API_BASE_URL + 'goods/category',  //获得分类数据
     GoodsDetail: API_BASE_URL + 'goods/detail',  //获得商品的详情
-    GoodsNew: API_BASE_URL + 'goods/new',  //新品
-    GoodsHot: API_BASE_URL + 'goods/hot',  //热门
+    GoodsHot: API_BASE_URL + 'goods/hot',  //人气推荐
     GoodsRelated: API_BASE_URL + 'goods/related',  //商品详情页的关联商品（大家都在看）
 
     BrandList: API_BASE_URL + 'brand/list',  //品牌列表
@@ -34,8 +33,6 @@ module.exports = {
     CartChecked: API_BASE_URL + 'cart/checked', // 选择或取消选择商品
     CartGoodsCount: API_BASE_URL + 'cart/goodscount', // 获取购物车商品件数
     CartCheckout: API_BASE_URL + 'cart/checkout', // 下单前信息确认
-
-    BuyCheckout: API_BASE_URL + 'buy/checkout', // 下单前信息确认
 
     OrderSubmit: API_BASE_URL + 'order/submit', // 提交订单
     PayPrepayId: API_BASE_URL + 'pay/prepay', //获取微信统一下单prepay_id

@@ -154,8 +154,9 @@
 
   margin-bottom: 14rpx;
   overflow: hidden;
-  font-size: 30rpx;
+  font-size: 29rpx;
   color: #333;
+  font-family:PingFangSC-Light,helvetica,'Heiti SC';
 
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
@@ -217,7 +218,8 @@
   display: block;
   color: #333;
   line-height: 50rpx;
-  font-size: 30rpx;
+  font-family:PingFangSC-Light,helvetica,'Heiti SC';
+  font-size: 29rpx;
 }
 
 .a-popular .b .desc {
@@ -341,10 +343,11 @@
   width: 365.625rpx;
   padding: 0 20rpx;
   overflow: hidden;
+  font-family:PingFangSC-Light,helvetica,'Heiti SC';
 
   margin: 11.5rpx 0 22rpx 0;
   text-align: center;
-  font-size: 30rpx;
+  font-size: 29rpx;
   color: #333;
   text-overflow: -o-ellipsis-lastline;
   text-overflow: ellipsis;
@@ -382,7 +385,7 @@
   width: 100%;
   line-height: 33rpx;
   color: #333;
-  font-size: 33rpx;
+  font-size: 28rpx;
 }
 
 .good-grid .more-a .icon{

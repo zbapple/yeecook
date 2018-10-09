@@ -144,11 +144,7 @@ public class ApiCartController extends ApiBaseAction {
      */
     @ApiOperation(value = "添加商品到购物车")
     @PostMapping("add")
-    public Object add(@LoginUser UserVo loginUser) {
-        JSONObject jsonParam = getJsonRequest();
-        Integer goodsId = jsonParam.getInteger("goodsId");
-        Integer productId = jsonParam.getInteger("productId");
-        Integer number = jsonParam.getInteger("number");
+    public Object add(@LoginUser UserVo loginUser,Integer goodsId,Integer productId,Integer number) {
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
         if (null == goodsInfo || goodsInfo.getIs_delete() == 1 || goodsInfo.getIs_on_sale() != 1) {
@@ -395,12 +391,10 @@ public class ApiCartController extends ApiBaseAction {
      */
     @ApiOperation(value = "订单提交前的检验和填写相关订单信息")
     @PostMapping("checkout")
-    public Object checkout(@LoginUser UserVo loginUser) {
-        JSONObject jsonParam = getJsonRequest();
-        Integer couponId = jsonParam.getInteger("couponId");
-        String buyType = jsonParam.getString("buyType");
+    public Object checkout(@LoginUser UserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type) {
         Map<String, Object> resultObj = new HashMap();
-        //todo 根据收货地址计算运费
+        //根据收货地址计算运费
+
         BigDecimal freightPrice = new BigDecimal(0.00);
         //默认收货地址
         Map param = new HashMap();
@@ -415,7 +409,7 @@ public class ApiCartController extends ApiBaseAction {
         // * 获取要购买的商品和总价
         ArrayList checkedGoodsList = new ArrayList();
         BigDecimal goodsTotalPrice;
-        if (buyType.equals("cart")) {
+        if (type.equals("cart")) {
             Map<String, Object> cartData = (Map<String, Object>) this.getCart(loginUser);
 
             for (CartVo cartEntity : (List<CartVo>) cartData.get("cartList")) {
@@ -471,6 +465,7 @@ public class ApiCartController extends ApiBaseAction {
         BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
 
         resultObj.put("freightPrice", freightPrice);
+
         resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", checkedGoodsList);
         resultObj.put("goodsTotalPrice", goodsTotalPrice);

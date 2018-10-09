@@ -1,14 +1,10 @@
 package com.platform.api;
 
-import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
 import com.platform.cache.J2CacheUtils;
 import com.platform.entity.OrderGoodsVo;
 import com.platform.entity.OrderVo;
 import com.platform.entity.UserVo;
-import com.platform.printer.PrinterTanks;
-import com.platform.printer.PrinterTemplate;
-import com.platform.printer.vo.YeecookVo;
 import com.platform.service.ApiOrderGoodsService;
 import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
@@ -60,6 +56,7 @@ public class ApiPayController extends ApiBaseAction {
     public Object payPrepay(@LoginUser UserVo loginUser, Integer orderId) {
         //
         OrderVo orderInfo = orderService.queryObject(orderId);
+
         if (null == orderInfo) {
             return toResponsObject(400, "订单已取消", "");
         }
@@ -203,8 +200,13 @@ public class ApiPayController extends ApiBaseAction {
         String return_code = MapUtils.getString("return_code", resultUn);
         String return_msg = MapUtils.getString("return_msg", resultUn);
 
+        if (!"SUCCESS".equals(return_code)) {
+            return toResponsFail("查询失败,error=" + return_msg);
+        }
+
+        String trade_state = MapUtils.getString("trade_state", resultUn);
         if (return_code.equals("SUCCESS")) {
-            String trade_state = MapUtils.getString("trade_state", resultUn);
+
             if (trade_state.equals("SUCCESS")) {
                 // 更改订单状态
                 // 业务处理
@@ -260,8 +262,8 @@ public class ApiPayController extends ApiBaseAction {
     }
 
     @ApiOperation(value = "更新网络异常情况下订单状态为支付中的订单。")
-    @GetMapping("refresh")
-    public  void checkOrderErr(@LoginUser UserVo loginUser){
+    @PostMapping("refresh")
+    public  Object checkOrderErr(@LoginUser UserVo loginUser){
 
         Map params = new HashMap();
         params.put("user_id", loginUser.getUserId());
@@ -272,6 +274,7 @@ public class ApiPayController extends ApiBaseAction {
                 orderQuery(loginUser,orderVo.getId());
             }
         }
+        return  toResponsMsgSuccess("更新成功");
     }
 
 
@@ -283,7 +286,6 @@ public class ApiPayController extends ApiBaseAction {
     @ApiOperation(value = "微信订单回调接口")
     @RequestMapping(value = "/notify", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    @IgnoreAuth
     public void notify(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setCharacterEncoding("UTF-8");

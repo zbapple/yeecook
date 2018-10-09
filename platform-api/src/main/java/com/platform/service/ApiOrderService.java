@@ -93,14 +93,13 @@ public class ApiOrderService {
 
 
     @Transactional
-    public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser) {
+    public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId) {
         Map<String, Object> resultObj = new HashMap<String, Object>();
 
-        Integer couponId = jsonParam.getInteger("couponId");
-        String type = jsonParam.getString("type");
-        String postscript = jsonParam.getString("postscript");
+
+
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
-        AddressVo addressVo = apiAddressMapper.queryObject(jsonParam.getInteger("addressId"));
+        AddressVo addressVo = apiAddressMapper.queryObject(addressId);
 
 
         Integer freightPrice = 0;

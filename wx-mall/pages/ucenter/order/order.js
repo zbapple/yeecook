@@ -23,7 +23,10 @@ Page({
 
       }
     });
-    util.request(api.OrderStatusRefresh).then(function (res) {});
+    util.request(api.OrderStatusRefresh, {}, "POST").then(function (res) {
+      let _res = res;
+      if (_res.errno == 0) { console.log("OrderStatusRefresh_success");};
+     });
     this.getOrderList();
     
   },

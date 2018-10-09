@@ -64,7 +64,7 @@ Page({
         if (!this.bindCheckMobile(this.data.mobile)) {
             return
         }
-        util.request(api.SmsCode, {phone: this.data.mobile})
+        util.request(api.SmsCode, {phone: this.data.mobile}, 'POST')
             .then(function (res) {
                 if (res.data.code == 200) {
                     wx.showToast({
@@ -109,7 +109,7 @@ Page({
             icon: 'loading',
             duration: 5000
         })
-        util.request(api.BindMobile, {mobile_code: e.detail.value.code,mobile:mobile})
+        util.request(api.BindMobile, {mobile_code: e.detail.value.code,mobile:mobile}, 'POST')
             .then(function (res) {
                 if (res.data.code == 200) {
                     wx.showModal({

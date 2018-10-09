@@ -14,7 +14,6 @@
                   <view class="btn active" bindtap="confirmOrder">确认收货</view>
                 </view>
                 <view wx:else>
-                  <view class="btn active" bindtap="cancelOrder">取消订单</view>
                 </view>
             </view>
         </view>
