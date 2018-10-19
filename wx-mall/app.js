@@ -1,8 +1,13 @@
 var util = require('./utils/util.js');
 var api = require('./config/api.js');
 var user = require('./services/user.js');
-
+var coolsite360 = require('./coolsite/index.js');
 App({
+  
+})
+App({
+    coolsite360: coolsite360,
+
   onLaunch: function () {
     //获取用户的登录信息
     user.checkLogin().then(res => {

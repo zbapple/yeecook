@@ -1,7 +1,7 @@
 const root = '/shop/api/';
 
-//const API_BASE_URL = 'http://www.yeecook.com' + root;
-const API_BASE_URL = 'http://localhost:8080' + root;
+const API_BASE_URL = 'https://www.yeecook.com' + root;
+//const API_BASE_URL = 'http://localhost:8080' + root;
 module.exports = {
     IndexUrlNewGoods: API_BASE_URL + 'index/newGoods', //
     IndexUrlHotGoods: API_BASE_URL + 'index/hotGoods', //首页数据接口
