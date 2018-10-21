@@ -173,6 +173,7 @@ public class ApiPayController extends ApiBaseAction {
             return toResponsFail("订单不存在");
         }
 
+        OrderVo orderDetail = orderService.queryObject(orderId);
         Map<Object, Object> parame = new TreeMap<Object, Object>();
         parame.put("appid", ResourceUtil.getConfigByName("wx.appId"));
         // 商家账号。

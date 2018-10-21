@@ -18,6 +18,7 @@
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>1.7</java-version>
         <servlet-version>3.1.0</servlet-version>
         <junit-version>4.12</junit-version>
@@ -317,6 +318,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.0</version>
+            </plugin>
+            <!--tomcat7-plugin-->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/platform</path>
+                    <charset>UTF-8</charset>
+                    <port>8080</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ServeInfoDao">
+
+    <resultMap type="com.platform.entity.ServeInfoEntity" id="serveInfoMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="desc" column="desc"/>
+        <result property="activationValidity" column="activation_validity"/>
+        <result property="serveCount" column="serve_count"/>
+        <result property="serveValidity" column="serve_validity"/>
+        <result property="serveGoodsid" column="serve_goodsid"/>
+        <result property="serveGoodsids" column="serve_goodsids"/>
+        <result property="addTime" column="add_time"/>
+        <result property="updataTime" column="updata_time"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ServeInfoEntity">
+		select
+			`id`,
+			`name`,
+			`type`,
+			`desc`,
+			`activation_validity`,
+			`serve_count`,
+			`serve_validity`,
+			`serve_goodsid`,
+			`serve_goodsids`,
+			`add_time`,
+			`updata_time`,
+			`user_id`
+		from nideshop_serve_info
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ServeInfoEntity">
+		select
+    		`id`,
+    		`name`,
+    		`type`,
+    		`desc`,
+    		`activation_validity`,
+    		`serve_count`,
+    		`serve_validity`,
+    		`serve_goodsid`,
+    		`serve_goodsids`,
+    		`add_time`,
+    		`updata_time`,
+    		`user_id`
+		from nideshop_serve_info
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_serve_info
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.ServeInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_serve_info(
+			`name`,
+			`type`,
+			`desc`,
+			`activation_validity`,
+			`serve_count`,
+			`serve_validity`,
+			`serve_goodsid`,
+			`serve_goodsids`,
+			`add_time`,
+			`updata_time`,
+			`user_id`)
+		values(
+			#{name},
+			#{type},
+			#{desc},
+			#{activationValidity},
+			#{serveCount},
+			#{serveValidity},
+			#{serveGoodsid},
+			#{serveGoodsids},
+			#{addTime},
+			#{updataTime},
+			#{userId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.ServeInfoEntity">
+		update nideshop_serve_info 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="desc != null">`desc` = #{desc}, </if>
+			<if test="activationValidity != null">`activation_validity` = #{activationValidity}, </if>
+			<if test="serveCount != null">`serve_count` = #{serveCount}, </if>
+			<if test="serveValidity != null">`serve_validity` = #{serveValidity}, </if>
+			<if test="serveGoodsid != null">`serve_goodsid` = #{serveGoodsid}, </if>
+			<if test="serveGoodsids != null">`serve_goodsids` = #{serveGoodsids}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="updataTime != null">`updata_time` = #{updataTime}, </if>
+			<if test="userId != null">`user_id` = #{userId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_serve_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_serve_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
