@@ -1,6 +1,11 @@
-
 <!--index.wxml-->
 <view class="container">
+<view class="search">
+    <navigator url="/pages/search/search" class="input">
+      <image class="icon"></image>
+      <text class="txt">商品搜索, 共{{goodsCount}}款好物</text>
+    </navigator>
+  </view>
   <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
     <swiper-item wx:for="{{banner}}" wx:key="{{item.id}}">
       <navigator url="{{item.link}}">
@@ -78,7 +83,11 @@
         <navigator url="../goods/goods?id={{item.id}}">
           <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
           <text class="name">{{item.name}}</text>
-          <text class="price">￥{{item.retail_price}}</text>
+          <view class="tx price">
+           <text class='pri dzprice'>￥{{item.retail_price}}</text>
+           <text class='pri yjprice' wx:if="{{item.market_price}}">￥{{item.market_price}}</text>
+          </view>
+          <!-- <text class="price">￥{{item.retail_price}}</text> -->
         </navigator>
       </view>
     </view>
@@ -99,8 +108,12 @@
           <view class="right">
             <view class="text">
               <text class="name">{{item.name}}</text>
-              <text class="desc">{{item.goods_brief||""}}</text>
-              <text class="price">￥{{item.retail_price}}</text>
+              <text class="desc">{{item.goods_brief}}</text>
+              <view class="tx price">
+              <text class='pri dzprice'>￥{{item.retail_price}}</text>
+              <text class='pri yjprice' wx:if="{{item.market_price}}">￥{{item.market_price}}</text> 
+              </view>
+              <!-- <text class="price">￥{{item.retail_price}}</text> -->
             </view>
           </view>
         </navigator>
@@ -120,7 +133,11 @@
           <navigator url="../goods/goods?id={{iitem.id}}" class="a">
             <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
             <text class="name">{{iitem.name}}</text>
-            <text class="price">￥{{iitem.retail_price}}</text>
+            <!-- <text class="price">￥{{iitem.retail_price}}</text> -->
+            <view class="tx price">
+            <text class='pri dzprice'>￥{{iitem.retail_price}}</text>
+            <text class='pri yjprice' wx:if="{{item.market_price}}">￥{{item.market_price}}</text>
+            </view>
           </navigator>
         </view>
       </block>

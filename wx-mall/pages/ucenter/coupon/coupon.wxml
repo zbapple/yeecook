@@ -31,4 +31,9 @@
 
     </view>
 
+     <view class="empty-view" wx:if="{{ couponList.length <= 0 }}">
+      <image class="icon" src="../../../static/images/allorder.png"></image>
+      <text class="text">无优惠卷信息</text>
+    </view>
+
 </view>

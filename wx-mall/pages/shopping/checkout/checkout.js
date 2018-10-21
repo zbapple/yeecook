@@ -38,23 +38,23 @@ Page({
   getCheckoutInfo: function () {
     let that = this;
     var url = api.CartCheckout
-    let buyType1 = this.data.isBuy ? 'buy' : 'cart'
-    util.request(url, { addressId: that.data.addressId, couponId: that.data.couponId, buyType: buyType1 },'POST').then(function (res) {
+    let buyType = this.data.isBuy ? 'buy' : 'cart'
+    util.request(url, { addressId: that.data.addressId, couponId: that.data.couponId, type: buyType }).then(function (res) {
       if (res.errno === 0) {
         console.log(res.data);
         that.setData({
           checkedGoodsList: res.data.checkedGoodsList,
           checkedAddress: res.data.checkedAddress,
           actualPrice: res.data.actualPrice,
-          checkedCoupon: res.data.checkedCoupon || '',
-          couponList: res.data.couponList || '',
+          checkedCoupon: res.data.checkedCoupon,
+          couponList: res.data.couponList,
           couponPrice: res.data.couponPrice,
           freightPrice: res.data.freightPrice,
           goodsTotalPrice: res.data.goodsTotalPrice,
           orderTotalPrice: res.data.orderTotalPrice
         });
         //设置默认收获地址
-        if (that.data.checkedAddress.id){
+        if (that.data.checkedAddress){
             let addressId = that.data.checkedAddress.id;
             if (addressId) {
                 that.setData({ addressId: addressId });
@@ -151,7 +151,7 @@ Page({
       util.showErrorToast('请选择收货地址');
       return false;
     }
-    util.request(api.OrderSubmit, { addressId: this.data.addressId, couponId: this.data.couponId, type: this.data.buyType }).then(res => {
+    util.request(api.OrderSubmit, { addressId: this.data.addressId, couponId: this.data.couponId, type: this.data.buyType }, 'POST').then(res => {
       if (res.errno === 0) {
         const orderId = res.data.orderInfo.id;
         pay.payOrder(parseInt(orderId)).then(res => {

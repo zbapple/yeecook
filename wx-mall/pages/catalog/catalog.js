@@ -8,7 +8,7 @@ Page({
     currentCategory: {},
     scrollLeft: 0,
     scrollTop: 0,
-    goodsCount: 0,
+    // goodsCount: 0,
     scrollHeight: 0
   },
   onLoad: function (options) {
@@ -27,11 +27,11 @@ Page({
         });
         wx.hideLoading();
       });
-    util.request(api.GoodsCount).then(function (res) {
-      that.setData({
-        goodsCount: res.data.goodsCount
-      });
-    });
+    // util.request(api.GoodsCount).then(function (res) {
+    //   that.setData({
+    //     goodsCount: res.data.goodsCount
+    //   });
+    // });
 
   },
   getCurrentCategory: function (id) {

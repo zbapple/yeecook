@@ -60,4 +60,5 @@ page, .container {
   line-height: 108rpx;
   text-align: right;
   padding: 0 30rpx;
+  color: #b4282d;
 }

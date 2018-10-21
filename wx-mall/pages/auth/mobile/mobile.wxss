@@ -3,7 +3,8 @@
   flex-direction: column;
   align-items: center;
   padding-bottom: 25rpx;
-  background: linear-gradient(to bottom, #FCD33D 0%, #FFF6D7 100%);
+  /* background: linear-gradient(to bottom, #b4285e 0%, #dd4407 100%); */
+  background: #ffffff;
 }
 
 .userinfo-avatar {
@@ -15,7 +16,7 @@
 }
 
 .userinfo-nickname {
-  color: #272727;
+  color: #000000;
   font-size: 28rpx;
   line-height: 40rpx;
 }
@@ -118,6 +119,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* margin-top:100rpx; */
 }
 
 .login .first-line {
@@ -155,7 +157,8 @@
   line-height: 84rpx;
   width: 250rpx;
   font-size: 30rpx;
-  background-color: #FFC800;
+  background-color:#b4282d;
+  color:#ffffff;
 }
 
 .login .password-second-line {

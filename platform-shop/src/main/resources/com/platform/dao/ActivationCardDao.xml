@@ -8,13 +8,13 @@
         <result property="activationTime" column="activation_time"/>
         <result property="disabledTime" column="disabled_time"/>
         <result property="activationIp" column="activation_ip"/>
-        <result property="activation terminal" column="activation_ terminal"/>
+        <result property="activationTerminal" column="activation_terminal"/>
         <result property="userId" column="user_id"/>
         <result property="activationCode" column="activation_code"/>
         <result property="isActivation" column="is_activation"/>
         <result property="serveLastTime" column="serve_last_time"/>
         <result property="serveNextTime" column="serve_next_time"/>
-        <result property="haveServe count" column="have_serve_ count"/>
+        <result property="haveServeCount" column="have_serve_count"/>
         <result property="orderSn" column="order_sn"/>
         <result property="serveId" column="serve_id"/>
     </resultMap>
@@ -25,13 +25,13 @@
 			`activation_time`,
 			`disabled_time`,
 			`activation_ip`,
-			`activation_ terminal`,
+			`activation_terminal`,
 			`user_id`,
 			`activation_code`,
 			`is_activation`,
 			`serve_last_time`,
 			`serve_next_time`,
-			`have_serve_ count`,
+			`have_serve_count`,
 			`order_sn`,
 			`serve_id`
 		from nideshop_activation_card
@@ -44,13 +44,13 @@
     		`activation_time`,
     		`disabled_time`,
     		`activation_ip`,
-    		`activation_ terminal`,
+    		`activation_terminal`,
     		`user_id`,
     		`activation_code`,
     		`is_activation`,
     		`serve_last_time`,
     		`serve_next_time`,
-    		`have_serve_ count`,
+    		`have_serve_count`,
     		`order_sn`,
     		`serve_id`
 		from nideshop_activation_card
@@ -84,26 +84,26 @@
 			`activation_time`,
 			`disabled_time`,
 			`activation_ip`,
-			`activation_ terminal`,
+			`activation_terminal`,
 			`user_id`,
 			`activation_code`,
 			`is_activation`,
 			`serve_last_time`,
 			`serve_next_time`,
-			`have_serve_ count`,
+			`have_serve_count`,
 			`order_sn`,
 			`serve_id`)
 		values(
 			#{activationTime},
 			#{disabledTime},
 			#{activationIp},
-			#{activation terminal},
+			#{activationTerminal},
 			#{userId},
 			#{activationCode},
 			#{isActivation},
 			#{serveLastTime},
 			#{serveNextTime},
-			#{haveServe count},
+			#{haveServeCount},
 			#{orderSn},
 			#{serveId})
 	</insert>
@@ -114,13 +114,13 @@
 			<if test="activationTime != null">`activation_time` = #{activationTime}, </if>
 			<if test="disabledTime != null">`disabled_time` = #{disabledTime}, </if>
 			<if test="activationIp != null">`activation_ip` = #{activationIp}, </if>
-			<if test="activation terminal != null">`activation_ terminal` = #{activation terminal}, </if>
+			<if test="activationTerminal != null">`activation_terminal` = #{activationTerminal}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="activationCode != null">`activation_code` = #{activationCode}, </if>
 			<if test="isActivation != null">`is_activation` = #{isActivation}, </if>
 			<if test="serveLastTime != null">`serve_last_time` = #{serveLastTime}, </if>
 			<if test="serveNextTime != null">`serve_next_time` = #{serveNextTime}, </if>
-			<if test="haveServe count != null">`have_serve_ count` = #{haveServe count}, </if>
+			<if test="haveServeCount != null">`have_serve_count` = #{haveServeCount}, </if>
 			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
 			<if test="serveId != null">`serve_id` = #{serveId}</if>
 		</set>

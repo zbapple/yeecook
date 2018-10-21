@@ -40,7 +40,7 @@
                 <text class="c-block wx-text_9Wn0Di" data-c_e_id="wx_textfc08316c" id="tx_cpms">五常大米季卡VIP专享会员卡5kg*3每月1份礼盒有机稻花米</text>
             </view>
         </view>
-        <text class="c-block wx-text_RwiMPz {{wx_text_8ddb6b6f.class}}" data-c_e_id="wx_text_8ddb6b6f">配送规则 ></text>
+        <text class="c-block wx-text_RwiMPz {{wx_text_8ddb6b6f.class}}" data-c_e_id="wx_text_8ddb6b6f">配送规则 &gt;</text>
         <view class="c-minheight wx-view_6x02zU {{wx_view_b8e6ff08.class}}" data-c_e_id="wx_view_b8e6ff08">
             <view class="c-minheight wx-view_V649JA {{wx_view_e0c51b80.class}}" data-c_e_id="wx_view_e0c51b80">
                 <text catchtap="tap_e99413d7" class="c-block gz1 wx-text_tLExMX {{wx_text_0315e102.class}}" data-c_act_id="M_9172bcf53c2e21e3" data-c_e_id="wx_text_0315e102" id="tx_bt_psgz1">每月1号</text>
@@ -57,7 +57,7 @@
 </view>
 <view catchtap="tap_b67e4f3b" class="c-minheight wx-view_JbWxfk" data-c_e_id="wx_view07e1e346">
     <view catchtap="tap_7943c15b" class="c-minheight wx-view_s18gFV1 carditem01" data-c_e_id="wx_view26853f46">
-        <text class="c-block wx-text_cqgrPJ" data-c_e_id="wx_text_54acbe12">配送地址 ></text>
+        <text class="c-block wx-text_cqgrPJ" data-c_e_id="wx_text_54acbe12">配送地址&gt;</text>
         <text class="c-block wx-text_9Wn0Di" data-c_e_id="wx_text542401ec" id="tx_psdz">广州市越秀区第一街1号楼403</text>
     </view>
 </view>

@@ -189,23 +189,23 @@ page{
 
 .order-bottom .address .name{
     display: inline-block;
-    height: 35rpx;
+    height: 45rpx;
     width: 140rpx;
-    line-height: 35rpx;
-    font-size: 25rpx;
+    line-height: 45rpx;
+    font-size: 40rpx;
 }
 
 .order-bottom .address .mobile{
     display: inline-block;
-    height: 35rpx;
-    line-height: 35rpx;
-    font-size: 25rpx;
+    height: 45rpx;
+    line-height: 45rpx;
+    font-size: 30rpx;
 }
 
 .order-bottom .address .b{
-    height: 35rpx;
-    line-height: 35rpx;
-    font-size: 25rpx;
+    height: 45rpx;
+    line-height: 45rpx;
+    font-size: 30rpx;
 }
 
 .order-bottom .total{
@@ -215,26 +215,26 @@ page{
 }
 
 .order-bottom .total .t{
-    height: 25rpx;
-    line-height: 25rpx;
+    height: 45rpx;
+    line-height: 45rpx;
     margin-bottom: 7.5rpx;
     display: flex;
 }
 
 .order-bottom .total .label{
-    width: 140rpx;
+    width: 160rpx;
     display: inline-block;
-    height: 35rpx;
-    line-height: 35rpx;
-    font-size: 25rpx;
+    height: 45rpx;
+    line-height: 45rpx;
+    font-size: 30rpx;
 }
 
 .order-bottom .total .txt{
     flex: 1;
     display: inline-block;
-    height: 35rpx;
-    line-height: 35rpx;
-    font-size: 25rpx;
+    height: 45rpx;
+    line-height: 45rpx;
+    font-size: 30rpx;
 }
 
 .order-bottom .pay-fee{

@@ -1,17 +1,53 @@
+.search {
+  height: 88rpx;
+  width: 100%;
+  padding: 0 30rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.search .input {
+  width: 690rpx;
+  height: 56rpx;
+  background: #ededed;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search .icon {
+  background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-2fb94833aa.png) center no-repeat;
+  background-size: 100%;
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.search .txt {
+  height: 42rpx;
+  line-height: 42rpx;
+  color: #666;
+  padding-left: 10rpx;
+  font-size: 30rpx;
+}
+
 .banner {
   width: 750rpx;
-  height: 417rpx;
+  height: 360rpx;
+  /* height: 417rpx; */
 }
 
 .banner image {
   width: 100%;
-  height: 417rpx;
+  /* height: 417rpx; */
+  height: 360rpx;
 }
 
 .m-menu {
   display: flex;
   height: 181rpx;
-  width: 1000rpx;
+  width: 750rpx;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
@@ -151,19 +187,11 @@
   text-align: center;
   display: block;
   width: 302rpx;
-
+  height: 35rpx;
   margin-bottom: 14rpx;
   overflow: hidden;
-  font-size: 29rpx;
+  font-size: 30rpx;
   color: #333;
-  font-family:PingFangSC-Light,helvetica,'Heiti SC';
-
-  text-overflow: -o-ellipsis-lastline;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  align-content: center
 }
 
 .a-new .b .price {
@@ -218,8 +246,7 @@
   display: block;
   color: #333;
   line-height: 50rpx;
-  font-family:PingFangSC-Light,helvetica,'Heiti SC';
-  font-size: 29rpx;
+  font-size: 30rpx;
 }
 
 .a-popular .b .desc {
@@ -343,18 +370,11 @@
   width: 365.625rpx;
   padding: 0 20rpx;
   overflow: hidden;
-  font-family:PingFangSC-Light,helvetica,'Heiti SC';
-
+  height: 35rpx;
   margin: 11.5rpx 0 22rpx 0;
   text-align: center;
-  font-size: 29rpx;
+  font-size: 30rpx;
   color: #333;
-  text-overflow: -o-ellipsis-lastline;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  align-content: center
 }
 
 .good-grid .item .price {
@@ -385,11 +405,18 @@
   width: 100%;
   line-height: 33rpx;
   color: #333;
-  font-size: 28rpx;
+  font-size: 33rpx;
 }
 
 .good-grid .more-a .icon{
   margin: 60rpx auto 0 auto;
   width: 70rpx;
   height: 70rpx;
+}
+.dzprice{ 
+  color: #b4282d;
+}
+.yjprice{
+  margin-left: 20rpx;
+  text-decoration: line-through; 
 }

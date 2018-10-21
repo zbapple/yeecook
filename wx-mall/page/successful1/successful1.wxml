@@ -17,7 +17,7 @@
     <view class="weui-msg__extra-area" data-c_e_id="wx_view_80cabb14">
         <view class="weui-footer" data-c_e_id="wx_view_5eb0c2da">
             <text class="c-block weui-footer__links" data-c_e_id="wx_text_9d838170">底部文本</text>
-            <text class="c-block weui-footer__text" data-c_e_id="wx_text_a6af931a">Copyright ©  yeecook</text>
+            <text class="c-block weui-footer__text" data-c_e_id="wx_text_a6af931a">Copyright © 2008-2016 weui.io</text>
         </view>
     </view>
 </view>

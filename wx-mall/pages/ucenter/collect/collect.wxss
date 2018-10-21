@@ -8,6 +8,17 @@ page{
     min-height: 100%;
 }
 
+.ts-mes{
+  height: 80rpx;
+  line-height: 80rpx; 
+  background: #feeff0; 
+}
+.ts-mes .ca{
+  margin-left: 20rpx;
+  color: #b4282d;
+  letter-spacing: 0.1em;
+}
+
 .collect-list{
   width: 100%;
   height: auto;

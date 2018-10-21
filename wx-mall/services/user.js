@@ -10,24 +10,37 @@ const api = require('../config/api.js');
  * 调用微信登录
  */
 function loginByWeixin(userInfo) {
-
+  console.log("-----1----")
+  console.log(userInfo.userInfo) 
   let code = null;
   return new Promise(function (resolve, reject) {
     return util.login().then((res) => {
-      code = res.code;
-      return res;
+      code = res.code; 
+      return userInfo;
     }).then((userInfo) => {
       //登录远程服务器
-      util.request(api.AuthLoginByWeixin, { code: code, userInfo: userInfo }, 'POST', 'application/json').then(res => {
+      let params={};
+      params.code=code;
+      params.avatarUrl = userInfo.userInfo.avatarUrl;
+      params.city = userInfo.userInfo.city;
+      params.country = userInfo.userInfo.country;
+      params.gender = userInfo.userInfo.gender;
+      params.language = userInfo.userInfo.language;
+      params.nickName = userInfo.userInfo.nickName;
+      params.province = userInfo.userInfo.province;
+      util.request(api.AuthLoginByWeixin, params, 'POST', 'application/json').then(res => {
         if (res.errno === 0) {
+          console.log("------3------")
           //存储用户信息
-          wx.setStorageSync('userInfo', res.data.userInfo);
+          wx.setStorageSync('userInfo', userInfo);
           wx.setStorageSync('token', res.data.token);
+          console.log(res.data.token)
 
           resolve(res);
         } else {
           util.showErrorToast(res.errmsg)
           reject(res);
+          console.log("------2------")
         }
       }).catch((err) => {
         reject(err);

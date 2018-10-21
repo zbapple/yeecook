@@ -3,11 +3,11 @@
   <text class="userinfo-nickname">{{userInfo.nickName}}</text>
 </view>
 
-<view class="separate"></view>
+<!-- <view class="separate"></view> -->
 
 <view>
   <view>
-    <view class="login-title">关联手机号</view>
+    <view class="login-title"></view>
     <form bindsubmit="bindLoginMobilecode">
       <form bindsubmit="bindGetPassCode">
         <view class="login">

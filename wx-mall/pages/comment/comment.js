@@ -38,18 +38,18 @@ Page({
       showType: that.data.showType 
       }).then(function (res) {
       if (res.errno === 0) {
-
+        // that.data.comments=[];
         if (that.data.showType == 0) {
           that.setData({
             allCommentList: that.data.allCommentList.concat(res.data.data),
             allPage: res.data.currentPage,
-            comments: that.data.allCommentList.concat(res.data.data)
+            comments: res.data.data
           });
         } else {
           that.setData({
             picCommentList: that.data.picCommentList.concat(res.data.data),
             picPage: res.data.currentPage,
-            comments: that.data.picCommentList.concat(res.data.data)
+            comments: res.data.data
           });
         }
       }

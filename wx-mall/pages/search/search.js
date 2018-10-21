@@ -82,7 +82,7 @@ Page({
       historyKeyword: []
     })
 
-    util.request(api.SearchClearHistory, {})
+    util.request(api.SearchClearHistory, {}, 'POST')
       .then(function (res) {
         console.log('清除成功');
       });

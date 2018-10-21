@@ -53,7 +53,7 @@ public class ApiAddressController extends ApiBaseAction {
     public Object detail(Integer id, @LoginUser UserVo loginUser) {
         AddressVo entity = addressService.queryObject(id);
         //判断越权行为
-        if (!entity.getUserId().equals(loginUser.getUserId())) {
+        if (null==entity||!entity.getUserId().equals(loginUser.getUserId())) {
             return toResponsObject(403, "您无权查看", "");
         }
         return toResponsSuccess(entity);
@@ -79,6 +79,8 @@ public class ApiAddressController extends ApiBaseAction {
             entity.setNationalCode(addressJson.getString("nationalCode"));
             entity.setTelNumber(addressJson.getString("telNumber"));
             entity.setIs_default(addressJson.getInteger("is_default"));
+        }else {
+            return toResponsFail("参数为空");
         }
         if (null == entity.getId() || entity.getId() == 0) {
             entity.setId(null);

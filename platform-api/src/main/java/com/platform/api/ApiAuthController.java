@@ -3,24 +3,23 @@ package com.platform.api;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
-import com.platform.entity.FullUserInfo;
-import com.platform.entity.UserInfo;
+import com.platform.entity.LoginInfo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiUserService;
 import com.platform.service.TokenService;
 import com.platform.util.ApiBaseAction;
 import com.platform.util.ApiUserUtils;
-import com.platform.util.CommonUtil;
-import com.platform.utils.CharUtil;
+
 import com.platform.utils.R;
 import com.platform.validator.Assert;
 import com.qiniu.util.StringUtils;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.MapUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  * API登录授权
@@ -73,66 +73,51 @@ public class ApiAuthController extends ApiBaseAction {
     @ApiOperation(value = "登录")
     @IgnoreAuth
     @PostMapping("login_by_weixin")
-    public Object loginByWeixin() {
-        JSONObject jsonParam = this.getJsonRequest();
-        FullUserInfo fullUserInfo = null;
-        String code = "";
-        if (!StringUtils.isNullOrEmpty(jsonParam.getString("code"))) {
-            code = jsonParam.getString("code");
-        }
-        if (null != jsonParam.get("userInfo")) {
-            fullUserInfo = jsonParam.getObject("userInfo", FullUserInfo.class);
-        }
-
-        Map<String, Object> resultObj = new HashMap<String, Object>();
-        //
-        UserInfo userInfo = fullUserInfo.getUserInfo();
+    public Object loginByWeixin(@RequestBody LoginInfo loginInfo) {
 
         //获取openid
-        String requestUrl = ApiUserUtils.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
+        String requestUrl = ApiUserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》组合token为：" + requestUrl);
         String res = restTemplate.getForObject(requestUrl, String.class);
+        logger.info("res=="+res);
         JSONObject sessionData = JSON.parseObject(res);
-
-        if (null == sessionData || StringUtils.isNullOrEmpty(sessionData.getString("openid"))) {
+        String openid=sessionData.getString("openid");
+        String session_key=sessionData.getString("session_key");//不知道啥用。
+        if (null == sessionData || StringUtils.isNullOrEmpty(openid)) {
             return toResponsFail("登录失败");
         }
-        //验证用户信息完整性
-        String sha1 = CommonUtil.getSha1(fullUserInfo.getRawData() + sessionData.getString("session_key"));
-        if (!fullUserInfo.getSignature().equals(sha1)) {
-            return toResponsFail("登录失败");
-        }
+        //验证用户信息完整性 防止攻击
+//        String sha1 = CommonUtil.getSha1(fullUserInfo.getRawData() + sessionData.getString("session_key"));
+//        if (!fullUserInfo.getSignature().equals(sha1)) {
+//        	 logger.info("登录失败---验证用户信息完整性"+fullUserInfo.getSignature());
+//        	 logger.info("登录失败---验证用户信息完整性 sha1"+sha1);
+//            return toResponsFail("登录失败");
+//        }
         Date nowTime = new Date();
-        UserVo userVo = userService.queryByOpenId(sessionData.getString("openid"));
+        UserVo userVo = userService.queryByOpenId(openid);
         if (null == userVo) {
-            userVo = new UserVo();
-            userVo.setUsername("微信用户" + CharUtil.getRandomString(12));
-            userVo.setPassword(sessionData.getString("openid"));
+        	userVo = new UserVo();
+            userVo.setUsername(loginInfo.getNickName());
+            userVo.setPassword(openid);
             userVo.setRegister_time(nowTime);
             userVo.setRegister_ip(this.getClientIp());
             userVo.setLast_login_ip(userVo.getRegister_ip());
             userVo.setLast_login_time(userVo.getRegister_time());
-            userVo.setWeixin_openid(sessionData.getString("openid"));
-            userVo.setAvatar(userInfo.getAvatarUrl());
-            userVo.setGender(userInfo.getGender()); // //性别 0：未知、1：男、2：女
-            userVo.setNickname(userInfo.getNickName());
+            userVo.setWeixin_openid(openid);
+            userVo.setAvatar(loginInfo.getAvatarUrl());
+            userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
+            userVo.setNickname(loginInfo.getNickName());
             userService.save(userVo);
-        } else {
-            userVo.setLast_login_ip(this.getClientIp());
-            userVo.setLast_login_time(nowTime);
-            userService.update(userVo);
         }
-
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");
 
-        if (null == userInfo || StringUtils.isNullOrEmpty(token)) {
+        if (StringUtils.isNullOrEmpty(token)) {
             return toResponsFail("登录失败");
         }
-
+        Map<String, Object> resultObj = new HashMap<String, Object>();
+        resultObj.put("openid", openid);
         resultObj.put("token", token);
-        resultObj.put("userInfo", userInfo);
-        resultObj.put("userId", userVo.getUserId());
         return toResponsSuccess(resultObj);
     }
 }

@@ -104,6 +104,15 @@ public class OrderVo implements Serializable {
     private int is_printer;//是否打印
     @Getter
     @Setter
+    private String goods_name;//商品名称
+    @Getter
+    @Setter
+    private String list_pic_url;//图片地址
+    @Getter
+    @Setter
+    private String goods_id;//商品ID
+    @Getter
+    @Setter
     private String supplier_list;
 
     public String getFull_region() {

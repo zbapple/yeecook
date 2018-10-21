@@ -48,15 +48,15 @@ Page({
     if (touchTime > 350) {
       wx.showModal({
         title: '',
-        content: '确定删除收藏吗？',
+        content: '确定取消收藏吗？',
         success: function (res) {
           if (res.confirm) {
             console.log('用户点击确认');
-            util.request(api.CollectAddOrDelete, { typeId: that.data.typeId, valueId: goodsId}).then(function (res) {
+            util.request(api.CollectAddOrDelete, { typeId: that.data.typeId, valueId: goodsId }, 'POST','application/json').then(function (res) {
               if (res.errno === 0) {
                 console.log(res.data);
                 wx.showToast({
-                  title: '删除成功',
+                  title: '取消成功',
                   icon: 'success',
                   duration: 2000
                 });

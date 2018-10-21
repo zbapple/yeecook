@@ -23,7 +23,7 @@ public class ActivationCardEntity implements Serializable {
     //激活IP地址
     private String activationIp;
     //激活终端
-    private String activation terminal;
+    private String activationTerminal;
     //激活用户id
     private Integer userId;
     //激活码
@@ -35,7 +35,7 @@ public class ActivationCardEntity implements Serializable {
     //下次服务时间
     private Date serveNextTime;
     //已服务次数
-    private Integer haveServe count;
+    private Integer haveServeCount;
     //激活订单编号
     private String orderSn;
     //关联服务id
@@ -96,15 +96,15 @@ public class ActivationCardEntity implements Serializable {
     /**
      * 设置：激活终端
      */
-    public void setActivation terminal(String activation terminal) {
-        this.activation terminal = activation terminal;
+    public void setActivationTerminal(String activationTerminal) {
+        this.activationTerminal = activationTerminal;
     }
 
     /**
      * 获取：激活终端
      */
-    public String getActivation terminal() {
-        return activation terminal;
+    public String getActivationTerminal() {
+        return activationTerminal;
     }
     /**
      * 设置：激活用户id
@@ -174,15 +174,15 @@ public class ActivationCardEntity implements Serializable {
     /**
      * 设置：已服务次数
      */
-    public void setHaveServe count(Integer haveServe count) {
-        this.haveServe count = haveServe count;
+    public void setHaveServeCount(Integer haveServeCount) {
+        this.haveServeCount = haveServeCount;
     }
 
     /**
      * 获取：已服务次数
      */
-    public Integer getHaveServe count() {
-        return haveServe count;
+    public Integer getHaveServeCount() {
+        return haveServeCount;
     }
     /**
      * 设置：激活订单编号

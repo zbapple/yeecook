@@ -98,7 +98,7 @@
 .cate-item .item .name{
   display: block;
   width: 365.625rpx;
-  height: 38rpx;
+  height: 35rpx;
   margin: 11.5rpx 0 22rpx 0;
   text-align: center;
   overflow: hidden;

@@ -11,7 +11,7 @@
     <view class="cate-item">
         <view class="h">
             <text class="name">{{currentCategory.name}}</text>
-            <text class="desc">{{currentCategory.front_name||""}}</text>
+            <text class="desc">{{currentCategory.front_name}}</text>
         </view>
         <view class="b">
             <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}"   url="/pages/goods/goods?id={{iitem.id}}" wx:for="{{goodsList}}" wx:for-item="iitem" wx:for-index="iindex" >
@@ -33,4 +33,8 @@
     </view>
 
     </scroll-view>
+    <view class="empty-view" wx:if="{{ goodsList.length <= 0 }}">
+      <image class="icon" src="../../../static/images/allorder.png"></image>
+      <text class="text">无产品数据</text>
+    </view>
 </view>

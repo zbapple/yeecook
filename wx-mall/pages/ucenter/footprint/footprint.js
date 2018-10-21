@@ -42,7 +42,7 @@ Page({
     if (touchTime > 350) {
       wx.showModal({
         title: '',
-        content: '要删除所选足迹？',
+        content: '确定要删除足迹？',
         success: function (res) {
           console.log(footprint.id);
           if (res.confirm) {

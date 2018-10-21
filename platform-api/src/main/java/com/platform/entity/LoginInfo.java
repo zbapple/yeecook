@@ -3,7 +3,7 @@ package com.platform.entity;
 /**
  * 首次登录对象
  */
-public class LoginInfo  {
+public class LoginInfo {
     private String code;
     private String avatarUrl;
     private int gender;

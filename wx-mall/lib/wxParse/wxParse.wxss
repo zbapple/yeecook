@@ -18,8 +18,10 @@
     line-height: 1.8;
 }
 view{
-    word-break:break-all; overflow:auto;
+    word-break:break-all; 
+    overflow:hidden;
 }
+
 .wxParse-inline{
     display: inline;
     margin: 0;
@@ -199,4 +201,6 @@ view{
 	background:#f0f0f0;
 	border-top:1px solid #e0e0e0;
 }
+
+
 

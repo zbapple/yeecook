@@ -35,7 +35,7 @@ Page({
   getGoodsList() {
     var that = this;
 
-    util.request(api.GoodsList, { brandId: that.data.id, page: that.data.page, size: that.data.size})
+    util.request(api.GoodsList, { brandId: that.data.id, page: that.data.page, size: that.data.size })
       .then(function (res) {
         if (res.errno === 0) {
           that.setData({

@@ -12,19 +12,21 @@ Page({
     brands: [],
     floorGoods: [],
     banner: [],
-    channel: []
+    channel: [],
+    goodsCount: 0
   },
   onShareAppMessage: function () {
     return {
-      title: 'NideShop',
-      desc: '宜厨精选小程序商城',
+      title: '51Shop',
+      desc: '51商城',
       path: '/pages/index/index'
     }
-  },onPullDownRefresh(){
+  },
+  onPullDownRefresh(){
 	  	// 增加下拉刷新数据的功能
 	    var self = this;
 	    this.getIndexData();
- },
+  },
   getIndexData: function () {
     let that = this;
     var data = new Object();
@@ -70,6 +72,11 @@ Page({
         data.channel = res.data.channel
       that.setData(data);
       }
+    });
+    util.request(api.GoodsCount).then(function (res) {
+      that.setData({
+        goodsCount: res.data.goodsCount
+      });
     });
 
   },

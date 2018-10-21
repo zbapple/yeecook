@@ -5,6 +5,10 @@
   font-family: PingFangSC-Light,helvetica,'Heiti SC';
 } 
 
+::-webkit-scrollbar{
+        display: none;
+}
+
 view,image,text,navigator{
   box-sizing: border-box;
   padding:0;
@@ -33,6 +37,31 @@ button::after {
 ::-webkit-scrollbar-thumb {
   background-color: #999;
 }
+
+.empty-view{
+  margin-top: 50%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-view .icon{
+  height: 120rpx;
+  width: 120rpx;
+  margin-bottom: 10rpx;
+}
+
+.empty-view .text{
+  width: auto;
+  font-size: 28rpx;
+  line-height: 35rpx;
+  color: #999;
+}
+
+
 /* 基础样式 */
 view,scroll-view,swiper,swiper-item,icon,text,progress,button,checkbox-group,checkbox,form,input,label,picker,radio-group,radio,slider,switch,action-sheet,action-sheet-item,action-sheet-cancel,modal,toast,loading,navigator,audio,image,video,map,canvas {
         -webkit-box-sizing: border-box;
@@ -181,10 +210,6 @@ wx-text_cent{text-align: center; }
 .wx-view_y8cwKA.c-state1:active{color: rgb(254, 0, 0);}
 .wx-text_9Wn0Di.wx-text_cent:active{border-bottom-style: none; border-top-style: none; border-right-style: none; border-left-style: none; }
 .wx-text_9Wn0Di.wx-text_cent.wx-text_bt:active{border-style:  none; }
-
-
-
-
 
 
 

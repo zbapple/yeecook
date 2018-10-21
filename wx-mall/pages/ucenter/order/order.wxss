@@ -3,86 +3,24 @@ page{
     width: 100%;
     background: #f4f4f4;
 }
-
-.orders{
-    height: auto;
-    width: 100%;
-    overflow: hidden;
+.order_me{
+  width: 100%;
+  background: #ffffff;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.order_me .li{
+  float: left;
+  width: 20%;
+  color: #666;
+  text-align: center;
+}
+.order_me .li.active{
+  border-bottom: 2px solid #b4282d;
+  font-size: 16px;
 }
 
-.order{
-    margin-top: 20rpx;
-    background: #fff;
-}
-
-.order .h{
-    height: 83.3rpx;
-    line-height: 83.3rpx;
-    margin-left: 31.25rpx;
-    padding-right: 31.25rpx;
-    border-bottom: 1px solid #f4f4f4;
-    font-size: 30rpx;
-    color: #333;
-}
-
-.order .h .l{
-    float: left;
-}
-
-.order .h .r{
-    float: right;
-    color: #b4282d;
-    font-size: 24rpx;
-}
-
-.order .goods{
-    display: flex;
-    align-items: center;
-    height: 199rpx;
-    margin-left: 31.25rpx;
-}
-
-.order .goods .img{
-    height:145.83rpx;
-    width:145.83rpx;
-    background: #f4f4f4;
-}
-
-.order .goods .img image{
-    height:145.83rpx;
-    width:145.83rpx;
-}
-
-.order .goods .info{
-    height: 145.83rpx;
-    flex: 1;
-    padding-left: 20rpx;
-}
-
-.order .goods .name{
-    margin-top: 30rpx;
-    display: block;
-    height: 44rpx;
-    line-height: 44rpx;
-    color: #333;
-    font-size: 30rpx;
-}
-
-.order .goods .number{
-    display: block;
-    height: 37rpx;
-    line-height: 37rpx;
-    color: #666;
-    font-size: 25rpx;
-}
-
-.order .goods .status{
-    width:105rpx;
-    color: #b4282d;
-    font-size: 25rpx;
-}
-
-.order .b{
+.orders .b{
     height: 103rpx;
     line-height: 103rpx;
     margin-left: 31.25rpx;
@@ -92,25 +30,107 @@ page{
     color: #333;
 }
 
-.order .b .l{
+.orders .b .l{
     float: left;
 }
 
-.order .b .r{
+.orders .b .r{
     float: right;
 }
 
-.order .b .btn{
-    margin-top: 19rpx;
-    height: 64.5rpx;
-    line-height: 64.5rpx;
-    text-align: center;
-    padding: 0 20rpx;
-    border-radius: 5rpx;
-    font-size: 26rpx;
-    color: #fff;
-    background: #b4282d;
+.orders .b .btn{
+  margin-top:23rpx;
+  height:60rpx;
+  line-height:60rpx;
+  text-align:center;
+  padding:0 35rpx; 
+  font-size:26rpx; 
+  background:none; 
+  border-radius:30rpx;
+  float:left;
+  margin-left:15rpx;
 }
+.gopay{
+  color:#b4282d;
+  border:1px solid #b4282d;
+}
+.gocancel{
+  color:#666;
+  border:1px solid #666;
+} 
+
+/* 新加 */
+.order-goods{
+    margin-top: 20rpx;
+    background: #fff;
+}
+
+.order-goods .h{
+    height: 93.75rpx;
+    line-height: 93.75rpx;
+    margin-left: 31.25rpx;
+    border-bottom: 1px solid #f4f4f4;
+    padding-right: 31.25rpx;
+}
+
+.order-goods .h .label{
+    float: left;
+    font-size: 30rpx;
+    color: #333;
+}
+
+.order-goods .h .status{
+    float: right;
+    font-size: 30rpx;
+    color: #b4282d;
+}
+
+.order-goods .item{
+    display: flex;
+    align-items: center;
+    height: 192rpx;
+    margin-left: 31.25rpx;
+    padding-right: 31.25rpx;
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.order-goods .item:last-child{
+    border-bottom: none;
+}
+
+.order-goods .item .img{
+    height: 145.83rpx;
+    width: 145.83rpx;
+    background: #f4f4f4;
+}
+
+.order-goods .item .img image{
+    height: 145.83rpx;
+    width: 145.83rpx;
+}
+
+.order-goods .item .info{
+    flex: 1;
+    height: 145.83rpx;
+    margin-left: 20rpx;
+}
+
+.order-goods .item .t{
+    margin-top: 28rpx;
+    height: 33rpx;
+    line-height: 33rpx;
+    /* margin-bottom: 10.5rpx; */
+}
+
+.order-goods .item .t .name{
+    display: block;
+    float: left;
+    height: 33rpx;
+    line-height: 33rpx;
+    color: #333;
+    font-size: 30rpx;
+}
+
 
 .loadmore {
   height: 100rpx;
@@ -122,7 +142,7 @@ page{
 
 .loadmore text {
   color: #999;
-}
+} 
 
 @keyframes loading {
   0% {transform: rotate(0deg)}

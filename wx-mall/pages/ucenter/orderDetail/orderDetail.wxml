@@ -2,9 +2,11 @@
     <view class="order-info">
         <view class="item-a">下单时间：{{orderInfo.add_time}}</view>
         <view class="item-b">订单编号：{{orderInfo.order_sn}}</view>
+        <view class="item-a" wx:if="{{orderInfo.shipping_name}}">物流公司：{{orderInfo.shipping_name}}</view>
+        <view class="item-b" wx:if="{{orderInfo.shipping_no}}">物流编号：{{orderInfo.shipping_no}}</view>
         <view class="item-c">
             <view class="l">实付：<text class="cost">￥{{orderInfo.actual_price}}</text></view>
-            <view class="r">
+            <!-- <view class="r">
                 <view wx:if="{{orderInfo.handleOption.pay}}">
                   <view class="btn" bindtap="cancelOrder">取消订单</view>
                   <view class="btn active" bindtap="payOrder">去付款</view>
@@ -14,8 +16,9 @@
                   <view class="btn active" bindtap="confirmOrder">确认收货</view>
                 </view>
                 <view wx:else>
+                  <view class="btn active" bindtap="cancelOrder">取消订单</view>
                 </view>
-            </view>
+            </view> -->
         </view>
     </view>
 

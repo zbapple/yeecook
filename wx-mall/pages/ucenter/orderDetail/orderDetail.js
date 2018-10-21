@@ -128,7 +128,7 @@ Page({
   payOrder() {
     let that = this;
     util.request(api.PayPrepayId, {
-      orderId: that.data.orderId 
+      orderId: that.data.orderId || 15
     }).then(function (res) {
       if (res.errno === 0) {
         const payParam = res.data;
@@ -140,7 +140,6 @@ Page({
           'paySign': payParam.paySign,
           'success': function (res) {
             console.log(res);
-            getOrderDetail();
           },
           'fail': function (res) {
             console.log(res);
@@ -238,7 +237,6 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    
   },
   onHide: function () {
     // 页面隐藏

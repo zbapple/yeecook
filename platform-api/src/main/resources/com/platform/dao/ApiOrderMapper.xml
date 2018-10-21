@@ -41,6 +41,9 @@
         <result property="callback_status" column="callback_status"/>
         <result property="full_cut_price" column="full_cut_price"/>
         <result property="is_printer" column="is_printer"/>
+        <result property="goods_name" column="goods_name"/>
+        <result property="list_pic_url" column="list_pic_url"/>
+        <result property="goods_id" column="goods_id"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
@@ -51,16 +54,35 @@
 	</select>
 
     <select id="queryList" resultMap="orderMap">
-        select * from nideshop_order WHERE 1=1
-        <if test="orderSn != null and orderSn.trim() != ''">
-            AND order_sn LIKE concat('%',#{orderSn},'%')
-        </if>
-        <if test="pay_status != null">
-             and pay_status = #{pay_status}
-        </if>
-        <if test="user_id != null">
-            and user_id = #{user_id}
-        </if>
+        SELECT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM nideshop_order o
+        LEFT JOIN nideshop_order_goods g ON o.id = g.order_id
+        <where>
+            <if test="user_id != null">
+                and o.user_id = #{user_id}
+            </if>
+
+            <if test="order_status != null and order_status >= 0 and order_status != 4 and order_status != 201">
+                AND o.order_status = #{order_status}
+            </if>
+
+            <if test="order_status != null and order_status == 201">
+                AND (o.order_status = 201 or o.order_status = 300)
+            </if>
+
+            <if test="order_status != null and order_status == 4">
+                AND (o.order_status = 401 or o.order_status = 402)
+            </if>
+            <if test="orderSn != null and orderSn.trim() != ''">
+                AND o.order_sn LIKE concat('%',#{orderSn},'%')
+            </if>
+            <if test="pay_status != null">
+                and o.pay_status = #{pay_status}
+            </if>
+            <if test="user_id != null">
+                and o.user_id = #{user_id}
+            </if>
+        </where>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

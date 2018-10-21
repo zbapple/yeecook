@@ -32,7 +32,7 @@ Page({
   //向服务请求支付参数
   requestPayParam() {
     let that = this;
-    util.request(api.PayPrepayId, { orderId: that.data.orderId}).then(function (res) {
+    util.request(api.PayPrepayId, { orderId: that.data.orderId, payType: 1 }).then(function (res) {
       if (res.errno === 0) {
         let payParam = res.data;
         wx.requestPayment({
@@ -48,7 +48,7 @@ Page({
           },
           'fail': function (res) {
             wx.redirectTo({
-              url: '/pages/payResult/payResult?status=false&orderId=' + that.data.orderId,
+              url: '/pages/payResult/payResult?status=false',
             })
           }
         })
