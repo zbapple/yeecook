@@ -1,4 +1,4 @@
-package com.platform.printer;
+package com.platform.printer.guguji;
 
 import com.platform.utils.Base64;
 import com.platform.utils.DateUtils;

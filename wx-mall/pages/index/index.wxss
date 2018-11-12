@@ -187,11 +187,13 @@
   text-align: center;
   display: block;
   width: 302rpx;
-  height: 35rpx;
+  height: 38rpx;
   margin-bottom: 14rpx;
   overflow: hidden;
   font-size: 30rpx;
   color: #333;
+  white-space: nowrap;
+  text-overflow:ellipsis;
 }
 
 .a-new .b .price {
@@ -370,11 +372,13 @@
   width: 365.625rpx;
   padding: 0 20rpx;
   overflow: hidden;
-  height: 35rpx;
+  height: 37rpx;
   margin: 11.5rpx 0 22rpx 0;
   text-align: center;
   font-size: 30rpx;
   color: #333;
+  white-space: nowrap;
+  text-overflow:ellipsis;
 }
 
 .good-grid .item .price {

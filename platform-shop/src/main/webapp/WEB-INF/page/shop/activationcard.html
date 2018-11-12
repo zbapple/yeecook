@@ -34,41 +34,35 @@
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="activationCard" :rules="ruleValidate" :label-width="80">
-            <Form-item label="激活时间" prop="activationTime">
-                <i-input v-model="activationCard.activationTime" placeholder="激活时间"/>
+            <Form-item label="服务类型id" prop="serveTypeId">
+                <i-input v-model="activationCard.serveTypeId" placeholder="服务类型id"/>
             </Form-item>
-            <Form-item label="失效时间" prop="disabledTime">
-                <i-input v-model="activationCard.disabledTime" placeholder="失效时间"/>
+            <Form-item label="配送地址id" prop="addressId">
+                <i-input v-model="activationCard.addressId" placeholder="配送地址id"/>
             </Form-item>
-            <Form-item label="激活IP地址" prop="activationIp">
-                <i-input v-model="activationCard.activationIp" placeholder="激活IP地址"/>
+            <Form-item label="用户id" prop="userId">
+                <i-input v-model="activationCard.userId" placeholder="用户id"/>
             </Form-item>
-            <Form-item label="激活终端" prop="activationTerminal">
-                <i-input v-model="activationCard.activationTerminal" placeholder="激活终端"/>
+            <Form-item label="激活状态：0未激活，1已激活" prop="activated">
+                <i-input v-model="activationCard.activated" placeholder="激活状态：0未激活，1已激活"/>
             </Form-item>
-            <Form-item label="激活用户id" prop="userId">
-                <i-input v-model="activationCard.userId" placeholder="激活用户id"/>
+            <Form-item label="服务总次数" prop="serveCount">
+                <i-input v-model="activationCard.serveCount" placeholder="服务总次数"/>
             </Form-item>
-            <Form-item label="激活码" prop="activationCode">
-                <i-input v-model="activationCard.activationCode" placeholder="激活码"/>
+            <Form-item label="已服务次数" prop="haveServeCount">
+                <i-input v-model="activationCard.haveServeCount" placeholder="已服务次数"/>
             </Form-item>
-            <Form-item label="是否激活：0未激活，1已激活" prop="isActivation">
-                <i-input v-model="activationCard.isActivation" placeholder="是否激活：0未激活，1已激活"/>
+            <Form-item label="配送规则" prop="deliveryrules">
+                <i-input v-model="activationCard.deliveryrules" placeholder="配送规则"/>
+            </Form-item>
+            <Form-item label="服务有效时间" prop="servevalidtime">
+                <i-input v-model="activationCard.servevalidtime" placeholder="服务有效时间"/>
             </Form-item>
             <Form-item label="上次服务时间" prop="serveLastTime">
                 <i-input v-model="activationCard.serveLastTime" placeholder="上次服务时间"/>
             </Form-item>
             <Form-item label="下次服务时间" prop="serveNextTime">
                 <i-input v-model="activationCard.serveNextTime" placeholder="下次服务时间"/>
-            </Form-item>
-            <Form-item label="已服务次数" prop="haveServeCount">
-                <i-input v-model="activationCard.haveServeCount" placeholder="已服务次数"/>
-            </Form-item>
-            <Form-item label="激活订单编号" prop="orderSn">
-                <i-input v-model="activationCard.orderSn" placeholder="激活订单编号"/>
-            </Form-item>
-            <Form-item label="关联服务id" prop="serveId">
-                <i-input v-model="activationCard.serveId" placeholder="关联服务id"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

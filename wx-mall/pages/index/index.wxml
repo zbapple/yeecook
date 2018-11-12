@@ -108,7 +108,7 @@
           <view class="right">
             <view class="text">
               <text class="name">{{item.name}}</text>
-              <text class="desc">{{item.goods_brief}}</text>
+              <text class="desc">{{item.goods_brief||''}}</text>
               <view class="tx price">
               <text class='pri dzprice'>￥{{item.retail_price}}</text>
               <text class='pri yjprice' wx:if="{{item.market_price}}">￥{{item.market_price}}</text> 

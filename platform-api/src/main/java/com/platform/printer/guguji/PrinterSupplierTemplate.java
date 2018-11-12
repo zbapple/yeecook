@@ -1,8 +1,8 @@
-package com.platform.printer;
+package com.platform.printer.guguji;
 
 import com.platform.entity.OrderGoodsVo;
-import com.platform.entity.OrderVo;
-import com.platform.printer.vo.YeecookVo;
+import com.platform.entity.OrderSupplierVo;
+import com.platform.printer.vo.YeecookSupplierVo;
 import com.platform.utils.DateUtils;
 
 import java.math.BigDecimal;
@@ -12,14 +12,14 @@ import java.util.List;
 
 
 //咕咕机
-public class PrinterTemplate {
+public class PrinterSupplierTemplate {
 
-    private YeecookVo yeecookVo;
+    private YeecookSupplierVo yeecookVo;
     private String startImg = "https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20180903/14575544989ba4.png";
     private String endImg = "https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20180904/1752152365a8a2.png";
 
 
-    public PrinterTemplate(YeecookVo yeecookVo1) {
+    public PrinterSupplierTemplate(YeecookSupplierVo yeecookVo1) {
         this.yeecookVo = yeecookVo1;
     }
 
@@ -64,28 +64,28 @@ public class PrinterTemplate {
     }
 
     public static void main(String [] age){
-        YeecookVo yeecookVo=new YeecookVo();
+        YeecookSupplierVo yeecookVo=new YeecookSupplierVo();
         List<OrderGoodsVo> orderGoodsVoList=new ArrayList<>();
         OrderGoodsVo orderGoodsVo=new OrderGoodsVo();
         orderGoodsVo.setGoods_name("西部牛仔");
         orderGoodsVo.setGoods_specifition_name_value("特大号、牛逼");
         orderGoodsVo.setNumber(12);
         orderGoodsVo.setRetail_price(new BigDecimal("12.00"));
-        OrderVo orderVo = new OrderVo();
+        OrderSupplierVo orderVo = new OrderSupplierVo();
         orderVo.setAddress("大新街十一郎社区维多利亚港口大厦");
         orderVo.setProvince("甘肃省");
         orderVo.setCity("临夏回族自治州");
         orderVo.setDistrict("积石山保安族东乡族撒拉族自治县");
-        orderVo.setOrder_sn("123131123123123121");
+        orderVo.setOrderSupSn("123131123123123121");
         orderVo.setMobile("13524419722");
         orderVo.setConsignee("浪里白条");
-        orderVo.setOrder_price(new BigDecimal("12312312.00"));
+        orderVo.setOrderPrice(new BigDecimal("12312312.00"));
         for (int i=0;i<4;i++) {
             orderGoodsVoList.add(orderGoodsVo);
         }
         yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
         yeecookVo.setOrderVo(orderVo);
-        PrinterTemplate printerTemplate=new PrinterTemplate(yeecookVo);
+        PrinterSupplierTemplate printerTemplate=new PrinterSupplierTemplate(yeecookVo);
         String html=printerTemplate.getPrinterHtmlStr();
         System.out.println(html);
         NetworkPrinterUtils.printHtml(html);
@@ -348,7 +348,7 @@ public class PrinterTemplate {
                         "</div>\n" +
                         "<p class=\"p2\"><span class=\"s2\"><b>………………..……………….............…………............</b></span></p>\n" +
                         "<p class=\"p3\"><span class=\"s3\"><b>订单编号</b></span></p>\n" +
-                        "<p class=\"p4\"><span class=\"s4\"><b>" +  yeecookVo.getOrderVo().getOrder_sn() + "</b><br>\n" +
+                        "<p class=\"p4\"><span class=\"s4\"><b>" +  yeecookVo.getOrderVo().getOrderSupSn() + "</b><br>\n" +
                         "</span></p>\n" +
                         "<p class=\"p5\"><span class=\"s5\"><b>客户：" + yeecookVo.getOrderVo().getConsignee() + "</b></span></p>\n" +
                         "<p class=\"p6\"><span class=\"s5\"><b>联系方式：</b></span><span class=\"s4\"><b>" + yeecookVo.getOrderVo().getMobile() + "</b></span></p>\n" +
@@ -377,6 +377,9 @@ public class PrinterTemplate {
 
 
     public String getHtmlbodyEnd() {
+        String gys=PrinterStringUtils.fmHtmlBr("供应商："+yeecookVo.getOrderVo().getSupplierName(),16);
+        String gys_dz=PrinterStringUtils.fmHtmlBr("地址："+yeecookVo.getOrderVo().getSupplierAddress(),16);
+        String gys_tel=PrinterStringUtils.fmHtmlBr(yeecookVo.getOrderVo().getSupplierTelephone(),16);
         String htmlbodyEnd1 =
                 "    </tbody>\n" +
                         "</table>\n" +
@@ -384,16 +387,16 @@ public class PrinterTemplate {
                         "    <tbody>\n" +
                         "    <tr>\n" +
                         "        <td valign=\"middle\" class=\"td7\">\n" +
-                        "            <p class=\"p12\"><span class=\"s5\"><b>总计："+yeecookVo.getOrderVo().getOrder_price().toString()+"元</b></span></p>\n" +
+                        "            <p class=\"p12\"><span class=\"s5\"><b>总计："+yeecookVo.getOrderVo().getOrderPrice().toString()+"元</b></span></p>\n" +
                         "        </td>\n" +
                         "    </tr>\n" +
                         "    </tbody>\n" +
                         "</table>\n" +
                         "<p class=\"p7\"><span class=\"s8\"><br>\n" +
                         "</span><span class=\"s2\"><b>………………..……………….............…………............</b></span></p>\n" +
-                        "<p class=\"p12\"><span class=\"s5\"><b>宜厨优品</b></span></p>\n" +
-                        "<p class=\"p12\"><span class=\"s5\"><b>地址：农林上路八横路</b></span></p>\n" +
-                        "<p class=\"p13\"><span class=\"s5\"><b>总机：</b></span><span class=\"s4\"><b>(86) 012329821</b></span></p>\n" +
+                        "<p class=\"p12\"><span class=\"s5\"><b>"+gys+"</b></span></p>\n" +
+                        "<p class=\"p12\"><span class=\"s5\"><b>"+gys_dz+"</b></span></p>\n" +
+                        "<p class=\"p13\"><span class=\"s5\"><b>总机：</b></span><span class=\"s4\"><b>"+gys_tel+"</b></span></p>\n" +
                         "<p class=\"p14\"><span class=\"s4\"><br>\n" +
                         "</span></p>\n" +
                         "<p class=\"p2\"><span class=\"s2\"><b>………………..……………….............…………............</b></span></p>\n" +

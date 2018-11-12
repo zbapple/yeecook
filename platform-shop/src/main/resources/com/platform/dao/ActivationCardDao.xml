@@ -5,35 +5,31 @@
 
     <resultMap type="com.platform.entity.ActivationCardEntity" id="activationCardMap">
         <result property="id" column="id"/>
-        <result property="activationTime" column="activation_time"/>
-        <result property="disabledTime" column="disabled_time"/>
-        <result property="activationIp" column="activation_ip"/>
-        <result property="activationTerminal" column="activation_terminal"/>
+        <result property="serveTypeId" column="serve_type_id"/>
+        <result property="addressId" column="address_id"/>
         <result property="userId" column="user_id"/>
-        <result property="activationCode" column="activation_code"/>
-        <result property="isActivation" column="is_activation"/>
+        <result property="activated" column="activated"/>
+        <result property="serveCount" column="serve_count"/>
+        <result property="haveServeCount" column="have_serve_count"/>
+        <result property="deliveryrules" column="deliveryRules"/>
+        <result property="servevalidtime" column="serveValidTime"/>
         <result property="serveLastTime" column="serve_last_time"/>
         <result property="serveNextTime" column="serve_next_time"/>
-        <result property="haveServeCount" column="have_serve_count"/>
-        <result property="orderSn" column="order_sn"/>
-        <result property="serveId" column="serve_id"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.ActivationCardEntity">
 		select
 			`id`,
-			`activation_time`,
-			`disabled_time`,
-			`activation_ip`,
-			`activation_terminal`,
+			`serve_type_id`,
+			`address_id`,
 			`user_id`,
-			`activation_code`,
-			`is_activation`,
-			`serve_last_time`,
-			`serve_next_time`,
+			`activated`,
+			`serve_count`,
 			`have_serve_count`,
-			`order_sn`,
-			`serve_id`
+			`deliveryRules`,
+			`serveValidTime`,
+			`serve_last_time`,
+			`serve_next_time`
 		from nideshop_activation_card
 		where id = #{id}
 	</select>
@@ -41,18 +37,16 @@
 	<select id="queryList" resultType="com.platform.entity.ActivationCardEntity">
 		select
     		`id`,
-    		`activation_time`,
-    		`disabled_time`,
-    		`activation_ip`,
-    		`activation_terminal`,
+    		`serve_type_id`,
+    		`address_id`,
     		`user_id`,
-    		`activation_code`,
-    		`is_activation`,
-    		`serve_last_time`,
-    		`serve_next_time`,
+    		`activated`,
+    		`serve_count`,
     		`have_serve_count`,
-    		`order_sn`,
-    		`serve_id`
+    		`deliveryRules`,
+    		`serveValidTime`,
+    		`serve_last_time`,
+    		`serve_next_time`
 		from nideshop_activation_card
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -81,48 +75,42 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.ActivationCardEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into nideshop_activation_card(
-			`activation_time`,
-			`disabled_time`,
-			`activation_ip`,
-			`activation_terminal`,
+			`serve_type_id`,
+			`address_id`,
 			`user_id`,
-			`activation_code`,
-			`is_activation`,
-			`serve_last_time`,
-			`serve_next_time`,
+			`activated`,
+			`serve_count`,
 			`have_serve_count`,
-			`order_sn`,
-			`serve_id`)
+			`deliveryRules`,
+			`serveValidTime`,
+			`serve_last_time`,
+			`serve_next_time`)
 		values(
-			#{activationTime},
-			#{disabledTime},
-			#{activationIp},
-			#{activationTerminal},
+			#{serveTypeId},
+			#{addressId},
 			#{userId},
-			#{activationCode},
-			#{isActivation},
-			#{serveLastTime},
-			#{serveNextTime},
+			#{activated},
+			#{serveCount},
 			#{haveServeCount},
-			#{orderSn},
-			#{serveId})
+			#{deliveryrules},
+			#{servevalidtime},
+			#{serveLastTime},
+			#{serveNextTime})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.ActivationCardEntity">
 		update nideshop_activation_card 
 		<set>
-			<if test="activationTime != null">`activation_time` = #{activationTime}, </if>
-			<if test="disabledTime != null">`disabled_time` = #{disabledTime}, </if>
-			<if test="activationIp != null">`activation_ip` = #{activationIp}, </if>
-			<if test="activationTerminal != null">`activation_terminal` = #{activationTerminal}, </if>
+			<if test="serveTypeId != null">`serve_type_id` = #{serveTypeId}, </if>
+			<if test="addressId != null">`address_id` = #{addressId}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="activationCode != null">`activation_code` = #{activationCode}, </if>
-			<if test="isActivation != null">`is_activation` = #{isActivation}, </if>
-			<if test="serveLastTime != null">`serve_last_time` = #{serveLastTime}, </if>
-			<if test="serveNextTime != null">`serve_next_time` = #{serveNextTime}, </if>
+			<if test="activated != null">`activated` = #{activated}, </if>
+			<if test="serveCount != null">`serve_count` = #{serveCount}, </if>
 			<if test="haveServeCount != null">`have_serve_count` = #{haveServeCount}, </if>
-			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
-			<if test="serveId != null">`serve_id` = #{serveId}</if>
+			<if test="deliveryrules != null">`deliveryRules` = #{deliveryrules}, </if>
+			<if test="servevalidtime != null">`serveValidTime` = #{servevalidtime}, </if>
+			<if test="serveLastTime != null">`serve_last_time` = #{serveLastTime}, </if>
+			<if test="serveNextTime != null">`serve_next_time` = #{serveNextTime}</if>
 		</set>
 		where id = #{id}
 	</update>

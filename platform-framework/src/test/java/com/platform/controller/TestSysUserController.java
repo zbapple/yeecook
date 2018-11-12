@@ -34,7 +34,7 @@ public class TestSysUserController extends BaseSpringTestCase {
     ApiOrderGoodsService apiOrderGoodsService;
     @Autowired
     OrderSupplierService orderSupplierService;
-    private Logger logger = getLogger();
+
 
 
     @Test
@@ -43,7 +43,6 @@ public class TestSysUserController extends BaseSpringTestCase {
         //OrderSupplierEntity orderSupplierEntity= orderSupplierService.queryObject(3);
         //orderSupplierService.sendGoods(orderSupplierEntity);
         //orderSupplierService.confirm(5);
-
         apiOrderService.printerSupplierOrder(102);
     }
 

@@ -40,6 +40,12 @@
             <Form-item label="描述" prop="desc">
                 <i-input v-model="serveType.desc" placeholder="描述"/>
             </Form-item>
+            <Form-item label="关联商品id" prop="goodsId">
+                <i-input v-model="serveType.goodsId" placeholder="关联商品id"/>
+            </Form-item>
+            <Form-item label="关联商品名称" prop="goodsName">
+                <i-input v-model="serveType.goodsName" placeholder="关联商品名称"/>
+            </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>

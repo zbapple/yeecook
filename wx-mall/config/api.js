@@ -1,6 +1,7 @@
-//var NewApiRootUrl = 'https://shop.51shop.ink/api/';
+
 const root = '/shop/api/';
-const NewApiRootUrl = 'http://localhost:8080' + root;
+//const NewApiRootUrl = 'http://localhost:8080' + root;
+const NewApiRootUrl = 'https://www.yeecook.com' + root;
 module.exports = {
   IndexUrlNewGoods: NewApiRootUrl + 'index/newGoods', //
   IndexUrlHotGoods: NewApiRootUrl + 'index/hotGoods', //首页数据接口
@@ -79,5 +80,7 @@ module.exports = {
     GoodsCouponList: NewApiRootUrl + 'coupon/listByGoods', // 商品优惠券列表   
     OrderQuery: NewApiRootUrl + 'pay/query',
     OrderSuccess: NewApiRootUrl + 'order/updateSuccess',
+    CardQuery: NewApiRootUrl + 'card/getCard', //得到卡类商品信息
+    CardActivation: NewApiRootUrl + 'card/activationCard',//激活
     
 };

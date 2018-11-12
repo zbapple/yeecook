@@ -96,11 +96,15 @@
 }
 
 .goods-info .desc{
-    height: 50rpx;
     /* margin-bottom: 41rpx; */
     font-size: 24rpx;
     line-height: 50rpx;
     color: #999;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp:3;
+    overflow: hidden;
+    text-overflow:ellipsis;
 }
 
 .goods-info .brand{
@@ -680,7 +684,7 @@
 }
 
 .spec-con .name{
-    height: 32rpx;
+    height: 34rpx;
     margin-bottom: 22rpx;
     font-size: 29rpx;
     color: #333;

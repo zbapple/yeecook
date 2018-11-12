@@ -1,1 +1,19 @@
 /* page/virtualcard/virtualcard.wxss */
+@import "../../lib/wxParse/wxParse.wxss";
+
+.detail{
+    width: 750rpx;
+    height: auto;
+    overflow: hidden;
+}
+
+.detail image{
+    width: 750rpx;
+    display: block;
+}
+
+.sfs{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

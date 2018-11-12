@@ -52,6 +52,15 @@ public class Constant {
     public static final String DEFAULT_PASS_WORD = "888888";
 
     /**
+     * 打印机配置
+     */
+    public static final String PRINTER_PK = "printerPk";
+
+    /**
+     * 用户的打印机配置列表
+     */
+    public static final String PRINTER_PK_USER = "printerPkUser";
+    /**
      * 菜单类型
      *
      * @author lipengjun

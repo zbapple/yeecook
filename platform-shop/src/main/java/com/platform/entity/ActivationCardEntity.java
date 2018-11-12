@@ -9,37 +9,33 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 public class ActivationCardEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //主键
     private Integer id;
-    //激活时间
-    private Date activationTime;
-    //失效时间
-    private Date disabledTime;
-    //激活IP地址
-    private String activationIp;
-    //激活终端
-    private String activationTerminal;
-    //激活用户id
+    //服务类型id
+    private Integer serveTypeId;
+    //配送地址id
+    private Integer addressId;
+    //用户id
     private Integer userId;
-    //激活码
-    private String activationCode;
-    //是否激活：0未激活，1已激活
-    private String isActivation;
+    //激活状态：0未激活，1已激活
+    private Integer activated;
+    //服务总次数
+    private Integer serveCount;
+    //已服务次数
+    private Integer haveServeCount;
+    //配送规则
+    private String deliveryrules;
+    //服务有效时间
+    private Date servevalidtime;
     //上次服务时间
     private Date serveLastTime;
     //下次服务时间
     private Date serveNextTime;
-    //已服务次数
-    private Integer haveServeCount;
-    //激活订单编号
-    private String orderSn;
-    //关联服务id
-    private Integer serveId;
 
     /**
      * 设置：主键
@@ -55,95 +51,108 @@ public class ActivationCardEntity implements Serializable {
         return id;
     }
     /**
-     * 设置：激活时间
+     * 设置：服务类型id
      */
-    public void setActivationTime(Date activationTime) {
-        this.activationTime = activationTime;
+    public void setServeTypeId(Integer serveTypeId) {
+        this.serveTypeId = serveTypeId;
     }
 
     /**
-     * 获取：激活时间
+     * 获取：服务类型id
      */
-    public Date getActivationTime() {
-        return activationTime;
+    public Integer getServeTypeId() {
+        return serveTypeId;
     }
     /**
-     * 设置：失效时间
+     * 设置：配送地址id
      */
-    public void setDisabledTime(Date disabledTime) {
-        this.disabledTime = disabledTime;
-    }
-
-    /**
-     * 获取：失效时间
-     */
-    public Date getDisabledTime() {
-        return disabledTime;
-    }
-    /**
-     * 设置：激活IP地址
-     */
-    public void setActivationIp(String activationIp) {
-        this.activationIp = activationIp;
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
     }
 
     /**
-     * 获取：激活IP地址
+     * 获取：配送地址id
      */
-    public String getActivationIp() {
-        return activationIp;
+    public Integer getAddressId() {
+        return addressId;
     }
     /**
-     * 设置：激活终端
-     */
-    public void setActivationTerminal(String activationTerminal) {
-        this.activationTerminal = activationTerminal;
-    }
-
-    /**
-     * 获取：激活终端
-     */
-    public String getActivationTerminal() {
-        return activationTerminal;
-    }
-    /**
-     * 设置：激活用户id
+     * 设置：用户id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     /**
-     * 获取：激活用户id
+     * 获取：用户id
      */
     public Integer getUserId() {
         return userId;
     }
     /**
-     * 设置：激活码
+     * 设置：激活状态：0未激活，1已激活
      */
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
+    public void setActivated(Integer activated) {
+        this.activated = activated;
     }
 
     /**
-     * 获取：激活码
+     * 获取：激活状态：0未激活，1已激活
      */
-    public String getActivationCode() {
-        return activationCode;
+    public Integer getActivated() {
+        return activated;
     }
     /**
-     * 设置：是否激活：0未激活，1已激活
+     * 设置：服务总次数
      */
-    public void setIsActivation(String isActivation) {
-        this.isActivation = isActivation;
+    public void setServeCount(Integer serveCount) {
+        this.serveCount = serveCount;
     }
 
     /**
-     * 获取：是否激活：0未激活，1已激活
+     * 获取：服务总次数
      */
-    public String getIsActivation() {
-        return isActivation;
+    public Integer getServeCount() {
+        return serveCount;
+    }
+    /**
+     * 设置：已服务次数
+     */
+    public void setHaveServeCount(Integer haveServeCount) {
+        this.haveServeCount = haveServeCount;
+    }
+
+    /**
+     * 获取：已服务次数
+     */
+    public Integer getHaveServeCount() {
+        return haveServeCount;
+    }
+    /**
+     * 设置：配送规则
+     */
+    public void setDeliveryrules(String deliveryrules) {
+        this.deliveryrules = deliveryrules;
+    }
+
+    /**
+     * 获取：配送规则
+     */
+    public String getDeliveryrules() {
+        return deliveryrules;
+    }
+    /**
+     * 设置：服务有效时间
+     */
+    public void setServevalidtime(Date servevalidtime) {
+        this.servevalidtime = servevalidtime;
+    }
+
+    /**
+     * 获取：服务有效时间
+     */
+    public Date getServevalidtime() {
+        return servevalidtime;
     }
     /**
      * 设置：上次服务时间
@@ -170,44 +179,5 @@ public class ActivationCardEntity implements Serializable {
      */
     public Date getServeNextTime() {
         return serveNextTime;
-    }
-    /**
-     * 设置：已服务次数
-     */
-    public void setHaveServeCount(Integer haveServeCount) {
-        this.haveServeCount = haveServeCount;
-    }
-
-    /**
-     * 获取：已服务次数
-     */
-    public Integer getHaveServeCount() {
-        return haveServeCount;
-    }
-    /**
-     * 设置：激活订单编号
-     */
-    public void setOrderSn(String orderSn) {
-        this.orderSn = orderSn;
-    }
-
-    /**
-     * 获取：激活订单编号
-     */
-    public String getOrderSn() {
-        return orderSn;
-    }
-    /**
-     * 设置：关联服务id
-     */
-    public void setServeId(Integer serveId) {
-        this.serveId = serveId;
-    }
-
-    /**
-     * 获取：关联服务id
-     */
-    public Integer getServeId() {
-        return serveId;
     }
 }

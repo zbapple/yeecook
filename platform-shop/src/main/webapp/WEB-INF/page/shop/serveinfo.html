@@ -49,14 +49,14 @@
             <Form-item label="总服务次数" prop="serveCount">
                 <i-input v-model="serveInfo.serveCount" placeholder="总服务次数"/>
             </Form-item>
-            <Form-item label="服务有效期" prop="serveValidity">
-                <i-input v-model="serveInfo.serveValidity" placeholder="服务有效期"/>
+            <Form-item label="服务有效期（月）" prop="serveValidity">
+                <i-input v-model="serveInfo.serveValidity" placeholder="服务有效期（月）"/>
             </Form-item>
-            <Form-item label="自身关联商品id" prop="serveGoodsid">
-                <i-input v-model="serveInfo.serveGoodsid" placeholder="自身关联商品id"/>
+            <Form-item label="自身关联商品id" prop="productId">
+                <i-input v-model="serveInfo.productId" placeholder="自身关联商品id"/>
             </Form-item>
-            <Form-item label="服务关联商品集合" prop="serveGoodsids">
-                <i-input v-model="serveInfo.serveGoodsids" placeholder="服务关联商品集合"/>
+            <Form-item label="服务关联商品集合" prop="serveProductIds">
+                <i-input v-model="serveInfo.serveProductIds" placeholder="服务关联商品集合"/>
             </Form-item>
             <Form-item label="新增时间" prop="addTime">
                 <i-input v-model="serveInfo.addTime" placeholder="新增时间"/>
@@ -66,6 +66,9 @@
             </Form-item>
             <Form-item label="操作用户id" prop="userId">
                 <i-input v-model="serveInfo.userId" placeholder="操作用户id"/>
+            </Form-item>
+            <Form-item label="是否开启：0关闭，1开启" prop="isValid">
+                <i-input v-model="serveInfo.isValid" placeholder="是否开启：0关闭，1开启"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

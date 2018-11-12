@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiActivationCodeLogMapper">
+
+    <resultMap type="com.platform.entity.ActivationCodeLogVo" id="activationCodeLogMap">
+        <result property="id" column="id"/>
+        <result property="serveInfoId" column="serve_info_id"/>
+        <result property="activationTime" column="activation_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="remark" column="remark"/>
+        <result property="activationCode" column="activation_code"/>
+        <result property="activateTerminal" column="activate_terminal"/>
+        <result property="orderSn" column="order_sn"/>
+        <result property="serveInfoName" column="serve_info_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ActivationCodeLogVo">
+		select
+			`id`,
+			`serve_info_id`,
+			`activation_time`,
+			`user_id`,
+			`user_name`,
+			`remark`,
+			`activation_code`,
+			`activate_terminal`,
+			`order_sn`,
+			`serve_info_name`
+		from nideshop_activation_code_log
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ActivationCodeLogVo">
+		select
+    		`id`,
+    		`serve_info_id`,
+    		`activation_time`,
+    		`user_id`,
+    		`user_name`,
+    		`remark`,
+    		`activation_code`,
+    		`activate_terminal`,
+    		`order_sn`,
+    		`serve_info_name`
+		from nideshop_activation_code_log
+		WHERE 1=1
+		<if test="userName != null and userName.trim() != ''">
+			AND user_name LIKE concat('%',#{userName},'%')
+		</if>
+		<if test="activationCode != null and activationCode.trim() != ''">
+			AND `activation_code` = #{activationCode}
+		</if>
+		<if test="userId != null ">
+			AND `user_id` = #{userId}
+		</if>
+		<if test="serveInfoId != null ">
+			AND `serve_info_id` = #{serveInfoId}
+		</if>
+		<if test="orderSn != null and orderSn.trim() != ''">
+			AND `order_sn` = #{orderSn}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_activation_code_log
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.ActivationCodeLogVo" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_activation_code_log(
+			`serve_info_id`,
+			`activation_time`,
+			`user_id`,
+			`user_name`,
+			`remark`,
+			`activation_code`,
+			`activate_terminal`,
+			`order_sn`,
+			`serve_info_name`)
+		values(
+			#{serveInfoId},
+			#{activationTime},
+			#{userId},
+			#{userName},
+			#{remark},
+			#{activationCode},
+			#{activateTerminal},
+			#{orderSn},
+			#{serveInfoName})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.ActivationCodeLogVo">
+		update nideshop_activation_code_log 
+		<set>
+			<if test="serveInfoId != null">`serve_info_id` = #{serveInfoId}, </if>
+			<if test="activationTime != null">`activation_time` = #{activationTime}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="activationCode != null">`activation_code` = #{activationCode}, </if>
+			<if test="activateTerminal != null">`activate_terminal` = #{activateTerminal}, </if>
+			<if test="orderSn != null">`order_sn` = #{orderSn}, </if>
+			<if test="serveInfoName != null">`serve_info_name` = #{serveInfoName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_activation_code_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_activation_code_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

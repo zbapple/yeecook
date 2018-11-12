@@ -16,7 +16,7 @@
 
     <view class="cate-item">
         <view class="b">
-            <block wx:for="{{goodsList}}" wx:for-index="iindex" wx:for-item="iitem">
+            <block wx:for="{{goodsList}}" wx:key="iindex" wx:for-index="iindex" wx:for-item="iitem">
             <navigator class="item {{iindex % 2 == 0 ? 'item-b' : ''}}" url="../goods/goods?id={{iitem.id}}">
                 <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
                 <text class="name">{{iitem.name}}</text>

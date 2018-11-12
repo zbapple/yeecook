@@ -1,16 +1,18 @@
 <view class="container">
+<button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
   <button class="userinfo">
     <view><image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image></view> 
     <view>
-      <button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo"><text class="userinfo-nickname">{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text></button>
-      <view class="userinfo-mobile" v-if="hasMobile != ''">
+      <text class="userinfo-nickname">{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
+      <!-- <view class="userinfo-mobile" v-if="hasMobile != ''">
         <navigator url="/pages/auth/mobile/mobile" class="a">
           <text class="icon phone"></text>
           <text class="txt">绑定手机</text>
         </navigator>
-      </view>
+      </view> -->
     </view> 
 	</button>
+  </button>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
   <view class="my_order">
     <view class='cont'>
@@ -90,6 +92,14 @@
         </navigator>
       </view>
     </button> 
+
+    <view class="item">
+      <navigator url="/pages/auth/mobile/mobile" class="a">
+        <text class="icon phone"></text>
+        <text class="txt">绑定手机</text>
+      </navigator>
+    </view>
+
     <!-- <view class="item item-bottom">
       <navigator url="url" class="a">
         <text class="icon help"></text>

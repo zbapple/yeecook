@@ -15,7 +15,7 @@ import com.platform.service.ActivationCodeLogService;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 @Service("activationCodeLogService")
 public class ActivationCodeLogServiceImpl implements ActivationCodeLogService {

@@ -3,12 +3,15 @@ $(function () {
         url: '../activationcodelog/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '卡片信息id', name: 'cardId', index: 'card_id', width: 80},
-			{label: '激活码生成数量', name: 'cardCount', index: 'card_count', width: 80},
-			{label: '操作人id', name: 'userId', index: 'user_id', width: 80},
-			{label: '操作人姓名', name: 'userName', index: 'user_name', width: 80},
-			{label: '生成时间', name: 'addTime', index: 'add_time', width: 80},
-			{label: '备注', name: 'remark', index: 'remark', width: 80}]
+			{label: '关联服务id', name: 'serveInfoId', index: 'serve_info_id', width: 80},
+			{label: '激活时间', name: 'activationTime', index: 'activation_time', width: 80},
+			{label: '激活用户id', name: 'userId', index: 'user_id', width: 80},
+			{label: '激活用户姓名', name: 'userName', index: 'user_name', width: 80},
+			{label: '备注', name: 'remark', index: 'remark', width: 80},
+			{label: '激活码', name: 'activationCode', index: 'activation_code', width: 80},
+			{label: '激活终端', name: 'activateTerminal', index: 'activate_terminal', width: 80},
+			{label: '订单编号', name: 'orderSn', index: 'order_sn', width: 80},
+			{label: '关联服务名称', name: 'serveInfoName', index: 'serve_info_name', width: 80}]
     });
 });
 

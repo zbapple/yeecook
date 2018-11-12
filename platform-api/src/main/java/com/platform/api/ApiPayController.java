@@ -38,6 +38,8 @@ public class ApiPayController extends ApiBaseAction {
     private ApiOrderService orderService;
     @Autowired
     private ApiOrderGoodsService orderGoodsService;
+    @Autowired
+    private ApiCardController apiCardController;
 
     /**
      */
@@ -172,7 +174,6 @@ public class ApiPayController extends ApiBaseAction {
         if (null == orderId || null == orderInfo) {
             return toResponsFail("订单不存在");
         }
-
         OrderVo orderDetail = orderService.queryObject(orderId);
         Map<Object, Object> parame = new TreeMap<Object, Object>();
         parame.put("appid", ResourceUtil.getConfigByName("wx.appId"));
@@ -204,7 +205,6 @@ public class ApiPayController extends ApiBaseAction {
         if (!"SUCCESS".equals(return_code)) {
             return toResponsFail("查询失败,error=" + return_msg);
         }
-
         String trade_state = MapUtils.getString("trade_state", resultUn);
         if (return_code.equals("SUCCESS")) {
 
@@ -225,6 +225,7 @@ public class ApiPayController extends ApiBaseAction {
                     List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
                     printerOrder(orderInfo, orderGoods);
                     logger.error("订单" + orderInfo.getOrder_sn() + "打印成功-orderQuery");
+                    apiCardController.activationBayCard(orderDetail.getUser_id(),orderInfo.getId());
                 }
                 return toResponsMsgSuccess("支付成功");
             } else if (trade_state.equals("USERPAYING")) {
@@ -304,7 +305,6 @@ public class ApiPayController extends ApiBaseAction {
             in.close();
             //xml数据
             String reponseXml = new String(out.toByteArray(), "utf-8");
-
             WechatRefundApiResult result = (WechatRefundApiResult) XmlUtil.xmlStrToBean(reponseXml, WechatRefundApiResult.class);
             String result_code = result.getResult_code();
             if (result_code.equalsIgnoreCase("FAIL")) {
@@ -315,7 +315,6 @@ public class ApiPayController extends ApiBaseAction {
             } else if (result_code.equalsIgnoreCase("SUCCESS")) {
                 //订单编号
                 String out_trade_no = result.getOut_trade_no();
-
                 // 业务处理
                 Map params = new HashMap();
                 params.put("orderSn", out_trade_no);
@@ -328,7 +327,6 @@ public class ApiPayController extends ApiBaseAction {
                 List<OrderVo> orderVoList = orderService.queryList(query);
                 if (null != orderVoList && orderVoList.size() > 0) {
                     OrderVo orderInfo = orderVoList.get(0);
-
                     if (orderInfo.getPay_status() == 1) {
                         orderInfo.setPay_status(2);
                         orderInfo.setOrder_status(201);
@@ -343,8 +341,9 @@ public class ApiPayController extends ApiBaseAction {
                         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
                         printerOrder(orderInfo, orderGoods);
                         logger.error("订单" + out_trade_no + "打印成功-notify");
-                    }
 
+                        apiCardController.activationBayCard(orderInfo.getUser_id(),orderInfo.getId());
+                    }
                 } else {
                     logger.error("订单" + out_trade_no + "支付失败找不到更新订单");
                 }
@@ -391,7 +390,6 @@ public class ApiPayController extends ApiBaseAction {
         }
     }
 
-
     //返回微信服务
     public static String setXml(String return_code, String return_msg) {
         return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
@@ -401,4 +399,5 @@ public class ApiPayController extends ApiBaseAction {
     public static String callbakcXml(String orderNum) {
         return "<xml><appid><![CDATA[wx2421b1c4370ec43b]]></appid><attach><![CDATA[支付测试]]></attach><bank_type><![CDATA[CFT]]></bank_type><fee_type><![CDATA[CNY]]></fee_type> <is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[10000100]]></mch_id><nonce_str><![CDATA[5d2b6c2a8db53831f7eda20af46e531c]]></nonce_str><openid><![CDATA[oUpF8uMEb4qRXf22hE3X68TekukE]]></openid> <out_trade_no><![CDATA[" + orderNum + "]]></out_trade_no>  <result_code><![CDATA[SUCCESS]]></result_code> <return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[B552ED6B279343CB493C5DD0D78AB241]]></sign><sub_mch_id><![CDATA[10000100]]></sub_mch_id> <time_end><![CDATA[20140903131540]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1004400740201409030005092168]]></transaction_id></xml>";
     }
+
 }

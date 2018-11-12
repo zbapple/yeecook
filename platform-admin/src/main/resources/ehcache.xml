@@ -51,16 +51,16 @@
     <cache name="sysCache"
            maxElementsInMemory="50000"
            eternal="false"
-           timeToIdleSeconds="3600000"
-           timeToLiveSeconds="3600000"
+           timeToIdleSeconds="36000000"
+           timeToLiveSeconds="36000000"
            overflowToDisk="false">
     </cache>
 
     <cache name="shopCache"
            maxElementsInMemory="50000"
            eternal="false"
-           timeToIdleSeconds="3600000"
-           timeToLiveSeconds="3600000"
+           timeToIdleSeconds="36000000"
+           timeToLiveSeconds="36000000"
            overflowToDisk="false">
     </cache>
 

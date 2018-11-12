@@ -11,11 +11,12 @@
         <result property="activationValidity" column="activation_validity"/>
         <result property="serveCount" column="serve_count"/>
         <result property="serveValidity" column="serve_validity"/>
-        <result property="serveGoodsid" column="serve_goodsid"/>
-        <result property="serveGoodsids" column="serve_goodsids"/>
+        <result property="productId" column="product_id"/>
+        <result property="serveProductIds" column="serve_product_ids"/>
         <result property="addTime" column="add_time"/>
         <result property="updataTime" column="updata_time"/>
         <result property="userId" column="user_id"/>
+        <result property="isValid" column="is_valid"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.ServeInfoEntity">
@@ -27,11 +28,12 @@
 			`activation_validity`,
 			`serve_count`,
 			`serve_validity`,
-			`serve_goodsid`,
-			`serve_goodsids`,
+			`product_id`,
+			`serve_product_ids`,
 			`add_time`,
 			`updata_time`,
-			`user_id`
+			`user_id`,
+			`is_valid`
 		from nideshop_serve_info
 		where id = #{id}
 	</select>
@@ -45,11 +47,12 @@
     		`activation_validity`,
     		`serve_count`,
     		`serve_validity`,
-    		`serve_goodsid`,
-    		`serve_goodsids`,
+    		`product_id`,
+    		`serve_product_ids`,
     		`add_time`,
     		`updata_time`,
-    		`user_id`
+    		`user_id`,
+    		`is_valid`
 		from nideshop_serve_info
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -84,11 +87,12 @@
 			`activation_validity`,
 			`serve_count`,
 			`serve_validity`,
-			`serve_goodsid`,
-			`serve_goodsids`,
+			`product_id`,
+			`serve_product_ids`,
 			`add_time`,
 			`updata_time`,
-			`user_id`)
+			`user_id`,
+			`is_valid`)
 		values(
 			#{name},
 			#{type},
@@ -96,11 +100,12 @@
 			#{activationValidity},
 			#{serveCount},
 			#{serveValidity},
-			#{serveGoodsid},
-			#{serveGoodsids},
+			#{productId},
+			#{serveProductIds},
 			#{addTime},
 			#{updataTime},
-			#{userId})
+			#{userId},
+			#{isValid})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.ServeInfoEntity">
@@ -112,11 +117,12 @@
 			<if test="activationValidity != null">`activation_validity` = #{activationValidity}, </if>
 			<if test="serveCount != null">`serve_count` = #{serveCount}, </if>
 			<if test="serveValidity != null">`serve_validity` = #{serveValidity}, </if>
-			<if test="serveGoodsid != null">`serve_goodsid` = #{serveGoodsid}, </if>
-			<if test="serveGoodsids != null">`serve_goodsids` = #{serveGoodsids}, </if>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="serveProductIds != null">`serve_product_ids` = #{serveProductIds}, </if>
 			<if test="addTime != null">`add_time` = #{addTime}, </if>
 			<if test="updataTime != null">`updata_time` = #{updataTime}, </if>
-			<if test="userId != null">`user_id` = #{userId}</if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="isValid != null">`is_valid` = #{isValid}</if>
 		</set>
 		where id = #{id}
 	</update>

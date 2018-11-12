@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 public class ServeTypeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,6 +20,10 @@ public class ServeTypeEntity implements Serializable {
     private String name;
     //描述
     private String desc;
+    //关联商品id
+    private Integer goodsId;
+    //关联商品名称
+    private String goodsName;
 
     /**
      * 设置：主键
@@ -59,5 +63,31 @@ public class ServeTypeEntity implements Serializable {
      */
     public String getDesc() {
         return desc;
+    }
+    /**
+     * 设置：关联商品id
+     */
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    /**
+     * 获取：关联商品id
+     */
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+    /**
+     * 设置：关联商品名称
+     */
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    /**
+     * 获取：关联商品名称
+     */
+    public String getGoodsName() {
+        return goodsName;
     }
 }

@@ -9,25 +9,31 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 public class ActivationCodeLogEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //主键
     private Integer id;
-    //卡片信息id
-    private Integer cardId;
-    //激活码生成数量
-    private Integer cardCount;
-    //操作人id
+    //关联服务id
+    private Integer serveInfoId;
+    //激活时间
+    private Date activationTime;
+    //激活用户id
     private Integer userId;
-    //操作人姓名
+    //激活用户姓名
     private String userName;
-    //生成时间
-    private Date addTime;
     //备注
     private String remark;
+    //激活码
+    private String activationCode;
+    //激活终端
+    private String activateTerminal;
+    //订单编号
+    private String orderSn;
+    //关联服务名称
+    private String serveInfoName;
 
     /**
      * 设置：主键
@@ -43,69 +49,56 @@ public class ActivationCodeLogEntity implements Serializable {
         return id;
     }
     /**
-     * 设置：卡片信息id
+     * 设置：关联服务id
      */
-    public void setCardId(Integer cardId) {
-        this.cardId = cardId;
+    public void setServeInfoId(Integer serveInfoId) {
+        this.serveInfoId = serveInfoId;
     }
 
     /**
-     * 获取：卡片信息id
+     * 获取：关联服务id
      */
-    public Integer getCardId() {
-        return cardId;
+    public Integer getServeInfoId() {
+        return serveInfoId;
     }
     /**
-     * 设置：激活码生成数量
+     * 设置：激活时间
      */
-    public void setCardCount(Integer cardCount) {
-        this.cardCount = cardCount;
+    public void setActivationTime(Date activationTime) {
+        this.activationTime = activationTime;
     }
 
     /**
-     * 获取：激活码生成数量
+     * 获取：激活时间
      */
-    public Integer getCardCount() {
-        return cardCount;
+    public Date getActivationTime() {
+        return activationTime;
     }
     /**
-     * 设置：操作人id
+     * 设置：激活用户id
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     /**
-     * 获取：操作人id
+     * 获取：激活用户id
      */
     public Integer getUserId() {
         return userId;
     }
     /**
-     * 设置：操作人姓名
+     * 设置：激活用户姓名
      */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
     /**
-     * 获取：操作人姓名
+     * 获取：激活用户姓名
      */
     public String getUserName() {
         return userName;
-    }
-    /**
-     * 设置：生成时间
-     */
-    public void setAddTime(Date addTime) {
-        this.addTime = addTime;
-    }
-
-    /**
-     * 获取：生成时间
-     */
-    public Date getAddTime() {
-        return addTime;
     }
     /**
      * 设置：备注
@@ -119,5 +112,57 @@ public class ActivationCodeLogEntity implements Serializable {
      */
     public String getRemark() {
         return remark;
+    }
+    /**
+     * 设置：激活码
+     */
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    /**
+     * 获取：激活码
+     */
+    public String getActivationCode() {
+        return activationCode;
+    }
+    /**
+     * 设置：激活终端
+     */
+    public void setActivateTerminal(String activateTerminal) {
+        this.activateTerminal = activateTerminal;
+    }
+
+    /**
+     * 获取：激活终端
+     */
+    public String getActivateTerminal() {
+        return activateTerminal;
+    }
+    /**
+     * 设置：订单编号
+     */
+    public void setOrderSn(String orderSn) {
+        this.orderSn = orderSn;
+    }
+
+    /**
+     * 获取：订单编号
+     */
+    public String getOrderSn() {
+        return orderSn;
+    }
+    /**
+     * 设置：关联服务名称
+     */
+    public void setServeInfoName(String serveInfoName) {
+        this.serveInfoName = serveInfoName;
+    }
+
+    /**
+     * 获取：关联服务名称
+     */
+    public String getServeInfoName() {
+        return serveInfoName;
     }
 }

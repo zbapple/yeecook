@@ -21,7 +21,7 @@ App({
     userInfo: {
       nickName: 'Hi,游客',
       userName: '点击登录',
-      avatarUrl: 'https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/150547696d798c.png'
+      avatarUrl: 'https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181031/1257125828a24e.png'
     },
     token: '',
     userCoupon: 'NO_USE_COUPON',//默认不适用优惠券

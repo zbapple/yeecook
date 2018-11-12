@@ -9,9 +9,9 @@ import java.util.Map;
 
 import com.platform.entity.*;
 import com.platform.printer.PrinterSupplierTanks;
-import com.platform.printer.PrinterSupplierTemplate;
+import com.platform.printer.yly.PrinterSupplierTemplate;
 import com.platform.printer.PrinterTanks;
-import com.platform.printer.PrinterTemplate;
+import com.platform.printer.yly.PrinterTemplate;
 import com.platform.printer.vo.YeecookSupplierVo;
 import com.platform.printer.vo.YeecookVo;
 import com.platform.utils.JsonUtil;
@@ -56,6 +56,8 @@ public class ApiOrderService {
     private ApiOrderService apiOrderService;
     @Autowired
     private ApiOrderGoodsService apiOrderGoodsService;
+    @Autowired
+    private ApiSysPrinterService sysPrinterService;
 
     public OrderVo queryObject(Integer id) {
         return orderDao.queryObject(id);
@@ -95,15 +97,9 @@ public class ApiOrderService {
     @Transactional
     public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId) {
         Map<String, Object> resultObj = new HashMap<String, Object>();
-
-
-
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
         AddressVo addressVo = apiAddressMapper.queryObject(addressId);
-
-
         Integer freightPrice = 0;
-
         // * 获取要购买的商品
         List<CartVo> checkedGoodsList = new ArrayList<>();
         BigDecimal goodsTotalPrice;
@@ -150,7 +146,6 @@ public class ApiOrderService {
             cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
             checkedGoodsList.add(cartVo);
         }
-
 
         //获取订单使用的优惠券
         BigDecimal couponPrice = new BigDecimal(0.00);
@@ -246,7 +241,6 @@ public class ApiOrderService {
             couponVo.setCoupon_status(2);
             apiCouponMapper.updateUserCoupon(couponVo);
         }
-
         getGroupByGoosforDept(orderInfo.getId());
         return resultObj;
     }
@@ -322,7 +316,9 @@ public class ApiOrderService {
             List<OrderGoodsVo> orderGoodsVoList=apiOrderGoodsService.queryList(map);
             yeecookVo.setOrderVo(orderSupplierVo);
             yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
-            PrinterSupplierTemplate printerTemplate = new PrinterSupplierTemplate(yeecookVo);
+            List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVo(orderSupplierVo.getSupplierId());
+            SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo(Long.valueOf("1"));
+            PrinterSupplierTemplate printerTemplate = new PrinterSupplierTemplate(yeecookVo,sysPrinterVo,list);
             PrinterSupplierTanks printerTanks = new PrinterSupplierTanks(printerTemplate);
             printerTanks.run();
         }
@@ -334,10 +330,11 @@ public class ApiOrderService {
         YeecookVo yeecookVo = new YeecookVo();
         yeecookVo.setOrderVo(orderVo);
         yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
-        PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo);
+        List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVo(Long.valueOf("1"));
+        SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo(Long.valueOf("1"));
+        PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo,sysPrinterVo,list);
         PrinterTanks printerTanks = new PrinterTanks(printerTemplate);
         printerTanks.run();
     }
-
 
 }

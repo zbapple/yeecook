@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiActivationCardMapper">
+
+    <resultMap type="com.platform.entity.ActivationCardVo" id="activationCardMap">
+        <result property="id" column="id"/>
+        <result property="serveTypeId" column="serve_type_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="activated" column="activated"/>
+        <result property="serveCount" column="serve_count"/>
+        <result property="haveServeCount" column="have_serve_count"/>
+        <result property="deliveryrules" column="deliveryRules"/>
+        <result property="servevalidtime" column="serveValidTime"/>
+        <result property="serveLastTime" column="serve_last_time"/>
+        <result property="serveNextTime" column="serve_next_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ActivationCardVo">
+		select
+			`id`,
+			`serve_type_id`,
+			`address_id`,
+			`user_id`,
+			`activated`,
+			`serve_count`,
+			`have_serve_count`,
+			`deliveryRules`,
+			`serveValidTime`,
+			`serve_last_time`,
+			`serve_next_time`
+		from nideshop_activation_card
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ActivationCardVo">
+		select
+    		`id`,
+    		`serve_type_id`,
+    		`address_id`,
+    		`user_id`,
+    		`activated`,
+    		`serve_count`,
+    		`have_serve_count`,
+    		`deliveryRules`,
+    		`serveValidTime`,
+    		`serve_last_time`,
+    		`serve_next_time`
+		from nideshop_activation_card
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="userId != null ">
+			AND `user_id`  = #{userId}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_activation_card
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.ActivationCardVo" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_activation_card(
+			`serve_type_id`,
+			`address_id`,
+			`user_id`,
+			`activated`,
+			`serve_count`,
+			`have_serve_count`,
+			`deliveryRules`,
+			`serveValidTime`,
+			`serve_last_time`,
+			`serve_next_time`)
+		values(
+			#{serveTypeId},
+			#{addressId},
+			#{userId},
+			#{activated},
+			#{serveCount},
+			#{haveServeCount},
+			#{deliveryrules},
+			#{servevalidtime},
+			#{serveLastTime},
+			#{serveNextTime})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.ActivationCardVo">
+		update nideshop_activation_card 
+		<set>
+			<if test="serveTypeId != null">`serve_type_id` = #{serveTypeId}, </if>
+			<if test="addressId != null">`address_id` = #{addressId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="activated != null">`activated` = #{activated}, </if>
+			<if test="serveCount != null">`serve_count` = #{serveCount}, </if>
+			<if test="haveServeCount != null">`have_serve_count` = #{haveServeCount}, </if>
+			<if test="deliveryrules != null">`deliveryRules` = #{deliveryrules}, </if>
+			<if test="servevalidtime != null">`serveValidTime` = #{servevalidtime}, </if>
+			<if test="serveLastTime != null">`serve_last_time` = #{serveLastTime}, </if>
+			<if test="serveNextTime != null">`serve_next_time` = #{serveNextTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_activation_card where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_activation_card where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

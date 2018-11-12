@@ -76,7 +76,8 @@ public class ApiAuthController extends ApiBaseAction {
     public Object loginByWeixin(@RequestBody LoginInfo loginInfo) {
 
         //获取openid
-        String requestUrl = ApiUserUtils.getWebAccess(loginInfo.getCode());//通过自定义工具类组合出小程序需要的登录凭证 code
+        String requestUrl = ApiUserUtils.getWebAccess(loginInfo.getCode());
+        //通过自定义工具类组合出小程序需要的登录凭证 code
         logger.info("》》》组合token为：" + requestUrl);
         String res = restTemplate.getForObject(requestUrl, String.class);
         logger.info("res=="+res);

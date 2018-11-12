@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                #if($shiro.hasPermission("activationgeneratorlog:save"))
+                <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+                #end
+                #if($shiro.hasPermission("activationgeneratorlog:update"))
+                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                #end
+                #if($shiro.hasPermission("activationgeneratorlog:delete"))
+                <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                #end
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="activationGeneratorLog" :rules="ruleValidate" :label-width="80">
+            <Form-item label="关联激活码生成器id" prop="activationGeneratorId">
+                <i-input v-model="activationGeneratorLog.activationGeneratorId" placeholder="关联激活码生成器id"/>
+            </Form-item>
+            <Form-item label="生成激活码数量" prop="count">
+                <i-input v-model="activationGeneratorLog.count" placeholder="生成激活码数量"/>
+            </Form-item>
+            <Form-item label="生成激活码秘钥" prop="password">
+                <i-input v-model="activationGeneratorLog.password" placeholder="生成激活码秘钥"/>
+            </Form-item>
+            <Form-item label="分组id" prop="groupId">
+                <i-input v-model="activationGeneratorLog.groupId" placeholder="分组id"/>
+            </Form-item>
+            <Form-item label="激活码生成长度" prop="length">
+                <i-input v-model="activationGeneratorLog.length" placeholder="激活码生成长度"/>
+            </Form-item>
+            <Form-item label="操作用户" prop="userId">
+                <i-input v-model="activationGeneratorLog.userId" placeholder="操作用户"/>
+            </Form-item>
+            <Form-item label="操作时间" prop="addTime">
+                <i-input v-model="activationGeneratorLog.addTime" placeholder="操作时间"/>
+            </Form-item>
+            <Form-item label="操作ip" prop="ip">
+                <i-input v-model="activationGeneratorLog.ip" placeholder="操作ip"/>
+            </Form-item>
+            <Form-item label="关联服务id" prop="serveInfoId">
+                <i-input v-model="activationGeneratorLog.serveInfoId" placeholder="关联服务id"/>
+            </Form-item>
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/activationgeneratorlog.js?_${date.systemTime}"></script>
+</body>
+</html>

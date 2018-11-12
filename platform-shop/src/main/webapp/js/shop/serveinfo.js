@@ -8,12 +8,13 @@ $(function () {
 			{label: '服务规则描述', name: 'desc', index: 'desc', width: 80},
 			{label: '激活有效期', name: 'activationValidity', index: 'activation_validity', width: 80},
 			{label: '总服务次数', name: 'serveCount', index: 'serve_count', width: 80},
-			{label: '服务有效期', name: 'serveValidity', index: 'serve_validity', width: 80},
-			{label: '自身关联商品id', name: 'serveGoodsid', index: 'serve_goodsid', width: 80},
-			{label: '服务关联商品集合', name: 'serveGoodsids', index: 'serve_goodsids', width: 80},
+			{label: '服务有效期（月）', name: 'serveValidity', index: 'serve_validity', width: 80},
+			{label: '自身关联商品id', name: 'productId', index: 'product_id', width: 80},
+			{label: '服务关联商品集合', name: 'serveProductIds', index: 'serve_product_ids', width: 80},
 			{label: '新增时间', name: 'addTime', index: 'add_time', width: 80},
 			{label: '修改时间', name: 'updataTime', index: 'updata_time', width: 80},
-			{label: '操作用户id', name: 'userId', index: 'user_id', width: 80}]
+			{label: '操作用户id', name: 'userId', index: 'user_id', width: 80},
+			{label: '是否开启：0关闭，1开启', name: 'isValid', index: 'is_valid', width: 80}]
     });
 });
 

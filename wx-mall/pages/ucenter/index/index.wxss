@@ -11,9 +11,9 @@ page{
 }
 .userinfo {
 	display: flex;
-	/* flex-direction: column; */
-	/* padding: 20rpx 0; */
-	/* align-items: center; */
+	flex-direction: column; 
+	padding: 20rpx 0; 
+	align-items: center;
 	background: #ffffff;
   width: 750rpx; 
 
@@ -25,7 +25,7 @@ page{
 .userinfo-avatar {
 	width: 160rpx;
 	height: 160rpx;
-	margin: 20rpx 0;
+	/* margin: 20rpx 0; */
 	border-radius: 50%;
 }
 
@@ -34,13 +34,11 @@ page{
   color:#333; 
   font-weight:bold;
   font-size:18px;
-  margin-top: 38rpx;
-  height: 50rpx;
+  /* margin-top: 38rpx; */
+   /* height: 50rpx; */
   line-height: 50rpx;
-  text-align:left;
-  margin-left:-10rpx;
-
-
+  /* text-align:left;
+  margin-left:10rpx; */
 }
 
 .userinfo-mobile { 
@@ -229,62 +227,62 @@ page{
 } */
 
 .user-menu .icon.coupon{
-    background: url(https://shop.51shop.ink/statics/icon/icon_yhj.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1648478026a318.png) 0 0 no-repeat;
     background-size: 100%;
 }
 
 .user-menu .icon.sc{
-    background: url(https://shop.51shop.ink/statics/icon/icon_sc.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/164816325b2a2.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 
 .user-menu .icon.address{
-    background: url(https://shop.51shop.ink/statics/icon/icon_dz.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1647128263777c.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 
 .user-menu .icon.security{
-    background: url(https://shop.51shop.ink/statics/icon/icon_zj.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16463838500be8.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 
 .user-menu .icon.kefu{
-    background: url(https://shop.51shop.ink/statics/icon/icon_kf.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16460636405d39.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 
 .user-menu .icon.help{
-    background: url(https://shop.51shop.ink/statics/icon/icon_bz.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1644394341b3c1.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 
 .user-menu .icon.feedback{
-    background: url(https://shop.51shop.ink/statics/icon/icon_fk.png) 0 0 no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1643557559c2d7.png) 0 0 no-repeat;
     background-size: 52.803rpx;
 }
 .user-menu .icon.phone{
-    background: url(https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/20180727/15011540ebe21.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/164312733c1bac.png) no-repeat;
     background-size: 52.803rpx;
 }
 .userinfo-mobile .icon.phone{
-    background: url(https://shop.51shop.ink/statics/icon/icon_sj.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/164226816a6cbf.png) no-repeat;
     background-size: 52.803rpx;
 }
 
 .order_detai .icon.dfk{
-    background: url(https://shop.51shop.ink/statics/icon/icon_dfk.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16415731937b32.png) no-repeat;
     background-size: 52.803rpx;
 }
 .order_detai .icon.dfh{
-    background: url(https://shop.51shop.ink/statics/icon/icon_dfh.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16412122a25c3.png) no-repeat;
     background-size: 52.803rpx;
 }
 .order_detai .icon.dsh{
-    background: url(https://shop.51shop.ink/statics/icon/icon_dsh.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16402788317333.png) no-repeat;
     background-size: 52.803rpx;
 }
 .order_detai .icon.tk{
-    background: url(https://shop.51shop.ink/statics/icon/icon_tk.png) no-repeat;
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/17371890519db4.png) no-repeat;
     background-size: 52.803rpx;
 }
 

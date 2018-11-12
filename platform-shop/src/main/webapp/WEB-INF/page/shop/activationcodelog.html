@@ -34,23 +34,32 @@
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="activationCodeLog" :rules="ruleValidate" :label-width="80">
-            <Form-item label="卡片信息id" prop="cardId">
-                <i-input v-model="activationCodeLog.cardId" placeholder="卡片信息id"/>
+            <Form-item label="关联服务id" prop="serveInfoId">
+                <i-input v-model="activationCodeLog.serveInfoId" placeholder="关联服务id"/>
             </Form-item>
-            <Form-item label="激活码生成数量" prop="cardCount">
-                <i-input v-model="activationCodeLog.cardCount" placeholder="激活码生成数量"/>
+            <Form-item label="激活时间" prop="activationTime">
+                <i-input v-model="activationCodeLog.activationTime" placeholder="激活时间"/>
             </Form-item>
-            <Form-item label="操作人id" prop="userId">
-                <i-input v-model="activationCodeLog.userId" placeholder="操作人id"/>
+            <Form-item label="激活用户id" prop="userId">
+                <i-input v-model="activationCodeLog.userId" placeholder="激活用户id"/>
             </Form-item>
-            <Form-item label="操作人姓名" prop="userName">
-                <i-input v-model="activationCodeLog.userName" placeholder="操作人姓名"/>
-            </Form-item>
-            <Form-item label="生成时间" prop="addTime">
-                <i-input v-model="activationCodeLog.addTime" placeholder="生成时间"/>
+            <Form-item label="激活用户姓名" prop="userName">
+                <i-input v-model="activationCodeLog.userName" placeholder="激活用户姓名"/>
             </Form-item>
             <Form-item label="备注" prop="remark">
                 <i-input v-model="activationCodeLog.remark" placeholder="备注"/>
+            </Form-item>
+            <Form-item label="激活码" prop="activationCode">
+                <i-input v-model="activationCodeLog.activationCode" placeholder="激活码"/>
+            </Form-item>
+            <Form-item label="激活终端" prop="activateTerminal">
+                <i-input v-model="activationCodeLog.activateTerminal" placeholder="激活终端"/>
+            </Form-item>
+            <Form-item label="订单编号" prop="orderSn">
+                <i-input v-model="activationCodeLog.orderSn" placeholder="订单编号"/>
+            </Form-item>
+            <Form-item label="关联服务名称" prop="serveInfoName">
+                <i-input v-model="activationCodeLog.serveInfoName" placeholder="关联服务名称"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

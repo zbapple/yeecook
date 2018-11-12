@@ -4,7 +4,9 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '名称', name: 'name', index: 'name', width: 80},
-			{label: '描述', name: 'desc', index: 'desc', width: 80}]
+			{label: '描述', name: 'desc', index: 'desc', width: 80},
+			{label: '关联商品id', name: 'goodsId', index: 'goods_id', width: 80},
+			{label: '关联商品名称', name: 'goodsName', index: 'goods_name', width: 80}]
     });
 });
 

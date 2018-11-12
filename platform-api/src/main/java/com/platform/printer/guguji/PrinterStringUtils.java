@@ -1,4 +1,4 @@
-package com.platform.printer;
+package com.platform.printer.guguji;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +93,18 @@ public class PrinterStringUtils {
                 ) {
             adrrs.append(a);
             adrrs.append("<br>");
+        }
+        return adrrs.toString();
+    }
+
+    public static String fmHtmlBr(String str,int length,String n){
+        if(null==str){ return "";}
+        if(str.length()<length){ return str;}
+        StringBuilder adrrs= new StringBuilder();
+        for (String a:getStrList(str,length)
+        ) {
+            adrrs.append(a);
+            adrrs.append(n);
         }
         return adrrs.toString();
     }

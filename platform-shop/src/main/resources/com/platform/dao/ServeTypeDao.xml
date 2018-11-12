@@ -7,13 +7,17 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="desc" column="desc"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="goodsName" column="goods_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.ServeTypeEntity">
 		select
 			`id`,
 			`name`,
-			`desc`
+			`desc`,
+			`goods_id`,
+			`goods_name`
 		from nideshop_serve_type
 		where id = #{id}
 	</select>
@@ -22,7 +26,9 @@
 		select
     		`id`,
     		`name`,
-    		`desc`
+    		`desc`,
+    		`goods_id`,
+    		`goods_name`
 		from nideshop_serve_type
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -52,17 +58,23 @@
 	<insert id="save" parameterType="com.platform.entity.ServeTypeEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into nideshop_serve_type(
 			`name`,
-			`desc`)
+			`desc`,
+			`goods_id`,
+			`goods_name`)
 		values(
 			#{name},
-			#{desc})
+			#{desc},
+			#{goodsId},
+			#{goodsName})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.ServeTypeEntity">
 		update nideshop_serve_type 
 		<set>
 			<if test="name != null">`name` = #{name}, </if>
-			<if test="desc != null">`desc` = #{desc}</if>
+			<if test="desc != null">`desc` = #{desc}, </if>
+			<if test="goodsId != null">`goods_id` = #{goodsId}, </if>
+			<if test="goodsName != null">`goods_name` = #{goodsName}</if>
 		</set>
 		where id = #{id}
 	</update>

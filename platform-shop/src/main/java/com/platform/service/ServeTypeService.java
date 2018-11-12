@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 public interface ServeTypeService {
 

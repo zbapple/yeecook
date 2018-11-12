@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-10-21 01:13:48
+ * @date 2018-10-28 00:48:59
  */
 public class ServeInfoEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,21 +23,23 @@ public class ServeInfoEntity implements Serializable {
     //服务规则描述
     private String desc;
     //激活有效期
-    private String activationValidity;
+    private Date activationValidity;
     //总服务次数
     private Integer serveCount;
-    //服务有效期
-    private String serveValidity;
+    //服务有效期（月）
+    private Integer serveValidity;
     //自身关联商品id
-    private Integer serveGoodsid;
+    private Integer productId;
     //服务关联商品集合
-    private String serveGoodsids;
+    private String serveProductIds;
     //新增时间
     private Date addTime;
     //修改时间
     private Date updataTime;
     //操作用户id
     private Integer userId;
+    //是否开启：0关闭，1开启
+    private Integer isValid;
 
     /**
      * 设置：主键
@@ -94,14 +96,14 @@ public class ServeInfoEntity implements Serializable {
     /**
      * 设置：激活有效期
      */
-    public void setActivationValidity(String activationValidity) {
+    public void setActivationValidity(Date activationValidity) {
         this.activationValidity = activationValidity;
     }
 
     /**
      * 获取：激活有效期
      */
-    public String getActivationValidity() {
+    public Date getActivationValidity() {
         return activationValidity;
     }
     /**
@@ -118,43 +120,43 @@ public class ServeInfoEntity implements Serializable {
         return serveCount;
     }
     /**
-     * 设置：服务有效期
+     * 设置：服务有效期（月）
      */
-    public void setServeValidity(String serveValidity) {
+    public void setServeValidity(Integer serveValidity) {
         this.serveValidity = serveValidity;
     }
 
     /**
-     * 获取：服务有效期
+     * 获取：服务有效期（月）
      */
-    public String getServeValidity() {
+    public Integer getServeValidity() {
         return serveValidity;
     }
     /**
      * 设置：自身关联商品id
      */
-    public void setServeGoodsid(Integer serveGoodsid) {
-        this.serveGoodsid = serveGoodsid;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     /**
      * 获取：自身关联商品id
      */
-    public Integer getServeGoodsid() {
-        return serveGoodsid;
+    public Integer getProductId() {
+        return productId;
     }
     /**
      * 设置：服务关联商品集合
      */
-    public void setServeGoodsids(String serveGoodsids) {
-        this.serveGoodsids = serveGoodsids;
+    public void setServeProductIds(String serveProductIds) {
+        this.serveProductIds = serveProductIds;
     }
 
     /**
      * 获取：服务关联商品集合
      */
-    public String getServeGoodsids() {
-        return serveGoodsids;
+    public String getServeProductIds() {
+        return serveProductIds;
     }
     /**
      * 设置：新增时间
@@ -194,5 +196,18 @@ public class ServeInfoEntity implements Serializable {
      */
     public Integer getUserId() {
         return userId;
+    }
+    /**
+     * 设置：是否开启：0关闭，1开启
+     */
+    public void setIsValid(Integer isValid) {
+        this.isValid = isValid;
+    }
+
+    /**
+     * 获取：是否开启：0关闭，1开启
+     */
+    public Integer getIsValid() {
+        return isValid;
     }
 }
