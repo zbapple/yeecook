@@ -45,7 +45,6 @@ Page({
           }
         })
       }
-      console.log(res)
     });
   },
   bindInpuntValue(event){
@@ -60,7 +59,6 @@ Page({
     this.setData({
       content: event.detail.value,
     })
-    console.log(event.detail)
   },
   onReady: function () {
 

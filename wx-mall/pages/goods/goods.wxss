@@ -50,17 +50,17 @@
 }
 
 .goods-info .c .tx{
-    display: block; 
-    padding-left:31.25rpx; 
+    display: block;
+    padding-left:31.25rpx;
 }
 
-.goods-info .price{ 
-    height: 80rpx; 
-    line-height: 80rpx; 
-    border-bottom: 1px solid #f4f4f4; 
+.goods-info .price{
+    height: 80rpx;
+    line-height: 80rpx;
+    border-bottom: 1px solid #f4f4f4;
 }
 .goods-info .price .pri{
-  float: left; 
+  float: left;
 }
 .goods-info .dzprice{
   font-size: 40rpx;
@@ -69,7 +69,7 @@
 }
 .goods-info .yjprice{
   margin-left: 20rpx;
-  text-decoration: line-through; 
+  text-decoration: line-through;
 }
 
 .pricen{
@@ -82,7 +82,7 @@
 
 .yjpricen{
   margin-left: 20rpx;
-  text-decoration: line-through; 
+  text-decoration: line-through;
 }
 
 
@@ -546,7 +546,7 @@
 .bottom-btn .l{
     float: left;
     height: 100rpx;
-    width: 120rpx;
+    width: 162rpx;
     border: 1px solid #f4f4f4;
     display: flex;
     align-items: center;
@@ -556,19 +556,8 @@
 
 .bottom-btn .l.l-collect{
     border-right: none;
-    /* border-left: none; */
+    border-left: none;
     text-align: center;
-}
-
-.homeBox{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
-}
-
-.homeBox text{
-  font-size: 20rpx;
 }
 
 
@@ -668,6 +657,7 @@
     height: 33rpx;
     line-height: 33rpx;
     margin-bottom: 10rpx;
+    overflow:hidden;
 }
 
 .attr-pop .a{
@@ -752,15 +742,15 @@
 /* .fx_info{
   position: fixed;
   top:20rpx;
-  right:20rpx; 
+  right:20rpx;
 } */
-.icon_fx{ 
+.icon_fx{
   float: right;
   display: block;
   height: 52.803rpx;
-  width: 52.803rpx; 
+  width: 52.803rpx;
   background: url(https://shop.51shop.ink/statics/icon/icon_fx.png) 0 0 no-repeat;
-  background-size: 52.803rpx; 
+  background-size: 52.803rpx;
   margin-top:15rpx;
   margin-right: 10rpx;
 }

@@ -1,6 +1,5 @@
 package com.platform.api;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.LoginInfo;

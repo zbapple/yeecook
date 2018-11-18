@@ -1,7 +1,7 @@
 <view class="container">
 <button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
   <button class="userinfo">
-    <view><image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image></view> 
+    <view><image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image></view>
     <view>
       <text class="userinfo-nickname">{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
       <!-- <view class="userinfo-mobile" v-if="hasMobile != ''">
@@ -10,7 +10,7 @@
           <text class="txt">绑定手机</text>
         </navigator>
       </view> -->
-    </view> 
+    </view>
 	</button>
   </button>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
@@ -47,19 +47,19 @@
           <text class="txt">退货/退款</text>
         </navigator>
        </view>
-    </view> 
-  </view> 
+    </view>
+  </view>
   <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
   <view class="user-menu">
     <view class='menu_tit'>
       <text class='menu_top'>我的服务</text>
-    </view> 
+    </view>
     <view class="item">
       <navigator url="/pages/ucenter/coupon/coupon" class="a">
         <text class="icon coupon"></text>
         <text class="txt">优惠券</text>
       </navigator>
-    </view> 
+    </view>
     <view class="item">
       <navigator url="/pages/ucenter/collect/collect" class="a">
         <text class="icon sc"></text>
@@ -71,7 +71,7 @@
         <text class="icon security"></text>
         <text class="txt">我的足迹</text>
       </navigator>
-    </view> 
+    </view>
     <view class="item">
       <navigator url="/pages/ucenter/feedback/feedback" class="a">
         <text class="icon feedback"></text>
@@ -83,7 +83,7 @@
         <text class="icon address"></text>
         <text class="txt">地址管理</text>
       </navigator>
-    </view> 
+    </view>
     <button class='service' open-type="contact">
       <view class="item no-border">
         <navigator url="url" class="a">
@@ -91,7 +91,7 @@
           <text class="txt">联系客服</text>
         </navigator>
       </view>
-    </button> 
+    </button>
 
     <view class="item">
       <navigator url="/pages/auth/mobile/mobile" class="a">
@@ -106,6 +106,6 @@
         <text class="txt">帮助中心</text>
       </navigator>
     </view>  -->
-  </view> 
+  </view>
   <!-- <view class="logout" bindtap="exitLogin">退出登录</view> -->
 </view>

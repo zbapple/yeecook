@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiXetYqmMapper">
+
+    <resultMap type="com.platform.entity.XetYqmVo" id="xetYqmMap">
+        <result property="batchId" column="batch_id"/>
+        <result property="batchName" column="batch_name"/>
+        <result property="invitationCode" column="Invitation_code"/>
+        <result property="invitationCodeUrl" column="Invitation_code_url"/>
+        <result property="isUse" column="is_use"/>
+        <result property="useUserId" column="use_user_id"/>
+        <result property="useUserName" column="use_user_name"/>
+        <result property="invitationCodeTitle" column="Invitation_code_title"/>
+        <result property="useNotice" column="use_notice"/>
+        <result property="proposer" column="proposer"/>
+        <result property="pursueReason" column="pursue_reason"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="deadTime" column="dead_time"/>
+        <result property="generatedTime" column="generated_time"/>
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="countCd" column="count_cd"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.platform.entity.XetYqmVo">
+		select
+			`batch_id`,
+			`batch_name`,
+			`Invitation_code`,
+			`Invitation_code_url`,
+			`is_use`,
+			`use_user_id`,
+			`use_user_name`,
+			`Invitation_code_title`,
+			`use_notice`,
+			`proposer`,
+			`pursue_reason`,
+			`effective_time`,
+			`dead_time`,
+			`generated_time`,
+			`id`,
+			`user_id`
+		from nideshop_xet_yqm
+		where `id` = #{id}
+
+	</select>
+
+    <select id="queryList" resultType="com.platform.entity.XetYqmVo">
+        select
+        `batch_id`,
+        `batch_name`,
+        `Invitation_code`,
+        `Invitation_code_url`,
+        `is_use`,
+        `use_user_id`,
+        `use_user_name`,
+        `Invitation_code_title`,
+        `use_notice`,
+        `proposer`,
+        `pursue_reason`,
+        `effective_time`,
+        `dead_time`,
+        `generated_time`,
+        `id`,
+        `user_id`
+        from nideshop_xet_yqm
+        WHERE `is_use` ='未使用'
+        <if test="batchName != null and batchName.trim() != ''">
+            AND `batch_name` = #{batchName}
+        </if>
+        <if test="batchId != null and batchId.trim() != ''">
+            AND `batch_id` = #{batchId}
+        </if>
+        <if test="userId != null ">
+            AND `user_id` = #{userId}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by Invitation_code desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="query1" resultType="com.platform.entity.XetYqmVo">
+        SELECT c.* FROM (SELECT
+        a.batch_name,
+        a.batch_id,
+        COUNT(a.id) as count_cd
+        FROM
+        nideshop_xet_yqm a,
+        sys_user u,
+        nideshop_user su
+        WHERE
+        u.mobile = su.mobile
+        AND a.user_id = u.user_id
+        AND su.id =#{userId}
+        AND a.is_use ='未使用'
+        GROUP BY a.batch_name,
+        a.batch_id
+        ORDER BY
+        a.batch_name,
+        a.batch_id) c
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.platform.entity.XetYqmVo">
+        update nideshop_xet_yqm
+        <set>
+            <if test="batchId != null">`batch_id` = #{batchId},</if>
+            <if test="batchName != null">`batch_name` = #{batchName},</if>
+            <if test="invitationCodeUrl != null">`Invitation_code_url` = #{invitationCodeUrl},</if>
+            <if test="isUse != null">`is_use` = #{isUse},</if>
+            <if test="useUserId != null">`use_user_id` = #{useUserId},</if>
+            <if test="useUserName != null">`use_user_name` = #{useUserName},</if>
+            <if test="invitationCodeTitle != null">`Invitation_code_title` = #{invitationCodeTitle},</if>
+            <if test="useNotice != null">`use_notice` = #{useNotice},</if>
+            <if test="proposer != null">`proposer` = #{proposer},</if>
+            <if test="pursueReason != null">`pursue_reason` = #{pursueReason},</if>
+            <if test="effectiveTime != null">`effective_time` = #{effectiveTime},</if>
+            <if test="deadTime != null">`dead_time` = #{deadTime},</if>
+            <if test="generatedTime != null">`generated_time` = #{generatedTime},</if>
+            <if test="id != null">`id` = #{id},</if>
+            <if test="userId != null">`user_id` = #{userId}</if>
+        </set>
+        where `id` = #{id}
+    </update>
+
+</mapper>

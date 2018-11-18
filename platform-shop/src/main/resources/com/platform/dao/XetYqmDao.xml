@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.XetYqmDao">
+
+    <resultMap type="com.platform.entity.XetYqmEntity" id="xetYqmMap">
+        <result property="batchId" column="batch_id"/>
+        <result property="batchName" column="batch_name"/>
+        <result property="invitationCode" column="Invitation_code"/>
+        <result property="invitationCodeUrl" column="Invitation_code_url"/>
+        <result property="isUse" column="is_use"/>
+        <result property="useUserId" column="use_user_id"/>
+        <result property="useUserName" column="use_user_name"/>
+        <result property="invitationCodeTitle" column="Invitation_code_title"/>
+        <result property="useNotice" column="use_notice"/>
+        <result property="proposer" column="proposer"/>
+        <result property="pursueReason" column="pursue_reason"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="deadTime" column="dead_time"/>
+        <result property="generatedTime" column="generated_time"/>
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.XetYqmEntity">
+		select
+			`batch_id`,
+			`batch_name`,
+			`Invitation_code`,
+			`Invitation_code_url`,
+			`is_use`,
+			`use_user_id`,
+			`use_user_name`,
+			`Invitation_code_title`,
+			`use_notice`,
+			`proposer`,
+			`pursue_reason`,
+			`effective_time`,
+			`dead_time`,
+			`generated_time`,
+			`id`,
+			`user_id`
+		from nideshop_xet_yqm
+		where Invitation_code = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.XetYqmEntity">
+		select
+    		`batch_id`,
+    		`batch_name`,
+    		`Invitation_code`,
+    		`Invitation_code_url`,
+    		`is_use`,
+    		`use_user_id`,
+    		`use_user_name`,
+    		`Invitation_code_title`,
+    		`use_notice`,
+    		`proposer`,
+    		`pursue_reason`,
+    		`effective_time`,
+    		`dead_time`,
+    		`generated_time`,
+    		`id`,
+    		`user_id`
+		from nideshop_xet_yqm
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by Invitation_code desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_xet_yqm
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.XetYqmEntity">
+		insert into nideshop_xet_yqm(
+			`batch_id`,
+			`batch_name`,
+			`Invitation_code`,
+			`Invitation_code_url`,
+			`is_use`,
+			`use_user_id`,
+			`use_user_name`,
+			`Invitation_code_title`,
+			`use_notice`,
+			`proposer`,
+			`pursue_reason`,
+			`effective_time`,
+			`dead_time`,
+			`generated_time`,
+			`id`,
+			`user_id`)
+		values(
+			#{batchId},
+			#{batchName},
+			#{invitationCode},
+			#{invitationCodeUrl},
+			#{isUse},
+			#{useUserId},
+			#{useUserName},
+			#{invitationCodeTitle},
+			#{useNotice},
+			#{proposer},
+			#{pursueReason},
+			#{effectiveTime},
+			#{deadTime},
+			#{generatedTime},
+			#{id},
+			#{userId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.XetYqmEntity">
+		update nideshop_xet_yqm 
+		<set>
+			<if test="batchId != null">`batch_id` = #{batchId}, </if>
+			<if test="batchName != null">`batch_name` = #{batchName}, </if>
+			<if test="invitationCodeUrl != null">`Invitation_code_url` = #{invitationCodeUrl}, </if>
+			<if test="isUse != null">`is_use` = #{isUse}, </if>
+			<if test="useUserId != null">`use_user_id` = #{useUserId}, </if>
+			<if test="useUserName != null">`use_user_name` = #{useUserName}, </if>
+			<if test="invitationCodeTitle != null">`Invitation_code_title` = #{invitationCodeTitle}, </if>
+			<if test="useNotice != null">`use_notice` = #{useNotice}, </if>
+			<if test="proposer != null">`proposer` = #{proposer}, </if>
+			<if test="pursueReason != null">`pursue_reason` = #{pursueReason}, </if>
+			<if test="effectiveTime != null">`effective_time` = #{effectiveTime}, </if>
+			<if test="deadTime != null">`dead_time` = #{deadTime}, </if>
+			<if test="generatedTime != null">`generated_time` = #{generatedTime}, </if>
+			<if test="id != null">`id` = #{id}, </if>
+			<if test="userId != null">`user_id` = #{userId}</if>
+		</set>
+		where Invitation_code = #{invitationCode}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_xet_yqm where Invitation_code = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_xet_yqm where Invitation_code in 
+		<foreach item="invitationCode" collection="array" open="(" separator="," close=")">
+			#{invitationCode}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -45,7 +45,6 @@ Page({
        * 页面上拉触底事件的处理函数
        */
   onReachBottom: function () {
-    console.log("下一页")
     this.getOrderList()
   },
 
@@ -61,7 +60,6 @@ Page({
     that.data.orderId = that.data.orderId == -1 ? "" : that.data.orderId;
     util.request(api.OrderList, { page: that.data.page, size: that.data.size, order_status: that.data.orderId}).then(function (res) {
       if (res.errno === 0) {
-        console.log(res.data);
         that.setData({
           orderList: that.data.orderList.concat(res.data.data),
           page: res.data.currentPage + 1,

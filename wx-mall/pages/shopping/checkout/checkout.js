@@ -24,7 +24,6 @@ Page({
   },
   onLoad: function (options) {
 
-    console.log(options.isBuy)
     // 页面初始化 options为页面跳转所带来的参数
     if (options.isBuy!=null) {
       this.data.isBuy = options.isBuy
@@ -41,20 +40,19 @@ Page({
     let buyType = this.data.isBuy ? 'buy' : 'cart'
     util.request(url, { addressId: that.data.addressId, couponId: that.data.couponId, type: buyType }).then(function (res) {
       if (res.errno === 0) {
-        console.log(res.data);
         that.setData({
           checkedGoodsList: res.data.checkedGoodsList,
           checkedAddress: res.data.checkedAddress,
           actualPrice: res.data.actualPrice,
-          checkedCoupon: res.data.checkedCoupon,
-          couponList: res.data.couponList,
+          checkedCoupon: res.data.checkedCoupon ? res.data.checkedCoupon : "",
+          couponList: res.data.couponList ? res.data.couponList : "",
           couponPrice: res.data.couponPrice,
           freightPrice: res.data.freightPrice,
           goodsTotalPrice: res.data.goodsTotalPrice,
           orderTotalPrice: res.data.orderTotalPrice
         });
         //设置默认收获地址
-        if (that.data.checkedAddress){
+        if (that.data.checkedAddress.id){
             let addressId = that.data.checkedAddress.id;
             if (addressId) {
                 that.setData({ addressId: addressId });
@@ -66,7 +64,6 @@ Page({
                 success: function (res) {
                     if (res.confirm) {
                         that.selectAddress();
-                        console.log('用户点击确定')
                     }
                 }
             })

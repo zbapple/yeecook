@@ -205,23 +205,22 @@ Page({
             }
         });
 
-        var that = this
-        //  高度自适应
-        wx.getSystemInfo({
-            success: function (res) {
-                var clientHeight = res.windowHeight,
-                    clientWidth = res.windowWidth,
-                    rpxR = 750 / clientWidth;
-                var calc = clientHeight * rpxR - 100;
-                console.log(calc)
-                that.setData({
-                    winHeight: calc
-                });
-            }
+    var that = this
+    //  高度自适应
+    wx.getSystemInfo({
+      success: function (res) {
+        var clientHeight = res.windowHeight,
+          clientWidth = res.windowWidth,
+          rpxR = 750 / clientWidth;
+        var calc = clientHeight * rpxR - 100;
+        that.setData({
+          winHeight: calc
         });
-    },
-    onReady: function () {
-        // 页面渲染完成
+      }
+    });
+  },
+  onReady: function () {
+    // 页面渲染完成
 
     },
     onShow: function () {
