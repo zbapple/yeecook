@@ -1,16 +1,14 @@
-#### [双十一全球狂欢节](https://m.aliyun.com/act/team1111/#/share?params=N.ETYW5TntYS.i8s6n64p)：
-一年一度的双十一又来了，云主机仅99.5元，双11拼团低至1折，赢300万现金，错过再等一年！点击标题进入活动页开团或参团！
-![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/11.jpg "全球狂欢节")
+#### [腾讯云双十一秒杀](https://cloud.tencent.com/redirect.php?redirect=10172&cps_key=30280f92fc381dfc9e1d9e0e23d25a18&from=activity)：
+活动时间（10.29-11.30）：每日5场秒杀，分别于 9:00 / 11:00 / 14:00 / 16:00 / 19:00 开抢。热门云产品1折起，送13000元续费/升级大礼包
+[![腾讯云双十一](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/tx11.jpg)](https://cloud.tencent.com/redirect.php?redirect=10172&cps_key=30280f92fc381dfc9e1d9e0e23d25a18&from=activity)
 
 # 微信小程序商城（Java版）
-
-[![Fork me on Gitee](https://gitee.com/fuyang_lipengjun/platform/widgets/widget_3.svg?color=C71D24)](https://gitee.com/fuyang_lipengjun/platform)
 
 ## 官方首页
 * [演示地址](http://fly2you.cn)
 * [最新开发文档](http://fly2you.cn/guide/index)
 
-* 官方QQ群：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=75689ba2797dd88a208446088b029fbdeba87a29315ff2a021a6731f22ef5052"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="platform-wechat-mall" title="platform-wechat-mall"></a>
+* 官方QQ群：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=2d02d83d8be4c2cb6848bbae1df1037ba2acddecd2a1aa8cef7b3e4ab4ff75aa"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="platform-wechat-mall ①群" title="platform-wechat-mall ①群"></a><a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=990a15d445ef791dba99d22d9772c06ac7894ffa6ac639b1eec530554c432583"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="platform-wechat-mall ②群" title="platform-wechat-mall ②群"></a>
 * git：[https://gitee.com/fuyang_lipengjun/platform](https://gitee.com/fuyang_lipengjun/platform)
 * 基础架构版
     * git：[https://gitee.com/fuyang_lipengjun/platform-framework](https://gitee.com/fuyang_lipengjun/platform-framework)
@@ -51,34 +49,13 @@ platform-wechat-mall
 |--platform-common 公共模块
 |--platform-framework 系统WEB合并
 |--platform-gen 代码生成
+|--platform-mp 微信公众号模块
 |--platform-schedule 定时任务
 |--platform-shop 商城后台管理
 |--wx-mall 微信小程序商城
 |--platform-vue 微信公众号商城（待开发）
 ~~~
 
-## 自动代码生成结构
-~~~
-AutoCode
-├─menu.sql                      创建菜单的sql
-│ 
-└─main    
-     ├─java                     生成的java代码
-     │    └─com
-     │       └─platform
-     │            ├─controller
-     │            ├─dao
-     │            ├─entity
-     │            └─service
-     │                └─impl
-     └─webapp                   生成的页面文件
-         ├─js   
-         │  └─shop   
-         └─WEB-INF 
-             └─page  
-                └─shop  
-
-~~~
 ## 实现功能
 
 * 一：会员管理
@@ -161,7 +138,7 @@ AutoCode
 * 修改配置文件 /platform-admin/src/main/resources/j2cache.properties
     * redis.hosts
     * redis.password
-* 启动后台项目（参照启动手册）
+* 启动后台项目（参照<a href="#doc">开发文档</a>）
 * 打开微信开发者工具
 * 导入 /wx-mall填写appId
 * 修改 /wx-mall/config/app.js里NewApiRootUrl的值
@@ -172,6 +149,12 @@ AutoCode
 
 ## 生产环境打包
     platform-wechat-mall>mvn package -P prod
+    
+## platform-vue启动
+* npm install -g yarn
+* yarn install
+* yarn run dev
+* 浏览器输入[http://127.0.0.1:8001](http://127.0.0.1:8001)
 
 ***
 ### 关注微信公众号，第一时间获取项目最新动向，即将推出视频教程
@@ -206,20 +189,12 @@ AutoCode
 ***
 ## 小程序客户案例
 
-### 美平超市
-![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/1.png "美平超市")
 ### 便利主义超市
 ![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/2.png "便利主义超市")
-### 汽车人E车宝
-![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/3.png "汽车人E车宝")
 ### 海数据在线
 ![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/4.jpg "海数据在线")
-### T客定制
-![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/2018070801.jpg "T客定制")
-### 开发文档目录
+### 美平超市
+![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/upload/case/1.png "美平超市")
+
+### <a name="doc">开发文档目录</a>
 ![](https://platform-wxmall.oss-cn-beijing.aliyuncs.com/catalog.png "开发文档目录")
-
-
-***
-## ◆免责条款:
-**_感谢您的支持，此系统供个人学习、研究之用。如因使用本系统引起的相关法律法规责任，由使用者自行负责。_**
