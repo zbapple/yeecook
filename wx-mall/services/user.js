@@ -10,8 +10,6 @@ const api = require('../config/api.js');
  * 调用微信登录
  */
 function loginByWeixin(userInfo) {
-  console.log("-----1----")
-  console.log(userInfo.userInfo) 
   let code = null;
   return new Promise(function (resolve, reject) {
     return util.login().then((res) => {
@@ -29,18 +27,15 @@ function loginByWeixin(userInfo) {
       params.nickName = userInfo.userInfo.nickName;
       params.province = userInfo.userInfo.province;
       util.request(api.AuthLoginByWeixin, params, 'POST', 'application/json').then(res => {
-        if (res.errno === 0) {
-          console.log("------3------")
+        if (res.errno === 0) {        
           //存储用户信息
           wx.setStorageSync('userInfo', userInfo);
           wx.setStorageSync('token', res.data.token);
-          console.log(res.data.token)
-
+          wx.setStorageSync('mobile', res.data.mobile);
           resolve(res);
         } else {
           util.showErrorToast(res.errmsg)
           reject(res);
-          console.log("------2------")
         }
       }).catch((err) => {
         reject(err);

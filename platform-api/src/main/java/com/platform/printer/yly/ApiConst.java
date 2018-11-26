@@ -97,5 +97,10 @@ public class ApiConst {
      */
     public static final String API_BTN_PRINT = "/printer/btnprint";
 
+    /**
+     * api 打印机状态接口
+     */
+    public static final String API_BTN_STATUS = "/printer/getprintstatus";
+
 
 }

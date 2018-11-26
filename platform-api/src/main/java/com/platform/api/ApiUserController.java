@@ -111,12 +111,12 @@ public class ApiUserController extends ApiBaseAction {
         JSONObject jsonParams = getJsonRequest();
         SmsLogVo smsLogVo = userService.querySmsCodeByUserId(loginUser.getUserId());
 
-        String mobile_code = jsonParams.getString("mobile_code");
+        //String mobile_code = jsonParams.getString("mobile_code");
         String mobile = jsonParams.getString("mobile");
 
-        if (!mobile_code.equals(smsLogVo.getSms_code())) {
-            return toResponsFail("验证码错误");
-        }
+//        if (!mobile_code.equals(smsLogVo.getSms_code())) {
+//            return toResponsFail("验证码错误");
+//        }
         UserVo userVo = userService.queryObject(loginUser.getUserId());
         userVo.setMobile(mobile);
         userService.update(userVo);

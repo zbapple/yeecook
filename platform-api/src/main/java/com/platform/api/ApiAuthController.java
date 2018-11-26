@@ -1,5 +1,6 @@
 package com.platform.api;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.LoginInfo;
@@ -118,6 +119,7 @@ public class ApiAuthController extends ApiBaseAction {
         Map<String, Object> resultObj = new HashMap<String, Object>();
         resultObj.put("openid", openid);
         resultObj.put("token", token);
+        resultObj.put("mobile", userVo.getMobile());
         return toResponsSuccess(resultObj);
     }
 }

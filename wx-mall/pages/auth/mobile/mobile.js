@@ -10,7 +10,7 @@ Page({
             nickName: ''
         },
         disableGetMobileCode: false,
-        disableSubmitMobileCode: true,
+        disableSubmitMobileCode: false,
         getCodeButtonText: '获取验证码'
     },
 
@@ -66,7 +66,7 @@ Page({
         }
         util.request(api.SmsCode, {phone: this.data.mobile}, 'POST')
             .then(function (res) {
-                if (res.data.code == 200) {
+              if (res.errno === 0) {
                     wx.showToast({
                         title: '发送成功',
                         icon: 'success',
@@ -98,20 +98,20 @@ Page({
 
     bindLoginMobilecode: function (e) {
         var mobile = this.data.mobile;
-        if (!this.bindCheckMobile(mobile)) {
-            return
-        }
-        if (!(e.detail.value.code && e.detail.value.code.length === 4)) {
-            return
-        }
+        // if (!this.bindCheckMobile(mobile)) {
+        //     return
+        // }
+        // if (!(e.detail.value.code && e.detail.value.code.length === 4)) {
+        //     return
+        // }
         wx.showToast({
             title: '操作中...',
             icon: 'loading',
             duration: 5000
         })
-        util.request(api.BindMobile, {mobile_code: e.detail.value.code,mobile:mobile}, 'POST')
+      util.request(api.BindMobile, { mobile_code: e.detail.value.code, mobile: mobile }, 'POST', "application/json")
             .then(function (res) {
-                if (res.data.code == 200) {
+              if (res.errno === 0) {
                     wx.showModal({
                         title: '提示',
                         content: '操作成功',

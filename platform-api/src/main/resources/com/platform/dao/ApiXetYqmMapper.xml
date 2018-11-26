@@ -48,32 +48,36 @@
 
     <select id="queryList" resultType="com.platform.entity.XetYqmVo">
         select
-        `batch_id`,
-        `batch_name`,
-        `Invitation_code`,
-        `Invitation_code_url`,
-        `is_use`,
-        `use_user_id`,
-        `use_user_name`,
-        `Invitation_code_title`,
-        `use_notice`,
-        `proposer`,
-        `pursue_reason`,
-        `effective_time`,
-        `dead_time`,
-        `generated_time`,
-        `id`,
-        `user_id`
-        from nideshop_xet_yqm
-        WHERE `is_use` ='未使用'
+        a.`batch_id`,
+        a.`batch_name`,
+        a.`Invitation_code`,
+        a.`Invitation_code_url`,
+        a.`is_use`,
+        a.`use_user_id`,
+        a.`use_user_name`,
+        a.`Invitation_code_title`,
+        a.`use_notice`,
+        a.`proposer`,
+        a.`pursue_reason`,
+        a.`effective_time`,
+        a.`dead_time`,
+        a.`generated_time`,
+        a.`id`,
+        a.`user_id`
+        from nideshop_xet_yqm a,
+        sys_user u,
+        nideshop_user su
+        WHERE  u.mobile = su.mobile
+        AND a.user_id = u.user_id
+        AND a.is_use ='未使用'
         <if test="batchName != null and batchName.trim() != ''">
-            AND `batch_name` = #{batchName}
+            AND a.`batch_name` = #{batchName}
         </if>
         <if test="batchId != null and batchId.trim() != ''">
-            AND `batch_id` = #{batchId}
+            AND a.`batch_id` = #{batchId}
         </if>
         <if test="userId != null ">
-            AND `user_id` = #{userId}
+            AND su.id =#{userId}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

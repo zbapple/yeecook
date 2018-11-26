@@ -1,5 +1,9 @@
 package com.platform.printer.yly;
 
+import com.platform.utils.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -437,6 +441,29 @@ public class LAVApi {
         return HttpUtil.sendPost(ApiConst.MAIN_HOST_URL + ApiConst.API_BTN_PRINT, hashMap, false);
     }
 
+    /**
+     * 打印机状态接口
+     *
+     * @param client_id     易联云颁发给开发者的应用ID 非空值
+     * @param access_token  授权的token 必要参数
+     * @param machine_code  易联云打印机终端号
+     * @param sign          签名 详见API文档列表-接口签名
+     * @param id            UUID4 详见API文档列表-uuid4
+     * @param timestamp     当前服务器时间戳(10位)
+     * @return
+     */
+    public static String printStatus(String client_id, String access_token, String machine_code, String sign, String id, String timestamp) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("client_id", client_id);
+        hashMap.put("access_token", access_token);
+        hashMap.put("machine_code", machine_code);
+        hashMap.put("sign", sign);
+        hashMap.put("id", id);
+        hashMap.put("timestamp", timestamp);
+        return HttpUtil.sendPost(ApiConst.MAIN_HOST_URL + ApiConst.API_BTN_STATUS, hashMap, false);
+    }
+
+
     public static String getSin() {
         try {
             StringBuilder stringBuilder = new StringBuilder();
@@ -478,4 +505,7 @@ public class LAVApi {
         }
         return reStr;
     }
+
+
+
 }

@@ -15,5 +15,5 @@ import java.util.Map;
  */
 public interface ApiXetYqmMapper extends BaseDao<XetYqmVo> {
 
-    List<XetYqmVo> queryIsNoUse(Map<String, Object> map);
+    List<XetYqmVo> query1(Map<String, Object> map);
 }

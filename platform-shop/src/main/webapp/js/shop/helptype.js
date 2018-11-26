@@ -33,7 +33,7 @@ let vm = new Vue({
             vm.helpType = {};
         },
         update: function (event) {
-            let id = getSelectedRow();
+            let id = getSelectedRow("#jqGrid");
             if (id == null) {
                 return;
             }
@@ -57,7 +57,7 @@ let vm = new Vue({
             });
         },
         del: function (event) {
-            let ids = getSelectedRows();
+            let ids = getSelectedRows("#jqGrid");
             if (ids == null) {
                 return;
             }

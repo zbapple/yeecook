@@ -4,7 +4,7 @@ $(function () {
         colModel: [
 			{label: '批次', name: 'batchId', index: 'batch_id', width: 80},
 			{label: '批次名称', name: 'batchName', index: 'batch_name', width: 80},
-			{label: 'invitationCode', name: 'invitationCode', index: 'Invitation_code', key: true, hidden: true},
+			{label: '邀请码', name: 'invitationCode', index: 'Invitation_code',width:80},
 			{label: '邀请码连接', name: 'invitationCodeUrl', index: 'Invitation_code_url', width: 80},
 			{label: '是否使用', name: 'isUse', index: 'is_use', width: 80},
 			{label: '使用人id', name: 'useUserId', index: 'use_user_id', width: 80},
@@ -19,6 +19,28 @@ $(function () {
 			{label: '主键', name: 'id', index: 'id', width: 80},
 			{label: '用户id', name: 'userId', index: 'user_id', width: 80}]
     });
+
+    new AjaxUpload('#upload', {
+        action: '../xetyqm/upload',
+        name: 'file',
+        autoSubmit: true,
+        responseType: "json",
+        onSubmit: function (file, extension) {
+            if (!(extension && /^(csv)$/.test(extension.toLowerCase()))) {
+                alert('只支持csv格式的文件！');
+                return false;
+            }
+        },
+        onComplete: function (file, r) {
+            if (r.code == 0) {
+                alert(r.url);
+                vm.reload();
+            } else {
+                alert(r.msg);
+            }
+        }
+    });
+
 });
 
 let vm = new Vue({

@@ -17,7 +17,7 @@ public interface XetYqmService {
     /**
      * 根据主键查询实体
      *
-     * @param id 主键
+     * @param invitationCode
      * @return 实体
      */
     XetYqmEntity queryObject(String invitationCode);
@@ -69,4 +69,12 @@ public interface XetYqmService {
      * @return 删除条数
      */
     int deleteBatch(String[] invitationCodes);
+
+    /**
+     * 批量插入
+     * @param optionList
+     * @return
+     */
+    int addBatch(List<XetYqmEntity> optionList);
+
 }

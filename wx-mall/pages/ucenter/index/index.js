@@ -17,7 +17,9 @@ Page({
     onShow: function () {
 
         let userInfo = wx.getStorageSync('userInfo');
-        let token = wx.getStorageSync('token');  
+        let token = wx.getStorageSync('token'); 
+      let mobile = wx.getStorageSync('mobile');
+        
         // 页面显示
         if (token) {
           app.globalData.userInfo = userInfo.userInfo;
@@ -25,9 +27,9 @@ Page({
         }else{
           wx.removeStorageSync('userInfo');
         }
-      console.log("--12--:" + app.globalData.userInfo)
         this.setData({
-            userInfo: app.globalData.userInfo
+            userInfo: app.globalData.userInfo,
+            hasMobile: mobile
         });
 
     },
@@ -43,13 +45,15 @@ Page({
       if (token) {
         return false;
       }
-      console.log("---------------")
+    
         if (e.detail.userInfo){
             //用户按了允许授权按钮
             user.loginByWeixin(e.detail).then(res => {
                 let userInfo = wx.getStorageSync('userInfo');
+              let mobile = wx.getStorageSync('mobile');
                 this.setData({
-                  userInfo: userInfo.userInfo
+                  userInfo: userInfo.userInfo,
+                  hasMobile: mobile
                 });
                 app.globalData.userInfo = userInfo.userInfo;
                 app.globalData.token = res.data.openid;
@@ -93,7 +97,6 @@ Page({
                 if (res.confirm) {
                     wx.removeStorageSync('token');
                     wx.removeStorageSync('userInfo');
-                    console.log("---------123123---------")
                     wx.switchTab({
                         url: '/pages/index/index'
                     });

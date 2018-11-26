@@ -92,18 +92,17 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    this.getCheckoutInfo();
-    
     try {
-      var addressId = wx.getStorageSync('addressId');
-      if (addressId) {
+      var addressId1 = wx.getStorageSync('addressId');
+      if (addressId1) {
         this.setData({
-          'addressId': addressId
+          addressId: addressId1
         });
       }
     } catch (e) {
       // Do something when catch error
     }
+    this.getCheckoutInfo();
   },
 
   /**

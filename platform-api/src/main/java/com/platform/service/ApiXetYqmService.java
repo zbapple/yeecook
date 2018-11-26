@@ -1,7 +1,7 @@
 package com.platform.service;
 
-import com.platform.dao.ApiServeInfoMapper;
-import com.platform.entity.ServeInfoVo;
+import com.platform.dao.ApiXetYqmMapper;
+import com.platform.entity.XetYqmVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,42 +17,27 @@ import java.util.Map;
  * @date 2018-10-23 14:50:08
  */
 @Service
-public class ApiServeInfoService {
+public class ApiXetYqmService {
     @Autowired
-    private ApiServeInfoMapper apiServeInfoMapper;
+    private ApiXetYqmMapper apiXetYqmMapper;
 
 
-    public ServeInfoVo queryObject(Integer id) {
-        return apiServeInfoMapper.queryObject(id);
+    public XetYqmVo queryObject(Integer id) {
+        return apiXetYqmMapper.queryObject(id);
     }
 
 
-    public List<ServeInfoVo> queryList(Map<String, Object> map) {
-        return apiServeInfoMapper.queryList(map);
+    public List<XetYqmVo> queryList(Map<String, Object> map) {
+        return apiXetYqmMapper.queryList(map);
+    }
+
+    public List<XetYqmVo> query1(Map<String, Object> map) {
+        return apiXetYqmMapper.query1(map);
+    }
+
+    public int update(XetYqmVo xetYqmVo) {
+        return apiXetYqmMapper.update(xetYqmVo);
     }
 
 
-    public int queryTotal(Map<String, Object> map) {
-        return apiServeInfoMapper.queryTotal(map);
-    }
-
-
-    public int save(ServeInfoVo serveInfo) {
-        return apiServeInfoMapper.save(serveInfo);
-    }
-
-
-    public int update(ServeInfoVo serveInfo) {
-        return apiServeInfoMapper.update(serveInfo);
-    }
-
-
-    public int delete(Integer id) {
-        return apiServeInfoMapper.delete(id);
-    }
-
-
-    public int deleteBatch(Integer[] ids) {
-        return apiServeInfoMapper.deleteBatch(ids);
-    }
 }

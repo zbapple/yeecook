@@ -41,7 +41,7 @@
 			`id`,
 			`user_id`
 		from nideshop_xet_yqm
-		where Invitation_code = #{id}
+		where `id` = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.XetYqmEntity">
@@ -64,8 +64,10 @@
     		`user_id`
 		from nideshop_xet_yqm
 		WHERE 1=1
+		<!--  数据过滤  -->
+		${filterSql}
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+			AND batch_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -83,8 +85,8 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from nideshop_xet_yqm
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+        <if test="batchName != null and batchName.trim() != ''">
+            AND name LIKE concat('%',#{batchName},'%')
         </if>
 	</select>
 	 
@@ -144,18 +146,58 @@
 			<if test="id != null">`id` = #{id}, </if>
 			<if test="userId != null">`user_id` = #{userId}</if>
 		</set>
-		where Invitation_code = #{invitationCode}
+		where `id` = #{id}
 	</update>
 	
 	<delete id="delete">
-		delete from nideshop_xet_yqm where Invitation_code = #{value}
+		delete from nideshop_xet_yqm where `id` = #{id}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from nideshop_xet_yqm where Invitation_code in 
-		<foreach item="invitationCode" collection="array" open="(" separator="," close=")">
-			#{invitationCode}
+		delete from nideshop_xet_yqm where `id` in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
 		</foreach>
 	</delete>
+
+	<insert id="addBatch" parameterType="java.util.List"   useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_xet_yqm(
+		`batch_id`,
+		`batch_name`,
+		`Invitation_code`,
+		`Invitation_code_url`,
+		`is_use`,
+		`use_user_id`,
+		`use_user_name`,
+		`Invitation_code_title`,
+		`use_notice`,
+		`proposer`,
+		`pursue_reason`,
+		`effective_time`,
+		`dead_time`,
+		`generated_time`,
+		`id`,
+		`user_id`)
+		values
+		<foreach collection="list" item="optionList" separator=",">
+			(
+			#{optionList.batchId},
+			#{optionList.batchName},
+			#{optionList.invitationCode},
+			#{optionList.invitationCodeUrl},
+			#{optionList.isUse},
+			#{optionList.useUserId},
+			#{optionList.useUserName},
+			#{optionList.invitationCodeTitle},
+			#{optionList.useNotice},
+			#{optionList.proposer},
+			#{optionList.pursueReason},
+			#{optionList.effectiveTime},
+			#{optionList.deadTime},
+			#{optionList.generatedTime},
+			#{optionList.id},
+			#{optionList.userId})
+		</foreach>
+	</insert>
 
 </mapper>

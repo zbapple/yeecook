@@ -35,7 +35,10 @@
     "pages/auth/mobile/mobile",
     "pages/shopping/selCoupon/selCoupon",
     "page/virtualcard/virtualcard",
-    "page/successful1/successful1"
+    "pages/ucenter/help/help",
+    "pages/ucenter/helpInfo/helpInfo",
+    "page/successful1/successful1",
+    "pages/ucenter/print/print"
   ],
   "window": {
     "backgroundTextStyle": "dark",

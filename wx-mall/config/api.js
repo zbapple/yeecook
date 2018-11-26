@@ -1,7 +1,7 @@
 
 const root = '/shop/api/';
-//const NewApiRootUrl = 'http://localhost:8080' + root;
-const NewApiRootUrl = 'https://www.yeecook.com' + root;
+const NewApiRootUrl = 'http://localhost:8080' + root;
+//const NewApiRootUrl = 'https://www.yeecook.com' + root;
 module.exports = {
   IndexUrlNewGoods: NewApiRootUrl + 'index/newGoods', //
   IndexUrlHotGoods: NewApiRootUrl + 'index/hotGoods', //首页数据接口
@@ -82,5 +82,8 @@ module.exports = {
     OrderSuccess: NewApiRootUrl + 'order/updateSuccess',
     CardQuery: NewApiRootUrl + 'card/getCard', //得到卡类商品信息
     CardActivation: NewApiRootUrl + 'card/activationCard',//激活
-    
+    HelpTypeList: NewApiRootUrl + 'helpissue/typeList', //查看帮助类型列表
+    HelpIssueList: NewApiRootUrl + 'helpissue/issueList', //查看问题列表
+    PrintList: NewApiRootUrl + 'xetyqm/list', //邀请码打印信息查看  
+    Print: NewApiRootUrl + 'xetyqm/print', //打印邀请码
 };

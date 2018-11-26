@@ -3,6 +3,7 @@
 <head>
     <title></title>
     #parse("sys/header.html")
+    <script src="${rc.contextPath}/statics/libs/ajaxupload.js"></script>
 </head>
 <body>
 <div id="rrapp" v-cloak>
@@ -16,6 +17,7 @@
                 <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
+                <i-button type="primary" id="upload"><i class="fa fa-plus"></i>&nbsp;上传文件</i-button>
                 #if($shiro.hasPermission("xetyqm:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
                 #end
@@ -72,12 +74,6 @@
             </Form-item>
             <Form-item label="生成时间" prop="generatedTime">
                 <i-input v-model="xetYqm.generatedTime" placeholder="生成时间"/>
-            </Form-item>
-            <Form-item label="主键" prop="id">
-                <i-input v-model="xetYqm.id" placeholder="主键"/>
-            </Form-item>
-            <Form-item label="用户id" prop="userId">
-                <i-input v-model="xetYqm.userId" placeholder="用户id"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

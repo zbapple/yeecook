@@ -1,9 +1,10 @@
 package com.platform.entity;
 
 import com.platform.utils.CsvField;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 实体
@@ -13,7 +14,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2018-11-18 13:21:53
  */
-public class XetYqmEntity implements Serializable {
+public class XetYqmVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //批次
@@ -62,6 +63,9 @@ public class XetYqmEntity implements Serializable {
     private Integer id;
     //用户id
     private Long userId;
+    @Getter@Setter
+    //激活码可用总数
+    private String countCd;
 
     /**
      * 设置：批次

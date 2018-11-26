@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import com.platform.utils.CsvField;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,32 +17,46 @@ public class XetYqmEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //批次
+    @CsvField(name = "批次")
     private String batchId;
     //批次名称
+    @CsvField(name = "批次名称")
     private String batchName;
     //邀请码
+    @CsvField(name = "邀请码")
     private String invitationCode;
-    //邀请码连接
+    //邀请码链接
+    @CsvField(name = "邀请码链接")
     private String invitationCodeUrl;
     //是否使用
+    @CsvField(name = "是否使用")
     private String isUse;
     //使用人id
+    @CsvField(name = "使用人id")
     private String useUserId;
     //使用人昵称
+    @CsvField(name = "使用人昵称")
     private String useUserName;
     //邀请码标题
+    @CsvField(name = "邀请码标题")
     private String invitationCodeTitle;
     //使用须知
+    @CsvField(name = "使用须知")
     private String useNotice;
     //申请人
+    @CsvField(name = "申请人")
     private String proposer;
     //申请原因
+    @CsvField(name = "申请原因")
     private String pursueReason;
     //生效时间
+    @CsvField(name = "生效时间")
     private String effectiveTime;
     //失效时间
+    @CsvField(name = "失效时间")
     private String deadTime;
     //生成时间
+    @CsvField(name = "生成时间")
     private String generatedTime;
     //主键
     private Integer id;

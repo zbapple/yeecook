@@ -1,5 +1,8 @@
 package com.platform.service.impl;
 
+import com.platform.annotation.DataFilter;
+import com.platform.entity.SysUserEntity;
+import com.platform.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import java.util.Map;
 import com.platform.dao.XetYqmDao;
 import com.platform.entity.XetYqmEntity;
 import com.platform.service.XetYqmService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service实现类
@@ -28,6 +32,7 @@ public class XetYqmServiceImpl implements XetYqmService {
     }
 
     @Override
+    @DataFilter(userAlias = "nideshop_xet_yqm.user_id")
     public List<XetYqmEntity> queryList(Map<String, Object> map) {
         return xetYqmDao.queryList(map);
     }
@@ -55,5 +60,18 @@ public class XetYqmServiceImpl implements XetYqmService {
     @Override
     public int deleteBatch(String[] invitationCodes) {
         return xetYqmDao.deleteBatch(invitationCodes);
+    }
+
+    @Override
+    @Transactional
+    public int addBatch(List<XetYqmEntity> optionList) {
+        SysUserEntity user = ShiroUtils.getUserEntity();
+        Long userId=user.getUserId();
+        for (XetYqmEntity xetYqmEntity:optionList){
+            xetYqmEntity.setUserId(userId);
+        }
+        optionList.remove(0);
+
+        return  xetYqmDao.addBatch(optionList);
     }
 }

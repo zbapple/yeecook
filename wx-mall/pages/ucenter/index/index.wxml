@@ -4,6 +4,7 @@
     <view><image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image></view>
     <view>
       <text class="userinfo-nickname">{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
+          <text class="txt">绑定手机 {{hasMobile}}</text>
       <!-- <view class="userinfo-mobile" v-if="hasMobile != ''">
         <navigator url="/pages/auth/mobile/mobile" class="a">
           <text class="icon phone"></text>
@@ -100,12 +101,12 @@
       </navigator>
     </view>
 
-    <!-- <view class="item item-bottom">
-      <navigator url="url" class="a">
+   <view class="item item-bottom">
+      <navigator url="/pages/ucenter/print/print" class="a">
         <text class="icon help"></text>
-        <text class="txt">帮助中心</text>
+        <text class="txt">云打印</text>
       </navigator>
-    </view>  -->
+    </view>
   </view>
   <!-- <view class="logout" bindtap="exitLogin">退出登录</view> -->
 </view>
