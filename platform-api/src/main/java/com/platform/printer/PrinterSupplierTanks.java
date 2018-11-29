@@ -30,7 +30,7 @@ public class PrinterSupplierTanks implements Runnable {
             for (SysPrinterUserVo sysPrinterUserVo:list){
                 Methods.getInstance().addPrinter(sysPrinterUserVo.getMachineCode(),sysPrinterUserVo.getMachineKey());
                 Methods.getInstance().print(sysPrinterUserVo.getMachineCode(),printerTemplate.getPrinterHtmlStr(),printerTemplate.getYeecookVo().getOrderVo().getOrderSupSn());
-                return;
+                break;
             }
         } catch (Exception e) {
             e.printStackTrace();

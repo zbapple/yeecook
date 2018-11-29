@@ -131,9 +131,9 @@ public class ApiXetYqmController extends ApiBaseAction {
              i = apiXetYqmService.updateBatch(map);
         }
         if(StringUtils.isNotEmpty(errMsg)){
-            return toResponsFail(errMsg+"  计划打印："+printSum+"个"+"; 未打印："+errSum+"个;");
+            return toResponsFail(errMsg+"计划打印："+printSum+"个"+";未打印："+errSum+"个;");
         }else {
-            return toResponsSuccess("打印成功！" +"计划打印："+printSum+"个;"+ " 已打印：" + i + "个;");
+            return toResponsSuccess("打印成功!" +"计划打印："+printSum+"个;"+ "已打印：" + i + "个;");
         }
     }
 
@@ -143,7 +143,7 @@ public class ApiXetYqmController extends ApiBaseAction {
         for (SysPrinterUserVo sysPrinterUserVo:list){
             Methods.getInstance().addPrinter(sysPrinterUserVo.getMachineCode(),sysPrinterUserVo.getMachineKey());
             Methods.getInstance().print(sysPrinterUserVo.getMachineCode(),count,num);
-            return;
+            break;
         }
     }
 
