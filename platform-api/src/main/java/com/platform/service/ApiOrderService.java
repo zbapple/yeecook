@@ -283,8 +283,8 @@ public class ApiOrderService {
             List<OrderGoodsVo> voList=supIdMap.get(supId);
             OrderSupplierVo orderSupplierVo=new OrderSupplierVo(orderVo);
             for (OrderGoodsVo vo : voList){
-                orderTotalPrice= orderTotalPrice.add(vo.getMarket_price().multiply(new BigDecimal(vo.getNumber())));
-                goodsTotalPrice= goodsTotalPrice.add(vo.getMarket_price().multiply(new BigDecimal(vo.getNumber())));
+                orderTotalPrice= orderTotalPrice.add(vo.getRetail_price().multiply(new BigDecimal(vo.getNumber())));
+                goodsTotalPrice= goodsTotalPrice.add(vo.getRetail_price().multiply(new BigDecimal(vo.getNumber())));
             }
             orderSupplierVo.setDeptId(voList.get(0).getDept_id());
             orderSupplierVo.setSupplierId(voList.get(0).getSupplier_id().longValue());
@@ -316,8 +316,9 @@ public class ApiOrderService {
             List<OrderGoodsVo> orderGoodsVoList=apiOrderGoodsService.queryList(map);
             yeecookVo.setOrderVo(orderSupplierVo);
             yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
-            List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVo(orderSupplierVo.getSupplierId());
-            SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo(Long.valueOf("1"));
+
+            List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVoDept(Long.valueOf(orderSupplierVo.getDeptId()),"0002");
+            SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo("易联云");
             PrinterSupplierTemplate printerTemplate = new PrinterSupplierTemplate(yeecookVo,sysPrinterVo,list);
             PrinterSupplierTanks printerTanks = new PrinterSupplierTanks(printerTemplate);
             printerTanks.run();
@@ -330,8 +331,8 @@ public class ApiOrderService {
         YeecookVo yeecookVo = new YeecookVo();
         yeecookVo.setOrderVo(orderVo);
         yeecookVo.setOrderGoodsVoList(orderGoodsVoList);
-        List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVo(Long.valueOf("1"));
-        SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo(Long.valueOf("1"));
+        List<SysPrinterUserVo> list= sysPrinterService.getSysPrinterUserVo(Long.valueOf("1"),"0002");
+        SysPrinterVo sysPrinterVo=sysPrinterService.getSysPrinterVo("易联云");
         PrinterTemplate printerTemplate = new PrinterTemplate(yeecookVo,sysPrinterVo,list);
         PrinterTanks printerTanks = new PrinterTanks(printerTemplate);
         printerTanks.run();

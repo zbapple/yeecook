@@ -40,6 +40,9 @@
             <Form-item label="易联云应用秘钥" prop="appKey">
                 <i-input v-model="sysPrinter.appKey" placeholder="易联云应用秘钥"/>
             </Form-item>
+            <Form-item label="平台名称" prop="appName">
+                <i-input v-model="sysPrinter.appName" placeholder="平台名称"/>
+            </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>

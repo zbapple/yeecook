@@ -21,11 +21,9 @@ public class ApiXetYqmService {
     @Autowired
     private ApiXetYqmMapper apiXetYqmMapper;
 
-
     public XetYqmVo queryObject(Integer id) {
         return apiXetYqmMapper.queryObject(id);
     }
-
 
     public List<XetYqmVo> queryList(Map<String, Object> map) {
         return apiXetYqmMapper.queryList(map);
@@ -39,5 +37,11 @@ public class ApiXetYqmService {
         return apiXetYqmMapper.update(xetYqmVo);
     }
 
+    public int updateBatch(XetYqmVo xetYqmVo) {
+        return apiXetYqmMapper.updateBatch( xetYqmVo);
+    }
 
+    public int updateBatch(Map<String, Object> map) {
+        return apiXetYqmMapper.updateBatch( map);
+    }
 }

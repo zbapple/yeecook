@@ -1,9 +1,6 @@
 package com.platform.service.impl;
 
-import com.platform.annotation.DataFilter;
-import com.platform.cache.J2CacheUtils;
 import com.platform.entity.SysUserEntity;
-import com.platform.utils.Constant;
 import com.platform.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +17,7 @@ import com.platform.service.SysPrinterUserService;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 15:47:35
+ * @date 2018-11-28 14:31:26
  */
 @Service("sysPrinterUserService")
 public class SysPrinterUserServiceImpl implements SysPrinterUserService {
@@ -33,7 +30,6 @@ public class SysPrinterUserServiceImpl implements SysPrinterUserService {
     }
 
     @Override
-    @DataFilter(userAlias = "sys_printer_user.user_id")
     public List<SysPrinterUserEntity> queryList(Map<String, Object> map) {
         return sysPrinterUserDao.queryList(map);
     }
@@ -48,6 +44,7 @@ public class SysPrinterUserServiceImpl implements SysPrinterUserService {
         SysUserEntity sysUserEntity = ShiroUtils.getUserEntity();
         sysPrinterUser.setUserId(sysUserEntity.getUserId());
         sysPrinterUser.setUserName(sysUserEntity.getUsername());
+        sysPrinterUser.setDeptId(sysUserEntity.getDeptId());
         return sysPrinterUserDao.save(sysPrinterUser);
     }
 
@@ -56,31 +53,17 @@ public class SysPrinterUserServiceImpl implements SysPrinterUserService {
         SysUserEntity sysUserEntity = ShiroUtils.getUserEntity();
         sysPrinterUser.setUserId(sysUserEntity.getUserId());
         sysPrinterUser.setUserName(sysUserEntity.getUsername());
-
-        int i =sysPrinterUserDao.update(sysPrinterUser);
-        if(i>0){
-            J2CacheUtils.put(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK_USER+sysPrinterUser.getId(), sysPrinterUser);
-        }
-        return i;
+        sysPrinterUser.setDeptId(sysUserEntity.getDeptId());
+        return sysPrinterUserDao.update(sysPrinterUser);
     }
 
     @Override
     public int delete(Long id) {
-        int i =sysPrinterUserDao.delete(id);
-        if(i>0){
-            J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK_USER+id);
-        }
-        return i;
+        return sysPrinterUserDao.delete(id);
     }
 
     @Override
     public int deleteBatch(Long[] ids) {
-        int i=sysPrinterUserDao.deleteBatch(ids);
-        if(i>0){
-            for (Long id:ids) {
-                J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK_USER + id);
-            }
-        }
-        return i;
+        return sysPrinterUserDao.deleteBatch(ids);
     }
 }

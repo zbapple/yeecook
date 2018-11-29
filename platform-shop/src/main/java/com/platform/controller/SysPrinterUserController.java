@@ -22,7 +22,7 @@ import com.platform.utils.R;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 15:47:35
+ * @date 2018-11-28 14:31:26
  */
 @RestController
 @RequestMapping("sysprinteruser")
@@ -64,8 +64,6 @@ public class SysPrinterUserController {
     @RequestMapping("/save")
     @RequiresPermissions("sysprinteruser:save")
     public R save(@RequestBody SysPrinterUserEntity sysPrinterUser) {
-
-
         sysPrinterUserService.save(sysPrinterUser);
 
         return R.ok();

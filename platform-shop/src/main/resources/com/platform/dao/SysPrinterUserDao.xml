@@ -10,6 +10,10 @@
         <result property="userName" column="user_name"/>
         <result property="machineKey" column="machine_key"/>
         <result property="isOpen" column="is_open"/>
+        <result property="printName" column="print_name"/>
+        <result property="printType" column="print_type"/>
+		<result property="deptId" column="dept_id"/>
+
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.SysPrinterUserEntity">
@@ -19,7 +23,9 @@
 			`user_id`,
 			`user_name`,
 			`machine_key`,
-			`is_open`
+			`is_open`,
+			`print_name`,
+			`print_type`
 		from sys_printer_user
 		where id = #{id}
 	</select>
@@ -31,13 +37,19 @@
     		`user_id`,
     		`user_name`,
     		`machine_key`,
-    		`is_open`
+    		`is_open`,
+    		`print_name`,
+    		`print_type`
 		from sys_printer_user
 		WHERE 1=1
-		<!--  数据过滤  -->
-		${filterSql}
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="deptId != null ">
+			AND dept_id = #{deptId}
+		</if>
+		<if test="printType != null and printType.trim() != ''">
+			AND print_type = #{printType}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -66,13 +78,19 @@
 			`user_id`,
 			`user_name`,
 			`machine_key`,
-			`is_open`)
+			`is_open`,
+			`print_name`,
+			`print_type`,
+			`dept_id`)
 		values(
 			#{machineCode},
 			#{userId},
 			#{userName},
 			#{machineKey},
-			#{isOpen})
+			#{isOpen},
+			#{printName},
+			#{printType},
+			#{deptId})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.SysPrinterUserEntity">
@@ -82,7 +100,9 @@
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="userName != null">`user_name` = #{userName}, </if>
 			<if test="machineKey != null">`machine_key` = #{machineKey}, </if>
-			<if test="isOpen != null">`is_open` = #{isOpen}</if>
+			<if test="isOpen != null">`is_open` = #{isOpen}, </if>
+			<if test="printName != null">`print_name` = #{printName}, </if>
+			<if test="printType != null">`print_type` = #{printType}</if>
 		</set>
 		where id = #{id}
 	</update>

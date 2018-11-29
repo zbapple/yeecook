@@ -94,11 +94,9 @@ public class PrinterTemplate {
     }
 
     public String getPrinterHtmlStr() {
-
         List<OrderGoodsVo> goodsVoList = yeecookVo.getOrderGoodsVoList();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getHtmlbodyStart());
-
         for (OrderGoodsVo orderGoodsVo : goodsVoList) {
             int number = orderGoodsVo.getNumber().intValue();
             String retailPrice = orderGoodsVo.getRetail_price().setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
@@ -115,50 +113,53 @@ public class PrinterTemplate {
         stringBuilder.append("</table>\n");
         stringBuilder.append(getHtmlbodyEnd());
         stringBuilder.append(" <QR>"+endImg+"</QR>");
-
         return stringBuilder.toString();
     }
 
     public String getHtmlbodyStart() {
-        String address = yeecookVo.getOrderVo().getProvince() + yeecookVo.getOrderVo().getCity() + yeecookVo.getOrderVo().getDistrict() + yeecookVo.getOrderVo().getAddress();
-        // address = PrinterStringUtils.fmHtmlBr(address, 16, "\n");
-        String htmlbodyStart =
-                "<center>------------------------------------------------</center>\n" +
-                        "<FB><FS2><center>订单编号</center></FS2></FB>\n" +
-                        "<FB><FS><center>" + yeecookVo.getOrderVo().getOrder_sn() + "</center></FS></FB>\n" +
-                        "<FB>客户：" + yeecookVo.getOrderVo().getConsignee() + "</FB>\n" +
-                        "<FB>联系方式：" + yeecookVo.getOrderVo().getMobile() + "</FB>\n" +
-                        "<FB>地址：" + address + "<FB>\n" +
-                        "<center>------------------------------------------------</center>\n" +
-                        "<table>" +
-                        "<tr>" +
-                        "<td>" +
-                        "清单" +
-                        "</td>" +
-                        "<td>" +
-                        "数量" +
-                        "</td>" +
-                        "<td>" +
-                        "单价" +
-                        "</td>" +
-                        "<td>" +
-                        "总价" +
-                        "</td>" +
-                        "</tr>" + "<tr>" +
-                        "<td>" +
-                        " " +
-                        "</td>" +
-                        "<td>" +
-                        " " +
-                        "</td>" +
-                        "<td>" +
-                        " " +
-                        "</td>" +
-                        "<td>" +
-                        " " +
-                        "</td>" +
-                        "</tr>";
-        this.htmlbodyStart = htmlbodyStart;
+        StringBuilder address=new StringBuilder();
+        address.append(yeecookVo.getOrderVo().getProvince());
+        address.append(yeecookVo.getOrderVo().getCity());
+        address.append(yeecookVo.getOrderVo().getDistrict());
+        address.append(yeecookVo.getOrderVo().getAddress());
+        StringBuilder htmlbodyStart=new StringBuilder();
+        htmlbodyStart.append("<center>------------------------------------------------</center>\n");
+        htmlbodyStart.append("<FB><FS2><center>订单编号</center></FS2></FB>\n" );
+        htmlbodyStart.append("<FB><FS><center>" + yeecookVo.getOrderVo().getOrder_sn() + "</center></FS></FB>\n");
+        htmlbodyStart.append("<FB>客户：" + yeecookVo.getOrderVo().getConsignee() + "</FB>\n" );
+        htmlbodyStart.append("<FB>联系方式：" + yeecookVo.getOrderVo().getMobile() + "</FB>\n" );
+        htmlbodyStart.append("<FB>地址：" + address.toString() + "<FB>\n" );
+        htmlbodyStart.append("<center>------------------------------------------------</center>\n" );
+        htmlbodyStart.append("<table>" );
+        htmlbodyStart.append("<tr>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append("清单" );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append("数量" );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append("单价" );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append("总价" );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("</tr>" );
+        htmlbodyStart.append("<tr>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append(" " );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append(" " );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>" );
+        htmlbodyStart.append(" " );
+        htmlbodyStart.append("</td>" );
+        htmlbodyStart.append("<td>");
+        htmlbodyStart.append(" ");
+        htmlbodyStart.append("</td>");
+        htmlbodyStart.append("</tr>");
+        this.htmlbodyStart = htmlbodyStart.toString();
         return this.htmlbodyStart;
     }
 

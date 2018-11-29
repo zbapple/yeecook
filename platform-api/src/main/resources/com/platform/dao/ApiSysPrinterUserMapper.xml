@@ -10,6 +10,8 @@
 		<result property="userName" column="user_name"/>
 		<result property="machineKey" column="machine_key"/>
 		<result property="isOpen" column="is_open"/>
+		<result property="printType" column="print_type"/>
+		<result property="deptId" column="dept_id"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.SysPrinterUserVo">
@@ -33,9 +35,15 @@
 		`machine_key`,
 		`is_open`
 		from sys_printer_user
-		WHERE 1=1
+		WHERE 1=1 and `is_open`= 1
 		<if test="userId != null">
 			AND `user_id` = #{userId}
+		</if>
+		<if test="printType != null and printType.trim() != ''">
+			AND `print_type` = #{printType}
+		</if>
+		<if test="deptId != null ">
+			AND dept_id = #{deptId}
 		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -57,21 +65,6 @@
 			AND name LIKE concat('%',#{name},'%')
 		</if>
 	</select>
-
-	<insert id="save" parameterType="com.platform.entity.SysPrinterUserVo" useGeneratedKeys="true" keyProperty="id">
-		insert into sys_printer_user(
-			`machine_code`,
-			`user_id`,
-			`user_name`,
-			`machine_key`,
-			`is_open`)
-		values(
-			#{machineCode},
-			#{userId},
-			#{userName},
-			#{machineKey},
-			#{isOpen})
-	</insert>
 
 	<update id="update" parameterType="com.platform.entity.SysPrinterUserVo">
 		update sys_printer_user

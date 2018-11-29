@@ -1,5 +1,8 @@
 package com.platform.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,7 +12,7 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 15:47:35
+ * @date 2018-11-28 14:31:26
  */
 public class SysPrinterUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -26,7 +29,12 @@ public class SysPrinterUserEntity implements Serializable {
     private String machineKey;
     //是否启用：0关闭1开启
     private Integer isOpen;
-
+    //打印机名称
+    private String printName;
+    //打印机类型：0001条码打印，0002普通打印，0003咕咕机打印
+    private String printType;
+    @Getter@Setter
+    private Long deptId;
     /**
      * 设置：
      */
@@ -104,5 +112,31 @@ public class SysPrinterUserEntity implements Serializable {
      */
     public Integer getIsOpen() {
         return isOpen;
+    }
+    /**
+     * 设置：打印机名称
+     */
+    public void setPrintName(String printName) {
+        this.printName = printName;
+    }
+
+    /**
+     * 获取：打印机名称
+     */
+    public String getPrintName() {
+        return printName;
+    }
+    /**
+     * 设置：打印机类型：0001条码打印，0002普通打印，0003咕咕机打印
+     */
+    public void setPrintType(String printType) {
+        this.printType = printType;
+    }
+
+    /**
+     * 获取：打印机类型：0001条码打印，0002普通打印，0003咕咕机打印
+     */
+    public String getPrintType() {
+        return printType;
     }
 }

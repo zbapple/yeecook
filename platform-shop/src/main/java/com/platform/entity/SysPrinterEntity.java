@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 12:15:00
+ * @date 2018-11-28 14:31:25
  */
 public class SysPrinterEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,6 +20,8 @@ public class SysPrinterEntity implements Serializable {
     private String appId;
     //易联云应用秘钥
     private String appKey;
+    //平台名称
+    private String appName;
 
     /**
      * 设置：
@@ -59,5 +61,18 @@ public class SysPrinterEntity implements Serializable {
      */
     public String getAppKey() {
         return appKey;
+    }
+    /**
+     * 设置：平台名称
+     */
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    /**
+     * 获取：平台名称
+     */
+    public String getAppName() {
+        return appName;
     }
 }

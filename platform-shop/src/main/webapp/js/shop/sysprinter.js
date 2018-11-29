@@ -4,7 +4,8 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '易联云应用ID', name: 'appId', index: 'app_id', width: 80},
-			{label: '易联云应用秘钥', name: 'appKey', index: 'app_key', width: 80}]
+			{label: '易联云应用秘钥', name: 'appKey', index: 'app_key', width: 80},
+			{label: '平台名称', name: 'appName', index: 'app_name', width: 80}]
     });
 });
 

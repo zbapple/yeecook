@@ -21,6 +21,7 @@
         <result property="id" column="id"/>
         <result property="userId" column="user_id"/>
         <result property="countCd" column="count_cd"/>
+
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.XetYqmVo">
@@ -136,6 +137,31 @@
             <if test="userId != null">`user_id` = #{userId}</if>
         </set>
         where `id` = #{id}
+
+    </update>
+
+    <update id="updateBatch" parameterType="com.platform.entity.XetYqmVo">
+        update nideshop_xet_yqm
+        <set>
+            <if test="batchId != null">`batch_id` = #{batchId},</if>
+            <if test="batchName != null">`batch_name` = #{batchName},</if>
+            <if test="invitationCodeUrl != null">`Invitation_code_url` = #{invitationCodeUrl},</if>
+            <if test="isUse != null">`is_use` = #{isUse},</if>
+            <if test="useUserId != null">`use_user_id` = #{useUserId},</if>
+            <if test="useUserName != null">`use_user_name` = #{useUserName},</if>
+            <if test="invitationCodeTitle != null">`Invitation_code_title` = #{invitationCodeTitle},</if>
+            <if test="useNotice != null">`use_notice` = #{useNotice},</if>
+            <if test="proposer != null">`proposer` = #{proposer},</if>
+            <if test="pursueReason != null">`pursue_reason` = #{pursueReason},</if>
+            <if test="effectiveTime != null">`effective_time` = #{effectiveTime},</if>
+            <if test="deadTime != null">`dead_time` = #{deadTime},</if>
+            <if test="generatedTime != null">`generated_time` = #{generatedTime},</if>
+            <if test="userId != null">`user_id` = #{userId}</if>
+        </set>
+        where id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                 #{item}
+        </foreach>
     </update>
 
 </mapper>

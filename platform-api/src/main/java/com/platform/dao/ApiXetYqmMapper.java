@@ -16,4 +16,8 @@ import java.util.Map;
 public interface ApiXetYqmMapper extends BaseDao<XetYqmVo> {
 
     List<XetYqmVo> query1(Map<String, Object> map);
+
+    int updateBatch(Map<String, Object> map);
+
+    int updateBatch(XetYqmVo xetYqmVo);
 }

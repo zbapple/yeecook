@@ -7,7 +7,7 @@ import com.platform.entity.SysPrinterUserEntity;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 15:47:35
+ * @date 2018-11-28 14:31:26
  */
 public interface SysPrinterUserDao extends BaseDao<SysPrinterUserEntity> {
 

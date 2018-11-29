@@ -225,7 +225,8 @@ public class ApiPayController extends ApiBaseAction {
                     List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
                     printerOrder(orderInfo, orderGoods);
                     logger.error("订单" + orderInfo.getOrder_sn() + "打印成功-orderQuery");
-                    apiCardController.activationBayCard(orderDetail.getUser_id(),orderInfo.getId());
+                    //todo 虚拟卡直接确认收货
+                    //apiCardController.activationBayCard(orderDetail.getUser_id(),orderInfo.getId());
                 }
                 return toResponsMsgSuccess("支付成功");
             } else if (trade_state.equals("USERPAYING")) {
@@ -341,8 +342,8 @@ public class ApiPayController extends ApiBaseAction {
                         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
                         printerOrder(orderInfo, orderGoods);
                         logger.error("订单" + out_trade_no + "打印成功-notify");
-
-                        apiCardController.activationBayCard(orderInfo.getUser_id(),orderInfo.getId());
+                        //todo 虚拟卡直接确认收货
+                        //apiCardController.activationBayCard(orderInfo.getUser_id(),orderInfo.getId());
                     }
                 } else {
                     logger.error("订单" + out_trade_no + "支付失败找不到更新订单");

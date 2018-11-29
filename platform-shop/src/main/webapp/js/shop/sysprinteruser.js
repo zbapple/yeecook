@@ -7,7 +7,9 @@ $(function () {
 			{label: '关联用户id', name: 'userId', index: 'user_id', width: 80},
 			{label: '关联用户名称', name: 'userName', index: 'user_name', width: 80},
 			{label: '打印机设备密钥', name: 'machineKey', index: 'machine_key', width: 80},
-			{label: '是否启用：0关闭1开启', name: 'isOpen', index: 'is_open', width: 80}]
+			{label: '是否启用：0关闭1开启', name: 'isOpen', index: 'is_open', width: 80},
+			{label: '打印机名称', name: 'printName', index: 'print_name', width: 80},
+			{label: '打印机类型：0001条码打印，0002普通打印，0003咕咕机打印', name: 'printType', index: 'print_type', width: 80}]
     });
 });
 

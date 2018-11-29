@@ -1,7 +1,5 @@
 package com.platform.service.impl;
 
-import com.platform.cache.J2CacheUtils;
-import com.platform.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,7 @@ import com.platform.service.SysPrinterService;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2018-11-09 12:15:00
+ * @date 2018-11-28 14:31:25
  */
 @Service("sysPrinterService")
 public class SysPrinterServiceImpl implements SysPrinterService {
@@ -46,31 +44,16 @@ public class SysPrinterServiceImpl implements SysPrinterService {
 
     @Override
     public int update(SysPrinterEntity sysPrinter) {
-
-        int i =sysPrinterDao.update(sysPrinter);
-        if(i>0){
-            J2CacheUtils.put(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK+sysPrinter.getId(), sysPrinter);
-        }
-        return i;
+        return sysPrinterDao.update(sysPrinter);
     }
 
     @Override
     public int delete(Long id) {
-        int i =sysPrinterDao.delete(id);
-        if(i>0){
-            J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK+id);
-        }
-        return i;
+        return sysPrinterDao.delete(id);
     }
 
     @Override
     public int deleteBatch(Long[] ids) {
-        int i=sysPrinterDao.deleteBatch(ids);
-        if(i>0){
-            for (Long id:ids) {
-                J2CacheUtils.remove(J2CacheUtils.SHOP_CACHE_NAME, Constant.PRINTER_PK + id);
-            }
-        }
-        return i;
+        return sysPrinterDao.deleteBatch(ids);
     }
 }

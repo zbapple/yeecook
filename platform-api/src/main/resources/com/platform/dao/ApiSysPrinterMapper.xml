@@ -25,8 +25,8 @@
     		`app_key`
 		from sys_printer
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="appName != null and appName.trim() != ''">
+			AND `app_name` = #{appName}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

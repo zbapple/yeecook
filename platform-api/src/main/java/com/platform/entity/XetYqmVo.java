@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 实体
@@ -66,6 +67,9 @@ public class XetYqmVo implements Serializable {
     @Getter@Setter
     //激活码可用总数
     private String countCd;
+    @Getter@Setter
+    //批量更新删除用到的
+    private List ids;
 
     /**
      * 设置：批次

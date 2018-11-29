@@ -7,13 +7,15 @@
         <result property="id" column="id"/>
         <result property="appId" column="app_id"/>
         <result property="appKey" column="app_key"/>
+        <result property="appName" column="app_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.SysPrinterEntity">
 		select
 			`id`,
 			`app_id`,
-			`app_key`
+			`app_key`,
+			`app_name`
 		from sys_printer
 		where id = #{id}
 	</select>
@@ -22,7 +24,8 @@
 		select
     		`id`,
     		`app_id`,
-    		`app_key`
+    		`app_key`,
+    		`app_name`
 		from sys_printer
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -49,22 +52,23 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.SysPrinterEntity">
+	<insert id="save" parameterType="com.platform.entity.SysPrinterEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_printer(
-			`id`,
 			`app_id`,
-			`app_key`)
+			`app_key`,
+			`app_name`)
 		values(
-			#{id},
 			#{appId},
-			#{appKey})
+			#{appKey},
+			#{appName})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.SysPrinterEntity">
 		update sys_printer 
 		<set>
 			<if test="appId != null">`app_id` = #{appId}, </if>
-			<if test="appKey != null">`app_key` = #{appKey}</if>
+			<if test="appKey != null">`app_key` = #{appKey}, </if>
+			<if test="appName != null">`app_name` = #{appName}</if>
 		</set>
 		where id = #{id}
 	</update>
