@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.XcfCharlesInfoDao">
+
+    <resultMap type="com.platform.charles.xcf.XcfCharlesInfoEntity" id="xcfCharlesInfoMap">
+        <result property="id" column="id"/>
+        <result property="course" column="course"/>
+        <result property="price" column="price"/>
+        <result property="sales" column="sales"/>
+        <result property="lecturer" column="lecturer"/>
+        <result property="addtime" column="addtime"/>
+        <result property="years" column="years"/>
+        <result property="month" column="month"/>
+        <result property="day" column="day"/>
+        <result property="weeks" column="weeks"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.platform.charles.xcf.XcfCharlesInfoEntity">
+		select
+			`id`,
+			`course`,
+			`price`,
+			`sales`,
+			`lecturer`,
+			`addtime`,
+			`years`,
+			`month`,
+			`day`,
+			`weeks`
+		from xcf_charles_info
+		where id = #{id}
+	</select>
+
+    <select id="queryList" resultType="com.platform.charles.xcf.XcfCharlesInfoEntity">
+        select
+        `id`,
+        `course`,
+        `price`,
+        `sales`,
+        `lecturer`,
+        `addtime`,
+        `years`,
+        `month`,
+        `day`,
+        `weeks`
+        from xcf_charles_info
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND course LIKE concat('%',#{name},'%')
+        </if>
+        <if test="price != null and price.trim() != ''">
+            AND price = #{price}
+        </if>
+        <if test="sales != null and sales.trim() != ''">
+            AND sales > #{sales}
+        </if>
+        <if test="addtime != null and addtime.trim() != ''">
+            AND addtime = #{addtime}
+        </if>
+        <if test="weeks != null and weeks.trim() != ''">
+            AND `weeks` = #{weeks}
+        </if>
+        <if test="years != null and years.trim() != ''">
+            AND `years` = #{years}
+        </if>
+        <if test="month != null and month.trim() != ''">
+            AND `month` = #{month}
+        </if>
+        <if test="day != null and day.trim() != ''">
+            AND `day` = #{day}
+        </if>
+        <if test="lecturer != null and lecturer.trim() != ''">
+            AND lecturer LIKE concat('%',#{lecturer},'%')
+        </if>
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from xcf_charles_info
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND course LIKE concat('%',#{name},'%')
+        </if>
+        <if test="price != null and price.trim() != ''">
+            AND price = #{price}
+        </if>
+        <if test="sales != null and sales.trim() != ''">
+            AND sales > #{sales}
+        </if>
+        <if test="addtime != null and addtime.trim() != ''">
+            AND addtime = #{addtime}
+        </if>
+        <if test="weeks != null and weeks.trim() != ''">
+            AND `weeks` = #{weeks}
+        </if>
+        <if test="years != null and years.trim() != ''">
+            AND `years` = #{years}
+        </if>
+        <if test="month != null and month.trim() != ''">
+            AND `month` = #{month}
+        </if>
+        <if test="day != null and day.trim() != ''">
+            AND `day` = #{day}
+        </if>
+        <if test="lecturer != null and lecturer.trim() != ''">
+            AND lecturer LIKE concat('%',#{lecturer},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.platform.charles.xcf.XcfCharlesInfoEntity">
+		insert into xcf_charles_info(
+			`id`,
+			`course`,
+			`price`,
+			`sales`,
+			`lecturer`,
+			`addtime`,
+			`years`,
+			`month`,
+			`day`,
+			`weeks`)
+		values(
+			#{id},
+			#{course},
+			#{price},
+			#{sales},
+			#{lecturer},
+			#{addtime},
+			#{years},
+			#{month},
+			#{day},
+			#{weeks})
+	</insert>
+
+    <update id="update" parameterType="com.platform.charles.xcf.XcfCharlesInfoEntity">
+        update xcf_charles_info
+        <set>
+            <if test="course != null">`course` = #{course},</if>
+            <if test="price != null">`price` = #{price},</if>
+            <if test="sales != null">`sales` = #{sales},</if>
+            <if test="lecturer != null">`lecturer` = #{lecturer},</if>
+            <if test="addtime != null">`addtime` = #{addtime},</if>
+            <if test="years != null">`years` = #{years},</if>
+            <if test="month != null">`month` = #{month},</if>
+            <if test="day != null">`day` = #{day},</if>
+            <if test="weeks != null">`weeks` = #{weeks}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from xcf_charles_info where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from xcf_charles_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into xcf_charles_info (
+        `id`,
+        `course`,
+        `price`,
+        `sales`,
+        `lecturer`,
+        `addtime`,
+        `years`,
+        `month`,
+        `day`,
+        `weeks`)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.course},
+            #{item.price},
+            #{item.sales},
+            #{item.lecturer},
+            #{item.addtime},
+            #{item.years},
+            #{item.month},
+            #{item.day},
+            #{item.weeks})
+        </foreach>
+    </insert>
+
+    <update id="updateBatch" parameterType="java.util.Map">
+        update xcf_charles_info
+        <trim prefix="set" suffixOverrides=",">
+            <!-- 拼接case when 这是一种写法 -->
+            <!--<foreach collection="list" separator="" item="cus" open="c_age = case id" close="end, ">-->
+            <!--when #{cus.id} then #{cus.age}-->
+            <!--</foreach>-->
+
+            <!-- 拼接case when 这是另一种写法，这种写着更专业的感觉 -->
+            <trim prefix="course =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.course!=null">
+                        when id=#{cus.id} then #{cus.course}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="price =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.price!=null">
+                        when id=#{cus.id} then #{cus.price}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="sales =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.sales!=null">
+                        when id=#{cus.id} then #{cus.sales}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="lecturer =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.lecturer!=null">
+                        when id=#{cus.id} then #{cus.lecturer}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="addtime =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.addtime!=null">
+                        when id=#{cus.id} then #{cus.addtime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="years =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.years!=null">
+                        when id=#{cus.id} then #{cus.years}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="month =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.month!=null">
+                        when id=#{cus.id} then #{cus.month}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="day =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.day!=null">
+                        when id=#{cus.id} then #{cus.day}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="weeks =case" suffix="end,">
+                <foreach collection="list" item="cus">
+                    <if test="cus.weeks!=null">
+                        when id=#{cus.id} then #{cus.weeks}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="cus">
+                id = #{cus.id}
+            </foreach>
+            <if test="years != null ">
+                AND `years` = #{years}
+            </if>
+            <if test="month != null ">
+                AND `month` = #{month}
+            </if>
+            <if test="day != null ">
+                AND `day` = #{day}
+            </if>
+        </where>
+    </update>
+
+
+</mapper>

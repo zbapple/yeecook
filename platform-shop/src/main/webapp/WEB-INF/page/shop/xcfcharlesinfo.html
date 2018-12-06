@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.years" @on-enter="query" placeholder="年"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.month" @on-enter="query" placeholder="月"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.day" @on-enter="query" placeholder="天"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.weeks" @on-enter="query" placeholder="周"/>
+                </i-col>
+            </div>
+        </Row>
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.name" @on-enter="query" placeholder="课程"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.lecturer" @on-enter="query" placeholder="讲师"/>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.sales" @on-enter="query" placeholder="销量大于"/>
+                </i-col>
+            </div>
+        </Row>
+        <Row>
+            <div class="buttons-group">
+            <button data-toggle="dropdown" class="btn btn-success dropdown-toggle">
+                导出
+            </button>
+            <ul class="dropdown-menu dropdown-left pull-right">
+                <li>
+                    <a href="#" class="export-excel">
+                        导出成Excel
+                    </a>
+                </li>
+            </ul>
+            <i-button @click="query">查询</i-button>
+            <i-button @click="reloadSearch">重置</i-button>
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+</div>
+
+<script src="${rc.contextPath}/js/shop/xcfcharlesinfo.js?_${date.systemTime}"></script>
+</body>
+</html>
