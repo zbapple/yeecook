@@ -45,7 +45,7 @@ export default {
       }
     }
   }
-  .goods/detaildetails-content{
+  .goods-detaildetails-content{
     .content-item{
       img{
         display: block;

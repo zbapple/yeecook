@@ -1,6 +1,8 @@
 package com.platform.entity;
 
 import com.platform.utils.CsvField;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -62,6 +64,8 @@ public class XetYqmEntity implements Serializable {
     private Integer id;
     //用户id
     private Long userId;
+    @Setter@Getter
+    private Integer countCd;
 
     /**
      * 设置：批次

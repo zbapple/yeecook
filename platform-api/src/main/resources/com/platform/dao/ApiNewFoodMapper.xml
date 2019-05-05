@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiNewFoodMapper">
+
+    <resultMap type="com.platform.entity.ApiNewFoodVo" id="newFoodMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="voidUrl" column="void_url"/>
+        <result property="tile1" column="tile_1"/>
+        <result property="tile1Remark" column="tile_1_remark"/>
+        <result property="yfdsPic" column="yfds_pic"/>
+        <result property="yfdsName" column="yfds_name"/>
+        <result property="yfdsDesc" column="yfds_desc"/>
+        <result property="plays" column="plays"/>
+        <result property="supplieImg" column="supplie_img"/>
+        <result property="supplieTile" column="supplie_tile"/>
+        <result property="supplieDesc" column="supplie_desc"/>
+        <result property="supplieInfo" column="supplie_info"/>
+        <result property="tile2" column="tile_2"/>
+        <result property="tile2Remark" column="tile_2_remark"/>
+        <result property="tile3" column="tile_3"/>
+        <result property="tile3Remark" column="tile_3_remark"/>
+        <result property="log" column="log"/>
+        <result property="logRemark" column="log_remark"/>
+        <result property="foodImg" column="food_img"/>
+        <result property="foodTile" column="food_tile"/>
+        <result property="foodRemark" column="food_remark"/>
+        <result property="yycs" column="yycs"/>
+        <result property="yycsRemark" column="yycs_remark"/>
+        <result property="foodSqTile1" column="food_sq_tile1"/>
+        <result property="foodSqTile2" column="food_sq_tile2"/>
+        <result property="foodSupImg" column="food_sup_img"/>
+        <result property="foodSupTile" column="food_sup_tile"/>
+        <result property="foodSupRemark" column="food_sup_remark"/>
+        <result property="foodSupInfo" column="food_sup_info"/>
+        <result property="url" column="url"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ApiNewFoodVo">
+		select
+			`id`,
+			`name`,
+			`void_url`,
+			`tile_1`,
+			`tile_1_remark`,
+			`yfds_pic`,
+			`yfds_name`,
+			`yfds_desc`,
+			`plays`,
+			`supplie_img`,
+			`supplie_tile`,
+			`supplie_desc`,
+			`supplie_info`,
+			`tile_2`,
+			`tile_2_remark`,
+			`tile_3`,
+			`tile_3_remark`,
+			`log`,
+			`log_remark`,
+			`food_img`,
+			`food_tile`,
+			`food_remark`,
+			`yycs`,
+			`yycs_remark`,
+			`food_sq_tile1`,
+			`food_sq_tile2`,
+			`food_sup_img`,
+			`food_sup_tile`,
+			`food_sup_remark`,
+			`food_sup_info`,
+			`url`
+		from new_food
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ApiNewFoodVo">
+		select
+    		`id`,
+    		`name`,
+    		`void_url`,
+    		`tile_1`,
+    		`tile_1_remark`,
+    		`yfds_pic`,
+    		`yfds_name`,
+    		`yfds_desc`,
+    		`plays`,
+    		`supplie_img`,
+    		`supplie_tile`,
+    		`supplie_desc`,
+    		`supplie_info`,
+    		`tile_2`,
+    		`tile_2_remark`,
+    		`tile_3`,
+    		`tile_3_remark`,
+    		`log`,
+    		`log_remark`,
+    		`food_img`,
+    		`food_tile`,
+    		`food_remark`,
+    		`yycs`,
+    		`yycs_remark`,
+    		`food_sq_tile1`,
+    		`food_sq_tile2`,
+    		`food_sup_img`,
+    		`food_sup_tile`,
+    		`food_sup_remark`,
+    		`food_sup_info`,
+    		`url`
+		from new_food
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from new_food
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.ApiNewFoodVo" useGeneratedKeys="true" keyProperty="id">
+		insert into new_food(
+			`name`,
+			`void_url`,
+			`tile_1`,
+			`tile_1_remark`,
+			`yfds_pic`,
+			`yfds_name`,
+			`yfds_desc`,
+			`plays`,
+			`supplie_img`,
+			`supplie_tile`,
+			`supplie_desc`,
+			`supplie_info`,
+			`tile_2`,
+			`tile_2_remark`,
+			`tile_3`,
+			`tile_3_remark`,
+			`log`,
+			`log_remark`,
+			`food_img`,
+			`food_tile`,
+			`food_remark`,
+			`yycs`,
+			`yycs_remark`,
+			`food_sq_tile1`,
+			`food_sq_tile2`,
+			`food_sup_img`,
+			`food_sup_tile`,
+			`food_sup_remark`,
+			`food_sup_info`,
+			`url`)
+		values(
+			#{name},
+			#{voidUrl},
+			#{tile1},
+			#{tile1Remark},
+			#{yfdsPic},
+			#{yfdsName},
+			#{yfdsDesc},
+			#{plays},
+			#{supplieImg},
+			#{supplieTile},
+			#{supplieDesc},
+			#{supplieInfo},
+			#{tile2},
+			#{tile2Remark},
+			#{tile3},
+			#{tile3Remark},
+			#{log},
+			#{logRemark},
+			#{foodImg},
+			#{foodTile},
+			#{foodRemark},
+			#{yycs},
+			#{yycsRemark},
+			#{foodSqTile1},
+			#{foodSqTile2},
+			#{foodSupImg},
+			#{foodSupTile},
+			#{foodSupRemark},
+			#{foodSupInfo},
+			#{url})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.ApiNewFoodVo">
+		update new_food 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="voidUrl != null">`void_url` = #{voidUrl}, </if>
+			<if test="tile1 != null">`tile_1` = #{tile1}, </if>
+			<if test="tile1Remark != null">`tile_1_remark` = #{tile1Remark}, </if>
+			<if test="yfdsPic != null">`yfds_pic` = #{yfdsPic}, </if>
+			<if test="yfdsName != null">`yfds_name` = #{yfdsName}, </if>
+			<if test="yfdsDesc != null">`yfds_desc` = #{yfdsDesc}, </if>
+			<if test="plays != null">`plays` = #{plays}, </if>
+			<if test="supplieImg != null">`supplie_img` = #{supplieImg}, </if>
+			<if test="supplieTile != null">`supplie_tile` = #{supplieTile}, </if>
+			<if test="supplieDesc != null">`supplie_desc` = #{supplieDesc}, </if>
+			<if test="supplieInfo != null">`supplie_info` = #{supplieInfo}, </if>
+			<if test="tile2 != null">`tile_2` = #{tile2}, </if>
+			<if test="tile2Remark != null">`tile_2_remark` = #{tile2Remark}, </if>
+			<if test="tile3 != null">`tile_3` = #{tile3}, </if>
+			<if test="tile3Remark != null">`tile_3_remark` = #{tile3Remark}, </if>
+			<if test="log != null">`log` = #{log}, </if>
+			<if test="logRemark != null">`log_remark` = #{logRemark}, </if>
+			<if test="foodImg != null">`food_img` = #{foodImg}, </if>
+			<if test="foodTile != null">`food_tile` = #{foodTile}, </if>
+			<if test="foodRemark != null">`food_remark` = #{foodRemark}, </if>
+			<if test="yycs != null">`yycs` = #{yycs}, </if>
+			<if test="yycsRemark != null">`yycs_remark` = #{yycsRemark}, </if>
+			<if test="foodSqTile1 != null">`food_sq_tile1` = #{foodSqTile1}, </if>
+			<if test="foodSqTile2 != null">`food_sq_tile2` = #{foodSqTile2}, </if>
+			<if test="foodSupImg != null">`food_sup_img` = #{foodSupImg}, </if>
+			<if test="foodSupTile != null">`food_sup_tile` = #{foodSupTile}, </if>
+			<if test="foodSupRemark != null">`food_sup_remark` = #{foodSupRemark}, </if>
+			<if test="foodSupInfo != null">`food_sup_info` = #{foodSupInfo}, </if>
+			<if test="url != null">`url` = #{url}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from new_food where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from new_food where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

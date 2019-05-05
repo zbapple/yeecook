@@ -68,9 +68,8 @@
         from nideshop_xet_yqm a,
         sys_user u,
         nideshop_user su
-        WHERE  u.mobile = su.mobile
-        AND a.user_id = u.user_id
-        AND a.is_use ='未使用'
+        WHERE
+         a.is_use ='未使用'
         <if test="batchName != null and batchName.trim() != ''">
             AND a.`batch_name` = #{batchName}
         </if>
@@ -78,6 +77,8 @@
             AND a.`batch_id` = #{batchId}
         </if>
         <if test="userId != null ">
+            AND u.mobile = su.mobile
+            AND a.user_id = u.user_id
             AND su.id =#{userId}
         </if>
         <choose>

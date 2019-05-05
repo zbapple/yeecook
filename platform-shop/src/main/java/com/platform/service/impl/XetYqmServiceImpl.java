@@ -74,4 +74,9 @@ public class XetYqmServiceImpl implements XetYqmService {
 
         return  xetYqmDao.addBatch(optionList);
     }
+
+    @Override
+    public List<XetYqmEntity> query1(Map<String, Object> map) {
+        return xetYqmDao.query1(map);
+    }
 }

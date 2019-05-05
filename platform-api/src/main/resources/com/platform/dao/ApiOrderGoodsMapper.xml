@@ -21,6 +21,9 @@
         <result property="dept_id" column="dept_id"/>
         <result property="supplier_id" column="supplier_id"/>
         <result property="supplierName" column="supplier_name"/>
+        <result property="attribute_category" column="attribute_category"/>
+        <result property="batch_id" column="batch_id"/>
+        <result property="yqm" column="yqm"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderGoodsMap">
@@ -41,6 +44,8 @@
         a.*,
         b.create_user_dept_id dept_id,
         b.supplier_id supplier_id,
+        b.attribute_category attribute_category,
+        b.batch_id batch_id,
         c.`company_name` as `supplier_name`
         FROM
         nideshop_order_goods a
@@ -87,7 +92,8 @@
 			`retail_price`, 
 			`goods_specifition_name_value`, 
 			`is_real`, 
-			`goods_specifition_ids`, 
+			`goods_specifition_ids`,
+			`yqm`,
 			`list_pic_url`
 		)
 		values
@@ -103,6 +109,7 @@
 			#{goods_specifition_name_value},
 			#{is_real},
 			#{goods_specifition_ids},
+			#{yqm},
 			#{list_pic_url}
 		)
 	</insert>
@@ -123,6 +130,7 @@
             </if>
             <if test="is_real != null">`is_real` = #{is_real},</if>
             <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{goods_specifition_ids},</if>
+            <if test="yqm != null">`yqm` = #{yqm},</if>
             <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url}</if>
         </set>
         where id = #{id}

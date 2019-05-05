@@ -22,20 +22,21 @@
 </head>
 <body class="signin hold-transition login-page">
 <div class="loginscreen animated fadeInDown signinpanel" id="loginBox" v-cloak>
-    <div class="row">
-        <div class="col-md-7">
-            <div class="signin-info">
-                <div class="logopanel m-b">
-                    <h1> 广州宜厨科技有限公司 / yeecook-shop</h1>
-                </div>
-                <div class="m-b"></div>
-                <h4>欢迎使用 <strong>宜厨商城管理平台</strong></h4>
-
-            </div>
+    <div class="text-center">
+        <div >
+         <img style="width: 519px;height: 243px " src="/shop/statics/img/logo.png">
         </div>
-        <div class="col-md-5">
-            <Card class="m-t text-center" style="background: rgba(109, 109, 109, 0.23);border: 0px solid #dddee1;">
-                <p style="padding: 0 20px 20px 20px;">登录到综合管理平台</p>
+        <div class="m-b"></div>
+        <h4 style="color:#575757 ">食材营销新媒体服务平台</h4>
+        <div class="m-b"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <Card class="m-t text-center" style="background: #ffffff;border: 0px solid #dddee1;">
+                <p style="padding: 0 20px 20px 20px;color: #f88b50;">登录到综合管理平台</p>
                 <div class="form-group has-feedback">
                     <i-input v-model="username" @on-enter="login" placeholder="账号" style="width: 200px;" autofocus/>
                 </div>
@@ -58,9 +59,10 @@
                 </div>
             </Card>
         </div>
+        <div class="col-md-4"></div>
     </div>
     <div class="signup-footer">
-        <div class="pull-left">
+        <div class="text-center" style="color:#707070 ">
             2018~2018 &copy; <a href="http://www.yeecook.com" target="_blank">宜厨科技</a> 粤ICP备18046518号-1
         </div>
     </div>

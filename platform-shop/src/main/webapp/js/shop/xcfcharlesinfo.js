@@ -26,6 +26,7 @@ $(function () {
         var weeks=vm.q.weeks;
         var sales=vm.q.sales;
         var lecturer =vm.q.lecturer;
+        var addtime=vm.q.addtime;
         window.open("../xcfcharlesinfo/exclorder?" +
             "name=" +name+
             "&years="+years+
@@ -34,7 +35,7 @@ $(function () {
             "&weeks="+weeks+
             "&sales="+sales+
             "&lecturer="+lecturer+
-            "&filename="+filename
+            "&filename="+filename+"&addtime="+addtime
         );
     });
 });
@@ -57,7 +58,8 @@ let vm = new Vue({
             day:'',
             weeks:'',
             sales:'',
-            lecturer:''
+            lecturer:'',
+            addtime:[]
 		}
 	},
 	methods: {
@@ -84,7 +86,8 @@ let vm = new Vue({
                     'day': vm.q.day,
                     'weeks': vm.q.weeks,
                     'sales': vm.q.sales,
-                    'lecturer': vm.q.lecturer
+                    'lecturer': vm.q.lecturer,
+                    addtime:vm.q.addtime
                 },
                 page: page
             }).trigger("reloadGrid");
@@ -98,7 +101,8 @@ let vm = new Vue({
                 day:'',
                 weeks:'',
                 sales:'',
-                lecturer:''
+                lecturer:'',
+                addtime:[]
             }
             vm.reload();
         },

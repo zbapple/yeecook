@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 日期处理
@@ -89,6 +90,24 @@ public class DateUtils {
         }
     }
 
+    /**
+     * @param datdString Thu May 18 2017 00:00:00 GMT+0800 (中国标准时间)
+     * @return 年月日;
+     */
+    public static String parseTime(String datdString) {
+        datdString = datdString.replace("GMT", "").replaceAll("\\(.*\\)", "");
+        //将字符串转化为date类型，格式2016-10-12
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.ENGLISH);
+        Date dateTrans = null;
+        try {
+            dateTrans = format.parse(datdString);
+            return new SimpleDateFormat("yyyy-MM-dd").format(dateTrans).replace("-","/");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return datdString;
+
+    }
 
     /**
      * 根据传入的日期格式字符串，获取日期的格式

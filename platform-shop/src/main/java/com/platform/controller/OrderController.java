@@ -117,7 +117,6 @@ public class OrderController {
     @RequiresPermissions("order:confirm")
     public R confirm(@RequestBody Integer id) {
         orderService.confirm(id);
-
         return R.ok();
     }
 
@@ -131,7 +130,6 @@ public class OrderController {
     @RequiresPermissions("order:sendGoods")
     public R sendGoods(@RequestBody OrderEntity order) {
         orderService.sendGoods(order);
-
         return R.ok();
     }
 }

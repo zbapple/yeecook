@@ -65,8 +65,6 @@ public class ApiXetYqmController extends ApiBaseAction {
         return toResponsSuccess(resultObj);
     }
 
-
-
     /**
      * 　　clearhistory
      */
@@ -135,6 +133,23 @@ public class ApiXetYqmController extends ApiBaseAction {
         }else {
             return toResponsSuccess("打印成功!" +"计划打印："+printSum+"个;"+ "已打印：" + i + "个;");
         }
+    }
+
+    public XetYqmVo getYqm(String batchId){
+
+        Map param = new HashMap();
+        param.put("batchId", batchId);
+        PageHelper.startPage(0, 1, false);
+        List<XetYqmVo> xetYqmVoList = apiXetYqmService.queryList(param);
+
+        if(xetYqmVoList.size()<=0) {
+            return null;
+        }
+        XetYqmVo xetYqmVo=xetYqmVoList.get(0);
+        xetYqmVo.setIsUse("已使用");
+        apiXetYqmService.update(xetYqmVo);
+
+        return xetYqmVo;
     }
 
     public void print(List<SysPrinterUserVo> list,SysPrinterVo sysPrinterVo,String count,String num) throws Methods.PrinterException {

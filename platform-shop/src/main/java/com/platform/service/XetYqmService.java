@@ -77,4 +77,6 @@ public interface XetYqmService {
      */
     int addBatch(List<XetYqmEntity> optionList);
 
+    List<XetYqmEntity> query1(Map<String, Object> map);
+
 }

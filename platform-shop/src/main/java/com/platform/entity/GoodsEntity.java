@@ -1,5 +1,8 @@
 package com.platform.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -79,6 +82,8 @@ public class GoodsEntity implements Serializable {
     private Integer isHot;
     //市场价
     private BigDecimal marketPrice;
+    @Getter@Setter
+    private String batchId;
     /**
      * 用户ID
      */

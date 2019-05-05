@@ -119,6 +119,9 @@
                             </i-option>
                         </i-select>
                     </Form-item>
+                    <Form-item label="激活码批次" prop="batchId" style="width: 268px;">
+                        <i-input v-model="goods.batchId" placeholder="激活码批次"/>
+                    </Form-item>
                     <Form-item label="商品库存" prop="goodsNumber">
                         <Input-number :min="0" :step="1" v-model="goods.goodsNumber" placeholder="商品库存"
                                       style="width: 188px;"/>

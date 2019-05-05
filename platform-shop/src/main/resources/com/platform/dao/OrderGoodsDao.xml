@@ -18,7 +18,7 @@
         <result property="isReal" column="is_real"/>
         <result property="goodsSpecifitionIds" column="goods_specifition_ids"/>
         <result property="listPicUrl" column="list_pic_url"/>
-
+		<result property="yqm" column="yqm"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.OrderGoodsEntity">

@@ -38,14 +38,14 @@ public class XcfTask {
         mapQuery.put("month",month);
         mapQuery.put("day",day);
         boolean isUpdate =xcfCharlesInfoService.queryTotal(mapQuery)>0;
-
+        Date date1 = new Date(System.currentTimeMillis());
          for (JsonRootBean jsonRootBean:list){
 
              if(jsonRootBean.getStatus().equals("ok")){
                  for (Courses courses:jsonRootBean.getContent().getCourses()){
                      XcfCharlesInfoEntity xcfCharlesInfoEntity=new XcfCharlesInfoEntity();
                      xcfCharlesInfoEntity.setId(Long.valueOf(courses.getId()));
-                     xcfCharlesInfoEntity.setAddtime(date);
+                     xcfCharlesInfoEntity.setAddtime(date1);
                      xcfCharlesInfoEntity.setCourse(courses.getName());
                      xcfCharlesInfoEntity.setSales(Long.valueOf(courses.getTotal_sales_volume()));
                      xcfCharlesInfoEntity.setLecturer(courses.getLecturer().getName());
@@ -66,7 +66,4 @@ public class XcfTask {
          }
     }
 
-    public void test2() {
-        logger.info("我是不带参数的test2方法，正在被执行");
-    }
 }

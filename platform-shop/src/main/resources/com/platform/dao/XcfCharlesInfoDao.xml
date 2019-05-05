@@ -52,28 +52,27 @@
         <if test="price != null and price.trim() != ''">
             AND price = #{price}
         </if>
-        <if test="sales != null and sales.trim() != ''">
+        <if test="sales != null and sales > 0">
             AND sales > #{sales}
         </if>
-        <if test="addtime != null and addtime.trim() != ''">
-            AND addtime = #{addtime}
-        </if>
-        <if test="weeks != null and weeks.trim() != ''">
+
+        <if test="weeks != null and weeks > 0">
             AND `weeks` = #{weeks}
         </if>
-        <if test="years != null and years.trim() != ''">
+        <if test="years != null and years > 0">
             AND `years` = #{years}
         </if>
-        <if test="month != null and month.trim() != ''">
+        <if test="month != null and month > 0">
             AND `month` = #{month}
         </if>
-        <if test="day != null and day.trim() != ''">
+        <if test="day != null and day > 0">
             AND `day` = #{day}
         </if>
         <if test="lecturer != null and lecturer.trim() != ''">
             AND lecturer LIKE concat('%',#{lecturer},'%')
         </if>
-
+        <if test="addtime != null and addtime != ''">AND addtime <![CDATA[>=]]> #{addtime}</if>
+        <if test="addtime1 != null and addtime1 != ''">AND addtime <![CDATA[<=]]>#{addtime1}</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -96,27 +95,26 @@
         <if test="price != null and price.trim() != ''">
             AND price = #{price}
         </if>
-        <if test="sales != null and sales.trim() != ''">
+        <if test="sales != null and sales > 0">
             AND sales > #{sales}
         </if>
-        <if test="addtime != null and addtime.trim() != ''">
-            AND addtime = #{addtime}
-        </if>
-        <if test="weeks != null and weeks.trim() != ''">
+        <if test="weeks != null and weeks > 0">
             AND `weeks` = #{weeks}
         </if>
-        <if test="years != null and years.trim() != ''">
+        <if test="years != null and years > 0">
             AND `years` = #{years}
         </if>
-        <if test="month != null and month.trim() != ''">
+        <if test="month != null and month > 0">
             AND `month` = #{month}
         </if>
-        <if test="day != null and day.trim() != ''">
+        <if test="day != null and day > 0">
             AND `day` = #{day}
         </if>
         <if test="lecturer != null and lecturer.trim() != ''">
             AND lecturer LIKE concat('%',#{lecturer},'%')
         </if>
+        <if test="addtime != null and addtime != ''">AND addtime <![CDATA[>=]]> #{addtime}</if>
+        <if test="addtime1 != null and addtime1 != ''">AND addtime <![CDATA[<=]]>#{addtime1}</if>
     </select>
 
     <insert id="save" parameterType="com.platform.charles.xcf.XcfCharlesInfoEntity">
@@ -272,9 +270,10 @@
                 </foreach>
             </trim>
         </trim>
-        <where>
-            <foreach collection="list" separator="or" item="cus">
-                id = #{cus.id}
+            where id in
+            <foreach collection="list" item="cus" index="index"
+                     separator="," open="(" close=")">
+                #{cus.id}
             </foreach>
             <if test="years != null ">
                 AND `years` = #{years}
@@ -285,7 +284,7 @@
             <if test="day != null ">
                 AND `day` = #{day}
             </if>
-        </where>
+
     </update>
 
 

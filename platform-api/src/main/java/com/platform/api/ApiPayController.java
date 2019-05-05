@@ -5,6 +5,7 @@ import com.platform.cache.J2CacheUtils;
 import com.platform.entity.OrderGoodsVo;
 import com.platform.entity.OrderVo;
 import com.platform.entity.UserVo;
+import com.platform.entity.XetYqmVo;
 import com.platform.service.ApiOrderGoodsService;
 import com.platform.service.ApiOrderService;
 import com.platform.util.ApiBaseAction;
@@ -39,7 +40,9 @@ public class ApiPayController extends ApiBaseAction {
     @Autowired
     private ApiOrderGoodsService orderGoodsService;
     @Autowired
-    private ApiCardController apiCardController;
+    private ApiXetYqmController apiXetYqmController;
+    @Autowired
+    private ApiOrderController apiOrderController;
 
     /**
      */
@@ -90,21 +93,21 @@ public class ApiPayController extends ApiBaseAction {
             List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
 
             if (null != orderGoods) {
-                List<HashMap> list =new ArrayList<>();
+                List<HashMap> list = new ArrayList<>();
 
                 for (OrderGoodsVo goodsVo : orderGoods) {
-                    HashMap hashMap =new HashMap();
-                    hashMap.put("goods_id",String.valueOf(goodsVo.getGoods_id()));
-                    hashMap.put("quantity",goodsVo.getNumber());
-                    hashMap.put("goods_name",goodsVo.getGoods_name());
-                    hashMap.put("price",goodsVo.getRetail_price().multiply(new BigDecimal(100)).intValue());
+                    HashMap hashMap = new HashMap();
+                    hashMap.put("goods_id", String.valueOf(goodsVo.getGoods_id()));
+                    hashMap.put("quantity", goodsVo.getNumber());
+                    hashMap.put("goods_name", goodsVo.getGoods_name());
+                    hashMap.put("price", goodsVo.getRetail_price().multiply(new BigDecimal(100)).intValue());
                     list.add(hashMap);
                 }
 
-                Map map=new HashMap();
-                map.put("goods_detail",JsonUtil.getJsonByObj(list));
+                Map map = new HashMap();
+                map.put("goods_detail", JsonUtil.getJsonByObj(list));
                 // 商品描述
-                parame.put("detail",JsonUtil.getJsonByObj(map));
+                parame.put("detail", JsonUtil.getJsonByObj(map));
             }
             //支付金额
             parame.put("total_fee", orderInfo.getActual_price().multiply(new BigDecimal(100)).intValue());
@@ -159,8 +162,16 @@ public class ApiPayController extends ApiBaseAction {
     }
 
     private void printerOrder(OrderVo orderVo, List<OrderGoodsVo> orderGoodsVoList) {
-        orderService.printerOrder(orderVo, orderGoodsVoList);
-        orderService.printerSupplierOrder(orderVo.getId());
+        try {
+            orderService.printerOrder(orderVo, orderGoodsVoList);
+        } catch (Exception e) {
+            logger.error("订单" + orderVo.getOrder_sn() + "打印失败！");
+        }
+        try {
+            orderService.printerSupplierOrder(orderVo.getId());
+        } catch (Exception e) {
+            logger.error("供应商订单" + orderVo.getOrder_sn() + "打印失败！");
+        }
     }
 
     /**
@@ -223,9 +234,21 @@ public class ApiPayController extends ApiBaseAction {
                     Map orderGoodsParam = new HashMap();
                     orderGoodsParam.put("order_id", orderInfo.getId());
                     List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
-                    printerOrder(orderInfo, orderGoods);
-                    logger.error("订单" + orderInfo.getOrder_sn() + "打印成功-orderQuery");
                     //todo 虚拟卡直接确认收货
+                    for (OrderGoodsVo orderGoodsVo : orderGoods) {
+                        if (null != orderGoodsVo.getAttribute_category() & orderGoodsVo.getAttribute_category() == 1036003) {
+
+                            XetYqmVo xetYqmVo = apiXetYqmController.getYqm(orderGoodsVo.getBatch_id());
+                            if (null != xetYqmVo) {
+                                orderGoodsVo.setYqm(xetYqmVo.getInvitationCode());
+                                orderGoodsService.update(orderGoodsVo);
+                                apiOrderController.confirmOrder(orderId);
+                                logger.error("订单" + orderInfo.getOrder_sn() + "虚拟商品发货成功！");
+                                break;
+                            }
+                        }
+                    }
+                    printerOrder(orderInfo, orderGoods);
                     //apiCardController.activationBayCard(orderDetail.getUser_id(),orderInfo.getId());
                 }
                 return toResponsMsgSuccess("支付成功");
@@ -266,18 +289,18 @@ public class ApiPayController extends ApiBaseAction {
 
     @ApiOperation(value = "更新网络异常情况下订单状态为支付中的订单。")
     @PostMapping("refresh")
-    public  Object checkOrderErr(@LoginUser UserVo loginUser){
+    public Object checkOrderErr(@LoginUser UserVo loginUser) {
 
         Map params = new HashMap();
         params.put("user_id", loginUser.getUserId());
         params.put("pay_status", 1);//支付中
-       List<OrderVo> list=orderService.queryList(params);
-        if(null!=list&&list.size()>0){
-            for (OrderVo orderVo : list){
-                orderQuery(loginUser,orderVo.getId());
+        List<OrderVo> list = orderService.queryList(params);
+        if (null != list && list.size() > 0) {
+            for (OrderVo orderVo : list) {
+                orderQuery(loginUser, orderVo.getId());
             }
         }
-        return  toResponsMsgSuccess("更新成功");
+        return toResponsMsgSuccess("更新成功");
     }
 
 
@@ -340,10 +363,23 @@ public class ApiPayController extends ApiBaseAction {
                         Map orderGoodsParam = new HashMap();
                         orderGoodsParam.put("order_id", orderInfo.getId());
                         List<OrderGoodsVo> orderGoods = orderGoodsService.queryList(orderGoodsParam);
-                        printerOrder(orderInfo, orderGoods);
-                        logger.error("订单" + out_trade_no + "打印成功-notify");
+
                         //todo 虚拟卡直接确认收货
                         //apiCardController.activationBayCard(orderInfo.getUser_id(),orderInfo.getId());
+                        for (OrderGoodsVo orderGoodsVo : orderGoods) {
+                            if (null != orderGoodsVo.getAttribute_category() & orderGoodsVo.getAttribute_category() == 1036003) {
+
+                                XetYqmVo xetYqmVo = apiXetYqmController.getYqm(orderGoodsVo.getBatch_id());
+                                if (null != xetYqmVo) {
+                                    orderGoodsVo.setYqm(xetYqmVo.getInvitationCode());
+                                    orderGoodsService.update(orderGoodsVo);
+                                    apiOrderController.confirmOrder(orderInfo.getId());
+                                    logger.error("订单" + out_trade_no + "虚拟商品发货成功-微信回调");
+                                    break;
+                                }
+                            }
+                        }
+                        printerOrder(orderInfo, orderGoods);
                     }
                 } else {
                     logger.error("订单" + out_trade_no + "支付失败找不到更新订单");

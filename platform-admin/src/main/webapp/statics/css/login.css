@@ -9,10 +9,15 @@ body.signin {
     background-size: cover;
 }
 
+.logo {
+    width: 519px;
+    height: 243px;
+    background-image: url("../img/logo.png");
+}
 .signinpanel {
     color: white;
     width: 850px;
-    margin: 15% auto 0 auto;
+    margin: 1% auto 0 auto;
 }
 
 .signinpanel .logopanel {
@@ -34,11 +39,11 @@ body.signin {
 }
 
 .signinpanel .uname {
-    background: #fff url(../img/user.png) no-repeat 95% center;color:#333;
+    background: #fff url(../img/user.png) no-repeat 95% center;color:#f88b50;
 }
 
 .signinpanel .pword {
-    background: #fff url(../img/locked.png) no-repeat 95% center;color:#333;
+    background: #fff url(../img/locked.png) no-repeat 95% center;color:#f88b50;
 }
 
 .signinpanel .btn {

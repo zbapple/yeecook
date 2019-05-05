@@ -19,6 +19,7 @@ $(function () {
                 }
             },
             {label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},
+            {label: '激活码批次', name: 'batchId', index: 'batch_id', width: 80},
             {label: '零售价格', name: 'retailPrice', index: 'retail_price', width: 80},
             {label: '商品库存', name: 'goodsNumber', index: 'goods_number', width: 80},
             {label: '销售量', name: 'sellVolume', index: 'sell_volume', width: 80},

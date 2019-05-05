@@ -69,4 +69,9 @@ public interface ActivationGeneratorLogService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+    interface a extends ActivationGeneratorLogService{
+
+    }
 }

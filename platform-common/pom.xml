@@ -158,5 +158,10 @@
             <artifactId>commons-csv</artifactId>
             <version>1.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
 </project>

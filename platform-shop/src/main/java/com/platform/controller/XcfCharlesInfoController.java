@@ -2,10 +2,7 @@ package com.platform.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.platform.utils.*;
 import com.platform.utils.excel.ExcelExport;
@@ -22,6 +19,8 @@ import com.platform.service.XcfCharlesInfoService;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
+
 
 /**
  * Controller
@@ -44,7 +43,10 @@ public class XcfCharlesInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if(StringUtils.isNotEmpty((String)query.get("addtime[0]"))){
+            query.put("addtime", DateUtils.parseTime((String) query.get("addtime[0]")));
+            query.put("addtime1", DateUtils.parseTime((String) query.get("addtime[1]")));
+        }
         List<XcfCharlesInfoEntity> xcfCharlesInfoList = xcfCharlesInfoService.queryList(query);
         int total = xcfCharlesInfoService.queryTotal(query);
 
@@ -110,7 +112,7 @@ public class XcfCharlesInfoController {
 
     @RequestMapping("/exclorder")
     public R fileDownLoad(HttpServletResponse response,
-                          @RequestParam String name, @RequestParam String years, @RequestParam String month, @RequestParam String day, @RequestParam String weeks, @RequestParam String sales, @RequestParam String lecturer, @RequestParam String filename) {
+                          @RequestParam String name, @RequestParam String years, @RequestParam String month, @RequestParam String day, @RequestParam String weeks, @RequestParam String sales, @RequestParam String lecturer, @RequestParam String filename ,@RequestParam  String [] addtime) {
         Map<String, Object> params = new HashMap<>();
         if (StringUtils.isNotEmpty(name)) {
             params.put("name", name);
@@ -132,6 +134,10 @@ public class XcfCharlesInfoController {
         }
         if (StringUtils.isNotEmpty(lecturer)) {
             params.put("lecturer", lecturer);
+        }
+        if (addtime!=null&&addtime.length>0) {
+            params.put("addtime", DateUtils.parseTime(addtime[0]));
+            params.put("addtime1", DateUtils.parseTime(addtime[1]));
         }
         params.put("sidx", "sales");
         params.put("order", "desc");

@@ -41,6 +41,7 @@
         <result property="updateUserId" column="update_user_id"/>
         <result property="companyName" column="company_name"/>
         <result property="supplierId" column="supplier_id"/>
+        <result property="batchId" column="batch_id"/>
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.GoodsEntity">
@@ -85,6 +86,7 @@
         nideshop_goods.create_user_dept_id,
         nideshop_goods.update_user_id,
         nideshop_goods.supplier_id,
+        nideshop_goods.batch_id,
         nideshop_category.name category_name,
         nideshop_attribute_category.name attribute_category_name,
         nideshop_brand.name brand_name,
@@ -166,7 +168,8 @@
         `create_user_id`,
         `create_user_dept_id`,
         `update_user_id`,
-        `supplier_id`
+        `supplier_id`,
+        `batch_id`
         )
         values
         (
@@ -205,7 +208,8 @@
         #{createUserId},
         #{createUserDeptId},
         #{updateUserId},
-        #{supplierId}
+        #{supplierId},
+        #{batchId}
         )
     </insert>
 
@@ -247,6 +251,7 @@
             <if test="createUserId != null">`create_user_dept_id` = #{createUserDeptId},</if>
             <if test="updateUserId != null">`update_user_id` = #{updateUserId},</if>
             <if test="supplierId != null">`supplier_id` = #{supplierId},</if>
+            <if test="batchId != null">`batch_id` = #{batchId},</if>
         </set>
         where id = #{id}
     </update>

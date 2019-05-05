@@ -44,6 +44,15 @@ public class OrderGoodsVo implements Serializable {
     private String list_pic_url;
     private Integer supplier_id;
     private Integer dept_id;
+    @Setter
+    @Getter
+    private String batch_id;
+    @Setter
+    @Getter
+    private String yqm;
+    @Setter
+    @Getter
+    private Integer attribute_category;
     //供应商名称
     @Setter
     @Getter

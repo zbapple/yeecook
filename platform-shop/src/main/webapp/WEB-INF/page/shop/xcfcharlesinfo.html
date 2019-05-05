@@ -34,6 +34,10 @@
                 <i-col span="4">
                     <i-input v-model="q.sales" @on-enter="query" placeholder="销量大于"/>
                 </i-col>
+                <i-col span="4">
+                <Date-picker v-model="q.addtime" type="daterange" placement="bottom-end" placeholder="选择日期区间"
+                             style="width: 200px"></Date-picker>
+                </i-col>
             </div>
         </Row>
         <Row>

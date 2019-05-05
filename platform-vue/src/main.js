@@ -38,7 +38,7 @@ Vue.use(AlertPlugin)
 
 Vue.config.productionTip = false
 
-const root = '/platform/api/'
+const root = '/shop/api/'
 // 定义一个全局混合对象
 Vue.mixin({
   data() {
@@ -60,6 +60,7 @@ Vue.mixin({
         }
       }
       if (method == 'post') {
+
         config.params = ''
       } else {
         config.data = ''

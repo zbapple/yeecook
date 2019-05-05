@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                </i-col>
+
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                #if($shiro.hasPermission("newfood:save"))
+                <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+                #end
+                #if($shiro.hasPermission("newfood:update"))
+                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                #end
+                #if($shiro.hasPermission("newfood:delete"))
+                <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                #end
+            </div>
+        </Row>
+        <Row>
+            <div class="buttons-group">
+
+                <button data-toggle="dropdown" class="btn btn-success dropdown-toggle">
+                    生成页面二维码图片
+                </button>
+                <ul class="dropdown-menu dropdown-left pull-right">
+                    <li>
+                        <a href="#" class="export-excel">
+                            生成商家页面二维码图片
+                        </a>
+                        <a href="#" class="export-excel2">
+                            生成菜谱页面二维码图片
+                        </a>
+                        <a href="#" class="export-excel3">
+                            生成食材页面二维码图片
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <i-col span="4">
+                <i-input v-model="q.width" @on-enter="query" placeholder="二维码宽度"/>
+            </i-col>
+            <i-col span="4">
+                <i-input v-model="q.height" @on-enter="query" placeholder="二维码高度"/>
+            </i-col>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="newFood" :rules="ruleValidate" :label-width="150">
+            <Form-item label="菜名称" prop="name">
+                <i-input v-model="newFood.name" placeholder="菜名称"/>
+            </Form-item>
+            <Row>
+                <i-col span="16">
+
+                    <Form-item label="视频上传" prop="voidUrl">
+                        <i-input v-model="newFood.voidUrl" placeholder="视频上传" />
+
+
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['mp4']"
+                                max-size="122880" :on-progress="handleStart"
+                                :on-success="handleSuccessVoidUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false" :on-error="fileUpErr"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline" :loading="loadingStatus">{{ loadingStatus ? '视频上传中...' : '点击上传视频' }}</i-button>
+                        </Upload>
+
+
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="标题一" prop="tile1">
+                <i-input v-model="newFood.tile1" placeholder="标题一"/>
+            </Form-item>
+            <Form-item label="标题一备注" prop="tile1Remark">
+                <i-input v-model="newFood.tile1Remark" placeholder="标题一备注"/>
+            </Form-item>
+            <Form-item label="选择研发大师" prop="yfdsInfos" style="width: 368px;">
+                <i-select v-model="newFood.yfdsInfos"  @on-change="yfdsOnChange" filterable label-in-value>
+                    <i-option v-for="yfds in yfdsInfos" :value="yfds"
+                              :key="yfds.id">{{yfds.yfdsName}}
+                    </i-option>
+                </i-select>
+                <i-input v-model="newFood.yfdsInfo"  type="hidden" />
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="研发大师图像" prop="yfdsPic">
+                        <i-input v-model="newFood.yfdsPic" placeholder="研发大师图像" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessPicUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagePicUrl">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+
+
+            <Form-item label="研发大师名称" prop="yfdsName">
+                <i-input v-model="newFood.yfdsName" placeholder="研发大师名称"/>
+            </Form-item>
+            <Form-item label="研发大师描述" prop="yfdsDesc">
+                <i-input v-model="newFood.yfdsDesc" placeholder="研发大师描述"/>
+            </Form-item>
+            <Form-item label="观看次数" prop="plays">
+                <i-input v-model="newFood.plays" placeholder="观看次数"/>
+            </Form-item>
+            <Form-item label="选择品牌" prop="supplieIds" style="width: 368px;">
+                <i-select v-model="newFood.supplieIds" @on-change="supplieOnChange" filterable label-in-value>
+                    <i-option v-for="supplie in supplies" :value="supplie"
+                              :key="supplie.id">{{supplie.supplieTile}}
+                    </i-option>
+                </i-select>
+                <i-input v-model="newFood.supplieId"  type="hidden" />
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="品牌图像" prop="supplieImg">
+                        <i-input v-model="newFood.supplieImg" placeholder="商家图像" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessSuppUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageSupp">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="品牌标题一" prop="supplieTile">
+                <i-input v-model="newFood.supplieTile" placeholder="供应商标题一"/>
+            </Form-item>
+            <Form-item label="品牌标题描述" prop="supplieDesc">
+                <i-input v-model="newFood.supplieDesc" placeholder="供应商标题描述"/>
+            </Form-item>
+            <Form-item label="品牌介绍" prop="supplieInfo">
+                <i-input v-model="newFood.supplieInfo" type="textarea" placeholder="供应商介绍"/>
+            </Form-item>
+            <Form-item label="课程简介" prop="tile2">
+                <i-input v-model="newFood.tile2" placeholder="课程简介"/>
+            </Form-item>
+            <Form-item label="课程简介内容" prop="tile2Remark">
+                <i-input v-model="newFood.tile2Remark" type="textarea" placeholder="课程简介内容"/>
+            </Form-item>
+            <Form-item label="课程福利" prop="tile3">
+                <i-input v-model="newFood.tile3" placeholder="课程福利"/>
+            </Form-item>
+            <Form-item label="课程福利内容编辑" prop="tile3Remark">
+                <i-input v-model="newFood.tile3Remark" type="textarea" :autosize="true" placeholder="课程内容"/>
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="" prop="listurl1">
+                        <i-input v-model="listurl1"  placeholder="修改课程福利内容说明：点击获取图片URL将地址按格式 image: 'http://xxxxx'填入上方编辑区"/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessUrl1" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">获取图片URL</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageUrl1">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="底部图片LOG" prop="log">
+                        <i-input v-model="newFood.log" placeholder="底部图片LOG" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessLogUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageLog">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="底部介绍" prop="logRemark">
+                <i-input v-model="newFood.logRemark" type="textarea" placeholder="底部介绍"/>
+            </Form-item>
+            <p slot="title">-----------------------食材页面------------------</p>
+
+            <Form-item label="选择食材" prop="foodIds" style="width: 368px;">
+                <i-select v-model="newFood.foodIds" @on-change="foodsOnChange" filterable label-in-value>
+                    <i-option v-for="food in foods" :value="food"
+                              :key="food.id">{{food.foodTile}}
+                    </i-option>
+                </i-select>
+                <i-input v-model="newFood.foodId"  type="hidden" />
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="食材图片" prop="foodImg">
+                        <i-input v-model="newFood.foodImg" placeholder="食材图片" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessfoodUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagefood">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="食材标题" prop="foodTile">
+                <i-input v-model="newFood.foodTile" placeholder="食材标题" />
+            </Form-item>
+            <Form-item label="食材描述" prop="foodRemark">
+                <i-input v-model="newFood.foodRemark" type="textarea" placeholder="食材描述"/>
+            </Form-item>
+            <Form-item label="应用菜式" prop="yycs">
+                <i-input v-model="newFood.yycs" placeholder="应用菜式"/>
+            </Form-item>
+            <Form-item label="应用菜式内容" prop="yycsRemark">
+                <i-input v-model="newFood.yycsRemark" type="textarea" :autosize="true" placeholder="应用菜式内容"/>
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="" prop="listurl2">
+                        <i-input v-model="listurl2" type="textarea" :autosize="true" placeholder="修改应用菜式内容说明：点击获取图片URL将地址按格式 image:'http://xxxxx'填入上方编辑区"/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessUrl2" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">获取图片URL</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageUrl2">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+
+
+            <Form-item label="食材申请标题一" prop="foodSqTile1">
+                <i-input v-model="newFood.foodSqTile1" placeholder="食材申请标题一"/>
+            </Form-item>
+            <Form-item label="食材申请标题二" prop="foodSqTile2">
+                <i-input v-model="newFood.foodSqTile2" placeholder="食材申请标题二"/>
+            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="食材供应商图片" prop="foodSupImg">
+                        <i-input v-model="newFood.foodSupImg" placeholder="食材供应商图片" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessSupUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="true"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImageSup">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="食材供应商标题" prop="foodSupTile">
+                <i-input v-model="newFood.foodSupTile" placeholder="食材供应商标题"/>
+            </Form-item>
+            <Form-item label="食材供应商描述" prop="foodSupRemark">
+                <i-input v-model="newFood.foodSupRemark" placeholder="食材供应商描述"/>
+            </Form-item>
+            <Form-item label="食材功能供应商介绍" prop="foodSupInfo">
+                <i-input v-model="newFood.foodSupInfo" type="textarea" placeholder="食材功能供应商介绍"/>
+            </Form-item>
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+        <Modal title="查看图片" v-model="visible">
+            <img :src="imgName" v-if="visible" style="width: 100%"/>
+        </Modal>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/newfood.js?_${date.systemTime}"></script>
+</body>
+</html>

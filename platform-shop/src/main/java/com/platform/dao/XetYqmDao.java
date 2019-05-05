@@ -3,6 +3,7 @@ package com.platform.dao;
 import com.platform.entity.XetYqmEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Dao
@@ -19,4 +20,5 @@ public interface XetYqmDao extends BaseDao<XetYqmEntity> {
      */
     int addBatch(List<XetYqmEntity> optionList);
 
+     List<XetYqmEntity> query1(Map<String, Object> map);
 }
