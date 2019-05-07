@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.MenuDao">
+
+    <resultMap type="com.platform.entity.MenuEntity" id="menuMap">
+        <result property="id" column="id"/>
+        <result property="categoryName" column="category_Name"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="menuBrief" column="menu_brief"/>
+        <result property="menuPicUrl" column="menu_pic_url"/>
+        <result property="menuStrUrl" column="menu_str_url"/>
+        <result property="cookMethod" column="cook_method"/>
+        <result property="cookPicUrl" column="cook_pic_url"/>
+        <result property="auxiliaryMeans" column="auxiliary_means"/>
+        <result property="burden" column="burden"/>
+		<result property="user" column="user"/>
+        <result property="menuDownloader" column="menu_downloader"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.MenuEntity">
+		select
+			`id`,
+			`category_Name`,
+			`menu_name`,
+			`menu_brief`,
+			`menu_pic_url`,
+			`menu_str_url`,
+			`cook_method`,
+			`cook_pic_url`,
+			`auxiliary_means`,
+			`burden`,
+			`menu_downloader`
+		from menu
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.MenuEntity">
+		select
+    		`id`,
+    		`category_Name`,
+    		`menu_name`,
+    		`menu_brief`,
+    		`menu_pic_url`,
+    		`menu_str_url`,
+    		`cook_method`,
+    		`cook_pic_url`,
+    		`auxiliary_means`,
+    		`burden`,
+    		`menu_downloader`
+		from menu
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="categoryName != null and categoryName.trim() != ''">
+			AND category_Name=#{categoryName}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from menu
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.MenuEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into menu(
+			`category_Name`,
+			`menu_name`,
+			`menu_brief`,
+			`menu_pic_url`,
+			`menu_str_url`,
+			`cook_method`,
+			`cook_pic_url`,
+			`auxiliary_means`,
+			`burden`,
+			`menu_downloader`)
+		values(
+			#{categoryName},
+			#{menuName},
+			#{menuBrief},
+			#{menuPicUrl},
+			#{menuStrUrl},
+			#{cookMethod},
+			#{cookPicUrl},
+			#{auxiliaryMeans},
+			#{burden},
+			#{menuDownloader})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.MenuEntity">
+		update menu 
+		<set>
+			<if test="categoryName != null">`category_Name` = #{categoryName}, </if>
+			<if test="menuName != null">`menu_name` = #{menuName}, </if>
+			<if test="menuBrief != null">`menu_brief` = #{menuBrief}, </if>
+			<if test="menuPicUrl != null">`menu_pic_url` = #{menuPicUrl}, </if>
+			<if test="menuStrUrl != null">`menu_str_url` = #{menuStrUrl}, </if>
+			<if test="cookMethod != null">`cook_method` = #{cookMethod}, </if>
+			<if test="cookPicUrl != null">`cook_pic_url` = #{cookPicUrl}, </if>
+			<if test="auxiliaryMeans != null">`auxiliary_means` = #{auxiliaryMeans}, </if>
+			<if test="burden != null">`burden` = #{burden}, </if>
+			<if test="menuDownloader != null">`menu_downloader` = #{menuDownloader}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from menu where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from menu where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
