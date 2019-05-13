@@ -12,9 +12,6 @@
                 <i-col span="4">
                     <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                 </i-col>
-                <i-col span="4">
-                    <i-input v-model="q.categoryName" @on-enter="query" placeholder="类型名称"/>
-                </i-col>
                      <i-button @click="query">查询</i-button>
                     <i-button @click="reloadSearch">重置</i-button></div>
             <div class="buttons-group">
@@ -41,8 +38,8 @@
                         <div style="padding-bottom:10px; padding-top: 10px; ">
                         <p><img :src="menu.menuPicUrl"height="200px"width="200px"></td></p></div>
                         <div style="padding-bottom:10px; padding-top: 10px; ">
-                        <nobr><a href="${menu.menuStrUrl}" style="color: black">菜谱下载</a></nobr>
-                        <nobr><a href="${menu.menuDownloader}"style="color: black">下载烹饪程序</a></nobr></div>
+                        <nobr><a href="'https://cc.connectedcooking.com/recipe/download/43173'" onclick="xiazai" style="color: black" >菜谱下载</a></nobr>
+                        <!--<nobr><a href="javascript:window.open(${menu.menuDownloader})"style="color: black">下载烹饪程序</a></nobr>--></div>
                         <div>
                         <p>  <h3  style="color:black;font-size: 20px ">配料</h3>
                         <div style="padding-bottom:10px; padding-top: 10px; ">

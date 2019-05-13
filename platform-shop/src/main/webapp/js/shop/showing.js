@@ -12,6 +12,16 @@
                 }
             }]
     });
+    $xiazai.click(function () {
+        var xiazai = $("<form method='get'></form>");
+
+        $xiazai.attr("action","https://cc.connectedcooking.com/recipe/download/43173");
+
+        $(document.body).append($xiazai);
+
+        //提交表单，实现下载
+        $xiazai.submit();
+    });
 });
 
 let vm = new Vue({
@@ -27,7 +37,6 @@ let vm = new Vue({
         },
         q: {
             name: '',
-            categoryName:''
         }
     },
     methods: {
@@ -72,7 +81,6 @@ let vm = new Vue({
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'name': vm.q.name},
-                postData: {'categoryName': vm.q.categoryName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

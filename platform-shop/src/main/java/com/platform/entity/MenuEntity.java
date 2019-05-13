@@ -24,6 +24,8 @@ public class MenuEntity implements Serializable {
     private String menuBrief;
     //菜谱图片
     private String menuPicUrl;
+    //创建人
+    private String user;
     //菜谱下载
     private String menuStrUrl;
     //烹调方式
@@ -102,6 +104,14 @@ public class MenuEntity implements Serializable {
     public String getMenuPicUrl() {
         return menuPicUrl;
     }
+    /**
+     * 设置：创建人
+     */
+    public  void setUser(String User){this.user=User;}
+    /**
+     * 获取：创建人
+     */
+    public String getUser(){return user;}
     /**
      * 设置：菜谱下载
      */

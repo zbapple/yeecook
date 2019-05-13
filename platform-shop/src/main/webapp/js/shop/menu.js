@@ -30,10 +30,8 @@ let vm = new Vue({
                 {required: true, message: '名称不能为空', trigger: 'blur'}
             ]
         },
-
         q: {
             name: '',
-            categoryName:''
         }
     },
     methods: {
@@ -103,7 +101,6 @@ let vm = new Vue({
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'name': vm.q.name},
-                postData: {'categoryName': vm.q.categoryName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

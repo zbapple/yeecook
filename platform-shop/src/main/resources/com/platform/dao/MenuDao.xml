@@ -23,7 +23,7 @@
 			`id`,
 			`category_Name`,
 			`menu_name`,
-			`menu_brief`,
+			`user`,
 			`menu_pic_url`,
 			`menu_str_url`,
 			`cook_method`,
@@ -40,8 +40,8 @@
     		`id`,
     		`category_Name`,
     		`menu_name`,
-    		`menu_brief`,
-    		`menu_pic_url`,
+            `menu_pic_url`,
+    	     `user`,
     		`menu_str_url`,
     		`cook_method`,
     		`cook_pic_url`,
@@ -51,10 +51,7 @@
 		from menu
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
-		</if>
-		<if test="categoryName != null and categoryName.trim() != ''">
-			AND category_Name=#{categoryName}
+			and menu_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -64,6 +61,7 @@
                 order by id desc
 			</otherwise>
         </choose>
+
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
@@ -73,7 +71,7 @@
 		select count(*) from menu
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND menu_name LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 
@@ -81,7 +79,7 @@
 		insert into menu(
 			`category_Name`,
 			`menu_name`,
-			`menu_brief`,
+			`user`,
 			`menu_pic_url`,
 			`menu_str_url`,
 			`cook_method`,
@@ -92,7 +90,7 @@
 		values(
 			#{categoryName},
 			#{menuName},
-			#{menuBrief},
+			#{user},
 			#{menuPicUrl},
 			#{menuStrUrl},
 			#{cookMethod},
@@ -107,7 +105,7 @@
 		<set>
 			<if test="categoryName != null">`category_Name` = #{categoryName}, </if>
 			<if test="menuName != null">`menu_name` = #{menuName}, </if>
-			<if test="menuBrief != null">`menu_brief` = #{menuBrief}, </if>
+			<if test="user != null">`user` = #{user}, </if>
 			<if test="menuPicUrl != null">`menu_pic_url` = #{menuPicUrl}, </if>
 			<if test="menuStrUrl != null">`menu_str_url` = #{menuStrUrl}, </if>
 			<if test="cookMethod != null">`cook_method` = #{cookMethod}, </if>

@@ -119,7 +119,6 @@ public class SysOssController {
         }
         //上传文件
         String url = OSSFactory.build().upload(file);
-
         //保存文件信息
         SysOssEntity ossEntity = new SysOssEntity();
         ossEntity.setUrl(url);
