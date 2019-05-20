@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.NewNutrientsDao">
+
+    <resultMap type="com.platform.entity.NewNutrientsEntity" id="newNutrientsMap">
+        <result property="id" column="id"/>
+        <result property="nutrientsName" column="nutrients_name"/>
+        <result property="nutrientsNum" column="nutrients_num"/>
+        <result property="nunit" column="nunit"/>
+        <result property="nutrientsFood" column="nutrients_food"/>
+        <result property="nutrientsId" column="nutrients_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.NewNutrientsEntity">
+		select
+			`id`,
+			`nutrients_name`,
+			`nutrients_num`,
+			`nunit`,
+			`nutrients_food`,
+			`nutrients_id`
+		from new_nutrients
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.NewNutrientsEntity">
+		select
+    		`id`,
+    		`nutrients_name`,
+    		`nutrients_num`,
+    		`nunit`,
+    		`nutrients_food`,
+    		`nutrients_id`
+		from new_nutrients
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from new_nutrients
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.NewNutrientsEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into new_nutrients(
+			`nutrients_name`,
+			`nutrients_num`,
+			`nunit`,
+			`nutrients_food`,
+			`nutrients_id`)
+		values(
+			#{nutrientsName},
+			#{nutrientsNum},
+			#{nunit},
+			#{nutrientsFood},
+			#{nutrientsId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.NewNutrientsEntity">
+		update new_nutrients 
+		<set>
+			<if test="nutrientsName != null">`nutrients_name` = #{nutrientsName}, </if>
+			<if test="nutrientsNum != null">`nutrients_num` = #{nutrientsNum}, </if>
+			<if test="nunit != null">`nunit` = #{nunit}, </if>
+			<if test="nutrientsFood != null">`nutrients_food` = #{nutrientsFood}, </if>
+			<if test="nutrientsId != null">`nutrients_id` = #{nutrientsId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from new_nutrients where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from new_nutrients where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
