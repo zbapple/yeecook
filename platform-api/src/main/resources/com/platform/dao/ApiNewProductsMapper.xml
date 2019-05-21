@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiNewProductsMapper">
+
+    <resultMap type="com.platform.entity.ApiNewProductsVo" id="newProductsMap">
+        <result property="id" column="id"/>
+        <result property="mfoodName" column="mfood_name"/>
+        <result property="nutrients" column="nutrients"/>
+        <result property="foodMaterial" column="food_material"/>
+        <result property="prepareMaterial" column="prepare_material"/>
+		<result property="nutrientsname" column="nutrients_name"/>
+		<result property="nutrientsnum" column="nutrients_num"/>
+		<result property="nunit" column="nunit"/>
+		<result property="nutrientsid" column="nutrients_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ApiNewProductsVo">
+		select
+			`id`,
+			`mfood_name`,
+			`nutrients`,
+			`food_material`,
+			`prepare_material`
+		from new_products
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ApiNewProductsVo">
+		select
+		new_products.mfood_name,
+		(select GROUP_CONCAT(new_nutrients.nutrients_name,",",new_nutrients.nutrients_num,new_nutrients.nunit )
+		from new_nutrients WHERE new_nutrients.nutrients_id="1") AS nutrients ,
+		new_products.food_material,
+		new_products.prepare_material
+		from new_products
+		where 1=1
+		<if test=" mfoodName != null and mfoodName != '' ">
+			AND mfood_name=#{mfoodName}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from new_products
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.ApiNewProductsVo" useGeneratedKeys="true" keyProperty="id">
+		insert into new_products(
+			`mfood_name`,
+			`nutrients`,
+			`food_material`,
+			`prepare_material`)
+		values(
+			#{mfoodName},
+			#{nutrients},
+			#{foodMaterial},
+			#{prepareMaterial})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.ApiNewProductsVo">
+		update new_products 
+		<set>
+			<if test="mfoodName != null">`mfood_name` = #{mfoodName}, </if>
+			<if test="nutrients != null">`nutrients` = #{nutrients}, </if>
+			<if test="foodMaterial != null">`food_material` = #{foodMaterial}, </if>
+			<if test="prepareMaterial != null">`prepare_material` = #{prepareMaterial}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from new_products where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from new_products where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

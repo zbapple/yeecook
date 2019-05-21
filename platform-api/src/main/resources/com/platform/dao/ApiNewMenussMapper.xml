@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiNewMenussMapper">
+
+    <resultMap type="com.platform.entity.ApiNewMenuListVo" id="newMenuListMap">
+        <result property="id" column="id"/>
+        <result property="mtime" column="mtime"/>
+        <result property="mfood" column="mfood"/>
+        <result property="calories" column="calories"/>
+        <result property="postpartumTime" column="postpartum_time"/>
+        <result property="mlevel" column="mlevel"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.ApiNewMenuListVo">
+		select
+			`id`,
+			`mtime`,
+			`mfood`,
+			`calories`,
+			`postpartum_time`,
+			`mlevel`
+		from new_menu_list
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.ApiNewMenuListVo">
+		select
+		`id`,
+		`mtime`,
+		`mfood`,
+		`calories`,
+		`postpartum_time`,
+		`mlevel`
+		from new_menu_list
+		WHERE 1=1
+		<if test="postpartumTime !=null and postpartumTime !=''">
+			and postpartum_Time=#{postpartumTime}
+		</if>
+		<if test="mlevel !=null and mlevel !=''">
+			and mlevel=#{mlevel}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+
+</mapper>
