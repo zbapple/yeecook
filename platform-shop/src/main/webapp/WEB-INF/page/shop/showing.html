@@ -9,9 +9,6 @@
     <div v-show="showList">
         <Row :gutter="16">
             <div class="search-group">
-                <!--<i-col span="4">-->
-                    <!--<i-input v-model="q.name" @on-enter="query" placeholder="名称"/>-->
-                <!--</i-col>-->
                 <i-col span="4">
                     <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                 </i-col>
@@ -64,9 +61,6 @@
     </Card>
 </div>
 
-<script >
-    var as=menu.menuDownloader;
-</script>
 <script src="${rc.contextPath}/js/shop/showing.js?_${date.systemTime}"></script>
 </body>
 </html>

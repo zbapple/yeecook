@@ -11,6 +11,8 @@
 	"libVersion": "2.4.0",
 	"appid": "wxa2566230db99c9ab",
 	"projectname": "wxshop",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -28,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 7,
 			"list": [
 				{
 					"id": 0,
@@ -53,6 +55,34 @@
 					"name": "我的订单",
 					"pathName": "pages/ucenter/order/order",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "cookbookdetail",
+					"pathName": "pages/cookbookdetail/cookbookdetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "index",
+					"pathName": "pages/cookbook/cookbook",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "天平秤",
+					"pathName": "pages/ucenter/scale/scale",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "餐单二级页面",
+					"pathName": "pages/cookbookcontent/cookbookcontent",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

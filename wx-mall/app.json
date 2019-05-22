@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/cookbook/cookbook",
     "pages/index/index",
     "pages/catalog/catalog",
     "pages/newGoods/newGoods",
@@ -38,9 +39,14 @@
     "pages/ucenter/help/help",
     "pages/ucenter/helpInfo/helpInfo",
     "page/successful1/successful1",
-    "pages/ucenter/print/print"
+    "pages/ucenter/print/print",
+    "pages/cookbookcontent/cookbookcontent",
+    "pages/cookbookmuti/cookbookmuti",
+    "pages/cookbookdetail/cookbookdetail",
+    "pages/ucenter/scale/scale"
   ],
   "window": {
+    "navigationStyle": "default",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "宜厨优选",
@@ -54,16 +60,16 @@
     "color": "#666",
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "iconPath": "static/images/ic_menu_choice_nor.png",
-        "selectedIconPath": "static/images/ic_menu_choice_pressed.png",
-        "text": "首页"
+        "pagePath": "pages/cookbook/cookbook",
+        "iconPath": "static/images/ic_menu_.cookbook_nor.png",
+        "selectedIconPath": "static/images/ic_menu_.cookbook_pressed.png",
+        "text": "餐谱"
       },
       {
-        "pagePath": "pages/catalog/catalog",
+        "pagePath": "pages/index/index",
         "iconPath": "static/images/ic_menu_sort_nor.png",
         "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
-        "text": "分类"
+        "text": "产品"
       },
       {
         "pagePath": "pages/cart/cart",
@@ -83,5 +89,6 @@
     "request": 10000,
     "downloadFile": 10000
   },
-  "debug": true
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
 }

@@ -1,0 +1,129 @@
+/* pages/cookbookdetail/cookbookdetail.wxss */
+.header{
+  width:100%;
+  height:420rpx;
+  z-index:1;
+  position: relative;
+}
+.header>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  position: relative;
+  
+}
+.header_title{
+  position: absolute;
+  bottom:20rpx;
+  left: 0;
+  padding-left:23rpx;
+  padding-bottom:23rpx;
+  color:white;
+  font-size:46rpx;
+  z-index: 10;
+  letter-spacing: 0;
+
+}
+.content{
+  width:100%;
+  border-radius: 20rpx;
+  background:white;
+  margin-top:-20rpx;
+  z-index:10;
+  position: relative;
+  padding-left:23rpx;
+  padding-right:23rpx;
+}
+.nutrit{
+  border-bottom:1px dotted green;
+  padding-bottom:40rpx;
+}
+.nutrit:nth-last-child(1){
+  border-bottom:1px dotted transparent;
+}
+.nutrit_title{
+  height:100rpx;
+  line-height:80rpx;
+  font-size:35rpx;
+  font-weight: 800;
+  padding-top:20rpx;
+  padding-bottom:20rpx;
+}
+.nutrit_con{
+  overflow: hidden;
+}
+.nutrit_item{
+  float:left;
+  width:33.3%;
+  text-align: center;
+  height:255rpx;
+  
+}
+.item_img{
+  padding-left:55rpx;
+  padding-right:55rpx;
+  padding-top:15rpx;
+  padding-bottom:15rpx;
+}
+.item_img_one{
+  border:1px solid #8ff6c5;
+  border-radius: 50%;
+}
+.item_img_two{
+  border:1px solid #e9c189;
+  border-radius: 50%;
+}
+.item_img_three{
+  border:1px solid #dac2ca;
+  border-radius: 50%;
+}
+.item_img>image{
+  width:100rpx;
+  height:100rpx;
+  object-fit: cover;
+  padding:20rpx;
+}
+.nutri_bttom{
+  text-align: center;
+}
+
+.nutri_bttom>image{
+  position: absolute;
+  height:43rpx;
+  width:57rpx;
+  object-fit: cover
+}
+.detail{
+  height:60rpx;
+  line-height:60rpx;
+  overflow: hidden;
+}
+.detail_left{
+  float:left;
+}
+.detail_right{
+  float:right;
+}
+.footer{
+  padding-right:23rpx;
+  padding-left:23rpx;
+}
+.footer_con{
+  overflow: hidden;
+  padding-bottom:15px;
+}
+.footer_left{
+  float:left;
+  width:15%;
+  font-size:30rpx;
+  color:black;
+}
+.footer_right{
+  float:left;
+  width:85%;
+}
+.detail_gap{
+  width:100%;
+  height:20rpx;
+  background:#f5f5f5;
+}

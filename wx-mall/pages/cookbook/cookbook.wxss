@@ -1,0 +1,236 @@
+.cook_header{
+  width:100%;
+  height:420rpx;
+}
+.cook_header>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  position: relative;
+}
+.cook_header_btn{
+  position: absolute;
+  width:220rpx;
+  height:80rpx;
+  line-height: 80rpx;
+  background:green;
+  color:white;
+  border-radius: 50rpx;
+  top:50%;
+  margin-top:-40rpx;
+  left:50%;
+  margin-left:-110rpx;
+  text-align: center;
+}
+.cook_titl{
+  border:1px soild white;
+  height:80rpx;
+  width:100%;
+  overflow: hidden;
+  position: relative;
+  z-index:3000;
+  background:white;
+}
+cook_titl_fixed{
+  position: fixed;
+  top:0;
+}
+.cook_title{
+  font-size:40rpx;
+  font-weight: 40rpx;
+  padding-left:23rpx;
+  float:left;  
+  height:80rpx;
+  line-height:80rpx;
+  color:black;
+}
+.cook_icon_1{
+  float:right;
+  width:100rpx;
+  height:80rpx;
+  padding-right:23rpx;
+  padding-top:10rpx;
+  padding-bottom:10rpx;
+  padding-left:30rpx;
+}
+.cook_icon_1>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+.cook_con{
+  background:#f5f5f5;
+  padding:10rpx;
+}
+.cook_con_item{
+  padding:10rpx;
+  border-radius: 5rpx;
+  width:100%;
+  height:250rpx;
+}
+.cook_con_item>image{
+  width:100%;
+  height:100%;
+  position: relative;
+  object-fit: cover;
+  border-radius:10rpx;
+}
+.item_bg{
+  width:100%;
+  height:250rpx;
+  background:rgb(91, 87, 95);
+  position: absolute;
+  top:0;
+  opacity: 0.3;
+}
+.item_title{
+  position: absolute;
+  bottom:10rpx;
+  width:100%;
+  height:130rpx;
+  padding:20rpx;
+}
+.item_title_header{
+  padding-bottom:20rpx;
+}
+.item_title_header>text{
+  font-size:30rpx;
+  color:white;
+}
+.item_title_h1{
+  overflow: hidden;
+}
+.item_titel_h1_one{
+  float:left;
+  color:white;
+  font-size:25rpx;
+}
+.item_titel_h1_two{
+  float:right;
+  color:white;
+  font-size:25rpx;
+}
+.itme_title_liu{
+  color:white;
+  font-size:25rpx;
+  position: relative;
+}
+.itme_title_liu>image{
+  position: absolute;
+  width:40rpx;
+  height:100%;
+  left:-50rpx;
+}
+/* 弹出层 */
+.commodity_screen {
+ width: 100%;
+ height: 100%;
+ position: fixed;
+ top: 0;
+ left: 0;
+ background: #000;
+ opacity: 0.5;
+ overflow: hidden;
+ z-index: 9;
+ color: #fff;
+}
+.commodity_attr_box {
+ width: 100%;
+ overflow: hidden;
+ position: absolute;
+ top:500rpx;
+ left: 0;
+ z-index: 99;
+ background: white;
+ padding-top: 20rpx;
+}
+.commodity_attr_boxfix{
+  width:100%;
+  overflow: hidden;
+  position: fixed;
+  left:0;
+  z-index: 100;
+  background: white;
+  padding-top: 20rpx;
+  top:80rpx;
+}
+.cook_pop{
+  padding-right:23rpx;
+  padding-left:23rpx;
+}
+.cook_type_one{
+  overflow: hidden;
+}
+.cook_type_box{
+  float:left;
+  width:33.3%;
+  padding-left:10rpx;
+  padding-right:10rpx;
+  background:white;
+  padding-bottom:15rpx;
+}
+.cook_type_sumbit{
+  float:left;
+  width:50%;
+  padding-left:10rpx;
+  padding-right:10rpx;
+  background:white;
+  padding-bottom:15rpx;
+  text-align: center;
+  border-top:1px solid gray; 
+  height:82rpx;
+  line-height:82rpx;
+}
+.bg_sumbit{
+  background:green;
+  color:white;
+}
+.btn{
+  font-size:25rpx;
+  border:1px solid transparent;
+  padding:0px;
+  background:#f8f8f8;
+  text-align: center;
+  border-radius:5px;
+}
+.btn_ing{
+  font-size:25rpx;
+  border:1px solid green;
+  color:green;
+  padding:0px;
+  background:#f8f8f8;
+  text-align: center;
+  border-radius:5px;
+
+}
+.text1{
+  font-size:25rpx;
+  padding:0px;
+  margin:0px;
+  height:50rpx;
+  line-height:50rpx;
+}
+.month_btn{
+  border:1px solid green;
+  color:green;
+}
+.cook_pop_title{
+  padding-top:10rpx;
+  padding-bottom:20rpx;
+  width:100%;
+  height:70rpx;
+}
+.cook_delivery{
+  height:70rpx;
+}
+.cook_feeding{
+  height:127rpx;
+}
+.cook_day{
+  height:90rpx;
+}
+.nodata{
+  text-align: center;
+  height:100rpx;
+  line-height:100rpx;
+}

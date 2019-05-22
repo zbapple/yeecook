@@ -1,0 +1,57 @@
+<view>
+  <view class="header">
+    <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/020110823bf175.jpg">
+      <view class="header_title">{{name}}</view>
+    </image>
+  </view>
+  <view class="content">
+    <view>
+        <view class="nutrit">
+          <view class="nutrit_title">营养成分</view>
+          <view class="nutrit_con">
+            <view class="nutrit_item" >
+             <view class="item_img"> <image src="../../static/images/ic_cookdetail_one.png" class="item_img_one"></image></view>
+              <view>{{carbohydrate.name}}</view>
+              <view>{{carbohydrate.number}}</view>
+            </view>
+            <view class="nutrit_item" >
+             <view class="item_img"><image src="../../static/images/ic_cookdetail_two.png" class="item_img_two"></image></view>
+              <view>{{protein.name}}</view>
+              <view>{{protein.number}}</view>
+            </view>
+            <view class="nutrit_item">
+              <view class="item_img"><image src="../../static/images/ic_cookdetail_three.png" class="item_img_three"></image></view>
+              <view>{{fat.name}}</view>
+              <view>{{fat.number}}</view>
+            </view>
+          </view>
+          <view class="nutri_bttom" bindtap='findmuti'>
+            更多营养成分
+            <image src="../../static/images/address_right.png"></image>
+          </view>
+        </view>
+        <view class="nutrit">
+          <view class="nutrit_title">食材</view>
+          <view wx:for="{{foodlist}}" wx:key="{{index}}" class="detail">
+            <view class="detail_left">{{item.name}}</view>
+            <view class="detail_right">{{item.number}}</view>
+          </view>
+        </view>
+        <!-- <view class="nutrit" wx:if="{{seasanlist.length}}">
+          <view class="nutrit_title">调味料</view>
+          <view wx:for="{{foodlist}}" wx:key="{{index}}" class="detail">
+            <view class="detail_left">{{item.name}}</view>
+            <view class="detail_right">{{item.num}}</view>
+          </view>
+        </view> -->
+    </view>
+  </view>
+  <view class="detail_gap"></view>
+   <view class="footer"  wx:if="{{makelist.length}}">
+      <view class="nutrit_title">制作方法</view>
+      <view class="footer_con" wx:for="{{makelist}}" wx:key="{{index}}">
+        <view class="footer_left">Step{{index+1}}</view>
+        <view class="footer_right">{{item}}</view>
+      </view>
+    </view>
+</view>

@@ -1,29 +1,29 @@
 <!--index.wxml-->
 <view class="container">
-<view class="search">
+<!-- <view class="search">
     <navigator url="/pages/search/search" class="input">
       <image class="icon"></image>
       <text class="txt">商品搜索, 共{{goodsCount}}款好物</text>
     </navigator>
-  </view>
-  <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
+  </view> -->
+  <!-- <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
     <swiper-item wx:for="{{banner}}" wx:key="{{item.id}}">
       <navigator url="{{item.link}}">
         <image src="{{item.image_url}}" background-size="cover"></image>
       </navigator>
     </swiper-item>
-  </swiper>
-<view class="a-section a-topic" wx:if="{{channel.length > 0}}">
+  </swiper> -->
+<!-- <view class="a-section a-topic" wx:if="{{channel.length > 0}}">
   <view class="m-menu">
     <navigator  class="item" url="{{item.url}}" wx:for="{{channel}}" wx:key="{{item.id}}">
       <image src="{{item.icon_url}}" background-size="cover"></image>
       <text>{{item.name}}</text>
     </navigator>
   </view>
- </view>
+ </view> -->
 
 <view class="a-section a-topic" wx:if="{{brand.length > 0}}">
-  <view class="a-section a-brand">
+  <!-- <view class="a-section a-brand">
     <view class="h">
       <navigator url="../brand/brand">
         <text class="txt">品牌制造商直供</text>
@@ -43,7 +43,7 @@
         </navigator>
       </view>
     </view>
-  </view>
+  </view> -->
   </view>
 
   <view class="a-section a-topic" wx:if="{{topics.length > 0}}">
@@ -70,7 +70,7 @@
     </view>
   </view>
 
-  <view class="a-section a-new" wx:if="{{newGoods.length > 0}}">
+  <!-- <view class="a-section a-new" wx:if="{{newGoods.length > 0}}">
     <view class="h">
       <view>
         <navigator url="../newGoods/newGoods">
@@ -88,10 +88,10 @@
            <text class='pri yjprice' wx:if="{{item.market_price}}">￥{{item.market_price}}</text>
           </view>
           <!-- <text class="price">￥{{item.retail_price}}</text> -->
-        </navigator>
+        <!-- </navigator>
       </view>
     </view>
-  </view>
+  </view> -->
 
   <view class="a-section a-popular" wx:if="{{hotGoods.length > 0}}">
     <view class="h">

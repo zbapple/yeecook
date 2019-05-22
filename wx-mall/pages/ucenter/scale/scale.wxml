@@ -1,0 +1,32 @@
+<view>
+  <view class="scale_header">
+    <image src="../../../static/images/scale_bg.png" class="header_img"></image>
+    <view class="header_title">请光脚站在称上</view>
+  </view>
+  <view class="scale_con_one">
+    <view class="con_one_left">
+      <view class="con_one_row">{{con_one_left}}</view>
+       <view class="row_one_t">BMI</view>
+    </view>
+    <view class="con_one_right">
+      <view class="con_one_row">{{con_one_right}}kg</view>
+       <view class="row_one_t">体重</view>
+    </view>
+  </view>
+  <view class="scale_con_two">
+    <view class="con_two_item">
+      <view class="item"  wx:for="{{list}}" wx:key="index">
+        <view class="item_one">
+          <image src="{{item.src}}" class="item_one_img"></image>
+          <view class="item_one_title">{{item.name}}</view>
+        </view>
+        <view class="item_one">
+          <view class="item_one_title">
+            <block wx:if="{{con_one_right==0}}">--</block>
+            <block wx:else>{{item.num}}</block>  
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

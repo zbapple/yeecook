@@ -104,9 +104,15 @@
    <view class="item item-bottom">
       <navigator url="/pages/ucenter/print/print" class="a">
         <text class="icon help"></text>
-        <text class="txt">云打印</text>
+        <text class="txt">云课堂</text>
       </navigator>
     </view>
+    <!-- <view class="item item-bottom">
+      <navigator url="/pages/ucenter/scale/scale" class="a">
+        <text class="icon scale"></text>
+        <text class="txt">天平秤</text>
+      </navigator>
+    </view> -->
   </view>
   <!-- <view class="logout" bindtap="exitLogin">退出登录</view> -->
 </view>
