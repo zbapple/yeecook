@@ -50,12 +50,9 @@
     		`menu_downloader`
 		from menu
 		WHERE 1=1
-		<!--1<if test="name != null and name.trim() != ''">-->
-			<!--and menu_name LIKE concat('%',#{name},'%')-->
-		<!--</if>-->
-		<if test="categoryName != null and categoryName.trim() != ''">
-		   and  category_Name LIKE  concat('%',#{categoryName},'%')
-	    </if>
+		<if test="name != null and name.trim() != ''">
+			and menu_name LIKE concat('%',#{name},'%')
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -73,13 +70,9 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from menu
 		WHERE 1=1
-        <!--<if test="name != null and name.trim() != ''">-->
-            <!--AND menu_name LIKE concat('%',#{name},'%')-->
-        <!--</if>-->
-		<if test="categoryName != null and categoryName.trim() != ''">
-			and  category_Name LIKE  concat('%',#{categoryName},'%')
-		</if>
-
+        <if test="name != null and name.trim() != ''">
+            AND menu_name LIKE concat('%',#{name},'%')
+        </if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.MenuEntity" useGeneratedKeys="true" keyProperty="id">
