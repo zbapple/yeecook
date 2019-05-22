@@ -22,7 +22,7 @@ let vm = new Vue({
 			]
 		},
 		q: {
-		    name: ''
+            mfoodName: ''
 		}
 	},
 	methods: {
@@ -91,14 +91,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'mfoodName': vm.q.mfoodName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                name: ''
+                mfoodName: ''
             }
             vm.reload();
         },

@@ -16,14 +16,14 @@ let vm = new Vue({
 	data: {
         showList: true,
         title: null,
-		newMenuList: {},
+		newMenuList: {mlevel:'',mfood:'',calories:'',postpartumTime:'',mtime:''},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
 			]
 		},
 		q: {
-		    name: ''
+            mlevel: ''
 		}
 	},
 	methods: {
@@ -92,14 +92,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'mlevel': vm.q.mlevel},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                name: ''
+                mlevel: ''
             }
             vm.reload();
         },

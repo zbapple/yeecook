@@ -17,14 +17,15 @@ let vm = new Vue({
 	data: {
         showList: true,
         title: null,
-		newMenu: {},
+		newMenu: {nlevel:'',deliveryWay:'',feedingWay:'',liliLength:'',theTotalEnergy:''},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
 			]
 		},
 		q: {
-		    name: ''
+            nlevel: '',
+            deliveryWay:''
 		}
 	},
 	methods: {
@@ -34,7 +35,7 @@ let vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.newMenu = {};
+			vm.newMenu = {nlevel:'',deliveryWay:'',feedingWay:'',liliLength:'',theTotalEnergy:''};
 		},
 		update: function (event) {
             let id = getSelectedRow("#jqGrid");
@@ -93,14 +94,16 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'nlevel': vm.q.nlevel},
+                postData: {'deliveryWay': vm.q.deliveryWay},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                name: ''
+                nlevel: '',
+                deliveryWay:''
             }
             vm.reload();
         },

@@ -23,7 +23,7 @@ let vm = new Vue({
 			]
 		},
 		q: {
-		    name: ''
+            nutrientsName: ''
 		}
 	},
 	methods: {
@@ -92,14 +92,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'nutrientsName': vm.q.nutrientsName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                name: ''
+                nutrientsName: ''
             }
             vm.reload();
         },

@@ -34,8 +34,8 @@
     		`mlevel`
 		from new_menu_list
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="mlevel != null and mlevel.trim() != ''">
+			AND mlevel LIKE concat('%',#{mlevel},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

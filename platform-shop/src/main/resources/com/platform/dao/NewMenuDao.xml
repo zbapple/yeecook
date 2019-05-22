@@ -26,6 +26,7 @@
 		where id = #{id}
 	</select>
 
+
 	<select id="queryList" resultType="com.platform.entity.NewMenuEntity">
 		select
     		`id`,
@@ -37,8 +38,11 @@
     		`wx_views`
 		from new_menu
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="nlevel != null and nlevel.trim() != ''">
+			AND nlevel LIKE concat('%',#{nlevel},'%')
+		</if>
+		<if test="deliveryWay!= null and deliveryWay.trim() != ''">
+			AND delivery_way=#{deliveryWay}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

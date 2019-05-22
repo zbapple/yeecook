@@ -34,8 +34,8 @@
     		`nutrients_id`
 		from new_nutrients
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="nutrientsName != null and nutrientsName.trim() != ''">
+			AND nutrients_name LIKE concat('%',#{nutrientsName},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
