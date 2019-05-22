@@ -14,20 +14,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0-release/echarts.js"></script>
 </head>
 <body>
-<div class="wrapper wrapper-content  animated fadeInRight">
-    <div class="ibox ">
-        <div class="ibox-title">
-            <h1>欢迎登陆！</h1>
-        </div>
-        <div class="ibox-content">
-            <div class="signin-info">
-                <ul class="m-b">
-                    <li><i class="fa fa-arrow-circle-o-right m-r-xs" style="position: relative;z-index: 100;">数据统计</i> </li>
-                    </ul>
-            </div>
 
-        </div>
-    </div>
+<!--<div class="wrapper wrapper-content  animated fadeInRight">-->
+    <!--<div class="ibox ">-->
+        <!--<div class="ibox-title">-->
+            <!--<h1>欢迎登陆！</h1>-->
+        <!--</div>-->
+        <!--<div class="ibox-content">-->
+            <!--&lt;!&ndash;<div class="signin-info">&ndash;&gt;-->
+                <!--&lt;!&ndash;<ul class="m-b">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><i class="fa fa-arrow-circle-o-right m-r-xs" style="position: relative;z-index: 100;"据统>数计</i> </li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--</div>-->
+    <!--</div>-->
     <!--<div class="ibox ">-->
         <!--<div class="ibox-title">-->
             <!--<h1></h1>-->
@@ -40,119 +41,198 @@
             <!--</div>-->
 
         <!--</div>-->
-    <div id="main" style="width: 600px;height:400px; position: relative;top:-100px;"></div>
+    <div id="main" style="width: 100%;height:500px;margin:0 auto;margin-top:50px;padding-left: 30px"></div>
 </div>
 <script type="text/javascript">
-    option = {
-        backgroundColor: 'white',
-        tooltip: {},
+    var myChart = echarts.init(document.getElementById('main'));
+    var dataSource = [];
+    var dataSource2 = [];
+    var xAxisFlag = "";
+    var index = 0;
+    var option = {
+        title: {
+            text: '数据统计'
+        },
+        tooltip: {
+            show:true,
+            trigger: 'axis',
+            backgroundColor:['skyblue'],
+            textStyle:{
+                color:['#003']
+            },
+        },
+        legend: {
+            data:['销量']
+        },
+        dataZoom: [{
+            show: true,
+            realtime: true,
+            start: 0,
+            end: 100
+        }, {
+            type: 'inside',
+            realtime: true,
+            start:0,
+            end: 100
+        }],
         xAxis: {
-            data: ["今天用户访问量", "今天的订单量", "今天的新增用户量"],
-            axisTick: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisLabel: {
-                show: false,
-                textStyle: {
-                    color: '#e54035'
-                }
-            }
+            data: ["用户访问量","订单量","新增用户","新增餐单"],
+            boundaryGap: false,
         },
         yAxis: {
-            splitLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisLabel: {
-                show: false
-            }
+
         },
-        series: [{
-            name: '',
-            type: 'pictorialBar',
-            symbolSize: [100, 45],
-            symbolOffset: [0, -20],
-            z: 12,
-            itemStyle: {
-                normal: {
-                    color: '#14b1eb'
-                }
+        // toolbox: {
+        //     show: true,
+        //     feature: {
+        //         mark: true,
+        //         dataView: { show: true, readOnly: false },
+        //         restore: { show: true},
+        //         saveAsImage: { show: true }
+        //     },
+        //
+        // },
+        series: [
+            {
+                name: '用户访问量',
+                type: 'line',
+                data: [5, 20, 13, 10, 10, 20,30],
+                showSymbol:false,
+                markLine: { // 设置警戒线（图表标线）
+                    silent: true, // 图形是否不响应和触发鼠标事件
+                    lineStyle: {
+                        normal: {
+                            type: 'solid'
+                        }
+                    },
+                    data: [],
+                },
+                markPoint: {
+                    data: [
+                        //     {xAxis: 2, yAxis: 15,label: {
+                        //     label: true,
+                        //     formatter: '1111',
+                        //     position: [40, 100],
+                        // } },
+                        //      {xAxis: 4, yAxis: 15,label: {
+                        //     label: true,
+                        //     formatter: '2222',
+                        //     position: [40, 100],
+                        // } }
+
+                    ],
+
+
+                },
             },
-            data: [{
-                value: 100,
-                symbolPosition: 'end'
-            }, {
-                value: 50,
-                symbolPosition: 'end'
-            }, {
-                value: 20,
-                symbolPosition: 'end'
-            }]
-        }, {
-            name: '',
-            type: 'pictorialBar',
-            symbolSize: [100, 45],
-            symbolOffset: [0, 20],
-            z: 12,
-            itemStyle: {
-                normal: {
-                    color: '#14b1eb'
-                }
+            {
+                name: '订单量',
+                type: 'line',
+                data: [15, 22, 10, 30, 20, 40,50],
+                showSymbol:false,
             },
-            data: [100, 50, 20]
-        }, {
-            name: '',
-            type: 'pictorialBar',
-            symbolSize: [150, 75],
-            symbolOffset: [0, 37],
-            z: 11,
-            itemStyle: {
-                normal: {
-                    color: 'transparent',
-                    borderColor: '#14b1eb',
-                    borderWidth: 5
-                }
+            {
+                name: '新增用户',
+                type: 'line',
+                data: [21, 14, 16, 21, 12, 16,20],
+                showSymbol:false,
             },
-            data: [100, 50, 20]
-        }, {
-            name: '年报上报率',
-            type: 'pictorialBar',
-            symbolSize: [200,100],
-            symbolOffset: [0, 50],
-            z: 10,
-            itemStyle: {
-                normal: {
-                    color: 'transparent',
-                    borderColor: '#14b1eb',
-                    borderType: 'dashed',
-                    borderWidth: 5
-                }
+            {
+                name: '新增餐单',
+                type: 'line',
+                data: [25, 8, 12, 30, 26, 22,30],
+                showSymbol:false,
             },
-            data: [100, 50, 20]
-        }, {
-            type: 'bar',
-            itemStyle: {
-                normal: {
-                    color: '#14b1eb',
-                    opacity: .7
-                }
-            },
-            silent: true,
-            barWidth: 100,
-            barGap: '-100%', // Make series be overlap
-            data: [100, 50, 20]
-        }]
+        ]
     };
-    var myChart = echarts.init(document.getElementById('main'));
+
     myChart.setOption(option);
+    myChart.on('click',function(param){
+        dataIndex = param.dataIndex;//X轴的索引
+        // alert(param.data)//y轴点位置
+        // alert(dataIndex)
+        var xAxisValue = option.xAxis.data[dataIndex];
+        // console.log(xAxisValue);
+        if (option.series[0].markLine.data.length == 0) {
+            var value = "";
+            value += xAxisValue;
+            for (var i = 0; i < option.series.length; i++) {
+                value += '\n' + option.series[i].name + '：' + option.series[i].data[dataIndex];
+            }
+            // alert(value);
+            var obj = {//标线
+                type: 'average',
+                xAxis: xAxisValue, // 设定值
+                label: {}
+            }
+            var obj2 = {//数据位置
+                xAxis: dataIndex,
+                yAxis: param.data,
+                symbol:"circle",
+                symbolSize:1,
+                label:{
+                    show:true,
+                    formatter:value,
+                    position:[10,10]
+                },
+            }
+            // dataSource3.push(obj3);
+
+            dataSource2.push(obj2);
+            dataSource.push(obj);
+            option.series[0].markPoint.data = dataSource2;
+            option.series[0].markLine.data = dataSource;
+            myChart.setOption(option);
+        } else {
+            for (var i = 0; i < option.series[0].markLine.data.length; i++) {
+                var xAxisIndex = option.series[0].markLine.data[i].xAxis;
+                if (xAxisIndex == xAxisValue) {
+                    index = i;
+                    console.log('值相等');
+                    break;
+                } else {
+                    index = -1;
+                    console.log('值不相等');
+                }
+            }
+
+            if (index == -1) {
+                var value = "";
+                var xAxisValue = option.xAxis.data[dataIndex];
+                value += xAxisValue;
+                for (var i = 0; i < option.series.length; i++) {
+                    value += '\n' + option.series[i].name + '：' + option.series[i].data[dataIndex];
+                }
+
+                var obj = {
+                    type: 'average',
+                    xAxis: xAxisValue, // 设定值
+                    label: {}
+                }
+                var obj2 = {
+                    xAxis: dataIndex,
+                    yAxis: param.data,
+                    symbol:"circle",
+                    symbolSize:1,
+                    label:{
+                        show:true,
+                        formatter:value,
+                        position:[10,10]
+                    }
+                }
+                dataSource.push(obj);
+                dataSource2.push(obj2);
+                option.series[0].markPoint.data = dataSource2
+                option.series[0].markLine.data = dataSource;
+                myChart.setOption(option);
+            } else {
+                console.log('剔除相等值');
+                option.series[0].markPoint.data.splice(index,1);
+                option.series[0].markLine.data.splice(index,1);
+                myChart.setOption(option);
+            }
+        }
+    })
 </script>
 </body>
 </html>
