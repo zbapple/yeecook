@@ -7,21 +7,11 @@
             {label: '菜谱名', name: 'menuName', index: 'menu_name', width: 80},
             {label: '创建人', name: 'user', index: 'user', width: 80},
             {label: '菜谱图片', name: 'menuPicUrl', index: 'menu_pic_url', width: 100, formatter: function (value) {
-
                     return transImg(value);
                 }
             }]
     });
-    $xiazai.click(function () {
-        var xiazai = $("<form method='get'></form>");
-
-        $xiazai.attr("action","https://cc.connectedcooking.com/recipe/download/43173");
-
-        $(document.body).append($xiazai);
-
-        //提交表单，实现下载
-        $xiazai.submit();
-    });
+    
 });
 
 let vm = new Vue({
@@ -87,8 +77,7 @@ let vm = new Vue({
         },
         reloadSearch: function() {
             vm.q = {
-                name: '',
-                categoryName:''
+                name: ''
             }
             vm.reload();
         },
@@ -99,6 +88,8 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },openURl:function(url){
+            window.open(url);
         }
     }
 });
