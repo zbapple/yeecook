@@ -35,7 +35,6 @@ public class ApiNewProductsController extends ApiBaseAction {
         Map<String,Object> param=new HashMap<>();
         param.put("mfoodName",mfoodName);
         List<ApiNewProductsVo> apiNewProductsVo=newProductsService.queryList(param);
-        System.out.print(apiNewProductsVo);
         return toResponsSuccess(apiNewProductsVo);
     }
 }

@@ -30,7 +30,7 @@
 		select
 		new_products.mfood_name,
 		(select GROUP_CONCAT(new_nutrients.nutrients_name,",",new_nutrients.nutrients_num,new_nutrients.nunit )
-		from new_nutrients WHERE new_nutrients.nutrients_id="1") AS nutrients ,
+		from new_nutrients WHERE new_nutrients.nutrients_id="1" and ORDER BY FIELD(`id`, 3, 2, 4) DESC ) AS nutrients ,
 		new_products.food_material,
 		new_products.prepare_material
 		from new_products
