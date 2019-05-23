@@ -31,7 +31,7 @@ let vm = new Vue({
             ]
         },
         q: {
-            name: '',
+            categoryName: '',
         }
     },
     methods: {
@@ -95,19 +95,18 @@ let vm = new Vue({
                     vm.menu = r.menu;
                 }
             });
-        },
+    },
         reload: function (event) {
             vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'categoryName': vm.q.categoryName},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
         },
         reloadSearch: function() {
             vm.q = {
-                name: '',
                 categoryName:''
             }
             vm.reload();
