@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.NutrientElementsDao">
+
+    <resultMap type="com.platform.entity.NutrientElementsEntity" id="nutrientElementsMap">
+        <result property="id" column="id"/>
+        <result property="nutrientElementsName" column="nutrient_elements_name"/>
+        <result property="nutrientElementsPic" column="nutrient_elements_pic"/>
+        <result property="unit" column="unit"/>
+        <result property="functionalDescription" column="functional_description"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.NutrientElementsEntity">
+		select
+			`id`,
+			`nutrient_elements_name`,
+			`nutrient_elements_pic`,
+			`unit`,
+			`functional_description`
+		from nutrient_elements
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.NutrientElementsEntity">
+		select
+    		`id`,
+    		`nutrient_elements_name`,
+    		`nutrient_elements_pic`,
+    		`unit`,
+    		`functional_description`
+		from nutrient_elements
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND nutrient_elements_name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nutrient_elements
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND nutrient_elements_name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.NutrientElementsEntity">
+		insert into nutrient_elements(
+			`id`,
+			`nutrient_elements_name`,
+			`nutrient_elements_pic`,
+			`unit`,
+			`functional_description`)
+		values(
+			#{id},
+			#{nutrientElementsName},
+			#{nutrientElementsPic},
+			#{unit},
+			#{functionalDescription})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.NutrientElementsEntity">
+		update nutrient_elements 
+		<set>
+			<if test="nutrientElementsName != null">`nutrient_elements_name` = #{nutrientElementsName}, </if>
+			<if test="nutrientElementsPic != null">`nutrient_elements_pic` = #{nutrientElementsPic}, </if>
+			<if test="unit != null">`unit` = #{unit}, </if>
+			<if test="functionalDescription != null">`functional_description` = #{functionalDescription}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nutrient_elements where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nutrient_elements where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

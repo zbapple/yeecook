@@ -144,7 +144,7 @@
     </update>
 
     <delete id="delete">
-		delete from nideshop_cart where id = #{value}
+		delete from nideshop_cart where id = #{id}
 	</delete>
 
     <delete id="deleteBatch">

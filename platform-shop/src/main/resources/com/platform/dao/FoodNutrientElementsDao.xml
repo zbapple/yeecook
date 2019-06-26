@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.FoodNutrientElementsDao">
+
+    <resultMap type="com.platform.entity.FoodNutrientElementsEntity" id="foodNutrientElementsMap">
+        <result property="id" column="id"/>
+        <result property="foodMaterialId" column="food_material_id"/>
+        <result property="nutrientElementsId" column="nutrient_elements_id"/>
+        <result property="contentG" column="content_g"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.FoodNutrientElementsEntity">
+		select
+			`id`,
+			`food_material_id`,
+			`nutrient_elements_id`,
+			`content_g`
+		from food_nutrient_elements
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.FoodNutrientElementsEntity">
+		select
+    		`id`,
+    		`food_material_id`,
+    		`nutrient_elements_id`,
+    		`content_g`
+		from food_nutrient_elements
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND food_material_id LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from food_nutrient_elements
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND food_material_id LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.FoodNutrientElementsEntity">
+		insert into food_nutrient_elements(
+			`id`,
+			`food_material_id`,
+			`nutrient_elements_id`,
+			`content_g`)
+		values(
+			#{id},
+			#{foodMaterialId},
+			#{nutrientElementsId},
+			#{contentG})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.FoodNutrientElementsEntity">
+		update food_nutrient_elements 
+		<set>
+			<if test="foodMaterialId != null">`food_material_id` = #{foodMaterialId}, </if>
+			<if test="nutrientElementsId != null">`nutrient_elements_id` = #{nutrientElementsId}, </if>
+			<if test="contentG != null">`content_g` = #{contentG}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from food_nutrient_elements where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from food_nutrient_elements where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

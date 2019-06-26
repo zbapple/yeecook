@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.UserCommentsDao">
+
+    <resultMap type="com.platform.entity.UserCommentsEntity" id="userCommentsMap">
+        <result property="id" column="id"/>
+        <result property="nideshopUserId" column="nideshop_user_id"/>
+        <result property="userComment" column="user_comment"/>
+        <result property="videoId" column="video_id"/>
+        <result property="commentsScore" column="comments_score"/>
+        <result property="commentsTime" column="comments_time"/>
+        <result property="replyType" column="reply_type"/>
+        <result property="replyId" column="reply_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.UserCommentsEntity">
+		select
+			`id`,
+			`nideshop_user_id`,
+			`user_comment`,
+			`video_id`,
+			`comments_score`,
+			`comments_time`,
+			`reply_type`,
+			`reply_id`
+		from user_comments
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.UserCommentsEntity">
+		select
+    		`id`,
+    		`nideshop_user_id`,
+    		`user_comment`,
+    		`video_id`,
+    		`comments_score`,
+    		`comments_time`,
+    		`reply_type`,
+    		`reply_id`
+		from user_comments
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND nideshop_user_id LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_comments
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND nideshop_user_id LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.UserCommentsEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_comments(
+			`nideshop_user_id`,
+			`user_comment`,
+			`video_id`,
+			`comments_score`,
+			`comments_time`,
+			`reply_type`,
+			`reply_id`)
+		values(
+			#{nideshopUserId},
+			#{userComment},
+			#{videoId},
+			#{commentsScore},
+			#{commentsTime},
+			#{replyType},
+			#{replyId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.UserCommentsEntity">
+		update user_comments 
+		<set>
+			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}, </if>
+			<if test="userComment != null">`user_comment` = #{userComment}, </if>
+			<if test="videoId != null">`video_id` = #{videoId}, </if>
+			<if test="commentsScore != null">`comments_score` = #{commentsScore}, </if>
+			<if test="commentsTime != null">`comments_time` = #{commentsTime}, </if>
+			<if test="replyType != null">`reply_type` = #{replyType}, </if>
+			<if test="replyId != null">`reply_id` = #{replyId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_comments where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_comments where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

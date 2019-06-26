@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
 @Api(tags = "API登录授权接口")
 @RestController
 @RequestMapping("/api/auth")
-public class ApiAuthController extends ApiBaseAction {
+public class    ApiAuthController extends ApiBaseAction {
     private Logger logger = Logger.getLogger(getClass());
     @Autowired
     private ApiUserService userService;

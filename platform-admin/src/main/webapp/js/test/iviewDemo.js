@@ -9,6 +9,13 @@ var vm = new Vue({
         data1: '',
         loading: false,
         loading2: false,
+        data3:[],
+        targetKeys3: [],
+        listStyle: {
+            width: '250px',
+            height: '300px'
+
+        },
         formValidate: {
             name: '',
             mail: '',
@@ -134,7 +141,11 @@ var vm = new Vue({
         ],
         model2: '',
         model3: '',
-        model4: ''
+        model4: '',
+    },
+    mounted(){
+        this.data3=this.getMockData()
+        this.targetKeys3=this.getTargetKeys()
     },
     methods: {
         show: function () {
@@ -183,6 +194,33 @@ var vm = new Vue({
                 area: ['80%', '500px'],
                 content: ['https://www.iviewui.com/docs/guide/install']
             });
+        },
+        getMockData:function() {
+            let mockData = [];
+            for (let i = 1; i <= 20; i++) {
+                mockData.push({
+                    key: i.toString(),
+                    label: 'Content ' + i,
+                    description: 'The desc of content  ' + i,
+                    disabled: Math.random() * 3 < 1
+                });
+            }
+            return mockData;
+        },
+        getTargetKeys:function() {
+            return this.getMockData()
+                .filter(() => Math.random() * 2 > 1)
+                .map(item => item.key);
+        },
+        handleChange3:function(newTargetKeys) {
+            this.targetKeys3 = newTargetKeys;
+        },
+        render3:function(item) {
+            return item.label + ' - ' + item.description;
+        },
+        reloadMockData:function() {
+            this.data3 = this.getMockData();
+            this.targetKeys3 = this.getTargetKeys();
         }
     }
 });

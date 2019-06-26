@@ -51,6 +51,7 @@
 	        	/login.html=anon
 	        	/sys/login=anon
 	        	/captcha.jpg=anon
+				/websocket=anon
 	        	/**=authc
 	        </value>
 	    </property>
