@@ -111,7 +111,7 @@ $(function () {
             }
         ]
     });
-});
+});``
 
 let vm = new Vue({
     el: '#rrapp',

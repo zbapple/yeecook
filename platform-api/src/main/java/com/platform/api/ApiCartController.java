@@ -1,6 +1,7 @@
 package com.platform.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
 import com.platform.cache.J2CacheUtils;
 import com.platform.dao.ApiCouponMapper;
@@ -147,6 +148,7 @@ public class ApiCartController extends ApiBaseAction {
     public Object add(@LoginUser UserVo loginUser,Integer goodsId,Integer productId,Integer number) {
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
+        //前端无约束
         if (null == goodsInfo || goodsInfo.getIs_delete() == 1 || goodsInfo.getIs_on_sale() != 1) {
             return this.toResponsObject(400, "商品已下架", "");
         }
@@ -354,10 +356,10 @@ public class ApiCartController extends ApiBaseAction {
         if (StringUtils.isNullOrEmpty(productIds)) {
             return toResponsFail("删除出错");
         }
-        String[] productIdsArray = productIds.split(",");
-        cartService.deleteByUserAndProductIds(userId, productIdsArray);
+            String[] productIdsArray = productIds.split(",");
+            cartService.deleteByUserAndProductIds(userId, productIdsArray);
+            return toResponsSuccess(getCart(loginUser));
 
-        return toResponsSuccess(getCart(loginUser));
     }
 
     //  获取购物车商品的总件件数

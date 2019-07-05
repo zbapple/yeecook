@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.MenuDetailsDao">
+
+    <resultMap type="com.platform.entity.MenuDetailsEntity" id="menuDetailsMap">
+        <result property="id" column="id"/>
+        <result property="userNutritionMenuId" column="user_nutrition_menu_id"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="dishesId" column="dishes_id"/>
+        <result property="dishesName" column="dishes_name"/>
+        <result property="leafNode" column="leaf_node"/>
+        <result property="fatherId" column="father_id"/>
+        <result property="mealTime" column="meal_time"/>
+        <result property="menuDate" column="menu_date"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.MenuDetailsEntity">
+		select
+			`id`,
+			`user_nutrition_menu_id`,
+			`menu_type`,
+			`dishes_id`,
+			`dishes_name`,
+			`leaf_node`,
+			`father_id`,
+			`meal_time`,
+			`menu_date`
+		from menu_details
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.MenuDetailsEntity">
+		select
+    		`id`,
+    		`user_nutrition_menu_id`,
+    		`menu_type`,
+    		`dishes_id`,
+    		`dishes_name`,
+    		`leaf_node`,
+    		`father_id`,
+    		`meal_time`,
+    		`menu_date`
+		from menu_details
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND menu_type LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from menu_details
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND menu_type LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.MenuDetailsEntity">
+		insert into menu_details(
+			`id`,
+			`user_nutrition_menu_id`,
+			`menu_type`,
+			`dishes_id`,
+			`dishes_name`,
+			`leaf_node`,
+			`father_id`,
+			`meal_time`,
+			`menu_date`)
+		values(
+			#{id},
+			#{userNutritionMenuId},
+			#{menuType},
+			#{dishesId},
+			#{dishesName},
+			#{leafNode},
+			#{fatherId},
+			#{mealTime},
+			#{menuDate})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.MenuDetailsEntity">
+		update menu_details 
+		<set>
+			<if test="userNutritionMenuId != null">`user_nutrition_menu_id` = #{userNutritionMenuId}, </if>
+			<if test="menuType != null">`menu_type` = #{menuType}, </if>
+			<if test="dishesId != null">`dishes_id` = #{dishesId}, </if>
+			<if test="dishesName != null">`dishes_name` = #{dishesName}, </if>
+			<if test="leafNode != null">`leaf_node` = #{leafNode}, </if>
+			<if test="fatherId != null">`father_id` = #{fatherId}, </if>
+			<if test="mealTime != null">`meal_time` = #{mealTime}, </if>
+			<if test="menuDate != null">`menu_date` = #{menuDate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from menu_details where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from menu_details where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

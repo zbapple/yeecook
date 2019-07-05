@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.MenuPlanDao">
+
+    <resultMap type="com.platform.entity.MenuPlanEntity" id="menuPlanMap">
+        <result property="id" column="id"/>
+        <result property="nideshopUserId" column="nideshop_user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="avatar" column="avatar"/>
+        <result property="menuCoverPic" column="menu_cover_pic"/>
+        <result property="nutritionMenuType" column="nutrition_menu_type"/>
+        <result property="serviceCycleSt" column="service_cycle_st"/>
+        <result property="cateringServiceOrgId" column="catering_service_org_id"/>
+        <result property="cateringServiceOrgName" column="catering_service_org_name"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="serviceCycleEt" column="service_cycle_et"/>
+        <result property="dishesName" column="dishes_name"/>
+        <result property="dishesDescribe" column="dishes_describe"/>
+        <result property="dishesCoverPic" column="dishes_cover_pic"/>
+        <result property="dishesCalories" column="dishes_calories"/>
+        <result property="inspectionCycle" column="inspection_cycle"/>
+        <result property="weight" column="weight"/>
+        <result property="menuType" column="menu_type"/>
+        <result property="menuSn" column="menu_sn"/>
+        <result property="menuStatus" column="menu_status"/>
+        <result property="nutritionPrinciple" column="nutrition_principle"/>
+        <result property="serviceStage" column="service_stage"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.platform.entity.MenuPlanEntity">
+		select
+			 u.id,
+    		 n.id as nideshop_user_id,
+    		 n.username as username,
+    		 nutrition_menu_type,
+    		`service_cycle_st`,
+    	    `catering_service_org_name`,
+    	   GROUP_CONCAT(m.menu_type) as menu_type,
+    		`menu_name`,
+    		`service_cycle_et`,
+    		`service_stage`,
+    		GROUP_CONCAT(inspection_cycle) as inspection_cycle,
+    		`nutrition_principle`,
+    		GROUP_CONCAT(m.dishes_name) as dishes_name,
+    		GROUP_CONCAT(d.dishes_cover_pic) as dishes_cover_pic,
+    		GROUP_CONCAT(d.dishes_calories) as dishes_calories,
+    	   GROUP_CONCAT(weight) as weight,
+    	    `menu_sn`,
+    		`menu_status`
+		from user_nutrition_menu u
+		left join nideshop_user n on u.nideshop_user_id = n.id
+		left join menu_details m on u.id= m.user_nutrition_menu_id
+		left join user_detection_cycle udc on u.nideshop_user_id= udc.nideshop_user_id
+		left join dishes d on m.dishes_id = d.id
+		left join user_health_report uhr on u.nideshop_user_id = uhr.nideshop_user_id
+		where u.id = #{value}
+	</select>
+
+    <select id="queryList" resultType="com.platform.entity.MenuPlanEntity">
+        select
+        u.id,
+        n.id as nideshop_user_id,
+        n.username as username,
+        n.avatar as avatar,
+        nutrition_menu_type,
+        `service_cycle_st`,
+        `catering_service_org_name`,
+        `menu_name`,
+        `service_cycle_et`,
+        `menu_status`
+        from user_nutrition_menu u
+        left join nideshop_user n on u.nideshop_user_id = n.id
+        where 1=1
+        <if test="name != null and name.trim() != ''">
+            AND menu_name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="userName != null and userName.trim() != ''">
+            AND username LIKE concat('%',#{userName},'%')
+        </if>
+        <if test="nutritionMenuType != null and nutritionMenuType.trim() != ''">
+            AND nutrition_menu_type LIKE concat('%',#{nutritionMenuType},'%')
+        </if>
+        <if test="cateringServiceOrgName != null and cateringServiceOrgName.trim() != ''">
+            AND catering_service_org_name LIKE concat('%',#{cateringServiceOrgName},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from user_nutrition_menu
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND menu_name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <insert id="save" parameterType="com.platform.entity.MenuPlanEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_nutrition_menu(
+			`nideshop_user_id`,
+			`menu_name`,
+			`nutrition_menu_type`,
+			`nutrition_principle`,
+			`catering_service_org_id`,
+			`catering_service_org_name`,
+			`service_cycle_st`,
+			`service_cycle_et`,
+			`service_stage`,
+			`menu_sn`,
+			`menu_status`,
+			)
+		values(
+			#{nideshopUserId},
+			#{menuName},
+			#{nutritionMenuType},
+			#{menuType},
+			#{menuCoverPic},
+			#{nutritionPrinciple},
+			#{cateringServiceOrgId},
+			#{cateringServiceOrgName},
+			#{menuName},
+			#{serviceCycleSt},
+			#{serviceCycleEt}),
+			#{serviceStage},
+			#{menuSn},
+			#{menuStatus}
+	</insert>
+
+    <update id="update" parameterType="com.platform.entity.MenuPlanEntity">
+        update menu_plan
+        <set>
+            <if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId},</if>
+            <if test="nideshopUserNickname != null">`nideshop_user_nickname` = #{nideshopUserNickname},</if>
+            <if test="nideshopUserAvatar != null">`nideshop_user_avatar` = #{nideshopUserAvatar},</if>
+            <if test="menuType != null">`menu_type` = #{menuType},</if>
+            <if test="serviceCycleSt != null">`service_cycle_st` = #{serviceCycleSt},</if>
+            <if test="cateringServiceOrgName != null">`catering_service_org_name` = #{cateringServiceOrgName},</if>
+            <if test="menuName != null">`menu_name` = #{menuName},</if>
+            <if test="serviceCycleEt != null">`service_cycle_et` = #{serviceCycleEt},</if>
+            <if test="menuStatus != null">`menu_status` = #{menuStatus}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from menu_plan where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from menu_plan where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

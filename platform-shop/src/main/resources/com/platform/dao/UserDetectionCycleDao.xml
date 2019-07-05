@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.UserDetectionCycleDao">
+
+    <resultMap type="com.platform.entity.UserDetectionCycleEntity" id="userDetectionCycleMap">
+        <result property="id" column="id"/>
+        <result property="inspectionStartDate" column="inspection_start_date"/>
+        <result property="inspectionEndDate" column="inspection_end_date"/>
+        <result property="inspectionNum" column="inspection_num"/>
+        <result property="inspectionTime" column="inspection_time"/>
+        <result property="inspectionCycle" column="inspection_cycle"/>
+        <result property="nideshopUserId" column="nideshop_user_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.UserDetectionCycleEntity">
+		select
+			`id`,
+			`inspection_start_date`,
+			`inspection_end_date`,
+			`inspection_num`,
+			`inspection_time`,
+			`inspection_cycle`,
+			`nideshop_user_id`
+		from user_detection_cycle
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.UserDetectionCycleEntity">
+		select
+    		`id`,
+    		`inspection_start_date`,
+    		`inspection_end_date`,
+    		`inspection_num`,
+    		`inspection_time`,
+    		`inspection_cycle`,
+    		`nideshop_user_id`
+		from user_detection_cycle
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND nideshop_user_id LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_detection_cycle
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND nideshop_user_id LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.UserDetectionCycleEntity">
+		insert into user_detection_cycle(
+			`id`,
+			`inspection_start_date`,
+			`inspection_end_date`,
+			`inspection_num`,
+			`inspection_time`,
+			`inspection_cycle`,
+			`nideshop_user_id`)
+		values(
+			#{id},
+			#{inspectionStartDate},
+			#{inspectionEndDate},
+			#{inspectionNum},
+			#{inspectionTime},
+			#{inspectionCycle},
+			#{nideshopUserId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.UserDetectionCycleEntity">
+		update user_detection_cycle 
+		<set>
+			<if test="inspectionStartDate != null">`inspection_start_date` = #{inspectionStartDate}, </if>
+			<if test="inspectionEndDate != null">`inspection_end_date` = #{inspectionEndDate}, </if>
+			<if test="inspectionNum != null">`inspection_num` = #{inspectionNum}, </if>
+			<if test="inspectionTime != null">`inspection_time` = #{inspectionTime}, </if>
+			<if test="inspectionCycle != null">`inspection_cycle` = #{inspectionCycle}, </if>
+			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_detection_cycle where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_detection_cycle where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -48,6 +48,7 @@
         <j2cache.version>2.7.2-release</j2cache.version>
         <ehcache.version>2.10.4</ehcache.version>
         <jgroups.version>3.6.13.Final</jgroups.version>
+        <websocket.version>1.1</websocket.version>
         <mybatis.paginator.version>1.2.10</mybatis.paginator.version>
     </properties>
 
@@ -277,7 +278,8 @@
             <artifactId>j2cache-core</artifactId>
             <version>${j2cache.version}</version>
         </dependency>
-        <dependency><!-- Ehcache 2.x //-->
+        <!-- Ehcache 2.x //-->
+        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>${ehcache.version}</version>
@@ -287,6 +289,14 @@
             <artifactId>jgroups</artifactId>
             <version>${jgroups.version}</version>
         </dependency>
+        <!-- websocket  -->
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>${websocket.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

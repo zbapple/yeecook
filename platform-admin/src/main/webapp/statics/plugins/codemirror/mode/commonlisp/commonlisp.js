@@ -28,7 +28,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
   }
 
   function base(stream, state) {
-    if (stream.eatSpace()) {type = "ws"; return null;}
+    if (stream.eatSpace()) {type = "websocket"; return null;}
     if (stream.match(numLiteral)) return "number";
     var ch = stream.next();
     if (ch == "\\") ch = stream.next();
@@ -36,7 +36,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
     if (ch == '"') return (state.tokenize = inString)(stream, state);
     else if (ch == "(") { type = "open"; return "bracket"; }
     else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
-    else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
+    else if (ch == ";") { stream.skipToEnd(); type = "websocket"; return "comment"; }
     else if (/['`,@]/.test(ch)) return null;
     else if (ch == "|") {
       if (stream.skipTo("|")) { stream.next(); return "symbol"; }
@@ -75,7 +75,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
       if (next == "#" && last == "|") { state.tokenize = base; break; }
       last = next;
     }
-    type = "ws";
+    type = "websocket";
     return "comment";
   }
 
@@ -90,7 +90,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 
       type = null;
       var style = state.tokenize(stream, state);
-      if (type != "ws") {
+      if (type != "websocket") {
         if (state.ctx.indentTo == null) {
           if (type == "symbol" && assumeBody.test(stream.current()))
             state.ctx.indentTo = state.ctx.start + config.indentUnit;

@@ -71,6 +71,7 @@ var vm = new Vue({
         uploadList: [],
         imgName: '',
         visible: false,
+
         goods: {
             primaryPicUrl: '',
             listPicUrl: '',

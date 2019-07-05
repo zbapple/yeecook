@@ -197,6 +197,20 @@
                     <i-option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</i-option>
                 </i-select>
             </Tab-pane>
+            <Tab-pane label="穿梭框" name="name7">
+                <Transfer
+                        :data="data3"
+                        :target-keys="targetKeys3"
+                        :list-style="listStyle"
+                        :render-format="render3"
+                        :operations="['To left','To right']"
+                        filterable
+                        @on-change="handleChange3">
+                    <div :style="{float: 'right', margin: '5px'}">
+                        <Button size="small" @click="reloadMockData">Refresh</Button>
+                    </div>
+                </Transfer>
+            </Tab-pane>
         </Tabs>
     </div>
 </div>

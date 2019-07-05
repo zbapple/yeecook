@@ -56,4 +56,5 @@ public class MenuServiceImpl implements MenuService {
     public int deleteBatch(Integer[] ids) {
         return menuDao.deleteBatch(ids);
     }
+
 }
