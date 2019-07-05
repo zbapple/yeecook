@@ -17,6 +17,8 @@ public class UserNutritionMenuEntity implements Serializable {
 
     //餐单id
     private Integer id;
+    //餐单编号
+    private String menuSn;
     //餐单名称
     private String menuName;
     //主表餐单类型
@@ -187,4 +189,15 @@ public class UserNutritionMenuEntity implements Serializable {
      * 获取：服务状态 0：未签约  1：已签约
      **/
     public Integer getMenuStatus(){return  menuStatus;}
+
+    /**
+     *  餐单编号
+     **/
+    public String getMenuSn() {
+        return menuSn;
+    }
+
+    public void setMenuSn(String menuSn) {
+        this.menuSn = menuSn;
+    }
 }

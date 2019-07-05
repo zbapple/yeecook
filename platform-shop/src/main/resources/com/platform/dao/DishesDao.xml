@@ -6,6 +6,7 @@
     <resultMap type="com.platform.entity.DishesEntity" id="dishesMap">
         <result property="id" column="id"/>
         <result property="dishesName" column="dishes_name"/>
+		<result property="dishesDescribe" column="dishes_describe"/>
         <result property="dishesCoverPic" column="dishes_cover_pic"/>
         <result property="dishesCalories" column="dishes_calories"/>
     </resultMap>
@@ -14,6 +15,7 @@
 		select
 			`id`,
 			`dishes_name`,
+			`dishes_describe`,
 			`dishes_cover_pic`,
 			`dishes_calories`
 		from dishes
@@ -24,6 +26,7 @@
 		select
     		`id`,
     		`dishes_name`,
+		    `dishes_describe`,
     		`dishes_cover_pic`,
     		`dishes_calories`
 		from dishes
@@ -56,11 +59,13 @@
 		insert into dishes(
 			`id`,
 			`dishes_name`,
+			`dishes_describe`,
 			`dishes_cover_pic`,
 			`dishes_calories`)
 		values(
 			#{id},
 			#{dishesName},
+			#{dishesDescribe},
 			#{dishesCoverPic},
 			#{dishesCalories})
 	</insert>
@@ -69,6 +74,7 @@
 		update dishes 
 		<set>
 			<if test="dishesName != null">`dishes_name` = #{dishesName}, </if>
+			<if test="dishesDescribe != null">`dishes_describe` = #{dishesDescribe}, </if>
 			<if test="dishesCoverPic != null">`dishes_cover_pic` = #{dishesCoverPic}, </if>
 			<if test="dishesCalories != null">`dishes_calories` = #{dishesCalories}</if>
 		</set>

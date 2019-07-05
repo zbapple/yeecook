@@ -4,6 +4,7 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '菜品名字', name: 'dishesName', index: 'dishes_name', width: 80},
+			{label: '菜品描述',name:'dishesDescribe',index:'dishes_describe',width: 80},
 			{label: '菜品封面图片', name: 'dishesCoverPic', index: 'dishes_cover_pic', width: 80},
 			{label: '菜品卡路里', name: 'dishesCalories', index: 'dishes_calories', width: 80}]
     });

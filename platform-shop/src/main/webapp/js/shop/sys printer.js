@@ -13,7 +13,7 @@ let vm = new Vue({
 	data: {
         showList: true,
         title: null,
-		sys printer: {},
+		sysprinter: {},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}

@@ -1,8 +1,6 @@
 package com.platform.service;
 
 import com.platform.entity.MenuPlanEntity;
-import com.platform.entity.UserEntity;
-import com.platform.entity.UserNutritionMenuEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -71,26 +69,13 @@ public interface MenuPlanService {
      */
     int deleteBatch(Integer[] ids);
 
+    /**
+     * 审核状态
+     **/
+    int updatestatus(Integer id);
 
     /**
-     * 根据主键查询实体 餐单详情页面
-     *
-     * @param id 主键
-     * @return 实体
-     */
-    MenuPlanEntity queryObjectA(Integer id);
-    /**
-     * 分页查询  餐单详情页面
-     *
-     * @param map 参数
-     * @return list
-     */
-    List<MenuPlanEntity> queryListA(Map<String, Object> map);
-    /**
-     * 分页统计总数
-     *
-     * @param map 参数
-     * @return 总数
-     */
-    int queryTotalA(Map<String, Object> map);
+     * 
+     **/
+
 }

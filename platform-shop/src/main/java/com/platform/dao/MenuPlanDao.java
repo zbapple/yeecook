@@ -15,7 +15,4 @@ import java.util.Map;
  */
 public interface MenuPlanDao extends BaseDao<MenuPlanEntity> {
 
-     MenuPlanEntity queryObjectA(Object id);
-     List<MenuPlanEntity> queryListA(Map<String, Object> params);
-     int queryTotalA(Map<String, Object> params);
 }

@@ -1,5 +1,8 @@
 package com.platform.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +10,7 @@ import com.platform.entity.MenuDetailsEntity;
 import com.platform.entity.UserEntity;
 import com.platform.entity.UserNutritionMenuEntity;
 import com.platform.service.*;
+import com.platform.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,19 +37,7 @@ public class MenuPlanController {
     @Autowired
     private MenuPlanService menuPlanService;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private UserNutritionMenuService userNutritionMenuService;
-    @Autowired
-    private MenuDetailsService menuDetailsService;
-    @Autowired
-    private UserDetectionCycleService userDetectionCycleService;
-    @Autowired
-    private DishesService dishesService;
-    @Autowired
-    private FoodTypeService foodTypeService;
-    @Autowired
-    private UserHealthReportService userHealthReportService;
+    private  MenuDetailsService menuDetailsService;
     /**
      * 查看列表
      */
@@ -56,6 +48,7 @@ public class MenuPlanController {
         Query query = new Query(params);
 
         List<MenuPlanEntity> menuPlanList = menuPlanService.queryList(query);
+
         int total = menuPlanService.queryTotal(query);
 
         PageUtils pageUtil = new PageUtils(menuPlanList, total, query.getLimit(), query.getPage());
@@ -80,9 +73,9 @@ public class MenuPlanController {
     @RequiresPermissions("menuplan:save")
     public R save(@RequestBody MenuPlanEntity menuPlan) {
         menuPlanService.save(menuPlan);
-
         return R.ok();
     }
+
 
     /**
      * 修改
@@ -118,30 +111,14 @@ public class MenuPlanController {
     }
 
 
-
     /**
-     *  查看餐单详情列表
+     *  更改签约状态
      **/
-    @RequestMapping("/alist")
-    public R alist(@RequestParam Map<String, Object> params) {
-        //查询列表数据
-        Query query = new Query(params);
-
-        List<MenuPlanEntity> menuPlanList = menuPlanService.queryListA(query);
-        int total = menuPlanService.queryTotalA(query);
-
-        PageUtils pageUtil = new PageUtils(menuPlanList, total, query.getLimit(), query.getPage());
-
-        return R.ok().put("page", pageUtil);
+    public R updatestatus(@RequestBody Integer id){
+        menuPlanService.updatestatus(id);
+        return R.ok();
     }
 
-    /**
-     *  详情信息
-     **/
-    @RequestMapping("/ainfo/{id}")
-    public R ainfo(@PathVariable("id") Integer id) {
-        MenuPlanEntity menuPlan = menuPlanService.queryObjectA(id);
-        return R.ok().put("menuPlan", menuPlan);
-    }
+
 
 }

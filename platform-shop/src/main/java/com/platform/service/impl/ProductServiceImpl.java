@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2017-08-30 14:31:21
  */
 @Service("productService")
-public class ProductServiceImpl implements ProductService {
+public class   ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
     @Autowired

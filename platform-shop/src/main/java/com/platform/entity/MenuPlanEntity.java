@@ -1,9 +1,12 @@
 package com.platform.entity;
 
 import com.platform.dao.UserNutritionMenuDao;
+import com.platform.utils.DateUtils;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户膳食计划实体
@@ -18,8 +21,10 @@ public class MenuPlanEntity implements Serializable {
 
     //
     private Integer id;
-    //
+    //用户id
     private Integer nideshopUserId;
+    //餐单编号
+    private String menuSn;
     //用户名称
     private String userName;
     //用户头像
@@ -28,16 +33,20 @@ public class MenuPlanEntity implements Serializable {
     private String nutritionMenuType;
     //计划开始时间
     private Date serviceCycleSt;
+    //机构id
+    private Integer cateringServiceOrgId;
     //机构名称
     private String cateringServiceOrgName;
     //食谱名称
     private String menuName;
+    //餐单封面图片
+    private String menuCoverPic;
     //计划结束时间
     private Date serviceCycleEt;
     //服务阶段
     private String serviceStage;
     //0:未签约 1:已签约
-    private Integer menuStatus ;
+    private Integer menuStatus = 0;
     //检测周期
     private String inspectionCycle;
     //初始体重
@@ -46,12 +55,18 @@ public class MenuPlanEntity implements Serializable {
     private String menuType;
     //菜品名称
     private String dishesName;
+    //菜品描述
+    private String dishesDescribe;
     //菜品图片
     private String dishesCoverPic;
+    //菜品卡路里
+    private String dishesCalories;
     //营养原理
     private String nutritionPrinciple;
-
-
+    //餐单生成时间
+    private Date menuDate;
+    //用餐时间
+    private Date mealTime;
     /**
      * 设置：
      */
@@ -65,6 +80,7 @@ public class MenuPlanEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
     /**
      * 设置：
      */
@@ -78,10 +94,11 @@ public class MenuPlanEntity implements Serializable {
     public Integer getNideshopUserId() {
         return nideshopUserId;
     }
+
     /**
      * 设置：用户名称
      */
-        public void setUserName(String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
@@ -91,6 +108,7 @@ public class MenuPlanEntity implements Serializable {
     public String getUserName() {
         return userName;
     }
+
     /**
      * 设置：用户头像
      */
@@ -104,6 +122,7 @@ public class MenuPlanEntity implements Serializable {
     public String getAvatar() {
         return avatar;
     }
+
     /**
      * 设置：食谱类型
      */
@@ -117,6 +136,7 @@ public class MenuPlanEntity implements Serializable {
     public String getNutritionMenuType() {
         return nutritionMenuType;
     }
+
     /**
      * 设置：计划开始时间
      */
@@ -130,6 +150,7 @@ public class MenuPlanEntity implements Serializable {
     public Date getServiceCycleSt() {
         return serviceCycleSt;
     }
+
     /**
      * 设置：机构名称
      */
@@ -143,6 +164,7 @@ public class MenuPlanEntity implements Serializable {
     public String getCateringServiceOrgName() {
         return cateringServiceOrgName;
     }
+
     /**
      * 设置：食谱名称
      */
@@ -156,6 +178,7 @@ public class MenuPlanEntity implements Serializable {
     public String getMenuName() {
         return menuName;
     }
+
     /**
      * 设置：计划结束时间
      */
@@ -169,6 +192,7 @@ public class MenuPlanEntity implements Serializable {
     public Date getServiceCycleEt() {
         return serviceCycleEt;
     }
+
     /**
      * 设置：0:未签约 1:已签约
      */
@@ -184,7 +208,7 @@ public class MenuPlanEntity implements Serializable {
     }
 
     /**
-     *   服务阶段
+     * 服务阶段
      **/
     public String getServiceStage() {
         return serviceStage;
@@ -195,7 +219,7 @@ public class MenuPlanEntity implements Serializable {
     }
 
     /**
-     *  检测周期
+     * 检测周期
      **/
     public String getInspectionCycle() {
         return inspectionCycle;
@@ -204,9 +228,10 @@ public class MenuPlanEntity implements Serializable {
     public void setInspectionCycle(String inspectionCycle) {
         this.inspectionCycle = inspectionCycle;
     }
-   /**
-    *  初始体重
-    **/
+
+    /**
+     * 初始体重
+     **/
     public Double getWeight() {
         return weight;
     }
@@ -214,9 +239,10 @@ public class MenuPlanEntity implements Serializable {
     public void setWeight(Double weight) {
         this.weight = weight;
     }
-   /**
-    *  食谱类型
-    **/
+
+    /**
+     * 食谱类型
+     **/
     public String getMenuType() {
         return menuType;
     }
@@ -224,8 +250,9 @@ public class MenuPlanEntity implements Serializable {
     public void setMenuType(String menuType) {
         this.menuType = menuType;
     }
+
     /**
-     *  菜品名字
+     * 菜品名字
      **/
     public String getDishesName() {
         return dishesName;
@@ -234,8 +261,9 @@ public class MenuPlanEntity implements Serializable {
     public void setDishesName(String dishesName) {
         this.dishesName = dishesName;
     }
+
     /**
-     *  菜品图片
+     * 菜品图片
      **/
     public String getDishesCoverPic() {
         return dishesCoverPic;
@@ -244,14 +272,84 @@ public class MenuPlanEntity implements Serializable {
     public void setDishesCoverPic(String dishesCoverPic) {
         this.dishesCoverPic = dishesCoverPic;
     }
-   /**
-    *  营养原理
-    **/
+
+    /**
+     * 营养原理
+     **/
     public String getNutritionPrinciple() {
         return nutritionPrinciple;
     }
 
     public void setNutritionPrinciple(String nutritionPrinciple) {
         this.nutritionPrinciple = nutritionPrinciple;
+    }
+
+    /**
+     * 菜品描述
+     **/
+    public String getDishesDescribe() {
+        return dishesDescribe;
+    }
+
+    public void setDishesDescribe(String dishesDescribe) {
+        this.dishesDescribe = dishesDescribe;
+    }
+
+    /**
+     * 菜品卡路里
+     **/
+    public String getDishesCalories() {
+        return dishesCalories;
+    }
+
+    public void setDishesCalories(String dishesCalories) {
+        this.dishesCalories = dishesCalories;
+    }
+
+    public String getMenuSn() {
+        return menuSn;
+    }
+
+    public void setMenuSn(String menuSn) {
+        this.menuSn = menuSn;
+    }
+
+    public Integer getCateringServiceOrgId() {
+        return cateringServiceOrgId;
+    }
+
+    public void setCateringServiceOrgId(Integer cateringServiceOrgId) {
+        this.cateringServiceOrgId = cateringServiceOrgId;
+    }
+
+    /**
+     * 食谱封面图片
+     **/
+    public String getMenuCoverPic() {
+        return menuCoverPic;
+    }
+
+    public void setMenuCoverPic(String menuCoverPic) {
+        this.menuCoverPic = menuCoverPic;
+    }
+
+    public Date getMenuDate() {
+        return menuDate;
+    }
+
+    /**
+     * 餐单生成时间
+     **/
+
+    public void setMenuDate(Date menuDate) {
+        this.menuDate = menuDate;
+    }
+
+    public Date getMealTime() {
+        return mealTime;
+    }
+
+    public void setMealTime(Date mealTime) {
+        this.mealTime = mealTime;
     }
 }

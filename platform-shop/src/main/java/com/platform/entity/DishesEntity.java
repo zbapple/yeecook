@@ -19,6 +19,8 @@ public class DishesEntity implements Serializable {
     private Integer id;
     //菜品名字
     private String dishesName;
+    //菜品描述
+    private String dishesDescribe;
     //菜品封面图片
     private String dishesCoverPic;
     //菜品卡路里
@@ -75,5 +77,15 @@ public class DishesEntity implements Serializable {
      */
     public String getDishesCalories() {
         return dishesCalories;
+    }
+   /**
+    *  菜品描述
+    **/
+    public String getDishesDescribe() {
+        return dishesDescribe;
+    }
+
+    public void setDishesDescribe(String dishesDescribe) {
+        this.dishesDescribe = dishesDescribe;
     }
 }
