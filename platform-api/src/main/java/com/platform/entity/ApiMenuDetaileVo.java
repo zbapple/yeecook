@@ -11,7 +11,7 @@ import java.util.Map;
 public class ApiMenuDetaileVo {
 
 
-    private Date zaocantime;
+    private  Date    time;
     private  Double sumcal;
     private  String menuType;
     private List<Map>  zhengcan;
@@ -35,12 +35,12 @@ public class ApiMenuDetaileVo {
         this.jiacan = jiacan;
     }
 
-    public Date getZaocantime() {
-        return zaocantime;
+    public Date getTime() {
+        return time;
     }
 
-    public void setZaocantime(Date zaocantime) {
-        this.zaocantime = zaocantime;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public String getMenuType() {

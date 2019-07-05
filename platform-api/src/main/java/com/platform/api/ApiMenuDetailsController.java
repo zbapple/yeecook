@@ -104,23 +104,36 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         Map todaymap = new HashMap();
         todaymap.put("nideshopUserid", nideshopUserid);
         todaymap.put("todays", todays);
-        List<MenuDetailsVo> menuDetailsVoList = menuDetailsService.querListvo(todaymap);
-        List<ApiMenuDetaileVo> apiMenuDetaileVos = new ArrayList<>();
-        Double breakfastcal=0.0;
-        Double lunchcal=0.0;
-        Double dinnercal=0.0;
-        Date breakfasttime;
-        Date lunchtime;
-        Date dinnertime;
-        Double breakfastSnackscal=0.0;
-        Double dinnerSnackscal=0.0;
-        Double lunchSnackscal=0.0;
-        Double breakfastsumcal=0.0;
-        Double lunchsumcal=0.0;
-        Double dinnersumcal=0.0;
+        List<MenuDetailsVo> menuDetailsVoList = menuDetailsService.querListvo(todaymap); //查询出菜谱所有菜品信息
+        List<ApiMenuDetaileVo> apiMenuDetaileVos = new ArrayList<>();    //传给前端的数据格式
+        Double breakfastcal=0.0; //早餐总能量
+        Double lunchcal=0.0;     //午餐总能量
+        Double dinnercal=0.0;    //晚餐总能量
+
+        Date breakfasttime = null;   //早餐时间段
+        Date lunchtime = null;       //午餐时间段
+        Date dinnertime = null;      //晚餐时间段
+
+        Double breakfastSnackscal=0.0; //加餐早餐总能量
+        Double dinnerSnackscal=0.0;    //加餐晚餐总能量
+        Double lunchSnackscal=0.0;     //加餐午餐总能量
+
+        Double breakfastsumcal=0.0;    //早餐与加餐总能量
+        Double lunchsumcal=0.0;        //午餐与加餐总能量
+        Double dinnersumcal=0.0;       //晚餐与加餐总能量
+
+        List<Map>  zhengcan_0=new ArrayList<>();   //正餐早餐集合
+        List<Map>  zhengcan_1=new ArrayList<>();   //正餐中餐集合
+        List<Map>  zhengcan_2=new ArrayList<>();   //正餐晚餐集合
+
+        List<Map> jiacan_3=new ArrayList<>();      //加餐早餐集合
+        List<Map> jiacan_4=new ArrayList<>();      //加餐中餐集合
+        List<Map> jiacan_5=new ArrayList<>();      //加餐晚餐集合
+
         //迭代总的餐单菜品
         for (MenuDetailsVo menuDetailsVoItem : menuDetailsVoList) {
-            //归类早中晚菜品数据
+
+            //归类早中晚菜品数
             switch (menuDetailsVoItem.getMenuType()) {
                 case "0":
                         Map breakfast=new HashMap();
@@ -129,6 +142,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                         breakfast.put("dishesname",menuDetailsVoItem.getDishesName());
                         breakfast.put("breakfastcal",menuDetailsVoItem.getDishescalories());
                         breakfastcal+=menuDetailsVoItem.getDishescalories();
+                        zhengcan_0.add(breakfast);
                     break;
                 case "1":
                     Map lunch=new HashMap();
@@ -137,6 +151,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     lunch.put("dishesname",menuDetailsVoItem.getDishesName());
                     lunch.put("lunchcal",menuDetailsVoItem.getDishescalories());
                     lunchcal+=menuDetailsVoItem.getDishescalories();
+                    zhengcan_1.add(lunch);
                     break;
                 case "2":
                     Map dinner=new HashMap();
@@ -145,6 +160,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     dinner.put("dishesname",menuDetailsVoItem.getDishesName());
                     dinner.put("dinnercal",menuDetailsVoItem.getDishescalories());
                     dinnercal+=menuDetailsVoItem.getDishescalories();
+                    zhengcan_2.add(dinner);
                     break;
                 case "3":
                     Map breakfastSnacks=new HashMap();
@@ -152,6 +168,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     breakfastSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     breakfastSnacks.put("breakfastSnackscal",menuDetailsVoItem.getDishescalories());
                     breakfastSnackscal+=menuDetailsVoItem.getDishescalories();
+                    jiacan_3.add(breakfastSnacks);
                     break;
                 case "4":
                     Map lunchSnacks=new HashMap();
@@ -159,6 +176,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     lunchSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     lunchSnacks.put("lunchsumcal",menuDetailsVoItem.getDishescalories());
                     lunchsumcal+=menuDetailsVoItem.getDishescalories();
+                    jiacan_4.add(lunchSnacks);
                     break;
                 case "5":
                     Map dinnerSnacks=new HashMap();
@@ -166,26 +184,40 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     dinnerSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     dinnerSnacks.put("dinnerSnackscal",menuDetailsVoItem.getDishescalories());
                     dinnerSnackscal+=menuDetailsVoItem.getDishescalories();
+                    jiacan_5.add(dinnerSnacks);
                     break;
 
             }
-            breakfastsumcal=breakfastcal+breakfastSnackscal;
-            lunchsumcal=lunchSnackscal+lunchcal;
-            dinnersumcal=dinnerSnackscal+dinnercal;
-            if(null!=menuDetailsVoItem.getLeafNode() && menuDetailsVoItem.getLeafNode() ==1 ){
-                ApiMenuDetaileVo apiMenuDetaileVo=new ApiMenuDetaileVo();
-                apiMenuDetaileVo.setSumcal(breakfastsumcal);
-                apiMenuDetaileVo.setZaocantime(apiMenuDetaileVo.getZaocantime());
-                    for(MenuDetailsVo menuDetailsVo : menuDetailsVoList){
-                        if(menuDetailsVoItem.getId()==menuDetailsVo.getFatherId()){
-                            HashMap jiacan=new HashMap();
-                            jiacan.put("dishesname",menuDetailsVo.getDishesName());
-                            jiacan.put("dishescalories",menuDetailsVo.getDishescalories());
 
-                        }
-            }
-            }
         }
+
+        breakfastsumcal=breakfastcal+breakfastSnackscal;
+        lunchsumcal=lunchSnackscal+lunchcal;
+        dinnersumcal=dinnerSnackscal+dinnercal;
+
+        ApiMenuDetaileVo apiMenuDetaileVo_1=new ApiMenuDetaileVo();
+        apiMenuDetaileVo_1.setMenuType("0");
+        apiMenuDetaileVo_1.setTime(breakfasttime);
+        apiMenuDetaileVo_1.setSumcal(breakfastsumcal);
+        apiMenuDetaileVo_1.setJiacan(jiacan_3);
+        apiMenuDetaileVo_1.setZhengcan(zhengcan_0);
+        ApiMenuDetaileVo apiMenuDetaileVo_2=new ApiMenuDetaileVo();
+        apiMenuDetaileVo_2.setMenuType("1");
+        apiMenuDetaileVo_2.setTime(lunchtime);
+        apiMenuDetaileVo_2.setSumcal(lunchsumcal);
+        apiMenuDetaileVo_2.setJiacan(jiacan_4);
+        apiMenuDetaileVo_2.setZhengcan(zhengcan_1);
+        ApiMenuDetaileVo apiMenuDetaileVo_3=new ApiMenuDetaileVo();
+        apiMenuDetaileVo_3.setMenuType("2");
+        apiMenuDetaileVo_3.setTime(dinnertime);
+        apiMenuDetaileVo_3.setSumcal(dinnersumcal);
+        apiMenuDetaileVo_3.setJiacan(jiacan_5);
+        apiMenuDetaileVo_3.setZhengcan(zhengcan_2);
+
+        apiMenuDetaileVos.add(apiMenuDetaileVo_1);
+        apiMenuDetaileVos.add(apiMenuDetaileVo_2);
+        apiMenuDetaileVos.add(apiMenuDetaileVo_3);
+
         return toResponsSuccess(apiMenuDetaileVos);
     }
 }

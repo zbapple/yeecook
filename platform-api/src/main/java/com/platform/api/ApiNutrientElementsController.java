@@ -47,38 +47,39 @@ public class ApiNutrientElementsController extends ApiBaseAction {
         List<NutrientElementsVo> nutrientElementsVos=nutrientElementsService.queryList(nutrieninfomap);
         return toResponsSuccess(nutrientElementsVos);
     }
-//    @ApiOperation(value = "营养比例")
-//    @PostMapping("proportion")
-//    @IgnoreAuth
-//    public Object proportion(){
-//        Map<String,Object> result=new HashMap<>();
-//        JSONObject dishesinfojson=this.getJsonRequest();
-//        Integer dishesid=dishesinfojson.getInteger("dishesid");
-//        Map nutrieninfomap=new HashMap();
-//        nutrieninfomap.put("dishesid",dishesid);
-//        List<NutrientElementsVo> nutrientElementsVoss=nutrientElementsService.queryList(nutrieninfomap);
-//        Double protein=0.0;
-//        Double fat=0.0;
-//        Double co2=0.0;
-//        for(NutrientElementsVo nutrientElementsVoItem:nutrientElementsVoss){
-//            if(nutrientElementsVoItem.getNutrientElementsName().equals("蛋白质")){
-//                protein=nutrientElementsVoItem.getContentg();
-//            }
-//            else if(nutrientElementsVoItem.getNutrientElementsName().equals("脂肪") ){
-//                fat=nutrientElementsVoItem.getContentg();
-//            }else if(nutrientElementsVoItem.getNutrientElementsName().equals("碳水化合物")){
-//                co2=nutrientElementsVoItem.getContentg();
-//            }
-//        }
-//            int total=nutrientElementsService.queryTotal(nutrieninfomap);
-//        Double ratioprotein=protein/total;
-//        Double ratiofat=fat/total;
-//        Double ratoco2=co2/total;
-//        result.put("ratioprotein",ratioprotein);
-//        result.put("ratioprotein",ratioprotein);
-//        result.put("ratioprotein",ratioprotein);
-//        result.put("nutrientElementsVoss",nutrientElementsVoss);
-//        result.put("total",total);
-//        return toResponsSuccess(result);
-//    }
+
+    @ApiOperation(value = "营养比例")
+    @PostMapping("proportion")
+    @IgnoreAuth
+    public Object proportion(){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject dishesinfojson=this.getJsonRequest();
+        Integer dishesid=dishesinfojson.getInteger("dishesid");
+        Map nutrieninfomap=new HashMap();
+        nutrieninfomap.put("dishesid",dishesid);
+        List<NutrientElementsVo> nutrientElementsVoss=nutrientElementsService.queryList(nutrieninfomap);
+        Double protein=0.0;
+        Double fat=0.0;
+        Double co2=0.0;
+        for(NutrientElementsVo nutrientElementsVoItem:nutrientElementsVoss){
+            if(nutrientElementsVoItem.getNutrientElementsName().equals("蛋白质")){
+                protein=nutrientElementsVoItem.getContentg();
+            }
+            else if(nutrientElementsVoItem.getNutrientElementsName().equals("脂肪") ){
+                fat=nutrientElementsVoItem.getContentg();
+            }else if(nutrientElementsVoItem.getNutrientElementsName().equals("碳水化合物")){
+                co2=nutrientElementsVoItem.getContentg();
+            }
+        }
+            int total=nutrientElementsService.queryTotal(nutrieninfomap);
+        Double ratioprotein=protein/total;
+        Double ratiofat=fat/total;
+        Double ratoco2=co2/total;
+        result.put("ratioprotein",ratioprotein);
+        result.put("ratiofat",ratiofat);
+        result.put("ratoco2",ratoco2);
+        result.put("nutrientElementsVoss",nutrientElementsVoss);
+        result.put("total",total);
+        return toResponsSuccess(result);
+    }
 }
