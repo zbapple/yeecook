@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiCloudClassroomMapper">
+
+    <resultMap type="com.platform.entity.CloudClassroomVo" id="cloudClassroomMap">
+        <result property="id" column="id"/>
+        <result property="videoDescribe" column="video_describe"/>
+        <result property="videoTitle" column="video_title"/>
+        <result property="videoSubtitle" column="video_subtitle"/>
+        <result property="videoCoverPic" column="video_cover_pic"/>
+        <result property="videoAdress" column="video_adress"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.CloudClassroomVo">
+		select
+			`id`,
+			`video_describe`,
+			`video_title`,
+			`video_subtitle`,
+			`video_cover_pic`,
+			`video_adress`
+		from cloud_classroom
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.CloudClassroomVo">
+		select
+		<if test="fields != null and fields != ''">
+			${fields}
+		</if>
+		<if test="fields == null or fields == ''">
+			*
+		</if>
+		from cloud_classroom
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from cloud_classroom
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.CloudClassroomVo" useGeneratedKeys="true" keyProperty="id">
+		insert into cloud_classroom(
+			`video_describe`,
+			`video_title`,
+			`video_subtitle`,
+			`video_cover_pic`,
+			`video_adress`)
+		values(
+			#{videoDescribe},
+			#{videoTitle},
+			#{videoSubtitle},
+			#{videoCoverPic},
+			#{videoAdress})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.CloudClassroomVo">
+		update cloud_classroom 
+		<set>
+			<if test="videoDescribe != null">`video_describe` = #{videoDescribe}, </if>
+			<if test="videoTitle != null">`video_title` = #{videoTitle}, </if>
+			<if test="videoSubtitle != null">`video_subtitle` = #{videoSubtitle}, </if>
+			<if test="videoCoverPic != null">`video_cover_pic` = #{videoCoverPic}, </if>
+			<if test="videoAdress != null">`video_adress` = #{videoAdress}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from cloud_classroom where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from cloud_classroom where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

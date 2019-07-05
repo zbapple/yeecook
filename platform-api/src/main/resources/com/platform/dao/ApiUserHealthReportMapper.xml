@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiUserHealthReportMapper">
+
+    <resultMap type="com.platform.entity.UserHealthReportVo" id="userHealthReportMap">
+        <result property="id" column="id"/>
+        <result property="nideshopUserId" column="nideshop_user_id"/>
+        <result property="detectionTime" column="detection_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="weight" column="weight"/>
+        <result property="bmi" column="BMI"/>
+        <result property="bodyFatRade" column="body_fat_rade"/>
+        <result property="subFatPercentage" column="sub_fat_percentage"/>
+        <result property="basicMetabolism" column="basic_metabolism"/>
+        <result property="visFatGrade" column="vis_fat_grade"/>
+        <result property="bodyWaterRate" column="body_water_rate"/>
+        <result property="protein" column="protein"/>
+        <result property="boneMass" column="bone_mass"/>
+        <result property="skeletalMuscle" column="skeletal_muscle"/>
+		<result property="max" column="max"/>
+		<result property="min" column="min"/>
+		<result property="avg" column="avg"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.UserHealthReportVo">
+		select
+			`id`,
+			`nideshop_user_id`,
+			`detection_time`,
+			`update_time`,
+			`weight`,
+			`BMI`,
+			`body_fat_rade`,
+			`sub_fat_percentage`,
+			`basic_metabolism`,
+			`vis_fat_grade`,
+			`body_water_rate`,
+			`protein`,
+			`bone_mass`,
+			`skeletal_muscle`
+		from user_health_report
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.UserHealthReportVo">
+		select
+    		`id`,
+    		`nideshop_user_id`,
+			`detection_time`,
+			`update_time`,
+    		`weight`,
+    		`BMI`,
+    		`body_fat_rade`,
+    		`sub_fat_percentage`,
+    		`basic_metabolism`,
+    		`vis_fat_grade`,
+    		`body_water_rate`,
+    		`protein`,
+    		`bone_mass`,
+    		`skeletal_muscle`
+		from user_health_report
+		WHERE 1=1
+		<if test="nideshopUserid != null">
+			AND nideshop_user_id=#{nideshopUserid}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*)
+		FROM user_health_report
+		WHERE 1=1
+        <if test="nideshopUserid != null">
+            AND nideshop_user_id=#{nideshopUserid}
+        </if>
+	</select>
+	<select id="queryvalue" resultType="com.platform.entity.UserHealthReportVo">
+		select MAX(weight) as max,MIN(weight) as min,AVG(weight) as avg
+		FROM user_health_report
+		WHERE 1=1
+		<if test="nideshopUserid != null">
+			AND nideshop_user_id=#{nideshopUserid}
+		</if>
+		<if test="datemm !=null">
+			and update_time like  CONCAT('%',#{datemm},'%')
+		</if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.UserHealthReportVo">
+		insert into user_health_report(
+			`id`,
+			`nideshop_user_id`,
+			`detection_time`,
+			`update_time`,
+			`weight`,
+			`BMI`,
+			`body_fat_rade`,
+			`sub_fat_percentage`,
+			`basic_metabolism`,
+			`vis_fat_grade`,
+			`body_water_rate`,
+			`protein`,
+			`bone_mass`,
+			`skeletal_muscle`)
+		values(
+			#{id},
+			#{nideshopUserId},
+			#{detectionTime},
+			#{updateTime},
+			#{weight},
+			#{bmi},
+			#{bodyFatRade},
+			#{subFatPercentage},
+			#{basicMetabolism},
+			#{visFatGrade},
+			#{bodyWaterRate},
+			#{protein},
+			#{boneMass},
+			#{skeletalMuscle})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.UserHealthReportVo">
+		update user_health_report 
+		<set>
+			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}, </if>
+			<if test="detectionTime != null">`detection_time` = #{detectionTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="weight != null">`weight` = #{weight}, </if>
+			<if test="bmi != null">`BMI` = #{bmi}, </if>
+			<if test="bodyFatRade != null">`body_fat_rade` = #{bodyFatRade}, </if>
+			<if test="subFatPercentage != null">`sub_fat_percentage` = #{subFatPercentage}, </if>
+			<if test="basicMetabolism != null">`basic_metabolism` = #{basicMetabolism}, </if>
+			<if test="visFatGrade != null">`vis_fat_grade` = #{visFatGrade}, </if>
+			<if test="bodyWaterRate != null">`body_water_rate` = #{bodyWaterRate}, </if>
+			<if test="protein != null">`protein` = #{protein}, </if>
+			<if test="boneMass != null">`bone_mass` = #{boneMass}, </if>
+			<if test="skeletalMuscle != null">`skeletal_muscle` = #{skeletalMuscle}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_health_report where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_health_report where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiDishesMapper">
+
+    <resultMap type="com.platform.entity.DishesVo" id="dishesMap">
+        <result property="id" column="id"/>
+        <result property="dishesName" column="dishes_name"/>
+        <result property="dishesCoverPic" column="dishes_cover_pic"/>
+        <result property="dishesCalories" column="dishes_calories"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.DishesVo">
+		select
+			`id`,
+			`dishes_name`,
+			`dishes_cover_pic`,
+			`dishes_calories`
+		from dishes
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.DishesVo">
+		select
+    		`id`,
+    		`dishes_name`,
+    		`dishes_cover_pic`,
+    		`dishes_calories`
+		from dishes
+		WHERE 1=1
+		<if test="dishesid !=null">
+			and  id=#{dishesid}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from dishes
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.DishesVo">
+		insert into dishes(
+			`id`,
+			`dishes_name`,
+			`dishes_cover_pic`,
+			`dishes_calories`)
+		values(
+			#{id},
+			#{dishesName},
+			#{dishesCoverPic},
+			#{dishesCalories})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.DishesVo">
+		update dishes 
+		<set>
+			<if test="dishesName != null">`dishes_name` = #{dishesName}, </if>
+			<if test="dishesCoverPic != null">`dishes_cover_pic` = #{dishesCoverPic}, </if>
+			<if test="dishesCalories != null">`dishes_calories` = #{dishesCalories}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from dishes where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from dishes where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

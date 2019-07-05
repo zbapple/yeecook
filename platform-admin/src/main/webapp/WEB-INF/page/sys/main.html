@@ -12,6 +12,7 @@
 		.osc_git_main a{color: #9B9B9B;}
 	</style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0-release/echarts.js"></script>
+
 </head>
 <body>
 
@@ -76,27 +77,17 @@
             end: 100
         }],
         xAxis: {
-            data: ["用户访问量","订单量","新增用户","新增餐单"],
+            data: ["5.19","5.20","5.21","5.22","5.23","5.24"],
             boundaryGap: false,
         },
         yAxis: {
 
         },
-        // toolbox: {
-        //     show: true,
-        //     feature: {
-        //         mark: true,
-        //         dataView: { show: true, readOnly: false },
-        //         restore: { show: true},
-        //         saveAsImage: { show: true }
-        //     },
-        //
-        // },
         series: [
             {
                 name: '用户访问量',
                 type: 'line',
-                data: [5, 20, 13, 10, 10, 20,30],
+                data: [5, 20, 13, 19,21,26],
                 showSymbol:false,
                 markLine: { // 设置警戒线（图表标线）
                     silent: true, // 图形是否不响应和触发鼠标事件
@@ -108,19 +99,7 @@
                     data: [],
                 },
                 markPoint: {
-                    data: [
-                        //     {xAxis: 2, yAxis: 15,label: {
-                        //     label: true,
-                        //     formatter: '1111',
-                        //     position: [40, 100],
-                        // } },
-                        //      {xAxis: 4, yAxis: 15,label: {
-                        //     label: true,
-                        //     formatter: '2222',
-                        //     position: [40, 100],
-                        // } }
-
-                    ],
+                    data: [],
 
 
                 },
@@ -128,19 +107,19 @@
             {
                 name: '订单量',
                 type: 'line',
-                data: [15, 22, 10, 30, 20, 40,50],
+                data: [15, 22, 10, 30,21,27],
                 showSymbol:false,
             },
             {
                 name: '新增用户',
                 type: 'line',
-                data: [21, 14, 16, 21, 12, 16,20],
+                data: [21, 14, 16, 21,12,24],
                 showSymbol:false,
             },
             {
                 name: '新增餐单',
                 type: 'line',
-                data: [25, 8, 12, 30, 26, 22,30],
+                data: [25, 8, 12, 25,18,24],
                 showSymbol:false,
             },
         ]

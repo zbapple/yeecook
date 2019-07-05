@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiCloudClassroomGoodMapper">
+
+    <resultMap type="com.platform.entity.CloudClassroomGoodVo" id="cloudClassroomGoodMap">
+        <result property="id" column="id"/>
+        <result property="videoId" column="video_id"/>
+        <result property="goodsId" column="goods_id"/>
+		<result property="name" column="name"/>
+		<result property="listpicurl" column="list_pic_url"/>
+		<result property="retailprice" column="retail_price"/>
+		<result property="counterprice" column="counter_price"/>
+    </resultMap>
+	<select id="queryObject" resultType="com.platform.entity.CloudClassroomGoodVo">
+		select
+			`id`,
+			`video_id`,
+			`goods_id`
+		from cloud_classroom_good
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.CloudClassroomGoodVo">
+		select
+		a.name as name,
+		a.list_pic_url as listpicurl,
+		a.retail_price as retailprice,
+		a.counter_price as counterprice,
+		a.id as goodsId
+		from nideshop_goods a
+		left join cloud_classroom_good b on a.id = b.goods_id
+		where 1=1
+		<if test="videoid != null ">
+			AND b.video_id=#{videoid}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from cloud_classroom_good
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.CloudClassroomGoodVo">
+		insert into cloud_classroom_good(
+			`id`,
+			`video_id`,
+			`goods_id`)
+		values(
+			#{id},
+			#{videoId},
+			#{goodsId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.CloudClassroomGoodVo">
+		update cloud_classroom_good 
+		<set>
+			<if test="videoId != null">`video_id` = #{videoId}, </if>
+			<if test="goodsId != null">`goods_id` = #{goodsId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from cloud_classroom_good where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from cloud_classroom_good where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
