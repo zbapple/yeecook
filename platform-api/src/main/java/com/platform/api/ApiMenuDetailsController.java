@@ -45,12 +45,11 @@ public class ApiMenuDetailsController extends ApiBaseAction {
 
     @ApiOperation(value = "今日食谱")
     @PostMapping("menuinfo")
-    public Object menuinfo(Date today) {
-        UserVo loginUser = new UserVo();
+    public Object menuinfo(@LoginUser UserVo lginUser) {
         Map<String, Object> result = new HashMap<>();
+        Long userid = lginUser.getUserId();
         JSONObject dayjsonparam = getJsonRequest();
-        Long userid = loginUser.getUserId();
-        today = dayjsonparam.getDate("today");
+        String today= dayjsonparam.getString("today");
         Map dayfoodmap = new HashMap();
         dayfoodmap.put("userid", userid);
         dayfoodmap.put("today", today);
@@ -96,14 +95,13 @@ public class ApiMenuDetailsController extends ApiBaseAction {
 
     @ApiOperation(value = "用户一天的食谱")
     @PostMapping("todayinfo")
-    public Object todayinfo(Date todays, @LoginUser UserVo lginUser) {
-        Map<String, Object> result = new HashMap<>();
+    public Object todayinfo(@LoginUser UserVo lginUser) {
         JSONObject todayinfojson = this.getJsonRequest();
-        todays = todayinfojson.getDate("today");
+        String today = todayinfojson.getString("todays");
         Long nideshopUserid = lginUser.getUserId();
         Map todaymap = new HashMap();
         todaymap.put("nideshopUserid", nideshopUserid);
-        todaymap.put("todays", todays);
+        todaymap.put("todays", today);
         List<MenuDetailsVo> menuDetailsVoList = menuDetailsService.querListvo(todaymap); //查询出菜谱所有菜品信息
         List<ApiMenuDetaileVo> apiMenuDetaileVos = new ArrayList<>();    //传给前端的数据格式
         Double breakfastcal=0.0; //早餐总能量

@@ -38,7 +38,7 @@
 		`catering_service_org_name`,
 		`nideshop_user_id`
 		from user_nutrition_menu a
-		inner join menu_details b on a.id=b.user_nutrition_menu_id
+
 		WHERE 1=1
 		<if test="nideshopUserid != null">
 			AND  nideshop_user_id=#{nideshopUserid}

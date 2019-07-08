@@ -45,7 +45,7 @@ public class ApiUserNutritionMenuController extends ApiBaseAction {
             result.put("flag",1);
             return  toResponsSuccess(result);
         }else{
-                result.put("flag",0);
+            result.put("flag",0);
             return toResponsSuccess(result);
         }
 
