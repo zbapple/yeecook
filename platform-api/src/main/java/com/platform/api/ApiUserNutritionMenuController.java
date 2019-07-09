@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.LoginUser;
-import com.platform.entity.MenuDetailsVo;
-import com.platform.entity.UserDetectionCycleVo;
+
+
 import com.platform.entity.UserNutritionMenuVo;
 import com.platform.entity.UserVo;
-import com.platform.service.ApiDishesService;
+
 import com.platform.service.ApiUserNutritionMenuService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
@@ -45,7 +45,7 @@ public class ApiUserNutritionMenuController extends ApiBaseAction {
             result.put("flag",1);
             return  toResponsSuccess(result);
         }else{
-            result.put("flag",0);
+                result.put("flag",0);
             return toResponsSuccess(result);
         }
 

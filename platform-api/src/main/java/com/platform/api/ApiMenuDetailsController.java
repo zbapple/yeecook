@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.management.ManagementFactory;
 import java.util.*;
 
 /**
@@ -45,44 +46,47 @@ public class ApiMenuDetailsController extends ApiBaseAction {
 
     @ApiOperation(value = "今日食谱")
     @PostMapping("menuinfo")
-    public Object menuinfo(@LoginUser UserVo lginUser) {
+    public Object menuinfo(@LoginUser UserVo loginUser) {
         Map<String, Object> result = new HashMap<>();
-        Long userid = lginUser.getUserId();
-        JSONObject dayjsonparam = getJsonRequest();
-        String today= dayjsonparam.getString("today");
+        JSONObject dayjsonparam =this.getJsonRequest();
+        Long userid = loginUser.getUserId();
+        String today = dayjsonparam.getString("today");
         Map dayfoodmap = new HashMap();
         dayfoodmap.put("userid", userid);
         dayfoodmap.put("today", today);
         List<MenuDetailsVo> userlist = menuDetailsService.queryList(dayfoodmap);
-        String namegood = null;
-        String nameluch = null;
-        String nameeve = null;
         Double countgood = 0.0;
         Double sumcalluch = 0.0;
         Double couteve = 0.0;
         Double sum = 0.0;
-        if (userlist != null) {
+        List beabreakfastlist=new ArrayList();
+        List Lunchlist=new ArrayList();
+        List Dinnerlist=new ArrayList();
+         if (userlist != null) {
             for (MenuDetailsVo MenuDetailsVoItem : userlist) {
-                if (MenuDetailsVoItem.getMenuType().equals("0") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                if (MenuDetailsVoItem.getMenuType().equals("0") || MenuDetailsVoItem.getMenuType().equals("3") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                    Map namemap=new HashMap();
                     countgood += MenuDetailsVoItem.getDishescalories();
-                    namegood = MenuDetailsVoItem.getDishesName();
-                } else if (MenuDetailsVoItem.getMenuType().equals("1") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                    namemap.put("namegood",MenuDetailsVoItem.getDishesName()) ;
+                    beabreakfastlist.add(namemap);
+                } else if (MenuDetailsVoItem.getMenuType().equals("1") || MenuDetailsVoItem.getMenuType().equals("4") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                    Map namemap1=new HashMap();
                     sumcalluch += MenuDetailsVoItem.getDishescalories();
-                    nameluch = MenuDetailsVoItem.getDishesName();
-                } else if (MenuDetailsVoItem.getMenuType().equals("2") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                    namemap1.put("nameluch",MenuDetailsVoItem.getDishesName());
+                    Lunchlist.add(namemap1);
+                } else if (MenuDetailsVoItem.getMenuType().equals("2")  || MenuDetailsVoItem.getMenuType().equals("5") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                    Map namemap2=new HashMap();
                     couteve += MenuDetailsVoItem.getDishescalories();
-                    nameeve = MenuDetailsVoItem.getDishesName();
+                 namemap2.put("nameev",MenuDetailsVoItem.getDishesName());
+                 Dinnerlist.add(namemap2);
                 }
             }
             sum = countgood + sumcalluch + couteve;
-            String[] namemap = new String[]{namegood};
-            String[] namemap1 = new String[]{nameluch};
-            String[] namemap2 = new String[]{nameeve};
-            result.put("namemap", namemap);
+            result.put("beabreakfastlist", beabreakfastlist);
             result.put("countgood", countgood);
-            result.put("namemap1", namemap1);
+            result.put("namemLunchlistap1", Lunchlist);
             result.put("sumcalluch", sumcalluch);
-            result.put("namemap2", namemap2);
+            result.put("Dinnerlist", Dinnerlist);
             result.put("couteve", couteve);
             result.put("sum", sum);
             result.put("flag", 1);
@@ -95,13 +99,14 @@ public class ApiMenuDetailsController extends ApiBaseAction {
 
     @ApiOperation(value = "用户一天的食谱")
     @PostMapping("todayinfo")
-    public Object todayinfo(@LoginUser UserVo lginUser) {
+    public Object todayinfo( @LoginUser UserVo lginUser) {
+        Map<String, Object> result = new HashMap<>();
         JSONObject todayinfojson = this.getJsonRequest();
-        String today = todayinfojson.getString("todays");
+       String todays = todayinfojson.getString("todays");
         Long nideshopUserid = lginUser.getUserId();
         Map todaymap = new HashMap();
         todaymap.put("nideshopUserid", nideshopUserid);
-        todaymap.put("todays", today);
+        todaymap.put("todays", todays);
         List<MenuDetailsVo> menuDetailsVoList = menuDetailsService.querListvo(todaymap); //查询出菜谱所有菜品信息
         List<ApiMenuDetaileVo> apiMenuDetaileVos = new ArrayList<>();    //传给前端的数据格式
         Double breakfastcal=0.0; //早餐总能量
@@ -173,7 +178,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     lunchSnacks.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     lunchSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     lunchSnacks.put("lunchsumcal",menuDetailsVoItem.getDishescalories());
-                    lunchsumcal+=menuDetailsVoItem.getDishescalories();
+                    lunchSnackscal+=menuDetailsVoItem.getDishescalories();
                     jiacan_4.add(lunchSnacks);
                     break;
                 case "5":

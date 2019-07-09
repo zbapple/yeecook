@@ -4,23 +4,18 @@ package com.platform.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.LoginUser;
+import com.platform.entity.ApiUserhealReportVo;
 import com.platform.entity.UserHealthReportVo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiUserHealthReportService;
 import com.platform.util.ApiBaseAction;
-import com.platform.utils.DateUtils;
-import freemarker.template.utility.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -84,41 +79,43 @@ public class ApiUserHealthReportController extends ApiBaseAction {
             userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
             userHealthReportService.save(userHealthReportVo);
             result.put("flag",1);
+
             return toResponsSuccess(result);
         }else{
             result.put("flag",0);
             return toResponsSuccess(result);
         }
+
     }
     @ApiOperation(value = "用户身体健康报告记录详情")
     @PostMapping("userbodyinfo")
-    public  Object userbodyinfo(Integer id){
+    public  Object userbodyinfo(){
         JSONObject body=this.getJsonRequest();
-        id=body.getInteger("id");
+        Integer id=body.getInteger("id");
         UserHealthReportVo userHealthReportVos=userHealthReportService.queryObject(id);
         return  toResponsSuccess(userHealthReportVos);
     }
     @ApiOperation(value = "获取用户月份报告信息")
     @PostMapping("userdateinfo")
-    public Object userdateinfo(@LoginUser UserVo loginuser){
-        Map<String,Object> result1=new HashMap<>();
-        Map<String,Object> result=new HashMap<>();
-        JSONObject userdateinfojson=this.getJsonRequest();
-        Long userid=loginuser.getUserId();
-        Map datemap=new HashMap();
-        datemap.put("nideshopUserid",userid);
-        List<UserHealthReportVo> userHealthReportVoList=userHealthReportService.queryList(datemap);
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM");
-        Date m=null;
-        for(UserHealthReportVo healthReportVoItem:userHealthReportVoList){
-            m=healthReportVoItem.getUpdateTime();
-        }
-        int total=userHealthReportService.queryTotal(datemap);
-        result.put("userHealthReportVoList",userHealthReportVoList);
-        result.put("datetime",simpleDateFormat.format(m));
-        result.put("total",total);
-        result1.put("result",result);
-    return  toResponsSuccess(result1);
+    public Object userdateinfo(@LoginUser UserVo loginuser) {
+        JSONObject userdateinfojson = this.getJsonRequest();
+        Long userid = loginuser.getUserId();
+        Map datemap = new HashMap();
+        datemap.put("nideshopUserid", userid);
+        List<UserHealthReportVo> userHealthReportVoList = userHealthReportService.queryList(datemap);
+        List<ApiUserhealReportVo> apiUserhealReportVoList=new ArrayList<>();
+        UserHealthReportVo userHealthReportVo = new UserHealthReportVo();
+        Map<Date,List<UserHealthReportVo>> map = userHealthReportVoList.stream().collect(
+                Collectors.groupingBy(UserHealthReportVo::getDetetionTime
+                ));
+            for(Date key:map.keySet()){
+                ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
+                apiUserhealReportVo.setCount(map.get(key).size());
+                apiUserhealReportVo.setTime(key);
+                apiUserhealReportVo.setHealportlistmap(map.get(key));
+                apiUserhealReportVoList.add(apiUserhealReportVo);
+            }
+    return  toResponsSuccess(apiUserhealReportVoList);
     }
     @ApiOperation(value = "获取用户本月的最值")
     @PostMapping("maxuser")
@@ -126,7 +123,7 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         Map<String,Object> result1=new HashMap<>();
         Map<String,Object> result=new HashMap<>();
         JSONObject maxuserjson=this.getJsonRequest();
-        Date datemin=maxuserjson.getDate("datemm");
+        String datemin=maxuserjson.getString("datemm");
         Long nideshopuserid=logiUser.getUserId();
         SimpleDateFormat formats=new SimpleDateFormat("M");
         Map maxmap=new HashMap();

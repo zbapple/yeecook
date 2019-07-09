@@ -47,7 +47,6 @@ public class    ApiAuthController extends ApiBaseAction {
     private TokenService tokenService;
     @Autowired
     private RestTemplate restTemplate;
-
     /**
      * 登录
      */
@@ -66,7 +65,6 @@ public class    ApiAuthController extends ApiBaseAction {
 
         return R.ok(map);
     }
-
     /**
      * 登录
      */
@@ -112,7 +110,6 @@ public class    ApiAuthController extends ApiBaseAction {
         }
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");
-
         if (StringUtils.isNullOrEmpty(token)) {
             return toResponsFail("登录失败");
         }

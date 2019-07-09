@@ -99,6 +99,7 @@ public class UserHealthReportVo implements Serializable {
     /**
      * 获取：检测时间
      */
+    @JsonFormat(pattern = "MM-dd", timezone = "GMT+8")
     public Date getDetetionTime() {
         return detectionTime;
     }
@@ -112,6 +113,7 @@ public class UserHealthReportVo implements Serializable {
     /**
      * 获取：更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getUpdateTime() {
         return updateTime;
     }

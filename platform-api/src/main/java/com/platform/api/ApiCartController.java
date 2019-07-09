@@ -245,7 +245,7 @@ public class ApiCartController extends ApiBaseAction {
      */
     @ApiOperation(value = "更新指定的购物车信息")
     @PostMapping("update")
-    public Object update(@LoginUser UserVo loginUser) {
+    public Object update( @LoginUser UserVo loginUser ) {
         JSONObject jsonParam = getJsonRequest();
         Integer goodsId = jsonParam.getInteger("goodsId");
         Integer productId = jsonParam.getInteger("productId");
@@ -349,7 +349,6 @@ public class ApiCartController extends ApiBaseAction {
     @PostMapping("delete")
     public Object delete(@LoginUser UserVo loginUser) {
         Long userId = loginUser.getUserId();
-
         JSONObject jsonObject = getJsonRequest();
         String productIds = jsonObject.getString("productIds");
 

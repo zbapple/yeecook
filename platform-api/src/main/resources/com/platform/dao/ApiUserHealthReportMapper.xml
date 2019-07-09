@@ -84,6 +84,9 @@
         <if test="nideshopUserid != null">
             AND nideshop_user_id=#{nideshopUserid}
         </if>
+		<if test=" calendar !=null">
+			  and detection_time=#{calendar}
+		</if>
 	</select>
 	<select id="queryvalue" resultType="com.platform.entity.UserHealthReportVo">
 		select MAX(weight) as max,MIN(weight) as min,AVG(weight) as avg
@@ -93,7 +96,7 @@
 			AND nideshop_user_id=#{nideshopUserid}
 		</if>
 		<if test="datemm !=null">
-			and update_time like  CONCAT('%',#{datemm},'%')
+			and detection_time=#{datemm}
 		</if>
 	</select>
 	 

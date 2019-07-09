@@ -1,5 +1,6 @@
 package com.platform.api;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,6 @@ public class ApiNutrientElementsController extends ApiBaseAction {
         List<NutrientElementsVo> nutrientElementsVos=nutrientElementsService.queryList(nutrieninfomap);
         return toResponsSuccess(nutrientElementsVos);
     }
-
     @ApiOperation(value = "营养比例")
     @PostMapping("proportion")
     @IgnoreAuth
@@ -73,13 +73,17 @@ public class ApiNutrientElementsController extends ApiBaseAction {
         }
             int total=nutrientElementsService.queryTotal(nutrieninfomap);
         Double ratioprotein=protein/total;
+        BigDecimal bigDecimal=new BigDecimal(ratioprotein);
+        ratioprotein=bigDecimal.setScale(4,BigDecimal.ROUND_HALF_UP).doubleValue();
         Double ratiofat=fat/total;
+        BigDecimal bigDecimal1=new BigDecimal(ratiofat);
+        ratiofat=bigDecimal1.setScale(4,BigDecimal.ROUND_HALF_UP).doubleValue();
         Double ratoco2=co2/total;
+        BigDecimal bigDecimal2=new BigDecimal(ratoco2);
+        ratoco2=bigDecimal2.setScale(4,BigDecimal.ROUND_HALF_UP).doubleValue();
         result.put("ratioprotein",ratioprotein);
         result.put("ratiofat",ratiofat);
         result.put("ratoco2",ratoco2);
-        result.put("nutrientElementsVoss",nutrientElementsVoss);
-        result.put("total",total);
         return toResponsSuccess(result);
     }
 }
