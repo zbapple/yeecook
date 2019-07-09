@@ -52,6 +52,7 @@ $(function () {
 let vm = new Vue({
     el: '#rrapp',
     data: {
+        animal: '爪哇犀牛',
         showList: true,
         details: false,
         showfoods: false,
@@ -278,8 +279,8 @@ let vm = new Vue({
             openWindow({
                 type: 2,
                 title: '审核',
-                content: '../shop/menuplan.html?Id=' + id
-
+                area: ['400px', '300px'],
+                content: '../shop/menuplancheck.html?Id=' + id
             })
         },
         /**
@@ -296,8 +297,7 @@ let vm = new Vue({
          *  菜品选择穿梭框
          */
         getMockData: function () {
-            let mockData = [];
-            for (let i = 1; i <= 20; i++) {
+           for (let i = 1; i <= 20; i++) {
                 mockData.push({
                     key: i.toString(),
                     label: '早餐'  ,
