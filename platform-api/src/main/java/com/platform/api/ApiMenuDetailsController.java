@@ -140,6 +140,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
             switch (menuDetailsVoItem.getMenuType()) {
                 case "0":
                         Map breakfast=new HashMap();
+                        breakfast.put("dishesId",menuDetailsVoItem.getDishesId());
                         breakfast.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                         breakfasttime=menuDetailsVoItem.getMealTime();
                         breakfast.put("dishesname",menuDetailsVoItem.getDishesName());
@@ -149,6 +150,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     break;
                 case "1":
                     Map lunch=new HashMap();
+                    lunch.put("dishesId",menuDetailsVoItem.getDishesId());
                     lunch.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     lunchtime=menuDetailsVoItem.getMealTime();
                     lunch.put("dishesname",menuDetailsVoItem.getDishesName());
@@ -158,6 +160,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     break;
                 case "2":
                     Map dinner=new HashMap();
+                    dinner.put("dishesId",menuDetailsVoItem.getDishesId());
                     dinner.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     dinnertime=menuDetailsVoItem.getMealTime();
                     dinner.put("dishesname",menuDetailsVoItem.getDishesName());
@@ -167,6 +170,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     break;
                 case "3":
                     Map breakfastSnacks=new HashMap();
+                    breakfastSnacks.put("dishesId",menuDetailsVoItem.getDishesId());
                     breakfastSnacks.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     breakfastSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     breakfastSnacks.put("breakfastSnackscal",menuDetailsVoItem.getDishescalories());
@@ -175,6 +179,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     break;
                 case "4":
                     Map lunchSnacks=new HashMap();
+                    lunchSnacks.put("dishesId",menuDetailsVoItem.getDishesId());
                     lunchSnacks.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     lunchSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     lunchSnacks.put("lunchsumcal",menuDetailsVoItem.getDishescalories());
@@ -183,6 +188,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
                     break;
                 case "5":
                     Map dinnerSnacks=new HashMap();
+                    dinnerSnacks.put("dishesId",menuDetailsVoItem.getDishesId());
                     dinnerSnacks.put("dishescoverpic",menuDetailsVoItem.getDishescoverpic());
                     dinnerSnacks.put("dishesname",menuDetailsVoItem.getDishesName());
                     dinnerSnacks.put("dinnerSnackscal",menuDetailsVoItem.getDishescalories());

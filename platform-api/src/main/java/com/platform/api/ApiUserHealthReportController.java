@@ -79,7 +79,6 @@ public class ApiUserHealthReportController extends ApiBaseAction {
             userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
             userHealthReportService.save(userHealthReportVo);
             result.put("flag",1);
-
             return toResponsSuccess(result);
         }else{
             result.put("flag",0);

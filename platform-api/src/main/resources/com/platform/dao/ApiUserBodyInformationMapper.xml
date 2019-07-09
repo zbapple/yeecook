@@ -23,14 +23,15 @@
 		where id = #{id}
 	</select>
 	<select id="queryList" resultType="com.platform.entity.UserBodyInformationVo">
-		select		a.*,
-					b.BMI as BMI,
-					b.weight as weight
-		from user_body_information a
-		inner  join user_health_report b on a.nideshop_user_id = b.nideshop_user_id
+		select
+		nideshop_user_id,
+		user_height,
+		user_birthday,
+		goal_weight
+		from user_body_information
 		where 1=1
-		<if test="nideshopUserId != null ">
-			AND a.nideshop_user_id = #{nideshopUserId}
+		<if test="nideshopUserid != null ">
+			AND nideshop_user_id = #{nideshopUserid}
 		</if>
 		<choose>
             <when test="sidx != null and sidx.trim() != ''">
