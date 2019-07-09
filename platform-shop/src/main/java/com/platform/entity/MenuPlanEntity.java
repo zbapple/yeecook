@@ -4,9 +4,11 @@ import com.platform.dao.UserNutritionMenuDao;
 import com.platform.utils.DateUtils;
 
 import java.io.Serializable;
+import java.rmi.MarshalledObject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户膳食计划实体
@@ -67,6 +69,12 @@ public class MenuPlanEntity implements Serializable {
     private Date menuDate;
     //用餐时间
     private Date mealTime;
+
+    //正餐
+    private List<Map> zhengcan;
+    //加餐
+    private List<Map> jiacan;
+
     /**
      * 设置：
      */

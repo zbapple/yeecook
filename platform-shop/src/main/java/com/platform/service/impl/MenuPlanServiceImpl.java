@@ -35,13 +35,19 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     private UserNutritionMenuDao userNutritionMenuDao;
     @Autowired
     private UserDetectionCycleDao userDetectionCycleDao;
+    @Autowired
+    private UserHealthReportDao userHealthReportDao;
 
     @Override
     public MenuPlanEntity queryObject(Integer id) {
+
         MenuPlanEntity menuPlanEntity=new MenuPlanEntity();
         Integer mid= menuPlanEntity.getId();
+        UserEntity userEntity=new UserEntity();
+        Integer uid=menuPlanEntity.getNideshopUserId();
         HashMap map=new HashMap();
-        
+        map.put("weight",userHealthReportDao.queryWeight(uid));
+
 
 
 
@@ -67,6 +73,9 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         UserEntity userEntity = new UserEntity();
         menuPlan.setNideshopUserId(userEntity.getId());
 
+
+
+
        //保存餐品详情
         MenuDetailsEntity me=new MenuDetailsEntity();
         me.setUserNutritionMenuId(menuPlan.getId());
@@ -75,6 +84,8 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         me.setMealTime(menuPlan.getMealTime());
         me.setMenuDate(menuPlan.getMenuDate());
         menuDetailsDao.save(me);
+
+
 
 
 
@@ -103,9 +114,16 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         return menuPlanDao.deleteBatch(ids);
     }
 
+    /**
+     * 更改状态
+     **/
     @Override
     public int updatestatus(Integer id) {
         MenuPlanEntity menuPlanEntity=queryObject(id);
+        HashMap map=new HashMap();
+        map.put("name",menuPlanEntity.getUserName());
+        System.out.println("map=["+map+"]");
+
         Integer menustatus=menuPlanEntity.getMenuStatus();//审核状态
         if (0 == menustatus){
             System.out.println("当前状态未审核");

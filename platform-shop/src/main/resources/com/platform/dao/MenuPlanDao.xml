@@ -36,16 +36,16 @@
     		 nutrition_menu_type,
     		`service_cycle_st`,
     	    `catering_service_org_name`,
-    	   GROUP_CONCAT(m.menu_type) as menu_type,
+    	     m.menu_type as menu_type,
     		`menu_name`,
     		`service_cycle_et`,
     		`service_stage`,
-    		GROUP_CONCAT(inspection_cycle) as inspection_cycle,
+    		inspection_cycle as inspection_cycle,
     		`nutrition_principle`,
-    		GROUP_CONCAT(m.dishes_name) as dishes_name,
-    		GROUP_CONCAT(d.dishes_cover_pic) as dishes_cover_pic,
-    		GROUP_CONCAT(d.dishes_calories) as dishes_calories,
-    	   GROUP_CONCAT(weight) as weight,
+    		m.dishes_name as dishes_name,
+    		d.dishes_cover_pic as dishes_cover_pic,
+    		d.dishes_calories as dishes_calories,
+    	     weight as weight,
     	    `menu_sn`,
     		`menu_status`
 		from user_nutrition_menu u
@@ -67,6 +67,7 @@
         `service_cycle_st`,
         `catering_service_org_name`,
         `menu_name`,
+        `menu_sn`,
         `service_cycle_et`,
         `menu_status`
         from user_nutrition_menu u

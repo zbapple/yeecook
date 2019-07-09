@@ -43,6 +43,7 @@ $(function () {
             ]
     });
     vm.getCateringServiceOrgNames();
+    vm.getCaterings();
     vm.getNutritionMenuTypes();
     vm.getUserNames();
     $('#jqGrid').css("textAlign","center");
@@ -54,7 +55,7 @@ let vm = new Vue({
         showList: true,
         details: false,
         showfoods: false,
-        visible:false,
+        visible: false,
         imgName: '',
         title: null,
         uploadList: [],
@@ -63,6 +64,7 @@ let vm = new Vue({
         data3:[],
         targetKeys3: [],
         listStyle: {
+            marginLeft: '150px',
             width: '250px',
             height: '300px'
 
@@ -90,6 +92,7 @@ let vm = new Vue({
         },
         NutritionMenuTypes:[],
         CateringServiceOrgNames:[],
+        Caterings:[],
         UserNames:[]
     },
     methods: {
@@ -98,7 +101,7 @@ let vm = new Vue({
         },
         add: function () {
             vm.showList = false;
-            vm.showfoods =true;
+            vm.showfoods = false;
             vm.uploadList = [];
             vm.title = "新增套餐";
             vm.menuPlan = {menuStatus: '0'};
@@ -194,6 +197,14 @@ let vm = new Vue({
             handleResetForm(this, name);
         },
         /**
+         * 获取餐品名
+         */
+        getFoods: function (){
+          Ajax.request({
+             url:"../"
+          });
+        },
+        /**
          * 获取机构名字
          */
         getCateringServiceOrgNames: function () {
@@ -202,6 +213,18 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.CateringServiceOrgNames = r.list;
+                }
+            });
+        },
+        /**
+         * 添加机构名字
+         */
+        getCaterings: function (){
+            Ajax.request({
+                url:"../sys/dept/list",
+                async: true,
+                successCallback: function(r) {
+                    vm.Caterings = r.list;
                 }
             });
         },
@@ -277,8 +300,8 @@ let vm = new Vue({
             for (let i = 1; i <= 20; i++) {
                 mockData.push({
                     key: i.toString(),
-                    label: 'Content ' + i,
-                    description: 'The desc of content  ' + i,
+                    label: '早餐'  ,
+                    description: '菜品' + i,
                     disabled: Math.random() * 3 < 1
                 });
             }
@@ -295,7 +318,7 @@ let vm = new Vue({
         render3: function (item) {
             return item.label + ' - ' + item.description;
         },
-        reloadMockData: function () {
+        reloadMockdata: function () {
             this.data3 = this.getMockData();
             this.targetKeys3 = this.getTargetKeys();
         },
@@ -370,9 +393,7 @@ let vm = new Vue({
     },
     mounted() {
         this.uploadList = this.$refs.upload.fileList;
-    },
-    mounted(){
-        this.data3=this.getMockData()
-        this.targetKeys3=this.getTargetKeys()
+        this.data3=this.getMockData();
+        this.targetKeys3=this.getTargetKeys();
     }
 });

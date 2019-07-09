@@ -57,4 +57,11 @@ public class UserHealthReportServiceImpl implements UserHealthReportService {
     public int deleteBatch(Integer[] ids) {
         return userHealthReportDao.deleteBatch(ids);
     }
+
+    @Override
+    public UserHealthReportEntity queryWeight(Integer id) {
+
+        return userHealthReportDao.queryWeight(id);
+    }
+
 }
