@@ -94,7 +94,20 @@ let vm = new Vue({
         NutritionMenuTypes:[],
         CateringServiceOrgNames:[],
         Caterings:[],
-        UserNames:[]
+        UserNames:[],
+        showcamera:true,
+        foodlist:[{
+            foodlistname:'',
+            foodlistsrc:'',
+            foodlistpwl:''
+        }],
+        foodlistadd:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ]
     },
     methods: {
         query: function () {
@@ -297,6 +310,7 @@ let vm = new Vue({
          *  菜品选择穿梭框
          */
         getMockData: function () {
+            let mockData=[];
            for (let i = 1; i <= 20; i++) {
                 mockData.push({
                     key: i.toString(),
@@ -336,6 +350,7 @@ let vm = new Vue({
         handleRemove(file) {
             // 从 upload 实例删除数据
             const fileList = this.uploadList;
+            this.showcamera=true;
             this.uploadList.splice(fileList.indexOf(file), 1);
         },
         handleSuccess(res, file) {
@@ -346,6 +361,7 @@ let vm = new Vue({
         },
         handleBeforeUpload() {
             const check = this.uploadList.length < 2;
+            this.showcamera=false;
             if (!check) {
                 this.$Notice.warning({
                     title: '最多只能上传 1 张图片。'
@@ -355,7 +371,7 @@ let vm = new Vue({
         },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {
-                vm.saveOrUpdate()
+                vm.saveOrUpdate();
             });
         },
         handleFormatError: function (file) {
@@ -389,11 +405,38 @@ let vm = new Vue({
         },
         eyeImage: function (e) {
             eyeImage($(e.target).attr('src'));
+        },
+        // 添加早餐菜品
+        addfoodlist:function(){
+            this.foodlist.push({
+                foodlistname:'',
+                    foodlistsrc:'',
+                foodlistpwl:''
+
+            });
+        },
+        //删除早餐餐品
+        deletefood:function(i){
+            this.foodlist.splice(i,1);
+        },
+        //添加早餐加餐
+        addfoodlistadd() {
+            this.foodlistadd.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            })
+        },
+        //删除早餐加餐
+        deletefoodadd:function (i) {
+            this.foodlistadd.splice(i,1);
         }
     },
     mounted() {
-        this.uploadList = this.$refs.upload.fileList;
+        // this.uploadList = this.$refs.upload.fileList;
         this.data3=this.getMockData();
+        console.log(this.data3)
         this.targetKeys3=this.getTargetKeys();
+        console.log(this.targetKeys3);
     }
 });
