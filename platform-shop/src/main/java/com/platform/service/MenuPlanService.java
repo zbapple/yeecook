@@ -15,6 +15,11 @@ import java.util.Map;
 public interface MenuPlanService {
 
     /**
+     *  根据主键查询详情集合
+     **/
+    MenuPlanEntity queryMenu(Integer id);
+
+    /**
      * 根据主键查询实体
      *
      * @param id 主键
@@ -77,5 +82,7 @@ public interface MenuPlanService {
     /**
      * 
      **/
+
+
 
 }

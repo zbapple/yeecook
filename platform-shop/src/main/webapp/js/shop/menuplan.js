@@ -38,8 +38,6 @@ $(function () {
 
                 }
             },
-            // {  label:'初始体重',name:'weight',index:'weight'},
-            // {  label:'周期',name:'inspectionCycle',index:'inspection_cycle'}
             ]
     });
     vm.getCateringServiceOrgNames();
@@ -61,6 +59,7 @@ let vm = new Vue({
         title: null,
         uploadList: [],
         menuPlan: {},
+        menumap:[],
         sdfd:{},
         data3:[],
         targetKeys3: [],
@@ -95,19 +94,35 @@ let vm = new Vue({
         CateringServiceOrgNames:[],
         Caterings:[],
         UserNames:[],
-        showcamera:true,
-        foodlist:[{
-            foodlistname:'',
-            foodlistsrc:'',
-            foodlistpwl:''
-        }],
+        menumapuser:{},
+        menumaptype:[],
+        menumapweight:{},
+        menumapsys:{},
+        menumapst:'',
+        menumapet:'',
+        menutp:'',
+        menutp1:'',
+        menutp2:'',
+        menutp3:'',
+        menutp4:'',
+        menutp5:'',
+        menutp6:'',
+        menumaplist:[],
+        foodlist:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
         foodlistadd:[
             {
                 foodlistname:'',
                 foodlistsrc:'',
                 foodlistpwl:''
             }
-        ]
+        ],
+        showcamera:true
     },
     methods: {
         query: function () {
@@ -274,10 +289,25 @@ let vm = new Vue({
             vm.title = "详情"
             console.log(rowId);
             Ajax.request({
-                url: "../menuplan/info/" + rowId,
+                url: "../menuplan/menuinfo/" + rowId,
                 async: true,
                 successCallback: function (r) {
-                    vm.menuPlan = r.menuPlan;
+                    console.log(r.menumap);
+                    vm.menumap = r.menumap;
+                    vm.menumapuser=vm.menumap.infomsg;
+                    vm.menumapsys=vm.menumap.sysuser;
+                    vm.menumaptype=vm.menumap.menutype;
+                    vm.menumapweight=vm.menumap.weight;
+                    vm.menumapst=vm.menumap.serviceCycleSt;
+                    vm.menumapet=vm.menumap.serviceCycleEt;
+                    vm.menutp=vm.menumap.menutype[0];
+                    vm.menutp1=vm.menumap.menutype[1];
+                    vm.menutp2=vm.menumap.menutype[2];
+                    vm.menutp3=vm.menumap.menutype[3];
+                    vm.menutp4=vm.menumap.menutype[4];
+                    vm.menutp5=vm.menumap.menutype[5];
+                    vm.menutp6=vm.menumap.menutype[6];
+
                 }
             });
         },

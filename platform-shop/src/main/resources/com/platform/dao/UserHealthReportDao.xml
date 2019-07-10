@@ -83,9 +83,10 @@
 	</select>
 
 	<select id="queryWeight" resultType="com.platform.entity.UserHealthReportEntity">
-		select weight
+		select
+                 weight
 		from user_health_report
-		WHERE id in (select MAX(id) from user_health_report) AND nideshop_user_id=#{value}
+		where id in (select  MAX(id) from user_health_report) and nideshop_user_id = #{value}
 		order by update_time desc
 	</select>
 	<insert id="save" parameterType="com.platform.entity.UserHealthReportEntity">

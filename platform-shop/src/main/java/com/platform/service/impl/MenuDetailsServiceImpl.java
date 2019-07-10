@@ -24,6 +24,10 @@ public class MenuDetailsServiceImpl implements MenuDetailsService {
     private MenuDetailsDao menuDetailsDao;
 
     @Override
+    public List<MenuDetailsEntity> queryListvo(Map<String, Object> map) {
+       return menuDetailsDao.queryListvo(map); }
+
+    @Override
     public MenuDetailsEntity queryObject(Integer id) {
         return menuDetailsDao.queryObject(id);
     }

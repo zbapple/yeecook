@@ -1,28 +1,22 @@
 package com.platform.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
-import com.platform.entity.MenuDetailsEntity;
-import com.platform.entity.UserEntity;
-import com.platform.entity.UserNutritionMenuEntity;
+import java.util.*;
+import java.util.List;
+
+import com.platform.entity.*;
 import com.platform.service.*;
-import com.platform.utils.DateUtils;
+import com.platform.utils.*;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.platform.entity.MenuPlanEntity;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
 
 /**
  * 用户膳食计划Controller
@@ -37,7 +31,13 @@ public class MenuPlanController {
     @Autowired
     private MenuPlanService menuPlanService;
     @Autowired
+    private  UserService userService;
+    @Autowired
     private  MenuDetailsService menuDetailsService;
+    @Autowired
+    private  UserHealthReportService userHealthReportService;
+    @Autowired
+    private  SysUserService sysUserService;
     /**
      * 查看列表
      */
@@ -55,6 +55,35 @@ public class MenuPlanController {
 
         return R.ok().put("page", pageUtil);
     }
+    /**
+     *  查看餐单详情
+     *
+     **/
+    @RequestMapping("/menuinfo/{id}")
+    public R menuinfo(@PathVariable("id") Integer id){
+        MenuPlanEntity menuPlanEntity = menuPlanService.queryObject(id);
+        Integer uid=menuPlanEntity.getNideshopUserId();
+        Date scs=menuPlanEntity.getServiceCycleSt();
+        Date sce=menuPlanEntity.getServiceCycleEt();
+        Date mt=menuPlanEntity.getMealTime();
+        UserEntity userEntity=userService.queryObject(uid);
+        menuPlanEntity.setUserName(userEntity.getUsername());
+        HashMap menumap=new HashMap();
+        //从session获取当前管理员账户
+        SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+        menumap.put("sysuser",user);
+        menumap.put("weight",userHealthReportService.queryWeight(uid));
+        menumap.put("infomsg",menuPlanService.queryMenu(uid));
+        menumap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
+        menumap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
+        menumap.put("mealTime",DateUtils.format(mt, DateUtils.DATE_TIME_PATTERN));
+        HashMap map=new HashMap();
+        map.put("userid",uid);
+        menumap.put("menutype",menuDetailsService.queryListvo(map));
+
+
+        return R.ok().put("menumap",menumap);
+    }
 
     /**
      * 查看信息
@@ -62,7 +91,8 @@ public class MenuPlanController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("menuplan:info")
     public R info(@PathVariable("id") Integer id) {
-        MenuPlanEntity menuPlan = menuPlanService.queryObject(id);
+       MenuPlanEntity menuPlan=menuPlanService.queryObject(id);
+
         return R.ok().put("menuPlan", menuPlan);
     }
 

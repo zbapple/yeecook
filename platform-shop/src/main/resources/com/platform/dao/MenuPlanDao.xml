@@ -30,32 +30,44 @@
 
     <select id="queryObject" resultType="com.platform.entity.MenuPlanEntity">
 		select
+        u.id,
+        n.id as nideshop_user_id,
+        n.username as username,
+        n.avatar as avatar,
+        nutrition_menu_type,
+        `service_cycle_st`,
+        `catering_service_org_name`,
+        `menu_name`,
+        `menu_sn`,
+        `service_cycle_et`,
+        `menu_status`
+        from user_nutrition_menu u
+        left join nideshop_user n on u.nideshop_user_id = n.id
+        where u.id = #{id}
+	</select>
+
+
+    <select id="queryMenu" resultType="com.platform.entity.MenuPlanEntity">
+       select
 			 u.id,
     		 n.id as nideshop_user_id,
     		 n.username as username,
     		 nutrition_menu_type,
     		`service_cycle_st`,
     	    `catering_service_org_name`,
-    	     m.menu_type as menu_type,
+    	    `menu_cover_pic`,
     		`menu_name`,
     		`service_cycle_et`,
     		`service_stage`,
     		inspection_cycle as inspection_cycle,
     		`nutrition_principle`,
-    		m.dishes_name as dishes_name,
-    		d.dishes_cover_pic as dishes_cover_pic,
-    		d.dishes_calories as dishes_calories,
-    	     weight as weight,
     	    `menu_sn`,
     		`menu_status`
 		from user_nutrition_menu u
 		left join nideshop_user n on u.nideshop_user_id = n.id
-		left join menu_details m on u.id= m.user_nutrition_menu_id
 		left join user_detection_cycle udc on u.nideshop_user_id= udc.nideshop_user_id
-		left join dishes d on m.dishes_id = d.id
-		left join user_health_report uhr on u.nideshop_user_id = uhr.nideshop_user_id
-		where u.id = #{value}
-	</select>
+		where u.nideshop_user_id = #{value}
+    </select>
 
     <select id="queryList" resultType="com.platform.entity.MenuPlanEntity">
         select

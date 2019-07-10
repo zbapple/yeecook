@@ -38,6 +38,12 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Autowired
     private UserHealthReportDao userHealthReportDao;
 
+
+    @Override
+    public MenuPlanEntity queryMenu(Integer id) {
+        return menuPlanDao.queryMenu(id);
+    }
+
     @Override
     public MenuPlanEntity queryObject(Integer id) {
 
@@ -56,6 +62,8 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         return menuPlanDao.queryObject(id);
     }
 
+
+
     @Override
     public List<MenuPlanEntity> queryList(Map<String, Object> map) {
         return menuPlanDao.queryList(map);
@@ -69,12 +77,10 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @Transactional
     public int save(MenuPlanEntity menuPlan) {
-        //插入用户id
+        //插入用户信息
         UserEntity userEntity = new UserEntity();
         menuPlan.setNideshopUserId(userEntity.getId());
-
-
-
+        menuPlan.setUserName(userEntity.getUsername());
 
        //保存餐品详情
         MenuDetailsEntity me=new MenuDetailsEntity();
@@ -85,17 +91,12 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         me.setMenuDate(menuPlan.getMenuDate());
         menuDetailsDao.save(me);
 
+       //保存周期
+        UserDetectionCycleEntity uce=new UserDetectionCycleEntity();
+        uce.setInspectionCycle(menuPlan.getInspectionCycle());
+        userDetectionCycleDao.save(uce);
 
-
-
-
-
-
-
-
-
-
-
+        menuPlan.setMenuSn(menuPlan.getNewSn());
         return menuPlanDao.save(menuPlan);
     }
 
@@ -119,11 +120,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
      **/
     @Override
     public int updatestatus(Integer id) {
-        MenuPlanEntity menuPlanEntity=queryObject(id);
-        HashMap map=new HashMap();
-        map.put("name",menuPlanEntity.getUserName());
-        System.out.println("map=["+map+"]");
-
+        MenuPlanEntity menuPlanEntity=menuPlanDao.queryObject(id);
         Integer menustatus=menuPlanEntity.getMenuStatus();//审核状态
         if (0 == menustatus){
             System.out.println("当前状态未审核");

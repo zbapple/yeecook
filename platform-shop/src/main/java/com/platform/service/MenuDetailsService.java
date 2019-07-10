@@ -16,6 +16,10 @@ Service接口
 public interface MenuDetailsService {
 
     /**
+     * 餐品类型接口
+     **/
+     List<MenuDetailsEntity> queryListvo(Map<String,Object> map);
+    /**
      * 根据主键查询实体
      *
      * @param id 主键
