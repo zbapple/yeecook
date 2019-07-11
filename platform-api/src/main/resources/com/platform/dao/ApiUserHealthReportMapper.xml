@@ -64,6 +64,9 @@
 		<if test="nideshopUserid != null">
 			AND nideshop_user_id=#{nideshopUserid}
 		</if>
+		<if test="detectiontime !=null">
+			AND  detection_time like concat('%',#{detectiontime},'%')
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -95,8 +98,8 @@
 		<if test="nideshopUserid != null">
 			AND nideshop_user_id=#{nideshopUserid}
 		</if>
-		<if test="datemm !=null">
-			and detection_time=#{datemm}
+		<if test="datemme !=null">
+			and detection_time=#{datemme}
 		</if>
 	</select>
 	 

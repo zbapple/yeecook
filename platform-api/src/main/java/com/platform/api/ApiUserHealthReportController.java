@@ -5,12 +5,15 @@ package com.platform.api;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.LoginUser;
 import com.platform.entity.ApiUserhealReportVo;
+import com.platform.entity.UserBodyInformationVo;
 import com.platform.entity.UserHealthReportVo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiUserHealthReportService;
 import com.platform.util.ApiBaseAction;
+import com.platform.utils.DateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
@@ -50,9 +53,17 @@ public class ApiUserHealthReportController extends ApiBaseAction {
     public  Object add(@LoginUser UserVo loginuser){
         Map<String,Object> result=new HashMap<>();
         JSONObject addjsonparam=this.getJsonRequest();
+        Date detectiontime=addjsonparam.getDate("detectiontime");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String detectiontime1=simpleDateFormat.format(detectiontime);
+        Long userid=loginuser.getUserId();
+        Map addmap=new HashMap();
+        addmap.put("nideshopUserid",userid);
+        addmap.put("detectiontime",detectiontime);
+        List<UserHealthReportVo> userHealthReportVoList=userHealthReportService.queryList(addmap);
         UserHealthReportVo userHealthReportVo=new UserHealthReportVo();
-        if(addjsonparam!=null){
-            userHealthReportVo.setNideshopUserId(loginuser.getUserId());
+        if(addjsonparam!=null) {
+            userHealthReportVo.setNideshopUserId(userid);
             //基础代谢量
             userHealthReportVo.setBasicMetabolism(addjsonparam.getDouble("basicmetabolism"));
             //BMI
@@ -77,18 +88,23 @@ public class ApiUserHealthReportController extends ApiBaseAction {
             userHealthReportVo.setVisFatGrade(addjsonparam.getString("visfatgrade"));
             //体重
             userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
+        }else{
+            return toResponsFail("参数为空");
+        }
+        if(userHealthReportVoList.size()==0) {
             userHealthReportService.save(userHealthReportVo);
             result.put("flag",1);
             return toResponsSuccess(result);
         }else{
-            result.put("flag",0);
+            userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
+            userHealthReportService.update(userHealthReportVo);
+            result.put("flag",2);
             return toResponsSuccess(result);
         }
-
     }
     @ApiOperation(value = "用户身体健康报告记录详情")
     @PostMapping("userbodyinfo")
-    public  Object userbodyinfo(){
+    public  Object userbodyinfo(@LoginUser UserVo loginuser){
         JSONObject body=this.getJsonRequest();
         Integer id=body.getInteger("id");
         UserHealthReportVo userHealthReportVos=userHealthReportService.queryObject(id);
@@ -97,7 +113,6 @@ public class ApiUserHealthReportController extends ApiBaseAction {
     @ApiOperation(value = "获取用户月份报告信息")
     @PostMapping("userdateinfo")
     public Object userdateinfo(@LoginUser UserVo loginuser) {
-        JSONObject userdateinfojson = this.getJsonRequest();
         Long userid = loginuser.getUserId();
         Map datemap = new HashMap();
         datemap.put("nideshopUserid", userid);
