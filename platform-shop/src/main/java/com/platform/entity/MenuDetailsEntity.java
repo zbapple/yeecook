@@ -33,6 +33,12 @@ public class MenuDetailsEntity implements Serializable {
     private Date mealTime;
     //餐单日期
     private Date menuDate;
+    //菜品卡路里
+    private Double dishesCalories;
+    //菜品图片
+    private String dishesCoverPic;
+    //用户id
+    private Long nideshopUserId;
 
     /**
      * 设置：
@@ -47,6 +53,7 @@ public class MenuDetailsEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
     /**
      * 设置：餐单id
      */
@@ -60,6 +67,7 @@ public class MenuDetailsEntity implements Serializable {
     public Integer getUserNutritionMenuId() {
         return userNutritionMenuId;
     }
+
     /**
      * 设置：餐单类型
      */
@@ -73,6 +81,7 @@ public class MenuDetailsEntity implements Serializable {
     public String getMenuType() {
         return menuType;
     }
+
     /**
      * 设置：餐品id
      */
@@ -86,6 +95,7 @@ public class MenuDetailsEntity implements Serializable {
     public Integer getDishesId() {
         return dishesId;
     }
+
     /**
      * 设置：餐品名
      */
@@ -99,6 +109,7 @@ public class MenuDetailsEntity implements Serializable {
     public String getDishesName() {
         return dishesName;
     }
+
     /**
      * 设置：叶子节点
      */
@@ -112,6 +123,7 @@ public class MenuDetailsEntity implements Serializable {
     public Integer getLeafNode() {
         return leafNode;
     }
+
     /**
      * 设置：父类id
      */
@@ -125,6 +137,7 @@ public class MenuDetailsEntity implements Serializable {
     public Integer getFatherId() {
         return fatherId;
     }
+
     /**
      * 设置：用餐时间
      */
@@ -138,6 +151,7 @@ public class MenuDetailsEntity implements Serializable {
     public Date getMealTime() {
         return mealTime;
     }
+
     /**
      * 设置：餐单日期
      */
@@ -150,5 +164,30 @@ public class MenuDetailsEntity implements Serializable {
      */
     public Date getMenuDate() {
         return menuDate;
+    }
+
+    public Double getDishesCalories() {
+        return dishesCalories;
+    }
+
+    public void setDishesCalories(Double dishesCalories) {
+        this.dishesCalories = dishesCalories;
+    }
+
+    public String getDishesCoverPic() {
+        return dishesCoverPic;
+    }
+
+    public void setDishesCoverPic(String dishesCoverPic) {
+        this.dishesCoverPic = dishesCoverPic;
+    }
+
+
+    public Long getNideshopUserId() {
+        return nideshopUserId;
+    }
+
+    public void setNideshopUserId(Long nideshopUserId) {
+        this.nideshopUserId = nideshopUserId;
     }
 }

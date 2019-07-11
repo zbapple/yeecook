@@ -70,4 +70,8 @@ public interface UserHealthReportService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+    /**
+     *  查询对象
+     **/
+    UserHealthReportEntity queryWeight(Integer id);
 }

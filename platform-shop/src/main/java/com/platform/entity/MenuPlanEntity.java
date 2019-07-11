@@ -4,9 +4,11 @@ import com.platform.dao.UserNutritionMenuDao;
 import com.platform.utils.DateUtils;
 
 import java.io.Serializable;
+import java.rmi.MarshalledObject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户膳食计划实体
@@ -67,6 +69,12 @@ public class MenuPlanEntity implements Serializable {
     private Date menuDate;
     //用餐时间
     private Date mealTime;
+    //正餐
+    private List<Map> zhengcan;
+    //加餐
+    private List<Map> jiacan;
+
+
     /**
      * 设置：
      */
@@ -305,6 +313,9 @@ public class MenuPlanEntity implements Serializable {
     public void setDishesCalories(String dishesCalories) {
         this.dishesCalories = dishesCalories;
     }
+    /**
+     *  餐单序列号
+     **/
 
     public String getMenuSn() {
         return menuSn;
@@ -313,7 +324,9 @@ public class MenuPlanEntity implements Serializable {
     public void setMenuSn(String menuSn) {
         this.menuSn = menuSn;
     }
-
+    /**
+     *  机构id
+     **/
     public Integer getCateringServiceOrgId() {
         return cateringServiceOrgId;
     }
@@ -333,13 +346,13 @@ public class MenuPlanEntity implements Serializable {
         this.menuCoverPic = menuCoverPic;
     }
 
-    public Date getMenuDate() {
-        return menuDate;
-    }
-
     /**
      * 餐单生成时间
      **/
+
+    public Date getMenuDate() {
+        return menuDate;
+    }
 
     public void setMenuDate(Date menuDate) {
         this.menuDate = menuDate;
@@ -352,4 +365,21 @@ public class MenuPlanEntity implements Serializable {
     public void setMealTime(Date mealTime) {
         this.mealTime = mealTime;
     }
+
+
+    /**
+     * 自定义餐单编码格式  服务机构id+年月日+餐单id
+     **/
+    public static String getNewSn(){
+        Calendar cl=Calendar.getInstance();
+        cl.setTime(new Date());
+        String strdate = DateUtils.format(cl.getTime(), DateUtils.DATE_PATTERN);
+        MenuPlanEntity menuPlanEntity=new MenuPlanEntity();
+        Integer cid=menuPlanEntity.getCateringServiceOrgId();
+        Integer id=menuPlanEntity.getId();
+        String str=cid+strdate+id;
+        menuPlanEntity.setMenuSn(str);
+        return str;
+    }
+
 }

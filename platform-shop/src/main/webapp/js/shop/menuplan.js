@@ -38,11 +38,10 @@ $(function () {
 
                 }
             },
-            // {  label:'初始体重',name:'weight',index:'weight'},
-            // {  label:'周期',name:'inspectionCycle',index:'inspection_cycle'}
             ]
     });
     vm.getCateringServiceOrgNames();
+    vm.getCaterings();
     vm.getNutritionMenuTypes();
     vm.getUserNames();
     $('#jqGrid').css("textAlign","center");
@@ -51,18 +50,21 @@ $(function () {
 let vm = new Vue({
     el: '#rrapp',
     data: {
+        animal: '爪哇犀牛',
         showList: true,
         details: false,
         showfoods: false,
-        visible:false,
+        visible: false,
         imgName: '',
         title: null,
         uploadList: [],
         menuPlan: {},
+        menumap:[],
         sdfd:{},
         data3:[],
         targetKeys3: [],
         listStyle: {
+            marginLeft: '150px',
             width: '250px',
             height: '300px'
 
@@ -90,7 +92,37 @@ let vm = new Vue({
         },
         NutritionMenuTypes:[],
         CateringServiceOrgNames:[],
-        UserNames:[]
+        Caterings:[],
+        UserNames:[],
+        menumapuser:{},
+        menumaptype:[],
+        menumapweight:{},
+        menumapsys:{},
+        menumapst:'',
+        menumapet:'',
+        menutp:'',
+        menutp1:'',
+        menutp2:'',
+        menutp3:'',
+        menutp4:'',
+        menutp5:'',
+        menutp6:'',
+        menumaplist:[],
+        foodlist:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        foodlistadd:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        showcamera:true
     },
     methods: {
         query: function () {
@@ -98,7 +130,7 @@ let vm = new Vue({
         },
         add: function () {
             vm.showList = false;
-            vm.showfoods =true;
+            vm.showfoods = false;
             vm.uploadList = [];
             vm.title = "新增套餐";
             vm.menuPlan = {menuStatus: '0'};
@@ -194,6 +226,14 @@ let vm = new Vue({
             handleResetForm(this, name);
         },
         /**
+         * 获取餐品名
+         */
+        getFoods: function (){
+          Ajax.request({
+             url:"../"
+          });
+        },
+        /**
          * 获取机构名字
          */
         getCateringServiceOrgNames: function () {
@@ -202,6 +242,18 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.CateringServiceOrgNames = r.list;
+                }
+            });
+        },
+        /**
+         * 添加机构名字
+         */
+        getCaterings: function (){
+            Ajax.request({
+                url:"../sys/dept/list",
+                async: true,
+                successCallback: function(r) {
+                    vm.Caterings = r.list;
                 }
             });
         },
@@ -237,10 +289,25 @@ let vm = new Vue({
             vm.title = "详情"
             console.log(rowId);
             Ajax.request({
-                url: "../menuplan/info/" + rowId,
+                url: "../menuplan/menuinfo/" + rowId,
                 async: true,
                 successCallback: function (r) {
-                    vm.menuPlan = r.menuPlan;
+                    console.log(r.menumap);
+                    vm.menumap = r.menumap;
+                    vm.menumapuser=vm.menumap.infomsg;
+                    vm.menumapsys=vm.menumap.sysuser;
+                    vm.menumaptype=vm.menumap.menutype;
+                    vm.menumapweight=vm.menumap.weight;
+                    vm.menumapst=vm.menumap.serviceCycleSt;
+                    vm.menumapet=vm.menumap.serviceCycleEt;
+                    vm.menutp=vm.menumap.menutype[0];
+                    vm.menutp1=vm.menumap.menutype[1];
+                    vm.menutp2=vm.menumap.menutype[2];
+                    vm.menutp3=vm.menumap.menutype[3];
+                    vm.menutp4=vm.menumap.menutype[4];
+                    vm.menutp5=vm.menumap.menutype[5];
+                    vm.menutp6=vm.menumap.menutype[6];
+
                 }
             });
         },
@@ -255,8 +322,8 @@ let vm = new Vue({
             openWindow({
                 type: 2,
                 title: '审核',
-                content: '../shop/menuplan.html?Id=' + id
-
+                area: ['400px', '300px'],
+                content: '../shop/menuplancheck.html?Id=' + id
             })
         },
         /**
@@ -273,12 +340,12 @@ let vm = new Vue({
          *  菜品选择穿梭框
          */
         getMockData: function () {
-            let mockData = [];
-            for (let i = 1; i <= 20; i++) {
+            let mockData=[];
+           for (let i = 1; i <= 20; i++) {
                 mockData.push({
                     key: i.toString(),
-                    label: 'Content ' + i,
-                    description: 'The desc of content  ' + i,
+                    label: '早餐'  ,
+                    description: '菜品' + i,
                     disabled: Math.random() * 3 < 1
                 });
             }
@@ -295,7 +362,7 @@ let vm = new Vue({
         render3: function (item) {
             return item.label + ' - ' + item.description;
         },
-        reloadMockData: function () {
+        reloadMockdata: function () {
             this.data3 = this.getMockData();
             this.targetKeys3 = this.getTargetKeys();
         },
@@ -313,6 +380,7 @@ let vm = new Vue({
         handleRemove(file) {
             // 从 upload 实例删除数据
             const fileList = this.uploadList;
+            this.showcamera=true;
             this.uploadList.splice(fileList.indexOf(file), 1);
         },
         handleSuccess(res, file) {
@@ -323,6 +391,7 @@ let vm = new Vue({
         },
         handleBeforeUpload() {
             const check = this.uploadList.length < 2;
+            this.showcamera=false;
             if (!check) {
                 this.$Notice.warning({
                     title: '最多只能上传 1 张图片。'
@@ -332,7 +401,7 @@ let vm = new Vue({
         },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {
-                vm.saveOrUpdate()
+                vm.saveOrUpdate();
             });
         },
         handleFormatError: function (file) {
@@ -366,13 +435,38 @@ let vm = new Vue({
         },
         eyeImage: function (e) {
             eyeImage($(e.target).attr('src'));
+        },
+        // 添加早餐菜品
+        addfoodlist:function(){
+            this.foodlist.push({
+                foodlistname:'',
+                    foodlistsrc:'',
+                foodlistpwl:''
+
+            });
+        },
+        //删除早餐餐品
+        deletefood:function(i){
+            this.foodlist.splice(i,1);
+        },
+        //添加早餐加餐
+        addfoodlistadd() {
+            this.foodlistadd.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            })
+        },
+        //删除早餐加餐
+        deletefoodadd:function (i) {
+            this.foodlistadd.splice(i,1);
         }
     },
     mounted() {
-        this.uploadList = this.$refs.upload.fileList;
-    },
-    mounted(){
-        this.data3=this.getMockData()
-        this.targetKeys3=this.getTargetKeys()
+        // this.uploadList = this.$refs.upload.fileList;
+        this.data3=this.getMockData();
+        console.log(this.data3)
+        this.targetKeys3=this.getTargetKeys();
+        console.log(this.targetKeys3);
     }
 });

@@ -35,13 +35,25 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     private UserNutritionMenuDao userNutritionMenuDao;
     @Autowired
     private UserDetectionCycleDao userDetectionCycleDao;
+    @Autowired
+    private UserHealthReportDao userHealthReportDao;
+
+
+    @Override
+    public MenuPlanEntity queryMenu(Integer id) {
+        return menuPlanDao.queryMenu(id);
+    }
 
     @Override
     public MenuPlanEntity queryObject(Integer id) {
+
         MenuPlanEntity menuPlanEntity=new MenuPlanEntity();
         Integer mid= menuPlanEntity.getId();
+        UserEntity userEntity=new UserEntity();
+        Integer uid=menuPlanEntity.getNideshopUserId();
         HashMap map=new HashMap();
-        
+        map.put("weight",userHealthReportDao.queryWeight(uid));
+
 
 
 
@@ -49,6 +61,8 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 
         return menuPlanDao.queryObject(id);
     }
+
+
 
     @Override
     public List<MenuPlanEntity> queryList(Map<String, Object> map) {
@@ -63,9 +77,10 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @Transactional
     public int save(MenuPlanEntity menuPlan) {
-        //插入用户id
+        //插入用户信息
         UserEntity userEntity = new UserEntity();
         menuPlan.setNideshopUserId(userEntity.getId());
+        menuPlan.setUserName(userEntity.getUsername());
 
        //保存餐品详情
         MenuDetailsEntity me=new MenuDetailsEntity();
@@ -76,15 +91,12 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         me.setMenuDate(menuPlan.getMenuDate());
         menuDetailsDao.save(me);
 
+       //保存周期
+        UserDetectionCycleEntity uce=new UserDetectionCycleEntity();
+        uce.setInspectionCycle(menuPlan.getInspectionCycle());
+        userDetectionCycleDao.save(uce);
 
-
-
-
-
-
-
-
-
+        menuPlan.setMenuSn(menuPlan.getNewSn());
         return menuPlanDao.save(menuPlan);
     }
 
@@ -103,9 +115,12 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         return menuPlanDao.deleteBatch(ids);
     }
 
+    /**
+     * 更改状态
+     **/
     @Override
     public int updatestatus(Integer id) {
-        MenuPlanEntity menuPlanEntity=queryObject(id);
+        MenuPlanEntity menuPlanEntity=menuPlanDao.queryObject(id);
         Integer menustatus=menuPlanEntity.getMenuStatus();//审核状态
         if (0 == menustatus){
             System.out.println("当前状态未审核");

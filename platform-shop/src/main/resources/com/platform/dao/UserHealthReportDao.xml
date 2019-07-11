@@ -81,7 +81,14 @@
             AND nideshop_user_id LIKE concat('%',#{name},'%')
         </if>
 	</select>
-	 
+
+	<select id="queryWeight" resultType="com.platform.entity.UserHealthReportEntity">
+		select
+                 weight
+		from user_health_report
+		where id in (select  MAX(id) from user_health_report) and nideshop_user_id = #{value}
+		order by update_time desc
+	</select>
 	<insert id="save" parameterType="com.platform.entity.UserHealthReportEntity">
 		insert into user_health_report(
 			`id`,
