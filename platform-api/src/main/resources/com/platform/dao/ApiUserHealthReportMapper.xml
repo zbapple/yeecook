@@ -65,7 +65,7 @@
 			AND nideshop_user_id=#{nideshopUserid}
 		</if>
 		<if test="detectiontime !=null">
-			AND  detection_time like concat('%',#{detectiontime},'%')
+			AND  detection_time=#{detectiontime}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

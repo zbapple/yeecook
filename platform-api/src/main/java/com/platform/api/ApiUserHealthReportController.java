@@ -5,15 +5,14 @@ package com.platform.api;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.LoginUser;
 import com.platform.entity.ApiUserhealReportVo;
-import com.platform.entity.UserBodyInformationVo;
+import com.platform.entity.UserDetectionCycleVo;
 import com.platform.entity.UserHealthReportVo;
 import com.platform.entity.UserVo;
+import com.platform.service.ApiUserDetectionCycleService;
 import com.platform.service.ApiUserHealthReportService;
 import com.platform.util.ApiBaseAction;
-import com.platform.utils.DateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
@@ -48,6 +47,8 @@ import java.util.stream.Collectors;
 public class ApiUserHealthReportController extends ApiBaseAction {
     @Autowired
     private ApiUserHealthReportService userHealthReportService;
+    @Autowired
+    private ApiUserDetectionCycleService userDetectionCycleService;
     @ApiOperation(value = "健康报告用户身体数据的录入")
     @PostMapping("add")
     public  Object add(@LoginUser UserVo loginuser){
@@ -61,7 +62,9 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         addmap.put("nideshopUserid",userid);
         addmap.put("detectiontime",detectiontime);
         List<UserHealthReportVo> userHealthReportVoList=userHealthReportService.queryList(addmap);
+        List<UserDetectionCycleVo> userDetectionCycleVoList=userDetectionCycleService.queryList(addmap);
         UserHealthReportVo userHealthReportVo=new UserHealthReportVo();
+        UserDetectionCycleVo userDetectionCycleVo=new UserDetectionCycleVo();
         if(addjsonparam!=null) {
             userHealthReportVo.setNideshopUserId(userid);
             //基础代谢量
@@ -93,7 +96,9 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         }
         if(userHealthReportVoList.size()==0) {
             userHealthReportService.save(userHealthReportVo);
+           userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
             result.put("flag",1);
+            result.put("id",userHealthReportVo.getId());
             return toResponsSuccess(result);
         }else{
             userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
@@ -122,10 +127,10 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         Map<Date,List<UserHealthReportVo>> map = userHealthReportVoList.stream().collect(
                 Collectors.groupingBy(UserHealthReportVo::getDetetionTime
                 ));
+        ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
+        apiUserhealReportVo.setTime(userHealthReportVo.getDetetionTime());
             for(Date key:map.keySet()){
-                ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
                 apiUserhealReportVo.setCount(map.get(key).size());
-                apiUserhealReportVo.setTime(key);
                 apiUserhealReportVo.setHealportlistmap(map.get(key));
                 apiUserhealReportVoList.add(apiUserhealReportVo);
             }
