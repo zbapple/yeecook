@@ -7,6 +7,7 @@
         <result property="id" column="id"/>
         <result property="nideshopUserId" column="nideshop_user_id"/>
         <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name" />
         <result property="avatar" column="avatar"/>
         <result property="menuCoverPic" column="menu_cover_pic"/>
         <result property="nutritionMenuType" column="nutrition_menu_type"/>
@@ -33,6 +34,7 @@
         u.id,
         n.id as nideshop_user_id,
         n.username as username,
+        n.nickname as nickname,
         n.avatar as avatar,
         nutrition_menu_type,
         `service_cycle_st`,
@@ -52,6 +54,7 @@
 			 u.id,
     		 n.id as nideshop_user_id,
     		 n.username as username,
+    		 n.nickname as nickname,
     		 nutrition_menu_type,
     		`service_cycle_st`,
     	    `catering_service_org_name`,
@@ -74,6 +77,7 @@
         u.id,
         n.id as nideshop_user_id,
         n.username as username,
+        n.nickname as nickname,
         n.avatar as avatar,
         nutrition_menu_type,
         `service_cycle_st`,
@@ -88,8 +92,8 @@
         <if test="name != null and name.trim() != ''">
             AND menu_name LIKE concat('%',#{name},'%')
         </if>
-        <if test="userName != null and userName.trim() != ''">
-            AND username LIKE concat('%',#{userName},'%')
+        <if test="nickName != null and nickName.trim() != ''">
+            AND nickname LIKE concat('%',#{nickName},'%')
         </if>
         <if test="nutritionMenuType != null and nutritionMenuType.trim() != ''">
             AND nutrition_menu_type LIKE concat('%',#{nutritionMenuType},'%')
@@ -120,47 +124,38 @@
 
     <insert id="save" parameterType="com.platform.entity.MenuPlanEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into user_nutrition_menu(
+			`id`,
 			`nideshop_user_id`,
-			`menu_name`,
-			`nutrition_menu_type`,
+			`menu_cover_pic`,
 			`nutrition_principle`,
-			`catering_service_org_id`,
+			`nutrition_menu_type`,
 			`catering_service_org_name`,
 			`service_cycle_st`,
 			`service_cycle_et`,
 			`service_stage`,
 			`menu_sn`,
 			`menu_status`,
-			)
+			`menu_name`)
 		values(
+			#{id},
 			#{nideshopUserId},
-			#{menuName},
-			#{nutritionMenuType},
-			#{menuType},
 			#{menuCoverPic},
 			#{nutritionPrinciple},
-			#{cateringServiceOrgId},
+			#{nutritionMenuType},
 			#{cateringServiceOrgName},
-			#{menuName},
 			#{serviceCycleSt},
-			#{serviceCycleEt}),
+			#{serviceCycleEt},
 			#{serviceStage},
 			#{menuSn},
-			#{menuStatus}
+			#{menuStatus},
+			#{menuName})
 	</insert>
 
     <update id="update" parameterType="com.platform.entity.MenuPlanEntity">
-        update menu_plan
+        update user_nutrition_menu
         <set>
-            <if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId},</if>
-            <if test="nideshopUserNickname != null">`nideshop_user_nickname` = #{nideshopUserNickname},</if>
-            <if test="nideshopUserAvatar != null">`nideshop_user_avatar` = #{nideshopUserAvatar},</if>
-            <if test="menuType != null">`menu_type` = #{menuType},</if>
-            <if test="serviceCycleSt != null">`service_cycle_st` = #{serviceCycleSt},</if>
-            <if test="cateringServiceOrgName != null">`catering_service_org_name` = #{cateringServiceOrgName},</if>
-            <if test="menuName != null">`menu_name` = #{menuName},</if>
-            <if test="serviceCycleEt != null">`service_cycle_et` = #{serviceCycleEt},</if>
-            <if test="menuStatus != null">`menu_status` = #{menuStatus}</if>
+            <if test="id != null">`id` = #{id},</if>
+            <if test="menuStatus != null">`menu_status` = #{menuStatus},</if>
         </set>
         where id = #{id}
     </update>

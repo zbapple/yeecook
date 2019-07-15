@@ -75,7 +75,7 @@
 </div>
 
 <script type="text/javascript">
-    let orderId = getQueryString("orderId");
+    let menuId = getQueryString("menuId");
     var vm = new Vue({
         el: '#rrapp',
         data: {
@@ -100,7 +100,7 @@
                 }
             });
             Ajax.request({
-                url: "../menuplan/queryAll?orderId=" + orderId,
+                url: "../menuplan/queryAll",
                 async: true,
                 successCallback: function (r) {
                     vm.menuPlan = r.list;

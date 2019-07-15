@@ -80,17 +80,13 @@ public class OrderSupplierEntity extends OrderEntity implements Serializable {
     private Integer isPrinter;
     //供应商部门id
     private Integer deptId;
-    @Getter
-    @Setter
+
     private String supplierName;
-    @Getter
-    @Setter
+
     private String supplierAddress;
-    @Getter
-    @Setter
+
 	private String supplierTelephone;
-    @Getter
-    @Setter
+
 	private String supplierMobile;
 
     /**
@@ -495,5 +491,37 @@ public class OrderSupplierEntity extends OrderEntity implements Serializable {
      */
     public Integer getDeptId() {
         return deptId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getSupplierAddress() {
+        return supplierAddress;
+    }
+
+    public void setSupplierAddress(String supplierAddress) {
+        this.supplierAddress = supplierAddress;
+    }
+
+    public String getSupplierTelephone() {
+        return supplierTelephone;
+    }
+
+    public void setSupplierTelephone(String supplierTelephone) {
+        this.supplierTelephone = supplierTelephone;
+    }
+
+    public String getSupplierMobile() {
+        return supplierMobile;
+    }
+
+    public void setSupplierMobile(String supplierMobile) {
+        this.supplierMobile = supplierMobile;
     }
 }

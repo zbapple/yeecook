@@ -5,6 +5,7 @@ import com.platform.entity.*;
 import com.platform.service.MenuDetailsService;
 import com.platform.service.UserNutritionMenuService;
 import com.platform.utils.DateUtils;
+import com.platform.utils.RRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +48,6 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     public MenuPlanEntity queryObject(Integer id) {
 
-        MenuPlanEntity menuPlanEntity=new MenuPlanEntity();
-        Integer mid= menuPlanEntity.getId();
-        UserEntity userEntity=new UserEntity();
-        Integer uid=menuPlanEntity.getNideshopUserId();
-        HashMap map=new HashMap();
-        map.put("weight",userHealthReportDao.queryWeight(uid));
-
-
-
-
-
-
         return menuPlanDao.queryObject(id);
     }
 
@@ -77,31 +66,127 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @Transactional
     public int save(MenuPlanEntity menuPlan) {
+//        //插入用户信息
+//        UserEntity userEntity = new UserEntity();
+//        menuPlan.setNideshopUserId(userEntity.getId());
+//        menuPlan.setUserName(userEntity.getUsername());
+//
+//
+//       //保存餐品详情
+//        MenuDetailsEntity me=new MenuDetailsEntity();
+//        me.setUserNutritionMenuId(menuPlan.getId());
+//        me.setMenuType(menuPlan.getMenuType());
+//        me.setDishesName(menuPlan.getDishesName());
+//        me.setMealTime(menuPlan.getMealTime());
+//        me.setMenuDate(menuPlan.getMenuDate());
+//        menuDetailsDao.save(me);
+//
+//       //保存周期
+//        UserDetectionCycleEntity uce=new UserDetectionCycleEntity();
+//        uce.setInspectionCycle(menuPlan.getInspectionCycle());
+//        userDetectionCycleDao.save(uce);
+//
+//        //商品
+//
+//        menuPlan.setMenuSn(menuPlan.getNewSn());
+        //插入用户
+//        Integer id=menuPlan.getNideshopUserId();
+//        List<MenuPlanEntity> ulist=menuPlan.getUserNames();
+//        if (ulist.size()>0){
+//            for () {
+//                menuPlan.setNideshopUserId(id);
+////                menuPlanDao.save(menuPlan);
+//            }
+//        }
         //插入用户信息
-        UserEntity userEntity = new UserEntity();
-        menuPlan.setNideshopUserId(userEntity.getId());
-        menuPlan.setUserName(userEntity.getUsername());
+        String nickname=menuPlan.getNickName();
+        UserEntity userEntity=userDao.queryObject(nickname);
+        Integer ids=userEntity.getId();
+        menuPlan.setNideshopUserId(ids);
+        menuPlanDao.save(menuPlan);
 
-       //保存餐品详情
-        MenuDetailsEntity me=new MenuDetailsEntity();
-        me.setUserNutritionMenuId(menuPlan.getId());
-        me.setMenuType(menuPlan.getMenuType());
-        me.setDishesName(menuPlan.getDishesName());
-        me.setMealTime(menuPlan.getMealTime());
-        me.setMenuDate(menuPlan.getMenuDate());
-        menuDetailsDao.save(me);
+        //保存餐品详情
+        Integer id=menuPlan.getId();
+//        MenuDetailsEntity md=menuDetailsDao.queryObject(id);
+        List<MenuDetailsEntity> mdlist=menuPlan.getFoodlist();
+        List<MenuDetailsEntity> mdlist1=menuPlan.getFoodlistadd();
+        List<MenuDetailsEntity> mdlist2=menuPlan.getFoodlist1();
+        List<MenuDetailsEntity> mdlist3=menuPlan.getFoodlistadd1();
+        List<MenuDetailsEntity> mdlist4=menuPlan.getFoodlist2();
+        List<MenuDetailsEntity> mdlist5=menuPlan.getFoodlistadd2();
+        if (null!=mdlist && mdlist.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("0");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
+        }
+        if (null!=mdlist1 && mdlist1.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist1){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("3");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
+        }
+        if (null!=mdlist2 && mdlist2.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist2){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("1");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
+        }
+        if (null!=mdlist3 && mdlist3.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist3){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("4");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
+        }
+        if (null!=mdlist4 && mdlist4.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist4){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("2");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
 
-       //保存周期
-        UserDetectionCycleEntity uce=new UserDetectionCycleEntity();
-        uce.setInspectionCycle(menuPlan.getInspectionCycle());
-        userDetectionCycleDao.save(uce);
+        }
+        if (null!=mdlist5 && mdlist5.size()>0){
+            for (MenuDetailsEntity menuDetailsEntity:mdlist5){
+                menuDetailsEntity.setUserNutritionMenuId(id);
+                menuDetailsEntity.setMenuType("5");
+//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsDao.save(menuDetailsEntity);
+            }
 
-        menuPlan.setMenuSn(menuPlan.getNewSn());
+        }
+
+        //轮播图
+        List<MenuPlanEntity> llist=menuPlan.getMenuCoverPics();
+        if (llist.size()>0){
+            for (MenuPlanEntity mp:llist){
+                mp.setMenuCoverPic(menuPlan.getMenuCoverPic());
+                menuPlanDao.save(mp);
+            }
+        }
         return menuPlanDao.save(menuPlan);
     }
 
     @Override
-    public int update(MenuPlanEntity menuPlan) {
+    public int update(Integer id) {
+        MenuPlanEntity menuPlan=menuPlanDao.queryObject(id);
+        Integer menustatus=menuPlan.getMenuStatus();
+        menuPlan.setMenuStatus(1);
+//        if (0 == menustatus){
+//            throw new RRException("当前状态未审核");
+//        }
+        if (1 == menustatus){
+            throw new RRException("当前状态已审核");
+        }
         return menuPlanDao.update(menuPlan);
     }
 
@@ -115,38 +200,21 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         return menuPlanDao.deleteBatch(ids);
     }
 
-    /**
-     * 更改状态
-     **/
-    @Override
-    public int updatestatus(Integer id) {
-        MenuPlanEntity menuPlanEntity=menuPlanDao.queryObject(id);
-        Integer menustatus=menuPlanEntity.getMenuStatus();//审核状态
-        if (0 == menustatus){
-            System.out.println("当前状态未审核");
-        }
-        if (1 == menustatus){
-            System.out.println("当前状态已审核");
-        }
-        menuPlanEntity.setMenuStatus(1);
-        return menuPlanDao.update(menuPlanEntity);
-    }
-
-
-    /**
-     * 自定义餐单编码格式  服务机构id+年月日+餐单id
-     **/
-    public static String getNewSn(){
-        Calendar cl=Calendar.getInstance();
-        cl.setTime(new Date());
-        String strdate = DateUtils.format(cl.getTime(), DateUtils.DATE_PATTERN);
-        MenuPlanEntity menuPlanEntity=new MenuPlanEntity();
-        Integer cid=menuPlanEntity.getCateringServiceOrgId();
-        Integer id=menuPlanEntity.getId();
-        String str=cid+strdate+id;
-        menuPlanEntity.setMenuSn(str);
-        return str;
-    }
-
+//    /**
+//     * 更改状态
+//     **/
+//    @Override
+//    public int updatestatus(MenuPlanEntity menuPlan) {
+//        Integer id=menuPlan.getId();
+//        Integer menustatus=menuPlan.getMenuStatus();//审核状态
+//        if (0 == menustatus){
+//            throw new RRException("当前状态未审核");
+//        }
+//        if (1 == menustatus){
+//            throw new RRException("当前状态已审核");
+//        }
+//        menuPlan.setMenuStatus(1);
+//        return menuPlanDao.update(menuPlan);
+//    }
 
 }

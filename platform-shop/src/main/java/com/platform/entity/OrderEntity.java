@@ -94,7 +94,7 @@ public class OrderEntity implements Serializable {
     //
     private String userName;
     //供应商状态描述为json格式
-    @Getter@Setter
+
     private String supplierList;
 
     public String getOrderType() {
@@ -567,5 +567,13 @@ public class OrderEntity implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getSupplierList() {
+        return supplierList;
+    }
+
+    public void setSupplierList(String supplierList) {
+        this.supplierList = supplierList;
     }
 }

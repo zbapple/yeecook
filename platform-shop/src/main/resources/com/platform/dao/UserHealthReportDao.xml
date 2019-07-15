@@ -86,8 +86,9 @@
 		select
                  weight
 		from user_health_report
-		where id in (select  MAX(id) from user_health_report) and nideshop_user_id = #{value}
+		where  nideshop_user_id = #{value}
 		order by update_time desc
+		limit 0,1
 	</select>
 	<insert id="save" parameterType="com.platform.entity.UserHealthReportEntity">
 		insert into user_health_report(

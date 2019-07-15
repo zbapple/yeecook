@@ -33,7 +33,7 @@ public class SysPrinterUserEntity implements Serializable {
     private String printName;
     //打印机类型：0001条码打印，0002普通打印，0003咕咕机打印
     private String printType;
-    @Getter@Setter
+
     private Long deptId;
     /**
      * 设置：
@@ -138,5 +138,13 @@ public class SysPrinterUserEntity implements Serializable {
      */
     public String getPrintType() {
         return printType;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 }

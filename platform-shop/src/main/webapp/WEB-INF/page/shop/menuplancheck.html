@@ -27,20 +27,21 @@
        </div>
        <span style="display: inline-block;width:50px;height:30px;line-height: 30px;text-align: center;background: royalblue;color:white;position: fixed;bottom:10px;right:40px;" @click="sumbit">提交</span>
    </div>
-    <div v-show="show" style="background: white">
-            <div style="width:300px;height:200px;position: fixed;left:50%;top:50%;margin-left:-150px;margin-top:-100px;background: white;">
-                <div style="height:30px;width:100%;line-height: 30px;background:red">
-                    <span style="float: left;padding-left:10px">提示</span>
-                    <span style="float: right;padding-right:10px; " @click="close"><Icon type="close"></Icon></span>
-                </div>
-                <div style="width:100%;height:100px;text-align: center;line-height: 100px;font-size:12px;font-color:white">提交后不再修改，您确定提交审核操作吗</div>
-                <span style="display: inline-block;width:50px;height:30px;line-height: 30px;text-align: center;background: royalblue;color:white;position: fixed;bottom:40px;right:80px;" @click="affirm">确认</span>
-            </div>
-    </div>
+    <!--<div v-show="show" style="background: white">-->
+            <!--<div style="width:300px;height:200px;position: fixed;left:50%;top:50%;margin-left:-150px;margin-top:-100px;background: white;">-->
+                <!--<div style="height:30px;width:100%;line-height: 30px;background:red">-->
+                    <!--<span style="float: left;padding-left:10px">提示</span>-->
+                    <!--<span style="float: right;padding-right:10px; " @click="close"><Icon type="close"></Icon></span>-->
+                <!--</div>-->
+                <!--<div style="width:100%;height:100px;text-align: center;line-height: 100px;font-size:12px;font-color:white">提交后不再修改，您确定提交审核操作吗</div>-->
+                <!--<span style="display: inline-block;width:50px;height:30px;line-height: 30px;text-align: center;background: royalblue;color:white;position: fixed;bottom:40px;right:80px;" @click="affirm">确认</span>-->
+            <!--</div>-->
+    <!--</div>-->
 </div>
+<script src="${rc.contextPath}/js/shop/menuplan.js?_${date.systemTime}"></script>
 <script type="text/javascript">
 
-    var vm = new Vue({
+    var vmm = new Vue({
         el: '#munuplancheck',
         data: {
             menuPlan :{menuStatus: '0'},
@@ -53,18 +54,40 @@
         },
         methods: {
             sumbit:function () {
-                this.show=true;
+                let that=this;
+                console.log("fidif"+that.id);
+                Ajax.request({
+                    type: "POST",
+                    url: "../menuplan/update",
+                    contentType: "application/json",
+                    params: JSON.stringify(that.id),
+                    successCallback: function(r) {
+                       fn();
+                    }
+                });
+                // Ajax.request({
+                //
+                //     url: "../menuplan/upstatus",
+                //     contentType: "application/json",
+                //     successCallback: function (r) {
+                //         console.log(r);
+                //         vm.reload();
+                //     }
+                // });
             },
             close:function(){
                 this.show=false;
             },
-            affirm:function(){
+            affirm:function(event){
 
             }
         }
     });
+    function fn() {
+        console.log(111)
+        this.close();
+    }
 </script>
-
 </body>
 
 </html>

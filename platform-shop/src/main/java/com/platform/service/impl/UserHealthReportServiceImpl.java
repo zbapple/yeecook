@@ -60,7 +60,10 @@ public class UserHealthReportServiceImpl implements UserHealthReportService {
 
     @Override
     public UserHealthReportEntity queryWeight(Integer id) {
-
+        Object weight=userHealthReportDao.queryWeight(id);
+        if (weight==null){
+            return null;
+        }
         return userHealthReportDao.queryWeight(id);
     }
 

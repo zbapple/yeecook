@@ -52,11 +52,9 @@ public interface MenuPlanService {
 
     /**
      * 根据主键更新实体
-     *
-     * @param menuPlan 实体
      * @return 更新条数
      */
-    int update(MenuPlanEntity menuPlan);
+    int update(Integer id);
 
     /**
      * 根据主键删除
@@ -74,14 +72,10 @@ public interface MenuPlanService {
      */
     int deleteBatch(Integer[] ids);
 
-    /**
-     * 审核状态
-     **/
-    int updatestatus(Integer id);
-
-    /**
-     * 
-     **/
+//    /**
+//     * 审核状态
+//     **/
+//    int updatestatus(MenuPlanEntity menuPlan);
 
 
 

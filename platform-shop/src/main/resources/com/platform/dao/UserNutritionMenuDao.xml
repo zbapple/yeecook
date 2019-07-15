@@ -100,9 +100,9 @@
 			#{cateringServiceOrgName},
 			#{nideshopUserId},
 			#{serviceCycleSt},
-			#{serviceCycleEt}),
+			#{serviceCycleEt},
 			#{serviceStage},
-			#{menuStatus}
+			#{menuStatus})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.UserNutritionMenuEntity">

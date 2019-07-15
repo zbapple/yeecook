@@ -4,7 +4,7 @@ $(function () {
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80,hidden:true},
-                {label: '用户名称', name: 'userName', index: 'username', width: 80,},
+                {label: '用户名称', name: 'nickName', index: 'nick_name', width: 80,},
             {label: '用户头像', name: 'avatar', index: 'avatar', width: 80,
                 formatter: function (value) {
                     return transImg(value);}
@@ -50,7 +50,6 @@ $(function () {
 let vm = new Vue({
     el: '#rrapp',
     data: {
-        animal: '爪哇犀牛',
         showList: true,
         details: false,
         showfoods: false,
@@ -58,13 +57,31 @@ let vm = new Vue({
         imgName: '',
         title: null,
         uploadList: [],
+        servermenuPlan: {
+            cateringServiceOrgName:'',
+            nutritionMenuType:'',
+            nickName:'',
+            menuName:'',
+            serviceStage:'',
+            serviceCycleSt:'',
+            serviceCycleEt:'',
+            inspectionCycle:'',
+            foodlist:[],
+            foodlistadd:[],
+            foodlist1:[],
+            foodlistadd1:[],
+            foodlist2:[],
+            foodlistadd2:[],
+            menuCoverPics:{},
+            nutritionPrinciple:'',
+        },
         menuPlan: {},
         menumap:[],
         sdfd:{},
         data3:[],
         targetKeys3: [],
         listStyle: {
-            marginLeft: '150px',
+            marginLeft: '10px',
             width: '250px',
             height: '300px'
 
@@ -73,7 +90,7 @@ let vm = new Vue({
             name: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
             ],
-            username: [
+            nickName: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
             ],
             cateringServiceOrgName: [
@@ -86,7 +103,7 @@ let vm = new Vue({
         },
         q: {
             name:'',
-            userName:'',
+            nickName:'',
             cateringServiceOrgName:'',
             nutritionMenuType:''
         },
@@ -122,7 +139,37 @@ let vm = new Vue({
                 foodlistpwl:''
             }
         ],
-        showcamera:true
+        foodlist1:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        foodlistadd1:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        foodlist2:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        foodlistadd2:[
+            {
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            }
+        ],
+        showcamera:true,
+        ddww:[],
+        showselect:false
     },
     methods: {
         query: function () {
@@ -151,9 +198,16 @@ let vm = new Vue({
         },
         saveOrUpdate: function (event) {
             let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/update";
+            vm.servermenuPlan.menuCoverPics=this.uploadList;
+            vm.servermenuPlan.foodlist=this.foodlist;
+            vm.servermenuPlan.foodlistadd=this.foodlistadd;
+            vm.servermenuPlan.foodlist1=this.foodlist1;
+            vm.servermenuPlan.foodlistadd1=this.foodlistadd1;
+            vm.servermenuPlan.foodlist2=this.foodlist2;
+            vm.servermenuPlan.foodlistadd2=this.foodlistadd2;
             Ajax.request({
                 url: url,
-                params: JSON.stringify(vm.menuPlan),
+                params: JSON.stringify(vm.servermenuPlan),
                 type: "POST",
                 contentType: "application/json",
                 successCallback: function (r) {
@@ -200,38 +254,29 @@ let vm = new Vue({
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {
                     'name': vm.q.menuName,
-                    'userName': vm.q.userName,
+                    'nickName': vm.q.nickName,
                     'cateringServiceOrgName': vm.q.cateringServiceOrgName,
                     'nutritionMenuType': vm.q.nutritionMenuType
                 },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
+            console.log(this.targetKeys3);
         },
         reloadSearch: function () {
             vm.q = {
                 menuName: '',
-                userName: '',
+                nickName: '',
                 cateringServiceOrgName: '',
                 nutritionMenuType: ''
             }
             vm.reload();
         },
-        handleSubmit: function (name) {
-            handleSubmitValidate(this, name, function () {
-                vm.saveOrUpdate()
-            });
+        handleSubmit: function (){
+                vm.saveOrUpdate();
         },
         handleReset: function (name) {
             handleResetForm(this, name);
-        },
-        /**
-         * 获取餐品名
-         */
-        getFoods: function (){
-          Ajax.request({
-             url:"../"
-          });
         },
         /**
          * 获取机构名字
@@ -266,6 +311,7 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.UserNames = r.list;
+
                 }
             });
         },
@@ -297,10 +343,11 @@ let vm = new Vue({
                     vm.menumapuser=vm.menumap.infomsg;
                     vm.menumapsys=vm.menumap.sysuser;
                     vm.menumaptype=vm.menumap.menutype;
-                    vm.menumapweight=vm.menumap.weight;
+                    vm.menumapweight=vm.menumap.weight||'';
+
                     vm.menumapst=vm.menumap.serviceCycleSt;
                     vm.menumapet=vm.menumap.serviceCycleEt;
-                    vm.menutp=vm.menumap.menutype[0];
+                    vm.menutp=vm.menumap.menutype;
                     vm.menutp1=vm.menumap.menutype[1];
                     vm.menutp2=vm.menumap.menutype[2];
                     vm.menutp3=vm.menumap.menutype[3];
@@ -336,31 +383,43 @@ let vm = new Vue({
                 content: '../shop/menuplanPrint.html?Id=' + rowId
             })
         },
+        adddd:function(){
+            let that=this;
+            Ajax.request({
+                url:'../dishes/queryAll',
+                successCallback: function (r) {
+                    console.log(r);
+                    that.ddww=r.list;
+                }
+            })
+        },
         /**
          *  菜品选择穿梭框
          */
         getMockData: function () {
             let mockData=[];
-           for (let i = 1; i <= 20; i++) {
+            let list=this.ddww;
+           for (let i = 0; i <= list.length-1; i++) {
                 mockData.push({
-                    key: i.toString(),
-                    label: '早餐'  ,
-                    description: '菜品' + i,
-                    disabled: Math.random() * 3 < 1
+                    key: list[i],
+                    label: list[i].dishesName,
+                    description: i,
                 });
             }
             return mockData;
         },
         getTargetKeys: function () {
             return this.getMockData()
-                .filter(() => Math.random() * 2 > 1)
-                .map(item => item.key);
+                .filter(() => {
+                        1
+                })
+                .map(item => item);
         },
         handleChange3: function (newTargetKeys) {
             this.targetKeys3 = newTargetKeys;
         },
         render3: function (item) {
-            return item.label + ' - ' + item.description;
+            return item.label ;
         },
         reloadMockdata: function () {
             this.data3 = this.getMockData();
@@ -369,10 +428,6 @@ let vm = new Vue({
         /**
          *  上传组件
          */
-        saveOrUpdate: function (event) {
-            var url = vm.goods.id == null ? "../menuplan/save" : "../menuplan/update";
-            vm.menuPlan.menuCoverPic = vm.uploadList;
-        },
         handleView(name) {
             this.imgName = name;
             this.visible = true;
@@ -399,11 +454,7 @@ let vm = new Vue({
             }
             return check;
         },
-        handleSubmit: function (name) {
-            handleSubmitValidate(this, name, function () {
-                vm.saveOrUpdate();
-            });
-        },
+
         handleFormatError: function (file) {
             this.$Notice.warning({
                 title: '文件格式不正确',
@@ -436,20 +487,26 @@ let vm = new Vue({
         eyeImage: function (e) {
             eyeImage($(e.target).attr('src'));
         },
-        // 添加早餐菜品
+        /**
+         *  添加早餐菜品
+         */
+
         addfoodlist:function(){
             this.foodlist.push({
                 foodlistname:'',
-                    foodlistsrc:'',
+                foodlistsrc:'',
                 foodlistpwl:''
 
-            });
-        },
-        //删除早餐餐品
+            })},
+        /**
+         *  删除早餐餐品
+         */
         deletefood:function(i){
             this.foodlist.splice(i,1);
         },
-        //添加早餐加餐
+        /**
+         * 添加早餐加餐
+         */
         addfoodlistadd() {
             this.foodlistadd.push({
                 foodlistname:'',
@@ -457,16 +514,147 @@ let vm = new Vue({
                 foodlistpwl:''
             })
         },
-        //删除早餐加餐
+        /**
+         * 删除早餐加餐
+         */
         deletefoodadd:function (i) {
             this.foodlistadd.splice(i,1);
+        },
+        /**
+         *  添加午餐菜品
+         */
+
+        addfoodlist1:function(){
+            this.foodlist1.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+
+            });
+        },
+        /**
+         *  删除午餐餐品
+         */
+        deletefood1:function(i){
+            this.foodlist1.splice(i,1);
+        },
+        /**
+         * 添加午餐加餐
+         */
+        addfoodlistadd1() {
+            this.foodlistadd1.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            })
+        },
+        /**
+         * 删除午餐加餐
+         */
+        deletefoodadd1:function (i) {
+            this.foodlistadd1.splice(i,1);
+        },
+        /**
+         *  添加晚餐菜品
+         */
+
+        addfoodlist2:function(){
+            this.foodlist2.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+
+            });
+        },
+        /**
+         *  删除晚餐餐品
+         */
+        deletefood2:function(i){
+            this.foodlist2.splice(i,1);
+        },
+        /**
+         * 添加晚餐加餐
+         */
+        addfoodlistadd2() {
+            this.foodlistadd2.push({
+                foodlistname:'',
+                foodlistsrc:'',
+                foodlistpwl:''
+            })
+        },
+        /**
+         * 删除晚餐加餐
+         */
+        deletefoodadd2:function (i) {
+            this.foodlistadd2.splice(i,1);
+        },
+        cancelsumbit:function(){
+            this.showfoods=false;
+        },
+        selectfood:function(event,i){
+            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
+            // console.log(this.this.targetKeys3[i].dishesCalories);
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlist[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist[i].foodlistname=this.targetKeys3[num].dishesName;
+        },
+        selectfood1:function(event,i){
+            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
+            // console.log(this.this.targetKeys3[i].dishesCalories);
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd[i].foodlistname=this.targetKeys3[num].dishesName;
+        },
+        selectfood2:function(event,i){
+            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
+            // console.log(this.this.targetKeys3[i].dishesCalories);
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist1[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlist1[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist1[i].foodlistname=this.targetKeys3[num].dishesName;
+        },
+        selectfood3:function(event,i){
+            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
+            // console.log(this.this.targetKeys3[i].dishesCalories);
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd1[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd1[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd1[i].foodlistname=this.targetKeys3[num].dishesName;
+        },
+        selectfood4:function(event,i){
+            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
+            // console.log(this.this.targetKeys3[i].dishesCalories);
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist2[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlist2[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist2[i].foodlistname=this.targetKeys3[num].dishesName;
+        },
+        selectfood5:function(event,i){
+
+            let num=event.value;
+            console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd2[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd2[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd2[i].foodlistname=this.targetKeys3[num].dishesName;
         }
     },
     mounted() {
         // this.uploadList = this.$refs.upload.fileList;
+        this.adddd();
         this.data3=this.getMockData();
         console.log(this.data3)
         this.targetKeys3=this.getTargetKeys();
         console.log(this.targetKeys3);
     }
 });
+function load() {
+    vm.reload();
+
+}

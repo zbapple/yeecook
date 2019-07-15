@@ -9,7 +9,7 @@
 
     <modules>
         <module>platform-common</module> <!-- 公共模块 -->
-        <module>platform-schedule</module> <!-- 定时任务模块 -->
+        <!--<module>platform-schedule</module> &lt;!&ndash; 定时任务模块 &ndash;&gt;-->
         <module>platform-gen</module> <!-- 代码生成器模块 -->
         <module>platform-api</module> <!-- API模块 -->
         <module>platform-framework</module>

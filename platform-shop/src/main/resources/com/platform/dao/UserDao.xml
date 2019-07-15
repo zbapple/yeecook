@@ -37,7 +37,7 @@
 			avatar,
 			weixin_openid
 		from nideshop_user
-		where id = #{id}
+		where nickname=#{nickname}
 	</select>
 
     <select id="queryList" resultType="com.platform.entity.UserEntity">
@@ -61,6 +61,9 @@
         WHERE 1=1
         <if test="username != null and username.trim() != ''">
             and username like concat('%',#{username},'%')
+        </if>
+        <if test="nickname !=null and nickname.trim()!= ' '">
+            and nickename like  concat('%',#{nickname},'%')
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

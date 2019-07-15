@@ -39,7 +39,7 @@
         <property name="overwriteExistingJobs" value="true" />
 
         <!-- 设置自动启动   默认为true -->
-        <property name="autoStartup" value="true" />
+        <property name="autoStartup" value="false" />
 
     </bean>
 	

@@ -66,8 +66,6 @@ public class MenuPlanController {
         Date scs=menuPlanEntity.getServiceCycleSt();
         Date sce=menuPlanEntity.getServiceCycleEt();
         Date mt=menuPlanEntity.getMealTime();
-        UserEntity userEntity=userService.queryObject(uid);
-        menuPlanEntity.setUserName(userEntity.getUsername());
         HashMap menumap=new HashMap();
         //从session获取当前管理员账户
         SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
@@ -76,11 +74,15 @@ public class MenuPlanController {
         menumap.put("infomsg",menuPlanService.queryMenu(uid));
         menumap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
         menumap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
-        menumap.put("mealTime",DateUtils.format(mt, DateUtils.DATE_TIME_PATTERN));
         HashMap map=new HashMap();
         map.put("userid",uid);
         menumap.put("menutype",menuDetailsService.queryListvo(map));
+       List<MenuDetailsEntity> md=menuDetailsService.queryListvo(map);
+       if (md.size()>0){
+           for(MenuDetailsEntity menuDetailsEntity:md){
 
+           }
+       }
 
         return R.ok().put("menumap",menumap);
     }
@@ -112,8 +114,8 @@ public class MenuPlanController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("menuplan:update")
-    public R update(@RequestBody MenuPlanEntity menuPlan) {
-        menuPlanService.update(menuPlan);
+    public R update(@RequestBody Integer id) {
+        menuPlanService.update(id);
 
         return R.ok();
     }
@@ -141,13 +143,14 @@ public class MenuPlanController {
     }
 
 
-    /**
-     *  更改签约状态
-     **/
-    public R updatestatus(@RequestBody Integer id){
-        menuPlanService.updatestatus(id);
-        return R.ok();
-    }
+//    /**
+//     *  更改签约状态
+//     **/
+//    @RequestMapping("/upstatus")
+//    public R updatestatus(@RequestBody MenuPlanEntity menuPlan){
+//        menuPlanService.updatestatus(menuPlan);
+//        return R.ok();
+//    }
 
 
 

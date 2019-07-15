@@ -4,8 +4,13 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '用户id', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80},
-			{label: '检测时间', name: 'detectionTime', index: 'detection_time', width: 80},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80},
+			{label: '检测时间', name: 'detectionTime', index: 'detection_time', width: 80,
+                formatter: function (value) {
+                    return transDate(value).substring(0, 10);
+                }},
+			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80,formatter: function (value) {
+                    return transDate(value).substring(0, 10);
+                }},
 			{label: '体重', name: 'weight', index: 'weight', width: 80},
 			{label: 'BMI', name: 'bmi', index: 'BMI', width: 80},
 			{label: '体脂率', name: 'bodyFatRade', index: 'body_fat_rade', width: 80},
