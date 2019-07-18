@@ -16,7 +16,7 @@ $(function () {
                     return transDate(value).substring(0, 10);
                 }
             },
-            {label: '机构名称', name: 'cateringServiceOrgName', index: 'catering_service_org_name', width: 80},
+            {label: '机构名称', name: 'cateringServiceOrgName', index: 'catering_service_org_name', width: 120},
             {label: '食谱名称', name: 'menuName', index: 'menu_name', width: 80},
             {
                 label: '计划结束时间', name: 'serviceCycleEt', index: 'service_cycle_et', width: 80,
@@ -62,6 +62,7 @@ let vm = new Vue({
             nutritionMenuType:'',
             nickName:'',
             menuName:'',
+            menuSn:'',
             serviceStage:'',
             serviceCycleSt:'',
             serviceCycleEt:'',
@@ -127,44 +128,44 @@ let vm = new Vue({
         menumaplist:[],
         foodlist:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         foodlistadd:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         foodlist1:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         foodlistadd1:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         foodlist2:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         foodlistadd2:[
             {
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             }
         ],
         showcamera:true,
@@ -198,7 +199,7 @@ let vm = new Vue({
         },
         saveOrUpdate: function (event) {
             let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/update";
-            vm.servermenuPlan.menuCoverPics=this.uploadList;
+            vm.servermenuPlan.menuCoverPics=vm.uploadList;
             vm.servermenuPlan.foodlist=this.foodlist;
             vm.servermenuPlan.foodlistadd=this.foodlistadd;
             vm.servermenuPlan.foodlist1=this.foodlist1;
@@ -208,6 +209,7 @@ let vm = new Vue({
             Ajax.request({
                 url: url,
                 params: JSON.stringify(vm.servermenuPlan),
+                type: "POST",
                 type: "POST",
                 contentType: "application/json",
                 successCallback: function (r) {
@@ -283,7 +285,7 @@ let vm = new Vue({
          */
         getCateringServiceOrgNames: function () {
             Ajax.request({
-                url: "../menuplan/queryAll",
+                url: "../sys/dept/list",
                 async: true,
                 successCallback: function (r) {
                     vm.CateringServiceOrgNames = r.list;
@@ -440,7 +442,7 @@ let vm = new Vue({
         },
         handleSuccess(res, file) {
             // 因为上传过程为实例，这里模拟添加 url
-            file.imgUrl = res.url;
+            file.menuCoverPic = res.url;
             file.name = res.url;
             vm.uploadList.add(file);
         },
@@ -493,9 +495,9 @@ let vm = new Vue({
 
         addfoodlist:function(){
             this.foodlist.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
 
             })},
         /**
@@ -509,9 +511,9 @@ let vm = new Vue({
          */
         addfoodlistadd() {
             this.foodlistadd.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             })
         },
         /**
@@ -526,9 +528,9 @@ let vm = new Vue({
 
         addfoodlist1:function(){
             this.foodlist1.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
 
             });
         },
@@ -543,9 +545,9 @@ let vm = new Vue({
          */
         addfoodlistadd1() {
             this.foodlistadd1.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             })
         },
         /**
@@ -560,9 +562,9 @@ let vm = new Vue({
 
         addfoodlist2:function(){
             this.foodlist2.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
 
             });
         },
@@ -577,9 +579,9 @@ let vm = new Vue({
          */
         addfoodlistadd2() {
             this.foodlistadd2.push({
-                foodlistname:'',
-                foodlistsrc:'',
-                foodlistpwl:''
+                dishesName:'',
+                dishesCoverPic:'',
+                dishesCalories:''
             })
         },
         /**
@@ -591,58 +593,49 @@ let vm = new Vue({
         cancelsumbit:function(){
             this.showfoods=false;
         },
+
         selectfood:function(event,i){
-            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
-            // console.log(this.this.targetKeys3[i].dishesCalories);
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlist[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlist[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlist[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlist[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlist[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood1:function(event,i){
-            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
-            // console.log(this.this.targetKeys3[i].dishesCalories);
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlistadd[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlistadd[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlistadd[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlistadd[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood2:function(event,i){
-            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
-            // console.log(this.this.targetKeys3[i].dishesCalories);
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlist1[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlist1[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlist1[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlist1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlist1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist1[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood3:function(event,i){
-            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
-            // console.log(this.this.targetKeys3[i].dishesCalories);
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlistadd1[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlistadd1[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlistadd1[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlistadd1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd1[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood4:function(event,i){
-            // this.foodlist[i].foodlistpwl=this.targetKeys3[i].dishesCalories;
-            // console.log(this.this.targetKeys3[i].dishesCalories);
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlist2[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlist2[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlist2[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlist2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlist2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist2[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood5:function(event,i){
 
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
-            this.foodlistadd2[i].foodlistpwl=this.targetKeys3[num].dishesCalories;
-            this.foodlistadd2[i].foodlistsrc=this.targetKeys3[num].dishesCoverPic;
-            this.foodlistadd2[i].foodlistname=this.targetKeys3[num].dishesName;
+            this.foodlistadd2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlistadd2[i].dishesName=this.targetKeys3[num].dishesName;
         }
     },
     mounted() {

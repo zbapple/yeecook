@@ -127,10 +127,11 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         Map<Date,List<UserHealthReportVo>> map = userHealthReportVoList.stream().collect(
                 Collectors.groupingBy(UserHealthReportVo::getDetetionTime
                 ));
-        ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
-        apiUserhealReportVo.setTime(userHealthReportVo.getDetetionTime());
+
             for(Date key:map.keySet()){
+                ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
                 apiUserhealReportVo.setCount(map.get(key).size());
+                apiUserhealReportVo.setTime(key);
                 apiUserhealReportVo.setHealportlistmap(map.get(key));
                 apiUserhealReportVoList.add(apiUserhealReportVo);
             }

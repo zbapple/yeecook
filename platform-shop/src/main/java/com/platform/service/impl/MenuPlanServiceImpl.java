@@ -66,91 +66,72 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @Transactional
     public int save(MenuPlanEntity menuPlan) {
-//        //插入用户信息
-//        UserEntity userEntity = new UserEntity();
-//        menuPlan.setNideshopUserId(userEntity.getId());
-//        menuPlan.setUserName(userEntity.getUsername());
-//
-//
-//       //保存餐品详情
-//        MenuDetailsEntity me=new MenuDetailsEntity();
-//        me.setUserNutritionMenuId(menuPlan.getId());
-//        me.setMenuType(menuPlan.getMenuType());
-//        me.setDishesName(menuPlan.getDishesName());
-//        me.setMealTime(menuPlan.getMealTime());
-//        me.setMenuDate(menuPlan.getMenuDate());
-//        menuDetailsDao.save(me);
-//
-//       //保存周期
-//        UserDetectionCycleEntity uce=new UserDetectionCycleEntity();
-//        uce.setInspectionCycle(menuPlan.getInspectionCycle());
-//        userDetectionCycleDao.save(uce);
-//
-//        //商品
-//
-//        menuPlan.setMenuSn(menuPlan.getNewSn());
-        //插入用户
-//        Integer id=menuPlan.getNideshopUserId();
-//        List<MenuPlanEntity> ulist=menuPlan.getUserNames();
-//        if (ulist.size()>0){
-//            for () {
-//                menuPlan.setNideshopUserId(id);
-////                menuPlanDao.save(menuPlan);
-//            }
-//        }
         //插入用户信息
         String nickname=menuPlan.getNickName();
         UserEntity userEntity=userDao.queryObject(nickname);
         Integer ids=userEntity.getId();
         menuPlan.setNideshopUserId(ids);
-        menuPlanDao.save(menuPlan);
-
+        //传入阶段状态标识
+        String stages=menuPlan.getServiceStage();
+        if (stages.equals("0")){
+            menuPlan.setServiceStage("第一周疗养阶段");
+        }else if (stages.equals("1")){
+            menuPlan.setServiceStage("第二周疗养阶段");
+        }else if (stages.equals("2")){
+            menuPlan.setServiceStage("第三周疗养阶段");
+        }else{
+            menuPlan.setServiceStage("第四周疗养阶段");
+        }
+        //传入餐单类型
+        String type=menuPlan.getNutritionMenuType();
+        if (type.equals("1")){
+            menuPlan.setNutritionMenuType("月子餐类型A");
+        }else{
+            menuPlan.setNutritionMenuType("月子餐类型B");
+        }
         //保存餐品详情
+
         Integer id=menuPlan.getId();
-//        MenuDetailsEntity md=menuDetailsDao.queryObject(id);
         List<MenuDetailsEntity> mdlist=menuPlan.getFoodlist();
-        List<MenuDetailsEntity> mdlist1=menuPlan.getFoodlistadd();
-        List<MenuDetailsEntity> mdlist2=menuPlan.getFoodlist1();
-        List<MenuDetailsEntity> mdlist3=menuPlan.getFoodlistadd1();
-        List<MenuDetailsEntity> mdlist4=menuPlan.getFoodlist2();
+        List<MenuDetailsEntity> mdlist1=menuPlan.getFoodlist1();
+        List<MenuDetailsEntity> mdlist2=menuPlan.getFoodlist2();
+        List<MenuDetailsEntity> mdlist3=menuPlan.getFoodlistadd();
+        List<MenuDetailsEntity> mdlist4=menuPlan.getFoodlistadd1();
         List<MenuDetailsEntity> mdlist5=menuPlan.getFoodlistadd2();
         if (null!=mdlist && mdlist.size()>0){
             for (MenuDetailsEntity menuDetailsEntity:mdlist){
+
                 menuDetailsEntity.setUserNutritionMenuId(id);
                 menuDetailsEntity.setMenuType("0");
-//                menuDetailsEntity.setDishesName(dishesname);
                 menuDetailsDao.save(menuDetailsEntity);
             }
         }
+
         if (null!=mdlist1 && mdlist1.size()>0){
             for (MenuDetailsEntity menuDetailsEntity:mdlist1){
                 menuDetailsEntity.setUserNutritionMenuId(id);
-                menuDetailsEntity.setMenuType("3");
-//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsEntity.setMenuType("1");
                 menuDetailsDao.save(menuDetailsEntity);
             }
         }
         if (null!=mdlist2 && mdlist2.size()>0){
             for (MenuDetailsEntity menuDetailsEntity:mdlist2){
                 menuDetailsEntity.setUserNutritionMenuId(id);
-                menuDetailsEntity.setMenuType("1");
-//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsEntity.setMenuType("2");
                 menuDetailsDao.save(menuDetailsEntity);
             }
         }
         if (null!=mdlist3 && mdlist3.size()>0){
             for (MenuDetailsEntity menuDetailsEntity:mdlist3){
                 menuDetailsEntity.setUserNutritionMenuId(id);
-                menuDetailsEntity.setMenuType("4");
-//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsEntity.setMenuType("3");
                 menuDetailsDao.save(menuDetailsEntity);
             }
         }
         if (null!=mdlist4 && mdlist4.size()>0){
             for (MenuDetailsEntity menuDetailsEntity:mdlist4){
                 menuDetailsEntity.setUserNutritionMenuId(id);
-                menuDetailsEntity.setMenuType("2");
-//                menuDetailsEntity.setDishesName(dishesname);
+                menuDetailsEntity.setMenuType("4");
                 menuDetailsDao.save(menuDetailsEntity);
             }
 
@@ -159,18 +140,16 @@ public class MenuPlanServiceImpl implements MenuPlanService {
             for (MenuDetailsEntity menuDetailsEntity:mdlist5){
                 menuDetailsEntity.setUserNutritionMenuId(id);
                 menuDetailsEntity.setMenuType("5");
-//                menuDetailsEntity.setDishesName(dishesname);
                 menuDetailsDao.save(menuDetailsEntity);
             }
 
         }
 
-        //轮播图
+        //餐单封面图
         List<MenuPlanEntity> llist=menuPlan.getMenuCoverPics();
-        if (llist.size()>0){
-            for (MenuPlanEntity mp:llist){
-                mp.setMenuCoverPic(menuPlan.getMenuCoverPic());
-                menuPlanDao.save(mp);
+        if (llist !=null &&llist.size()>0){
+            for (MenuPlanEntity menuPlanEntity:llist){
+                menuPlan.setMenuCoverPic(menuPlanEntity.getMenuCoverPic());
             }
         }
         return menuPlanDao.save(menuPlan);
@@ -181,9 +160,6 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         MenuPlanEntity menuPlan=menuPlanDao.queryObject(id);
         Integer menustatus=menuPlan.getMenuStatus();
         menuPlan.setMenuStatus(1);
-//        if (0 == menustatus){
-//            throw new RRException("当前状态未审核");
-//        }
         if (1 == menustatus){
             throw new RRException("当前状态已审核");
         }
@@ -200,21 +176,6 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         return menuPlanDao.deleteBatch(ids);
     }
 
-//    /**
-//     * 更改状态
-//     **/
-//    @Override
-//    public int updatestatus(MenuPlanEntity menuPlan) {
-//        Integer id=menuPlan.getId();
-//        Integer menustatus=menuPlan.getMenuStatus();//审核状态
-//        if (0 == menustatus){
-//            throw new RRException("当前状态未审核");
-//        }
-//        if (1 == menustatus){
-//            throw new RRException("当前状态已审核");
-//        }
-//        menuPlan.setMenuStatus(1);
-//        return menuPlanDao.update(menuPlan);
-//    }
+
 
 }

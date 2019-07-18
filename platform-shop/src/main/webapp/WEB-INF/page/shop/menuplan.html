@@ -62,7 +62,7 @@
     <div v-show="!details&&showList">
         <Row :gutter="16">
             <div class="search-group">
-                <i-col span="3">
+                <i-col span="4">
                     <i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>
                         <i-option v-for="item in CateringServiceOrgNames"
                                   :value="item.cateringServiceOrgName"
@@ -102,15 +102,15 @@
         <p slot="title">{{title}}</p>
         <div style="float:right;padding-left: 20px;">
             <p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字：<span v-if="servermenuPlan.menuName">{{servermenuPlan.menuName}}</span><span v-else>待定制</span></p>
-            <p style="height:27px;line-height: 27px ;font-size: 12px;width: 324px;">套餐编号：<span style="width: 10px;height: 10px"><input v-model="menuPlan.menuSn" /></span></p>
+            <p style="height:27px;line-height: 27px ;font-size: 12px;width: 324px;">套餐编号：<span style="width: 10px;height: 10px"><input v-model="servermenuPlan.menuSn" /></span></p>
             <p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span v-if="servermenuPlan.nickName">{{servermenuPlan.nickName}}</span><span v-else>待选择</span></p>
         </div>
         <div style="width: 84px; height:81px;float: right;">
             <div class="upload-list" v-for="item in uploadList" style="width: 84px;height: 81px">
                 <template v-if="item.status == 'finished'">
-                    <img :src="item.imgUrl"/>
+                    <img :src="item.menuCoverPic"/>
                     <div class="upload-list-cover">
-                        <Icon type="ios-eye-outline" @click.native="handleView(item.imgUrl)"></Icon>
+                        <Icon type="ios-eye-outline" @click.native="handleView(item.menuCoverPic)"></Icon>
                         <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
                     </div>
                 </template>
@@ -151,10 +151,8 @@
                 </Form-item>
             <Form-item label="计划类型" prop="nutritionMenuType" style="width: 300px;display: inline-block;">
                 <i-select v-model="servermenuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
-                    <i-option v-for="items in NutritionMenuTypes"
-                              :value="items.nutritionMenuType"
-                              :key="items.nutritionMenuType">{{items.nutritionMenuType}}
-                    </i-option>
+                    <i-option value="1">月子餐类型A</i-option>
+                    <i-option value="2">月子餐类型B</i-option>
                 </i-select>
             </Form-item>
             <From-item style="margin-left: 110px">
@@ -198,17 +196,17 @@
             <h4 style="height:40px;line-height: 40px;margin-left:20px;">早餐 </h4>
             <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist">
                 <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                    <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                    <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                 </div>
                 <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                     <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                        <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood($event,i)">
+                        <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood($event,i)">
                             <i-option v-for="(v,index) in targetKeys3":label="v.dishesName" :value="index" >{{v.dishesName}}</i-option>
                         </i-select>
                     </Form-item>
                 </div>
                 <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                    <i-input v-model="fooditem.foodlistpwl" disabled />
+                    <i-input v-model="fooditem.dishesCalories" disabled />
                 </Form-item>
                 <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;" @click="deletefood(i)">
                         移除
@@ -223,18 +221,18 @@
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <!--<i-input v-model="fooditem.foodlistname"  placeholder="菜品名称"/>-->
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood1($event,i)">
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood1($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3"  :label="v.dishesName" :value="index" >{{v.dishesName}}</i-option>
                             </i-select>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                        <i-input v-model="fooditem.foodlistpwl" disabled />
+                        <i-input v-model="fooditem.dishesCalories" disabled />
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;" @click="deletefoodadd(i)">
                         移除
@@ -246,17 +244,17 @@
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">午餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist1">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood2($event,i)">
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood2($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3"  :label="v.dishesName" :value="index">{{v.dishesName}}</i-option>
                             </i-select>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                        <i-input  v-model="fooditem.foodlistpwl" disabled />
+                        <i-input  v-model="fooditem.dishesCalories" disabled />
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;" @click="deletefood1(i)">
                         移除
@@ -268,18 +266,18 @@
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd1">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <!--<i-input v-model="fooditem.foodlistname"  placeholder="菜品名称"/>-->
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood3($event,i)">
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood3($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3"  :label="v.dishesName" :value="index">{{v.dishesName}}</i-option>
                             </i-select>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                        <i-input  v-model="fooditem.foodlistpwl" disabled />
+                        <i-input  v-model="fooditem.dishesCalories" disabled />
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;" @click="deletefoodadd1(i)">
                         移除
@@ -291,17 +289,17 @@
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">晚餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist2">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood4($event,i)">
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood4($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3"  :label="v.dishesName" :value="index">{{v.dishesName}}</i-option>
                             </i-select>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                        <i-input  v-model="fooditem.foodlistpwl" disabled />
+                        <i-input  v-model="fooditem.dishesCalories" disabled />
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;" @click="deletefood2(i)">
                         移除
@@ -313,17 +311,17 @@
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd2">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
-                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.foodlistsrc" />
+                        <img  alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic" />
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.foodlistname" clearable=true label-in-value=true @on-change="selectfood5($event,i)">
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true @on-change="selectfood5($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3"  :label="v.dishesName" :value="index">{{v.dishesName}}</i-option>
                             </i-select>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                        <i-input  v-model="fooditem.foodlistpwl" disabled />
+                        <i-input  v-model="fooditem.dishesCalories" disabled />
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;" @click="deletefoodadd2(i)">
                         移除
@@ -493,8 +491,8 @@
                     <i-button size="small" @click="reloadMockdata">重置</i-button>
                 </div>
             </Transfer>
-            <div style="height: 20px;width: 50px;background: dodgerblue;margin-left: 278px;margin-top: 40px">
-                <span type="warning" @click="cancelsumbit" style="margin-left: 8px;width:40px;height:30px;line-height: 30px;border-radius:10px;cursor:pointer;text-align: center;color:white;cursor:pointer;background: cornflowerblue;"/>提交</span>
+            <div style="width:50px;height:30px;line-height: 30px;border-radius:10px;cursor:pointer;text-align: center;color:white;cursor:pointer;background: cornflowerblue;margin-left: 278px;margin-top: 40px">
+                <span type="warning" @click="cancelsumbit" />提交</span>
             </div>
         </i-form>
     </Card>

@@ -100,7 +100,6 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.MenuDetailsEntity">
 		insert into menu_details(
-			`id`,
 			`user_nutrition_menu_id`,
 			`menu_type`,
 			`dishes_id`,
@@ -110,7 +109,6 @@
 			`meal_time`,
 			`menu_date`)
 		values(
-			#{id},
 			#{userNutritionMenuId},
 			#{menuType},
 			#{dishesId},
