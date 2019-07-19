@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 作者: @author Harmon <br>
@@ -47,7 +48,7 @@ public class ApiUserController extends ApiBaseAction {
         }
         //生成验证码
         String sms_code = CharUtil.getRandomNum(4);
-        String msgContent = "您的验证码是：" + sms_code + "，请在页面中提交验证码完成验证。";
+
         // 发送短信
         String result = "";
         //获取云存储配置信息
@@ -68,20 +69,22 @@ public class ApiUserController extends ApiBaseAction {
             /**
              * 状态,发送编号,无效号码数,成功提交数,黑名单数和消息，无论发送的号码是多少，一个发送请求只返回一个sendid，如果响应的状态不是“0”，则只有状态和消息
              */
-            result = SmsUtil.crSendSms(config.getName(), config.getPwd(), phone, msgContent, config.getSign(),
-                    DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"), "");
+            result = SmsUtil.crSendSms(phone, sms_code);
         } catch (Exception e) {
+            return toResponsFail("短信发送失败,网络波动！");
+    }
+         if("".equals(result)){
+             return toResponsFail("短信发送失败,网络频繁波动！");
+         }
+        HashMap code = JsonUtil.getObjet(result, HashMap.class);
 
-        }
-        String arr[] = result.split(",");
-
-        if ("0".equals(arr[0])) {
+        if ("OK".equals(code.get("Code"))) {
             smsLogVo = new SmsLogVo();
             smsLogVo.setLog_date(System.currentTimeMillis() / 1000);
             smsLogVo.setUser_id(loginUser.getUserId());
             smsLogVo.setPhone(phone);
             smsLogVo.setSms_code(sms_code);
-            smsLogVo.setSms_text(msgContent);
+            smsLogVo.setSms_text(sms_code);
             userService.saveSmsCodeLog(smsLogVo);
             return toResponsSuccess("短信发送成功");
         } else {
@@ -111,12 +114,12 @@ public class ApiUserController extends ApiBaseAction {
         JSONObject jsonParams = getJsonRequest();
         SmsLogVo smsLogVo = userService.querySmsCodeByUserId(loginUser.getUserId());
 
-        //String mobile_code = jsonParams.getString("mobile_code");
+        String mobile_code = jsonParams.getString("mobile_code");
         String mobile = jsonParams.getString("mobile");
 
-//        if (!mobile_code.equals(smsLogVo.getSms_code())) {
-//            return toResponsFail("验证码错误");
-//        }
+        if (!mobile_code.equals(smsLogVo.getSms_code())) {
+            return toResponsFail("验证码错误");
+        }
         UserVo userVo = userService.queryObject(loginUser.getUserId());
         userVo.setMobile(mobile);
         userService.update(userVo);

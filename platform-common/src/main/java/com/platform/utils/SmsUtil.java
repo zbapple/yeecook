@@ -1,5 +1,15 @@
 package com.platform.utils;
 
+import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
+import com.aliyuncs.http.MethodType;
+import com.aliyuncs.profile.DefaultProfile;
+
+import javax.swing.text.html.FormSubmitEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +29,32 @@ import java.net.URLEncoder;
  * @date 2017年11月18日 下午13:13:23
  */
 public class SmsUtil {
+
+
+
+    public static String crSendSms(String msg,String mobileString) {
+        DefaultProfile profile = DefaultProfile.getProfile("default", "LTAIt93CTJvH7XWp", "SkfXDlr3YlEqaDJMUUJDrL6mNmxVi3");
+        IAcsClient client = new DefaultAcsClient(profile);
+
+        CommonRequest request = new CommonRequest();
+        request.setMethod(MethodType.POST);
+        request.setDomain("dysmsapi.aliyuncs.com");
+        request.setVersion("2017-05-25");
+        request.setAction("SendSms");
+        request.putQueryParameter("PhoneNumbers", mobileString);
+        request.putQueryParameter("SignName", "yeecook");
+        request.putQueryParameter("TemplateCode", "SMS_171065387");
+        request.putQueryParameter("TemplateParam", "{code:"+msg+"}");
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+           return  response.getData();
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     /**
      * 创锐平台发送短信
