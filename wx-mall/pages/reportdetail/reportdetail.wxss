@@ -1,0 +1,226 @@
+ /* pages/reportdetail/reportdetail.wxss */
+ .header-style-one{
+    margin-top:80rpx;
+    text-align: center;
+    font-size:36rpx;
+    line-height: 40rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+  }
+  .header-style-two{
+    margin-top:30rpx;
+    text-align: center;
+    font-size:36rpx;
+    line-height: 40rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+  }
+  .header-style-btn{
+    margin:0 auto;
+    text-align: center;
+    margin-top:40rpx;
+    margin-bottom:40rpx;
+    color:white;
+    width:600rpx;
+    height:80rpx;
+    line-height: 80rpx;
+    background:rgba(106,184,182,1);
+    border-radius:40rpx;
+  }
+  .bg{
+    height:20rpx;
+    background:rgba(247,247,250,1);
+    width:100%;
+  }
+  .header-sy{
+    padding-left:30rpx;
+    padding-right:30rpx;
+  }
+  .header-sy-title{
+    margin-top:40rpx;
+    height:34rpx;
+    font-size:32rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+  }
+  .header-sy-content{
+    overflow: hidden;
+  }
+  .sy-content-one{
+    margin-top:35px;
+    margin-bottom:40rpx;
+    width:33.33%;
+    float: left;
+    text-align: center;
+    height:80rpx;
+  }
+  .content-one-txt1{
+    height:48rpx;
+    font-size:48rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+    margin-bottom:20rpx;
+  }
+  .content-one-txt2{
+    font-size:24rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(51,57,79,1);
+    opacity:0.5;
+  }
+ .header{
+   padding-left:30rpx;
+   padding-right:30rpx;
+   margin-top:25rpx;
+   height:60rpx;
+   overflow: hidden;
+ }
+ .header-title{
+  width:240rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  float:left;
+ }
+ .header-title-txt{
+    font-size:36rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+ }
+ .header-number{
+   height:60rpx;
+   line-height: 60rpx;
+   float:right;
+   width:430rpx;
+   background:rgba(106,184,182,1);
+   border-radius:16rpx;
+   padding-left:12rpx;
+ }
+ .header-number-txt{
+   font-size:24rpx;
+   font-family:PingFang-SC-Medium;
+   font-weight:500;
+   color:rgba(254,254,254,1);
+   padding-right:38rpx;
+ }
+ .report-title{
+   padding-left:30rpx;
+   padding-right:30rpx;
+   margin-top:25rpx;
+   height:80rpx;
+    background:rgba(247,247,250,1);
+    line-height: 80rpx;
+ }
+ .report-title-txt{
+   font-size:28rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.5;
+ }
+ .report-title-one{
+   float: left;
+ }
+ .report-title-two{
+   float: right;
+ }
+ .report-content{
+   padding-top:30rpx;
+   padding-left:30rpx;
+   padding-right:30rpx;
+ }
+ .report-content-list{
+   width:100%;
+   height:130rpx;
+   padding-bottom:50rpx;
+   overflow: hidden;
+ }
+ .report-content-image{
+   float:left;
+   width:80rpx;
+   height:80rpx;
+ }
+ .report-content-name{
+   float:left;
+   height:80rpx;
+   width:300rpx;
+   padding-left:30rpx;
+ }
+  .report-content-txt{
+    font-size:28rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,51,51,1);
+    opacity:0.8;
+  }
+  .report-content-number{
+    float:right;
+    height:80rpx;
+    line-height: 80rpx;
+  }
+  .one{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/11140970870913.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .two{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/111606710bcec.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .three{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/111847887f32c8.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .four{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/111957872ecc3a.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .five{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/1121017555f670.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .sive{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/11221959365090.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .seven{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/11230030722b24.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .eight{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/1124135365f6eb.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .nine{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/11261189141a0b.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .ten{
+    background:url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190629/1127007217d25e.png) 0 0 no-repeat;
+    background-size: 100%;
+  }
+  .txt-color1{
+    font-size:24rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(51,57,79,1);
+    opacity:0.6;
+    padding-bottom: 10rpx;
+  }
+  .txt-color2{
+    font-size:28rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+  }
+
+  

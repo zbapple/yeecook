@@ -1,0 +1,46 @@
+<view class="exprience">
+  <view class="header">分娩信息</view>
+  <view class="con">
+    <view class="item">
+      <view class="item_left">*用户姓名</view>
+      <input type="text" placeholder="请输入姓名" class="itme_right"></input>
+    </view>
+    <view class="item">
+      <view class="item_left">*出生日期</view>
+      <input type="text" placeholder="1990-10-1" class="itme_right"></input>
+    </view>
+    <view class="item">
+      <view class="item_left">*身高(CM)</view>
+      <input type="number" placeholder="请输入身高" class="itme_right"></input>
+    </view>
+    <view class="item">
+      <view class="item_left">*产前体重(KG)</view>
+      <input type="number" placeholder="请输入身高" class="itme_right"></input>
+    </view>
+    <view class="item_style">
+      <view class="item_style_one">*分娩方式</view>
+      <radio-group class="radio-group" bindchange="radioChange">
+        <label class="radio" wx:for="{{items}}">
+          <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        </label>
+      </radio-group>
+    </view>
+    <view class="item">
+      <view class="item_left">*分娩日期</view>
+      <input type="number" placeholder="分娩日期" class="itme_right"></input>
+    </view>
+    <view class="item">
+      <view class="item_left">*分娩日期</view>
+      <input type="number" placeholder="分娩日期" class="itme_right"></input>
+    </view>
+    <view class="item_style">
+      <view class="item_style_one">*胎次</view>
+      <radio-group class="radio-group" bindchange="radioChange">
+        <label class="radio" wx:for="{{itemnum}}">
+          <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        </label>
+      </radio-group>
+    </view>
+    <view class="item_btn" bindtap='heightnum'>实时测量体重</view>
+  </view>
+</view> 

@@ -1,0 +1,157 @@
+<view class="header-style">
+ <view class="header-style-one">您目前属于{{bodytype}}类型哦</view>
+ <view class="header-style-two">快去查看宜厨为你定制的饮食计划吧</view>
+ <view class="header-style-btn" bindtap="todetail">我的饮食计划</view>
+</view>
+<view class="bg"></view>
+<view class="header-sy">
+   <view class="header-sy-title">本月体重/kg</view>
+   <view class="header-sy-content">
+      <view class="sy-content-one">
+          <view class="content-one-txt1">{{max}}</view>
+          <view class="content-one-txt2">最高</view>
+      </view>
+      <view class="sy-content-one">
+          <view class="content-one-txt1">{{min}}</view>
+          <view class="content-one-txt2">最低</view>
+      </view>
+      <view class="sy-content-one">
+          <view class="content-one-txt1">{{avg}}</view>
+          <view class="content-one-txt2">平均</view>
+      </view>
+   </view>
+</view> 
+<!-- <view class="header">
+    <view class="header-title"><text class="header-title-txt">本月体重/kg</text></view>
+    <view class="header-number">
+      <text class="header-number-txt">最高: {{max}}</text>
+      <text class="header-number-txt">最低: {{min}}</text>
+      <text class="header-number-txt">最低: {{avg}}</text>
+    </view>
+</view> -->
+<view class="report-title">
+  <text class="report-title-txt report-title-one">{{updateTime}}</text>
+  <text class="report-title-txt report-title-two">说明</text>
+</view>
+<view class="report-content">
+  <view class="report-content-list">
+    <view class="report-content-image one"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">体重</view>
+      <view class="txt-color2">{{weight}}kg</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{weighttype==1}}">标准</block>
+      <block wx:if="{{weighttype==0}}">偏瘦</block>
+      <block wx:if="{{weighttype==2}}">偏胖</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image two"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">MBI</view>
+      <view class="txt-color2">{{bmi}}</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{weighttype==1}}">标准</block>
+      <block wx:if="{{weighttype==0}}">低</block>
+      <block wx:if="{{weighttype==2}}">高</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image three"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">体脂率</view>
+      <view class="txt-color2">{{bodyFatRade}}%</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{bodyFatRadetype==1}}">标准</block>
+      <block wx:if="{{bodyFatRadetype==0}}">低</block>
+      <block wx:if="{{bodyFatRadetype==2}}">高</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image four"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">皮下脂肪率</view>
+      <view class="txt-color2">{{subFatPercentage}}%</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{subFatPercentagetype==1}}">标准</block>
+      <block wx:if="{{subFatPercentagetype==0}}">低</block>
+      <block wx:if="{{subFatPercentagetype==2}}">高</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image five"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">基础代谢量</view>
+      <view class="txt-color2">{{basicMetabolism}}kcal</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{basicMetabolismtype==1}}">标准</block>
+      <block wx:if="{{basicMetabolismtype==0}}">低</block>
+      <block wx:if="{{basicMetabolismtype==2}}">高</block>
+    </view>
+  </view>
+   <view class="report-content-list">
+    <view class="report-content-image sive"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">内脏脂肪等级</view>
+      <view class="txt-color2">{{visFatGrade}}</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{visFatGradetype==1}}">正常</block>
+      <block wx:if="{{visFatGradetype==0}}">偏低</block>
+      <block wx:if="{{visFatGradetype==2}}">偏高</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image seven"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">体水分率</view>
+      <view class="txt-color2">{{bodyWaterRate}}%</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{bodyWaterRatetype==1}}">正常</block>
+      <block wx:if="{{bodyWaterRatetype==0}}">偏低</block>
+      <block wx:if="{{bodyWaterRatetype==2}}">偏高</block>
+    </view>
+  </view>
+  <view class="report-content-list">
+    <view class="report-content-image eight"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">蛋白质</view>
+      <view class="txt-color2">{{protein}}%</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{proteintype==1}}">正常</block>
+      <block wx:if="{{proteintype==0}}">偏低</block>
+      <block wx:if="{{proteintype==2}}">偏高</block>
+    </view>
+  </view>
+  <view class="report-content-list"> 
+    <view class="report-content-image nine"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">骨量</view>
+      <view class="txt-color2">{{boneMass}}kg</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{boneMasstype==1}}">正常</block>
+      <block wx:if="{{boneMasstype==0}}">偏低</block>
+      <block wx:if="{{boneMasstype==2}}">偏高</block>
+    </view>
+  </view>
+   <view class="report-content-list" wx:if="{{skeletalMuscle}}">
+    <view class="report-content-image ten"></view>
+    <view class="report-content-name report-content-txt">
+      <view class="txt-color1">骨骼肌率</view>
+      <view class="txt-color2" wx:if="{{skeletalMuscle}}">{{skeletalMuscle}}%</view>
+    </view>
+    <view class="report-content-number report-content-txt">
+      <block wx:if="{{skeletalMuscletype==1}}">正常</block>
+      <block wx:if="{{skeletalMuscletype==0}}">偏低</block>
+      <block wx:if="{{skeletalMuscletype==2}}">偏高</block>
+    </view>
+  </view>
+</view>

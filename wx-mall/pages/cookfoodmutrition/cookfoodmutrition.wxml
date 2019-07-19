@@ -1,0 +1,8 @@
+<view class="header">
+  <view class="header-left">营养元素</view>
+  <view class="header-right">含量</view> 
+</view>
+<view class="list" wx:for="{{list}}" wx:key="{{index}}">
+  <view class="list-left list-txt">{{item.nutrientElementsName}}</view>
+  <view class="list-right list-txt">{{item.contentg+item.unit}}</view>
+</view>

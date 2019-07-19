@@ -1,0 +1,113 @@
+<view class="header-bg"></view>
+<view class="header" wx:if="{{menuName}}">
+  <view class="header-image"> 
+    <image src="{{menuCoverPic}}"></image>
+    <view class="header-title">{{menuName}}</view>
+  </view>
+  <view class="header-con"> 
+    <view class="header-con-title">膳食服务机构</view> 
+    <view class="header-con-txt">{{cateringServiceOrgName}}</view>
+  </view>  
+</view>
+<view class="content" wx:if="{{nutritionPrinciple}}">
+  <view class="content-title">营养原理</view>
+  <view class="content-detail">{{nutritionPrinciple}}</view>
+</view>
+<view class="footer" wx:if="{{zclist.length>0}}">
+  <view class="footer-title">
+    <view class="footer-title-one"></view>
+    <view class="footer-title-two"><text class="txt1">早餐</text><text class="txt2">7:00 - 8:00</text></view>
+    <view class="footer-title-three"><text class="txt2">{{zcpwl}}kcal</text></view>
+  </view>
+  <view class="footer-con" wx:for="{{zclist}}" wx:key="{{index}}">
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.breakfastcal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go" ></image>
+        </view>
+  </view>
+  <view class="footer-title" wx:if="{{zclistadd.length>0}}">
+    <view class="footer-title-two"><text class="txt1 txtmeal">加餐</text></view>
+  </view>
+   <view class="footer-con" wx:for="{{zclistadd}}" wx:key="{{index}}">
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.breakfastSnackscal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go" bindtap='Todetail'></image>
+        </view>
+  </view>
+</view>
+<view class="footer" wx:if="{{wclist.length>0}}">
+  <view class="footer-title">
+    <view class="footer-title-one"></view>
+    <view class="footer-title-two"><text class="txt1">午餐</text><text class="txt2">12:00 - 13:00</text></view>
+    <view class="footer-title-three"><text class="txt2">{{wcpwl}}kcal</text></view>
+  </view>
+  <view class="footer-con" wx:for="{{wclist}}" wx:key="{{index}}"> 
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.lunchcal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go"></image>
+        </view>
+  </view>
+  <view class="footer-title" wx:if="{{wclistadd.length>0}}">
+    <view class="footer-title-two"><text class="txt1 txtmeal">加餐</text></view>
+  </view>
+   <view class="footer-con" wx:for="{{wclistadd}}" wx:key="{{index}}">
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.lunchsumcal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go"></image>
+        </view>
+  </view>
+</view>
+<view class="footer" wx:if="{{wanclist.length>0}}">
+  <view class="footer-title">
+    <view class="footer-title-one"></view>
+    <view class="footer-title-two"><text class="txt1">晚餐</text><text class="txt2">17:00 - 18:00</text></view>
+    <view class="footer-title-three"><text class="txt2">{{wancpwl}}kcal</text></view>
+  </view>
+  <view class="footer-con" wx:for="{{wanclist}}" wx:key="{{index}}">
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.dinnercal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go"></image>
+        </view> 
+  </view>
+  <view class="footer-title" wx:if="{{wanclistadd.length>0}}">
+    <view class="footer-title-two"><text class="txt1 txtmeal">加餐</text></view>
+  </view>
+   <view class="footer-con" wx:for="{{wanclistadd}}" wx:key="{{index}}">
+      <view class="footer-con-one">
+        <image src="{{item.dishescoverpic}}" class="image"></image>
+      </view>
+      <view class="footer-con-two">{{item.dishesname}}</view>
+      <view class="footer-con-three" bindtap='Todetail' data-id="{{item.dishesId}}">
+          <text class="txt2">{{item.dinnerSnackscal}}kcal</text>
+          <image src="../../static/images/go.png" class="bg-go" ></image>
+        </view>
+  </view>
+</view>
+<!-- 日历弹窗 -->
+<view class="pop-date" catchtouchmove='{{true}}' wx:if="{{nutritionPrinciple}}">
+     <date selected="{{selected}}" bindselect="bindselect" bindgetdate="bindgetdate" />
+</view>
+<view wx:if="{{!nutritionPrinciple}}">
+  <view class="none-one">膳食计划正在定制中</view>
+  <view class="none-two">请耐心等待…</view>
+</view> 

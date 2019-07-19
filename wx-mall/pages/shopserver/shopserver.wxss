@@ -1,0 +1,258 @@
+.count{
+    position: relative;
+    width:100%;
+    height:100%;
+  }
+  .count-bottom{
+    width:470rpx;
+    text-align: center;
+    left:50%;
+    margin-left:-235rpx;
+    position: absolute;
+    bottom:250rpx;
+    font-size:40rpx;
+    font-family:PingFang-SC-Bold;
+    font-weight:bold;
+    color:rgba(51,57,79,1);
+    opacity:0.8;
+  }
+  .count-position{
+    bottom:180rpx;
+  }
+  .count-food{
+    width:150rpx;
+    height:150rpx;
+    line-height: 150rpx;
+    text-align: center;
+    border:2rpx solid rgba(106, 184, 182, 0.6);
+    border-radius:50%;
+    font-size:28rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(106,184,182,1);
+    position: absolute;
+    top:68rpx;
+    left:379rpx;
+    transition:all 2s;
+    animation:mymoveone 2s 1;
+  }
+  .count-hot{
+    width:180rpx;
+    height:180rpx;
+    line-height: 180rpx;
+    text-align: center;
+    background:rgba(106,184,182,0.2);
+    border-radius:50%;
+    font-size:28rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(106,184,182,1);
+    position: absolute;
+    left:139rpx;
+    top:205rpx;
+    animation: mymovetwo 2s 1;
+  }
+  .count-mutrition{
+    width:280rpx;
+    height:280rpx;
+    padding-top:102rpx;
+    text-align: center;
+    background:rgba(106,184,182,1);
+    border-radius:50%;
+    position: absolute;
+    right:30rpx;
+    top:287rpx;
+    animation:mymovefive 2s 1;
+  }
+  .count-txt{
+    line-height: 42rpx;
+    font-size:28rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+  }
+  .count-ten{
+    width:320rpx;
+    height:320rpx;
+    border:2rpx solid rgba(106, 184, 182, 0.6);
+    border-radius:50%;
+    padding-top:120rpx;
+    text-align: center;
+    position: absolute;
+    left:45rpx;
+    top:460rpx;
+    animation: mymovethree 2s 1;
+  }
+  .ten-txt{
+    font-size:28rpx;
+    line-height: 42rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(106,184,182,1);
+  }
+  .count-low{
+    width:220rpx;
+    height:220rpx;
+    text-align: center;
+    padding-top:72rpx;
+    background:rgba(106,184,182,0.7);
+    border-radius:50%;
+    position: absolute;
+    right:137rpx;
+    top:657rpx;
+    animation: mymovefour 2s 1;
+  }
+ .count-txt{
+    line-height: 42rpx;
+    font-size:28rpx;
+    font-family:PingFang-SC-Medium;
+    font-weight:500;
+    color:rgba(255,255,255,0.7);
+ }
+ .shop-bottom{
+  position: fixed;
+  bottom:0;
+  width:100%;
+  height:98rpx;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 1rpx 1rpx 0px rgba(223,224,229,1);
+  border-top:1rpx solid rgba(223,224,229,1);
+  overflow: hidden;
+}
+.shop-bottom-client{
+  float:left;
+  width:33.3%;
+  height:100%;
+  text-align: center;
+  line-height: 98rpx;
+}
+.shop-bottom-cart{
+  float:left;
+  width:33.3%;
+  height:100%;
+  text-align: center;
+  line-height: 98rpx;
+}
+.shop-bottom-buy{
+  float:left;
+  width:33.3%;
+  height:100%;
+  text-align: center;
+  line-height: 98rpx;
+  background:linear-gradient(270deg,rgba(255,85,76,1),rgba(255,112,76,1));
+}
+.shop-btn-txt{
+  font-size:32rpx;
+  font-family:PingFang-SC-Bold;
+  font-weight:bold;
+  color:rgba(254,254,254,1);
+}
+.client-icon{
+  float:left;
+  margin-top:19rpx;
+  margin-left:56rpx;
+  width:60rpx;
+  height:60rpx;
+   background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190628/1858334439cebe.png) 0 0 no-repeat;
+    background-size: 100%; 
+}
+.client-txt{
+  float:left;
+  font-size:28rpx;
+  padding-left:20rpx;
+  font-family:PingFang-SC-Medium;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+} 
+.shop-server-price{
+  font-size:36rpx;
+  font-family:PingFang-SC-Bold;
+  font-weight:bold;
+  color:rgba(255,85,76,1);
+}
+/* 动画效果 */
+@keyframes mymoveone
+{
+  0% {
+    top:68rpx;
+    left:379rpx;
+  }
+  50%{
+    top:118rpx;
+    left:379rpx;
+  }
+  
+  100%{
+    top:68rpx;
+    left:379rpx;
+  }
+}
+@keyframes mymovetwo
+{
+  0% {
+    left:139rpx;
+    top:205rpx;
+  }
+  50%{
+    left:139rpx;
+    top:255rpx;
+  }
+  
+  100%{
+    left:139rpx;
+    top:205rpx;
+  }
+}
+@keyframes mymovethree
+{
+  0% {
+    left:45rpx;
+    top:460rpx;
+  }
+  50%{
+    left:45rpx;
+    top:510rpx;
+
+  }
+  
+  100%{
+    left:45rpx;
+    top:460rpx;
+
+  }
+}
+@keyframes mymovefour
+{
+  0% {
+    right:137rpx;
+    top:657rpx;
+  }
+  50%{
+    right:137rpx;
+    top:707rpx;
+
+  }
+  
+  100%{
+    right:137rpx;
+    top:657rpx;
+  }
+}
+@keyframes mymovefive
+{
+  0% {
+    right:30rpx;
+    top:287rpx;
+  }
+  50%{
+    right:30rpx;
+    top:337rpx;
+
+  }
+  
+  100%{
+    right:30rpx;
+    top:287rpx;
+  }
+}
