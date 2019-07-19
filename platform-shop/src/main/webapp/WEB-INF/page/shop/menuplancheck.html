@@ -25,7 +25,7 @@
                <i-input type="textarea" :rows='6' style="width: 300px;" placeholder="请输入备注（非必填）"></i-input>
            </div>
        </div>
-       <span style="display: inline-block;width:50px;height:30px;line-height: 30px;text-align: center;background: royalblue;color:white;position: fixed;bottom:10px;right:40px;" @click="sumbit">提交</span>
+       <span style="display: inline-block;width:50px;height:30px;line-height: 30px;text-align: center;background: royalblue;color:white;position: fixed;bottom:10px;right:40px;cursor: pointer" @click="sumbit">提交</span>
    </div>
     <!--<div v-show="show" style="background: white">-->
             <!--<div style="width:300px;height:200px;position: fixed;left:50%;top:50%;margin-left:-150px;margin-top:-100px;background: white;">-->
@@ -39,55 +39,42 @@
     <!--</div>-->
 </div>
 <script src="${rc.contextPath}/js/shop/menuplan.js?_${date.systemTime}"></script>
-<script type="text/javascript">
+<!--<script type="text/javascript">-->
 
-    var vmm = new Vue({
-        el: '#munuplancheck',
-        data: {
-            menuPlan :{menuStatus: '0'},
-            show:false,
-            id:'',
-        },
-        mounted(){
-            let  Id=getQueryString("Id");
-            this.id=Id;
-        },
-        methods: {
-            sumbit:function () {
-                let that=this;
-                console.log("fidif"+that.id);
-                Ajax.request({
-                    type: "POST",
-                    url: "../menuplan/update",
-                    contentType: "application/json",
-                    params: JSON.stringify(that.id),
-                    successCallback: function(r) {
-                       fn();
-                    }
-                });
-                // Ajax.request({
-                //
-                //     url: "../menuplan/upstatus",
-                //     contentType: "application/json",
-                //     successCallback: function (r) {
-                //         console.log(r);
-                //         vm.reload();
-                //     }
-                // });
-            },
-            close:function(){
-                this.show=false;
-            },
-            affirm:function(event){
+    <!--var vmm = new Vue({-->
+        <!--el: '#munuplancheck',-->
+        <!--data: {-->
+            <!--menuPlan :{menuStatus: '0'},-->
+            <!--show:false,-->
+            <!--id:'',-->
+        <!--},-->
+        <!--mounted(){-->
+            <!--let  Id=getQueryString("Id");-->
+            <!--this.id=Id;-->
+        <!--},-->
+        <!--methods: {-->
+            <!--sumbit:function () {-->
+                <!--let that=this;-->
+                <!--console.log("fidif"+that.id);-->
+                <!--Ajax.request({-->
+                    <!--type: "POST",-->
+                    <!--url: "../menuplan/update",-->
+                    <!--contentType: "application/json",-->
+                    <!--params: JSON.stringify(that.id),-->
+                    <!--successCallback: function(r) {-->
+                        <!--Document-->
+                    <!--}-->
+                <!--});-->
+            <!--},-->
+            <!--close:function(){-->
+                <!--this.show=false;-->
+            <!--},-->
+            <!--affirm:function(event){-->
 
-            }
-        }
-    });
-    function fn() {
-        console.log(111)
-        this.close();
-    }
-</script>
+            <!--}-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
 </body>
 
 </html>

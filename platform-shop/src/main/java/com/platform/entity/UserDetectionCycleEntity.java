@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:17:10
  */
+@Data
 public class UserDetectionCycleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +32,8 @@ public class UserDetectionCycleEntity implements Serializable {
     private String inspectionCycle;
     //用户id
     private Integer nideshopUserId;
+    //下次检测时间
+    private Date nextTime;
 
     /**
      * 设置：

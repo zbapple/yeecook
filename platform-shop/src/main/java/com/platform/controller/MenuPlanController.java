@@ -63,6 +63,7 @@ public class MenuPlanController {
     public R menuinfo(@PathVariable("id") Integer id){
         MenuPlanEntity menuPlanEntity = menuPlanService.queryObject(id);
         Integer uid=menuPlanEntity.getNideshopUserId();
+        Integer mid=menuPlanEntity.getId();
         Date scs=menuPlanEntity.getServiceCycleSt();
         Date sce=menuPlanEntity.getServiceCycleEt();
         Date mt=menuPlanEntity.getMealTime();
@@ -75,14 +76,8 @@ public class MenuPlanController {
         menumap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
         menumap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
         HashMap map=new HashMap();
-        map.put("userid",uid);
+        map.put("userNutritionMenuId",mid);
         menumap.put("menutype",menuDetailsService.queryListvo(map));
-       List<MenuDetailsEntity> md=menuDetailsService.queryListvo(map);
-       if (md.size()>0){
-           for(MenuDetailsEntity menuDetailsEntity:md){
-
-           }
-       }
 
         return R.ok().put("menumap",menumap);
     }
@@ -143,15 +138,14 @@ public class MenuPlanController {
     }
 
 
-//    /**
-//     *  更改签约状态
-//     **/
-//    @RequestMapping("/upstatus")
-//    public R updatestatus(@RequestBody MenuPlanEntity menuPlan){
-//        menuPlanService.updatestatus(menuPlan);
-//        return R.ok();
-//    }
-
+   /**
+    *
+    * 更新详情信息
+    **/
+   public R updateinfo(@RequestBody MenuPlanEntity menuPlan){
+       menuPlanService.updateinfo(menuPlan);
+       return  R.ok();
+   }
 
 
 }

@@ -11,6 +11,7 @@
         <result property="inspectionTime" column="inspection_time"/>
         <result property="inspectionCycle" column="inspection_cycle"/>
         <result property="nideshopUserId" column="nideshop_user_id"/>
+		<result property="nextTime" column="next_time" />
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserDetectionCycleEntity">
@@ -21,7 +22,8 @@
 			`inspection_num`,
 			`inspection_time`,
 			`inspection_cycle`,
-			`nideshop_user_id`
+			`nideshop_user_id`,
+			`next_time`
 		from user_detection_cycle
 		where id = #{id}
 	</select>
@@ -34,7 +36,8 @@
     		`inspection_num`,
     		`inspection_time`,
     		`inspection_cycle`,
-    		`nideshop_user_id`
+    		`nideshop_user_id`,
+		    `next_time`
 		from user_detection_cycle
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -69,7 +72,8 @@
 			`inspection_num`,
 			`inspection_time`,
 			`inspection_cycle`,
-			`nideshop_user_id`)
+			`nideshop_user_id`,
+			`next_time`)
 		values(
 			#{id},
 			#{inspectionStartDate},
@@ -77,7 +81,8 @@
 			#{inspectionNum},
 			#{inspectionTime},
 			#{inspectionCycle},
-			#{nideshopUserId})
+			#{nideshopUserId},
+			#{nextTime})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.UserDetectionCycleEntity">
@@ -88,7 +93,8 @@
 			<if test="inspectionNum != null">`inspection_num` = #{inspectionNum}, </if>
 			<if test="inspectionTime != null">`inspection_time` = #{inspectionTime}, </if>
 			<if test="inspectionCycle != null">`inspection_cycle` = #{inspectionCycle}, </if>
-			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}</if>
+			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId},</if>
+			<if test="nextTime !=null">`next_time` = #{nextTime} </if>
 		</set>
 		where id = #{id}
 	</update>

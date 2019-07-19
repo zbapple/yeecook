@@ -35,6 +35,7 @@ $(function () {
             },
             {  label:'操作',name:'check', width: 80,index:'check',sortable:false, formatter: function(value,col,row){
                     return  '<button  style="width: 30px;" onclick="vm.lookDetail('+  row.id  +')">查看</button>'
+                    // + '<button  style="width: 30px;" onclick="vm.update('+  row.id  +')">修改</button>';
 
                 }
             },
@@ -50,6 +51,7 @@ $(function () {
 let vm = new Vue({
     el: '#rrapp',
     data: {
+        showBtn: true,
         showList: true,
         details: false,
         showfoods: false,
@@ -128,6 +130,7 @@ let vm = new Vue({
         menumaplist:[],
         foodlist:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -135,6 +138,7 @@ let vm = new Vue({
         ],
         foodlistadd:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -142,6 +146,7 @@ let vm = new Vue({
         ],
         foodlist1:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -149,6 +154,7 @@ let vm = new Vue({
         ],
         foodlistadd1:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -156,6 +162,7 @@ let vm = new Vue({
         ],
         foodlist2:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -163,6 +170,7 @@ let vm = new Vue({
         ],
         foodlistadd2:[
             {
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -170,7 +178,13 @@ let vm = new Vue({
         ],
         showcamera:true,
         ddww:[],
-        showselect:false
+        showselect:false,
+        zaolist:[],
+        zaoaddlist:[],
+        wulist:[],
+        wuaddlist:[],
+        wanlist:[],
+        wanaddlist:[]
     },
     methods: {
         query: function () {
@@ -186,16 +200,90 @@ let vm = new Vue({
         addfoods:function (){
             vm.showfoods = true;
         },
+        /**
+         *  查看详情操作
+         */
+        lookDetail: function (rowId) {
+            vm.details = true;
+            vm.title = "详情"
+            console.log(rowId);
+            Ajax.request({
+                url: "../menuplan/menuinfo/" + rowId,
+                async: true,
+                successCallback: function (r) {
+                    console.log(2212222);
+                    console.log(r.menumap);
+                    vm.menumap = r.menumap;
+                    vm.menumapuser=vm.menumap.infomsg;
+                    vm.menumapsys=vm.menumap.sysuser;
+                    vm.menumaptype=vm.menumap.menutype;
+                    vm.menumapweight=vm.menumap.weight||'';
+
+                    vm.menumapst=vm.menumap.serviceCycleSt;
+                    vm.menumapet=vm.menumap.serviceCycleEt;
+                    // vm.menutp=vm.menumap.menutype[0];
+                    //
+                    // console.log(vm.menutp);
+                    // vm.menutp1=vm.menumap.menutype[1];
+                    // vm.menutp2=vm.menumap.menutype[2];
+                    // vm.menutp3=vm.menumap.menutype[3];
+                    // vm.menutp4=vm.menumap.menutype[4];
+                    // vm.menutp5=vm.menumap.menutype[5];
+                    // vm.menutp6=vm.menumap.menutype[6];
+                  for (let i=0;i<vm.menumaptype.length;i++) {
+                      if (vm.menumaptype[i].menuType == '0'){
+                          vm.zaolist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                      } else if(vm.menumaptype[i].menuType == '1') {
+                          vm.wulist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                      } else if(vm.menumaptype[i].menuType == '2'){
+                          vm.wanlist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                          console.log(vm.wanlist);
+                      } else if (vm.menumaptype[i].menuType == '3') {
+                          vm.zaoaddlist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                      }else if (vm.menumaptype[i].menuType == '4') {
+                          vm.wuaddlist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                      }else if (vm.menumaptype[i].menuType == '5') {
+                          vm.wanaddlist.push({
+                              dishesName:vm.menumaptype[i].dishesName,
+                              dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
+                              dishesCalories:vm.menumaptype[i].dishesCalories
+                          });
+                      }
+                  }
+
+                }
+            });
+        },
         update: function (event) {
             let id = getSelectedRow("#jqGrid");
             if (id == null) {
                 return;
             }
+            vm.lookDetail(id);
             vm.uploadList = [];
-            vm.showList = false;
+            vm.showList = true;
+            vm.showfoods=false;
             vm.title = "修改";
-
-            vm.getInfo(id)
         },
         saveOrUpdate: function (event) {
             let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/update";
@@ -330,44 +418,10 @@ let vm = new Vue({
             });
         },
         /**
-         *  查看详情操作
-         */
-        lookDetail: function (rowId) {
-            vm.details = true;
-            vm.title = "详情"
-            console.log(rowId);
-            Ajax.request({
-                url: "../menuplan/menuinfo/" + rowId,
-                async: true,
-                successCallback: function (r) {
-                    console.log(r.menumap);
-                    vm.menumap = r.menumap;
-                    vm.menumapuser=vm.menumap.infomsg;
-                    vm.menumapsys=vm.menumap.sysuser;
-                    vm.menumaptype=vm.menumap.menutype;
-                    vm.menumapweight=vm.menumap.weight||'';
-
-                    vm.menumapst=vm.menumap.serviceCycleSt;
-                    vm.menumapet=vm.menumap.serviceCycleEt;
-                    vm.menutp=vm.menumap.menutype;
-                    vm.menutp1=vm.menumap.menutype[1];
-                    vm.menutp2=vm.menumap.menutype[2];
-                    vm.menutp3=vm.menumap.menutype[3];
-                    vm.menutp4=vm.menumap.menutype[4];
-                    vm.menutp5=vm.menumap.menutype[5];
-                    vm.menutp6=vm.menumap.menutype[6];
-
-                }
-            });
-        },
-        /**
          *  审核窗口
          */
         openStatus: function () {
             var id = getSelectedRow("#jqGrid");
-            if (id == null) {
-                return;
-            }
             openWindow({
                 type: 2,
                 title: '审核',
@@ -495,6 +549,7 @@ let vm = new Vue({
 
         addfoodlist:function(){
             this.foodlist.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -511,6 +566,7 @@ let vm = new Vue({
          */
         addfoodlistadd() {
             this.foodlistadd.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -528,6 +584,7 @@ let vm = new Vue({
 
         addfoodlist1:function(){
             this.foodlist1.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -545,6 +602,7 @@ let vm = new Vue({
          */
         addfoodlistadd1() {
             this.foodlistadd1.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -562,6 +620,7 @@ let vm = new Vue({
 
         addfoodlist2:function(){
             this.foodlist2.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -579,6 +638,7 @@ let vm = new Vue({
          */
         addfoodlistadd2() {
             this.foodlistadd2.push({
+                dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
                 dishesCalories:''
@@ -597,6 +657,7 @@ let vm = new Vue({
         selectfood:function(event,i){
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist[i].dishesId=this.targetKeys3[num].id;
             this.foodlist[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlist[i].dishesName=this.targetKeys3[num].dishesName;
@@ -604,6 +665,7 @@ let vm = new Vue({
         selectfood1:function(event,i){
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd[i].dishesName=this.targetKeys3[num].dishesName;
@@ -611,6 +673,7 @@ let vm = new Vue({
         selectfood2:function(event,i){
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist1[i].dishesId=this.targetKeys3[num].id;
             this.foodlist1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlist1[i].dishesName=this.targetKeys3[num].dishesName;
@@ -618,6 +681,7 @@ let vm = new Vue({
         selectfood3:function(event,i){
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd1[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd1[i].dishesName=this.targetKeys3[num].dishesName;
@@ -625,6 +689,7 @@ let vm = new Vue({
         selectfood4:function(event,i){
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlist2[i].dishesId=this.targetKeys3[num].id;
             this.foodlist2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlist2[i].dishesName=this.targetKeys3[num].dishesName;
@@ -633,21 +698,48 @@ let vm = new Vue({
 
             let num=event.value;
             console.log(this.targetKeys3[num].dishesCoverPic);
+            this.foodlistadd2[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd2[i].dishesName=this.targetKeys3[num].dishesName;
-        }
+        },
     },
     mounted() {
-        // this.uploadList = this.$refs.upload.fileList;
         this.adddd();
         this.data3=this.getMockData();
-        console.log(this.data3)
         this.targetKeys3=this.getTargetKeys();
-        console.log(this.targetKeys3);
     }
 });
-function load() {
-    vm.reload();
+var vmm = new Vue({
+    el: '#munuplancheck',
+    data: {
+        menuPlan :{menuStatus: '0'},
+        show:false,
+        id:'',
+    },
+    mounted(){
+        let  Id=getQueryString("Id");
+        this.id=Id;
+    },
+    methods: {
+        sumbit:function () {
+            let that=this;
+            console.log("fidif"+that.id);
+            Ajax.request({
+                type: "POST",
+                url: "../menuplan/update",
+                contentType: "application/json",
+                params: JSON.stringify(that.id),
+                successCallback: function(r) {
+                    vm.reload();
+                }
+            });
+        },
+        close:function(){
+            this.show=false;
+        },
+        affirm:function(event){
 
-}
+        }
+    }
+});

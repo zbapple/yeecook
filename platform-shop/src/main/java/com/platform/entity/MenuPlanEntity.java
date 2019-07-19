@@ -59,6 +59,8 @@ public class MenuPlanEntity implements Serializable {
     private Double weight;
     //食谱类型
     private String menuType;
+    //菜品id
+    private Integer dishesId;
     //菜品名称
     private String dishesName;
     //菜品描述

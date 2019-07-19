@@ -124,6 +124,7 @@
 
     <insert id="save" parameterType="com.platform.entity.MenuPlanEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into user_nutrition_menu(
+		    `id`,
 			`nideshop_user_id`,
 			`menu_cover_pic`,
 			`nutrition_principle`,
@@ -136,6 +137,7 @@
 			`menu_status`,
 			`menu_name`)
 		values(
+		    #{id},
 			#{nideshopUserId},
 			#{menuCoverPic},
 			#{nutritionPrinciple},
