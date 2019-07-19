@@ -70,4 +70,5 @@ public interface UserDetectionCycleService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
 }

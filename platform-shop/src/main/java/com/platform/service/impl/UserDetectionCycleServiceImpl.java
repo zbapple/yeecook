@@ -1,8 +1,11 @@
 package com.platform.service.impl;
 
+import com.platform.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +33,7 @@ public class UserDetectionCycleServiceImpl implements UserDetectionCycleService 
 
     @Override
     public List<UserDetectionCycleEntity> queryList(Map<String, Object> map) {
+
         return userDetectionCycleDao.queryList(map);
     }
 
@@ -57,4 +61,5 @@ public class UserDetectionCycleServiceImpl implements UserDetectionCycleService 
     public int deleteBatch(Integer[] ids) {
         return userDetectionCycleDao.deleteBatch(ids);
     }
+
 }

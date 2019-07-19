@@ -53,6 +53,9 @@
             <Form-item label="检测周期" prop="inspectionCycle">
                 <i-input v-model="userDetectionCycle.inspectionCycle" placeholder="检测周期"/>
             </Form-item>
+            <Form-item label="下次检测时间" prop="inspectionCycle">
+                <i-input v-model="userDetectionCycle.nextTime" placeholder="下次检测时间"/>
+            </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>

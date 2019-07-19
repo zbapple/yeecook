@@ -18,6 +18,11 @@ $(function () {
                     return  transDate(value).substring(0,10);
                 }},
 			{label: '检测周期', name: 'inspectionCycle', index: 'inspection_cycle', width: 80},
+            {label: '下次检测时间',name:'nextTime',index:'next_time',width:80,
+               formatter:function (value) {
+                   return transDate(value).substring(0,10);
+               }
+            },
 			]
     });
 });

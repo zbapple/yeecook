@@ -50,10 +50,7 @@
 		from menu_details  a
 		LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
 		LEFT join dishes c on a.dishes_id=c.id
-		WHERE 1=1
-		<if test="nideshopUserid != null">
-			AND nideshop_user_id=#{nideshopUserid}
-		</if>
+		WHERE a.user_nutrition_menu_id=#{userNutritionMenuId}
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}

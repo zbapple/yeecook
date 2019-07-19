@@ -1,8 +1,12 @@
 package com.platform.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.UserEntity;
+import com.platform.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +43,27 @@ public class UserDetectionCycleController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        //下次检测时间
         List<UserDetectionCycleEntity> userDetectionCycleList = userDetectionCycleService.queryList(query);
+        for (UserDetectionCycleEntity userDetectionCycleEntity:userDetectionCycleList) {
+            Integer id = userDetectionCycleEntity.getId();
+            String num = userDetectionCycleEntity.getInspectionCycle();
+            Date star = userDetectionCycleEntity.getInspectionStartDate();
+            Date end = userDetectionCycleEntity.getInspectionEndDate();
+            Long cha = end.getTime()-star.getTime();
+            Long numm = Long.valueOf(num);
+            Long j = cha / numm;
+            String q = String.valueOf(j);
+            float f = Float.parseFloat(q);
+            int i = (int) (f + 0.5);
+            String ii = String.valueOf(i);
+            Long ill = Long.valueOf(ii);
+            Date time = userDetectionCycleEntity.getInspectionTime();
+            Long tii = time.getTime();
+            Long l=tii+ill;
+            Date d=new Date(l);
+            userDetectionCycleEntity.setNextTime(d);
+        }
         int total = userDetectionCycleService.queryTotal(query);
 
         PageUtils pageUtil = new PageUtils(userDetectionCycleList, total, query.getLimit(), query.getPage());

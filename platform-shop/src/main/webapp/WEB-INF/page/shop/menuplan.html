@@ -65,8 +65,8 @@
                 <i-col span="4">
                     <i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>
                         <i-option v-for="item in CateringServiceOrgNames"
-                                  :value="item.cateringServiceOrgName"
-                                  :key="item.cateringServiceOrgName">{{item.cateringServiceOrgName}}
+                                  :value="item.name"
+                                  :key="item.name">{{item.name}}
                         </i-option>
                     </i-select>
                 </i-col>
@@ -329,16 +329,6 @@
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;" @click="addfoodlistadd2">添加</div>
             </div>
-            <Form-item label="状态" prop="menuStatus">
-                <Radio-group v-model="menuPlan.menuStatus">
-                    <Radio label="0">
-                        <span>未签约</span>
-                    </Radio>
-                    <Radio label="1">
-                        <span>已签约</span>
-                    </Radio>
-                </Radio-group>
-            </Form-item>
             <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 436px;">
                 <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="6" placeholder="营养原理"/>
             </Form-item>
@@ -383,25 +373,25 @@
             <div style="font-size:12px">
                 <p><span style="width: 215px;display: inline-block;">{{menumapuser.serviceStage}}</span> <span style="width:90px;display: inline-block;"> 计划开始时间：</span><span style="width:160px;display: inline-block;">{{menumapst}}</span><span style="width: 90px;display: inline-block;">计划结束时间：</span><span style="width: 230px;display: inline-block;">{{menumapet}}</span><span>周期：</span><span>31天</span></p>
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
+            <div style="border-bottom: 1px solid #e5e5e6;" >
                 <h4 style="height:40px;line-height: 40px">早餐</h4>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;"     >-->
-                    <!--<div style="width:50px;height: 50px;float:left;"><img :src="menutp.dishesCoverPic" style="width:50px;height: 50px;"></div>-->
-                    <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp.dishesName}}</div>-->
-                    <!--<div style="float: left;line-height: 50px;">{{menutp.dishesCalories}}</div>-->
-                <!--</div>-->
-                <div style="overflow: hidden;padding-bottom: 10px;">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp3.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp3.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp3.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in zaolist" v-if="i<5">
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
+                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
+                    <!--<div style="width:50px;height: 50px;float:left;"><img :src="menutp3.dishesCoverPic" style="width:50px;height: 50px;"></div>-->
+                    <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{dishesName}}</div>-->
+                    <!--<div style="float: left;line-height: 50px;">{{dishesCalories}}</div>-->
+                <!--</div>-->
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
+            <div style="border-bottom: 1px solid #e5e5e6;" >
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" >
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp5.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp5.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp5.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in zaoaddlist" v-if="i<5">
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
                 <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
                     <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
@@ -409,12 +399,12 @@
                     <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
                 <!--</div>-->
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
+            <div style="border-bottom: 1px solid #e5e5e6;" >
                 <h4 style="height:40px;line-height: 40px">午餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" >
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp1.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp1.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp1.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;"v-for="(item,i) in wulist" v-if="i<5" >
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
                 <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
                     <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
@@ -422,25 +412,25 @@
                     <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
                 <!--</div>-->
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
+            <div style="border-bottom: 1px solid #e5e5e6;"  >
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" >
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp4.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp4.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp4.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;"  v-for="(item,i) in wuaddlist" v-if="i<5">
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
                 <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
                     <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                    <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">菜品名字</div>-->
-                    <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
+                    <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;"></div>-->
+                    <!--<div style="float: left;line-height: 50px;"></div>-->
                 <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">晚餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" >
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp2.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp2.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp2.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wanlist" v-if="i<5">
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
                 <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
                     <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
@@ -450,10 +440,10 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" >
-                    <div style="width:50px;height: 50px;float:left;"><img :src="menutp6.dishesCoverPic" style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{menutp6.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{menutp6.dishesCalories}}</div>
+                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wanaddlist" v-if="i<5">
+                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic" style="width:50px;height: 50px;"></div>
+                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
+                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
                 <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
                     <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
@@ -463,15 +453,13 @@
             </div>
             <div style="margin-top:40px;overflow: hidden;">
                 <div style="float: left;width:103px;">营养原理</div>
-                <div style="float:left;width: 470px;"></div>
+                <div style="float:left;width: 470px;">{{menumapuser.nutritionPrinciple}}</div>
             </div>
             <div style="margin-left:480px;margin-top: 60px;">
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
             </div>
         </div>
       </Card>
-
-
 
     <Card v-show="showfoods ">
         <p slot="title">{{title}}</p>

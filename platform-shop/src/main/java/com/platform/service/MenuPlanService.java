@@ -72,11 +72,11 @@ public interface MenuPlanService {
      */
     int deleteBatch(Integer[] ids);
 
-//    /**
-//     * 审核状态
-//     **/
-//    int updatestatus(MenuPlanEntity menuPlan);
-
+    /**
+     *
+     * @Param
+     **/
+     void updateinfo(MenuPlanEntity menuPlan);
 
 
 }
