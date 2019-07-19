@@ -116,6 +116,6 @@ public class ApiUserController extends ApiBaseAction {
         UserVo userVo = userService.queryObject(loginUser.getUserId());
         userVo.setMobile(mobile);
         userService.update(userVo);
-        return toResponsSuccess("手机绑定成功");
+        return toResponsSuccess(mobile);
     }
 }
