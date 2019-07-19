@@ -18,7 +18,7 @@ Page({
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
-
+ 
 
   },
   onReady: function () {
@@ -33,7 +33,7 @@ Page({
     // 页面隐藏
 
   },
-  onUnload: function () {
+  onUnload: function () { 
     // 页面关闭
 
   },
@@ -46,7 +46,6 @@ Page({
           cartTotal: res.data.cartTotal
         });
       }
-
       that.setData({
         checkedAllStatus: that.isCheckedAll()
       });
@@ -65,7 +64,6 @@ Page({
   checkedItem: function (event) {
     let itemIndex = event.target.dataset.itemIndex;
     let that = this;
-
     if (!this.data.isEditCart) {
       util.request(api.CartChecked, { productIds: that.data.cartGoods[itemIndex].product_id, isChecked: that.data.cartGoods[itemIndex].checked ? 0 : 1 }, 'POST').then(function (res) {
         if (res.errno === 0) {
@@ -74,9 +72,18 @@ Page({
             cartTotal: res.data.cartTotal
           });
         }
-
+        //选择
+        // let tmpCartData = that.data.cartGoods.map(function (element, index, array) {
+        //   if (index == itemIndex) {
+        //     element.checked = !element.checked;
+        //   }
+        //   return element;
+        // });
         that.setData({
-          checkedAllStatus: that.isCheckedAll()
+          // cartGoods: tmpCartData,
+          checkedAllStatus: that.isCheckedAll(),
+          'cartTotal.checkedGoodsCount': that.getCheckedGoodsCount()
+          // 'cartTotal.checkedGoodsAmount':that.getPrice()
         });
       });
     } else {
@@ -85,10 +92,8 @@ Page({
         if (index == itemIndex){
           element.checked = !element.checked;
         }
-        
         return element;
       });
-
       that.setData({
         cartGoods: tmpCartData,
         checkedAllStatus: that.isCheckedAll(),
@@ -99,11 +104,21 @@ Page({
   getCheckedGoodsCount: function(){
     let checkedGoodsCount = 0;
     this.data.cartGoods.forEach(function (v) {
-      if (v.checked === true) {
+      if (v.checked) {
         checkedGoodsCount += v.number;
       }
     });
     return checkedGoodsCount;
+  },
+  getPrice: function(){ 
+    let sum = 0;
+    // console.log(this.data.cartGoods);
+    this.data.cartGoods.forEach(function(v){
+      if(v.checked){
+        sum += v.retail_price*v.number;
+      }
+    });
+    return sum;
   },
   checkedAll: function () {
     let that = this;
@@ -119,10 +134,16 @@ Page({
             cartTotal: res.data.cartTotal
           });
         }
-
-        that.setData({
-          checkedAllStatus: that.isCheckedAll()
-        });
+        // let checkedAllStatus = that.isCheckedAll();
+        // let tmpCartData = that.data.cartGoods.map(function (v) {
+        //   v.checked = !checkedAllStatus;
+        //   return v;
+        // });
+        // that.setData({
+        //   cartGoods: tmpCartData,
+        //   checkedAllStatus: that.isCheckedAll(),
+        //   'cartTotal.checkedGoodsCount': that.getCheckedGoodsCount()
+        // });
       });
     } else {
       //编辑状态
@@ -131,7 +152,6 @@ Page({
         v.checked = !checkedAllStatus;
         return v;
       });
-
       that.setData({
         cartGoods: tmpCartData,
         checkedAllStatus: that.isCheckedAll(),
@@ -168,15 +188,15 @@ Page({
       url: "/pages/index/index"
     });
   },
-  updateCart: function (productId, goodsId, number, id) {
-    let that = this;
-
+  updateCart: function (productId, goodsId, number, id) { 
+    let that = this;  
+    // console.log(number);
     util.request(api.CartUpdate, {
       productId: productId,
       goodsId: goodsId,
       number: number,
       id: id
-    }, 'POST').then(function (res) {
+    }, 'POST','raw').then(function (res) {
       if (res.errno === 0) {
         that.setData({
           //cartGoods: res.data.cartList,
@@ -190,7 +210,7 @@ Page({
     });
 
   },
-  cutNumber: function (event) {
+  cutNumber: function (event) { 
 
     let itemIndex = event.target.dataset.itemIndex;
     let cartItem = this.data.cartGoods[itemIndex];
@@ -199,6 +219,7 @@ Page({
     this.setData({
       cartGoods: this.data.cartGoods
     });
+    
     this.updateCart(cartItem.product_id, cartItem.goods_id, number, cartItem.id);
   },
   addNumber: function (event) {
@@ -215,15 +236,14 @@ Page({
   checkoutOrder: function () {
     //获取已选择的商品
     let that = this;
-
+    // console.log(this.data.cartGoods);
     var checkedGoods = this.data.cartGoods.filter(function (element, index, array) {
-      if (element.checked == true) {
+      if (element.checked) {
         return true;
       } else {
         return false;
       }
     });
-
     if (checkedGoods.length <= 0) {
       return false;
     }
@@ -258,22 +278,26 @@ Page({
 
     util.request(api.CartDelete, {
       productIds: productIds.join(',')
-    }, 'POST').then(function (res) {
+    }, 'POST','raw').then(function (res) {
       if (res.errno === 0) {
         let cartList = res.data.cartList.map(v => {
           v.checked = false;
           return v;
         });
-
         that.setData({
           cartGoods: cartList,
           cartTotal: res.data.cartTotal
         });
       }
-
       that.setData({
         checkedAllStatus: that.isCheckedAll()
       });
     });
+  },
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+    this.getCartList();
   }
 })

@@ -4,7 +4,7 @@ var api = require('../../../config/api.js');
 Page({
   data:{
     orderId:'',
-    orderList: [],
+    orderList: [], 
     page: 1,
     size: 10,
     loadmoreText: '正在加载更多数据',
@@ -19,7 +19,6 @@ Page({
     this.setData({
       orderId: options.id
     });
-    console.log(options)
     wx.showLoading({
       title: '加载中...',
       success: function () {
@@ -37,7 +36,6 @@ Page({
       page:1,
       orderList:[]
     });
-    console.log(this.data.orderId)
     this.getOrderList();
   }, 
 
@@ -78,24 +76,19 @@ Page({
       })
   },
   cancelOrder(event) {
-    console.log('开始取消订单');
     let that = this; 
     let orderIndex = event.currentTarget.dataset.orderIndex;
     let order = that.data.orderList[orderIndex];
-    console.log('可以取消订单的情况');
     wx.showModal({
       title: '',
       content: '确定要取消此订单？',
       success: function (res) {
         if (res.confirm) {
-          console.log('用户点击确定');
 
           util.request(api.OrderCancel, {
             orderId: order.id
           }).then(function (res) {
-            console.log(res.errno);
             if (res.errno === 0) {
-              console.log(res.data);
               wx.showModal({
                 title: '提示',
                 content: res.data,
@@ -117,24 +110,19 @@ Page({
   },
   confirmOrder(event) {
     //确认收货
-    console.log('开始确认收货');
     let that = this;
     let orderIndex = event.currentTarget.dataset.orderIndex;
     let order = that.data.orderList[orderIndex];
-    console.log('可以取消订单的情况');
     wx.showModal({
       title: '',
       content: '确定已经收到商品？',
       success: function (res) {
         if (res.confirm) {
-          console.log('用户点击确定');
 
           util.request(api.OrderConfirm, {
             orderId: order.id
           }).then(function (res) {
-            console.log(res.errno);
             if (res.errno === 0) {
-              console.log(res.data);
               wx.showModal({
                 title: '提示',
                 content: res.data,
@@ -158,8 +146,6 @@ Page({
     let that = this;
     let orderIndex = event.currentTarget.dataset.orderIndex;
     let order = that.data.orderList[orderIndex];
-    console.log("------------------")
-    console.log(order.goods_id)
     wx.navigateTo({
       url: '/pages/goods/goods?id=' + order.goods_id,
     });

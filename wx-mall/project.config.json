@@ -5,10 +5,13 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.0",
+	"libVersion": "2.7.4",
 	"appid": "wxa2566230db99c9ab",
 	"projectname": "wxshop",
 	"simulatorType": "wechat",
@@ -30,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 26,
 			"list": [
 				{
 					"id": 0,
@@ -65,7 +68,7 @@
 				},
 				{
 					"id": 5,
-					"name": "index",
+					"name": "首页",
 					"pathName": "pages/cookbook/cookbook",
 					"query": "",
 					"scene": null
@@ -82,6 +85,138 @@
 					"name": "餐单二级页面",
 					"pathName": "pages/cookbookcontent/cookbookcontent",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "exprience",
+					"pathName": "pages/experience/exprience",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/ucenter/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "cloud",
+					"pathName": "pages/cloud/cloud",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "shop",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "套餐详情",
+					"pathName": "pages/cookdetails/cookdetails",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "健康报告",
+					"pathName": "pages/report/report",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "身体数据编辑",
+					"pathName": "pages/ucenter/bodyupdate/bodyupdate",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商城",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "云课堂详情",
+					"pathName": "pages/clouddetail/clouddetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "菜谱详情",
+					"pathName": "pages/cookfood/cookfood",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "元素详情",
+					"pathName": "pages/cookfoodmutrition/cookfoodmutrition",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "视频详情",
+					"pathName": "pages/clouddetail/clouddetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "添加身体数据",
+					"pathName": "pages/ucenter/bodyadd/bodyadd",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品详情",
+					"pathName": "pages/shopdetail/shopdetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "服务详情",
+					"pathName": "pages/shopserver/shopserver",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "每日健康报告",
+					"pathName": "pages/reportdetail/reportdetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/cookbook/cookbook",
+					"pathName": "pages/cookbook/cookbook",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/auth/mobile/mobile",
+					"pathName": "pages/auth/mobile/mobile",
 					"scene": null
 				}
 			]

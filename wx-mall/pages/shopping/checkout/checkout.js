@@ -106,7 +106,7 @@ Page({
   },
 
   /**
-   * 获取优惠券
+   * 获取优惠券 
    */
   getCouponData: function () {
     if (app.globalData.userCoupon == 'USE_COUPON') {
@@ -152,7 +152,7 @@ Page({
         const orderId = res.data.orderInfo.id;
         pay.payOrder(parseInt(orderId)).then(res => {
           wx.redirectTo({
-            url: '/pages/payResult/payResult?status=1&orderId=' + orderId
+            url: '/pages/payResult/payResult?status=1&orderId=' + orderId 
           });
         }).catch(res => {
           wx.redirectTo({

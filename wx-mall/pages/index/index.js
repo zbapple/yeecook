@@ -10,74 +10,106 @@ Page({
     hotGoods: [],
     topics: [],
     brands: [],
-    floorGoods: [],
+    floorGoods: [], 
     banner: [],
     channel: [],
-    goodsCount: 0
+    goodsCount: 0,
+    GoodsList:[],
+    list: []
   },
-  onShareAppMessage: function () {
-    return {
-      title: '51Shop',
-      desc: '51商城',
-      path: '/pages/index/index'
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '51Shop',
+  //     desc: '51商城',
+  //     path: '/pages/index/index'
+  //   }
+  // },
   onPullDownRefresh(){
 	  	// 增加下拉刷新数据的功能
 	    var self = this;
-	    this.getIndexData();
+    let that = this; 
+    var data = new Object();
+    let p = new Promise(function (resolve, reject){
+      util.request(api.GoodsList).then(function (res) {
+        resolve();
+        if (res.errno === 0) {
+          data.GoodsList = res.data.goodsList
+          that.setData(data);
+        }
+      });
+    });
+    p.then(function(){
+      util.request(api.IndexUrlBanner).then(function (res) {
+        if (res.errno === 0) {
+          wx.stopPullDownRefresh();
+          data.banner = res.data.banner
+          that.setData(data);
+        }
+      });
+    });
+    
   },
   getIndexData: function () {
     let that = this;
     var data = new Object();
-    util.request(api.IndexUrlNewGoods).then(function (res) {
+    // util.request(api.IndexUrlNewGoods).then(function (res) {
+    //   if (res.errno === 0) {
+    //     console.log("newGoodList");
+    //     console.log(res.data.newGoodsList )
+    //     data.newGoods= res.data.newGoodsList
+    //   that.setData(data); 
+    //   }
+    // });
+    util.request(api.GoodsList).then(function (res) {
       if (res.errno === 0) {
-        data.newGoods= res.data.newGoodsList
+        data.GoodsList = res.data.goodsList
       that.setData(data);
       }
     });
-    util.request(api.IndexUrlHotGoods).then(function (res) {
-      if (res.errno === 0) {
-        data.hotGoods = res.data.hotGoodsList
-      that.setData(data);
-      }
-    });
-    util.request(api.IndexUrlTopic).then(function (res) {
-      if (res.errno === 0) {
-        data.topics = res.data.topicList
-      that.setData(data);
-      }
-    });
-    util.request(api.IndexUrlBrand).then(function (res) {
-      if (res.errno === 0) {
-        data.brand = res.data.brandList
-      that.setData(data);
-      }
-    });
-    util.request(api.IndexUrlCategory).then(function (res) {
-      if (res.errno === 0) {
-        data.floorGoods = res.data.categoryList
-      that.setData(data);
-      }
-    });
+    // util.request(api.IndexUrlTopic).then(function (res) {
+    //   if (res.errno === 0) {
+    //     console.log("topics");
+    //     console.log(res.data.topicList);
+    //     data.topics = res.data.topicList
+    //   that.setData(data);
+    //   }
+    // });
+    // util.request(api.IndexUrlBrand).then(function (res) {
+    //   console.log("brand")
+    //   console.log(res);
+    //   if (res.errno === 0) {
+    //     data.brand = res.data.brandList
+    //   that.setData(data);
+    //   }
+    // });
+    // util.request(api.IndexUrlCategory).then(function (res) {
+    //   console.log(res.data.categoryList)
+    //   if (res.errno === 0) {
+    //     data.floorGoods = res.data.categoryList
+    //   that.setData(data);
+    //   }
+    // });
     util.request(api.IndexUrlBanner).then(function (res) {
-
       if (res.errno === 0) {
         data.banner = res.data.banner
       that.setData(data);
       }
     });
-    util.request(api.IndexUrlChannel).then(function (res) {
-      if (res.errno === 0) {
-        data.channel = res.data.channel
-      that.setData(data);
-      }
-    });
-    util.request(api.GoodsCount).then(function (res) {
-      that.setData({
-        goodsCount: res.data.goodsCount
-      });
-    });
+    // util.request(api.IndexUrlChannel).then(function (res) {
+    //   if (res.errno === 0) {
+    //     console.log("channel")
+    //     console.log(res.data.channel);
+    //     data.channel = res.data.channel;
+    //   that.setData(data);
+    //   }
+    // });
+    // util.request(api.GoodsCount).then(function (res) {
+    //   console.log("goodsCount");
+    //   console.log(res.data.goodsCount)
+    //   that.setData({
+    //     goodsCount: res.data.goodsCount
+    //   });
+    // });
 
   },
   onLoad: function (options) {
@@ -95,4 +127,24 @@ Page({
   onUnload: function () {
     // 页面关闭
   },
+  ToshopDetail: function(event){ 
+    wx.navigateTo({
+      url: '/pages/shopdetail/shopdetail?id='+event.currentTarget.dataset.id,
+    })
+  },
+  tocart: function () {
+    wx.navigateTo({
+      url: '/pages/cart/cart'
+    })
+  },
+  Tolow: function(){
+    wx.navigateTo({
+      url: '/pages/shopserver/shopserver',
+    })
+  },
+  Towidom: function(){
+    wx.navigateTo({
+      url: '/pages/shopserver/shopserver',
+    }) 
+  }
 })

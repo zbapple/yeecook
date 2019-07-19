@@ -1,9 +1,10 @@
 
 const root = '/shop/api/';
-const NewApiRootUrl = 'http://localhost:8080' + root;
-//const NewApiRootUrl = 'https://www.yeecook.com' + root;
-module.exports = {
-  IndexUrlNewGoods: NewApiRootUrl + 'index/newGoods', //
+// const NewApiRootUrl = 'http://192.168.3.53:8082' + root;
+const NewApiRootUrl = 'https://www.yeecook.com' + root; 
+// const NewApiRootUrl = 'http://192.168.3.182:8080' + root;
+// const NewApiRootUrl ='http://192.168.3.24:8081'+ root;
+module.exports = { 
   IndexUrlHotGoods: NewApiRootUrl + 'index/hotGoods', //首页数据接口
   IndexUrlTopic: NewApiRootUrl + 'index/topic', //首页数据接口
   IndexUrlBrand: NewApiRootUrl + 'index/brand', //首页数据接口IndexUrlChannel
@@ -12,12 +13,12 @@ module.exports = {
   IndexUrlChannel: NewApiRootUrl + 'index/channel', //首页数据接口IndexUrlChannel
     CatalogList: NewApiRootUrl + 'catalog/index',  //分类目录全部分类数据接口
     CatalogCurrent: NewApiRootUrl + 'catalog/current',  //分类目录当前分类数据接口
-
+    
     AuthLoginByWeixin: NewApiRootUrl + 'auth/login_by_weixin', //微信登录
 
     GoodsCount: NewApiRootUrl + 'goods/count',  //统计商品总数
     GoodsList: NewApiRootUrl + 'goods/list',  //获得商品列表
-    GoodsCategory: NewApiRootUrl + 'goods/category',  //获得分类数据
+    GoodsCategory: NewApiRootUrl + 'goods/category',  //获得分类数据 
     GoodsDetail: NewApiRootUrl + 'goods/detail',  //获得商品的详情
     GoodsNew: NewApiRootUrl + 'goods/new',  //新品
     GoodsHot: NewApiRootUrl + 'goods/hot',  //热门
@@ -86,4 +87,33 @@ module.exports = {
     HelpIssueList: NewApiRootUrl + 'helpissue/issueList', //查看问题列表
     PrintList: NewApiRootUrl + 'xetyqm/list', //邀请码打印信息查看  
     Print: NewApiRootUrl + 'xetyqm/print', //打印邀请码
+  Cookbook: NewApiRootUrl +'newmenu/index',//餐单首页 
+  Cookbookcontent: NewApiRootUrl +'newmenulist/menuinfo',//餐单二级页面
+  Cookbookcontent: NewApiRootUrl +'newmenulist/menuinfo',//餐单二级页面
+  Cookbookdetail: NewApiRootUrl +'products/poductslist',//具体菜市
+
+  Userbodyinfo: NewApiRootUrl +'userbodyinfo/info',//我的身体数据
+  Userbodyupdate: NewApiRootUrl +'userbodyinfo/update',//修改我的身体数据
+  Userbodyinfoadd: NewApiRootUrl + 'userbodyinfo/add',//添加身体数据
+
+  Reportlist: NewApiRootUrl +'userhealthreport/userdateinfo',//身体健康记录报表
+  Userhealthreportdetail: NewApiRootUrl +'userhealthreport/userbodyinfo',//身体健康具体信息
+  Uuserhealthreportmaxuser: NewApiRootUrl +'userhealthreport/maxuser',//身体数据的平均值
+  Userhealthreport: NewApiRootUrl + 'userhealthreport/add',//添加用户身体健康报
+  Userdetectioncycleinfo: NewApiRootUrl +'userdetectioncycle/info',//首页检测周期
+  MenuDetailsmenuinfo: NewApiRootUrl +'MenuDetails/menuinfo',//首页的每日个人食谱
+  Usernutritioninfo: NewApiRootUrl +'usernutrition/info',
+
+  Cloudclassroombaner: NewApiRootUrl +'cloudclassroom/baner',//云课堂轮播图
+  Cloudclassroomlist: NewApiRootUrl +'cloudclassroom/list',//云课堂播放列表
+  Cloudclassroomdetail: NewApiRootUrl + 'cloudclassroom/baner',//云课堂详情
+  Cloudclassroomgoodinfo: NewApiRootUrl + 'cloudclassroomgood/info',//获取视频详情的商品
+  Usercommentsinfo: NewApiRootUrl +'usercomments/info' ,//获取视频评论
+
+  MenuDetailstodayinfo: NewApiRootUrl+'MenuDetails/todayinfo',//每日套餐的菜谱
+  Dishesdishesinfo: NewApiRootUrl +'dishes/dishesinfo',//菜谱详情
+  DishesSteps: NewApiRootUrl +'DishesSteps/dishesstepinfo',//菜谱步骤
+  Dishesnutrieninfo: NewApiRootUrl +'nutrientelements/nutrieninfo',//营养元素
+  Foodingredientsinfo: NewApiRootUrl + 'foodingredients/info',//食材
+  Nutrientelementsproportion: NewApiRootUrl+'nutrientelements/proportion'//营养比例
 };

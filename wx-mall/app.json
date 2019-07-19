@@ -43,44 +43,55 @@
     "pages/cookbookcontent/cookbookcontent",
     "pages/cookbookmuti/cookbookmuti",
     "pages/cookbookdetail/cookbookdetail",
-    "pages/ucenter/scale/scale"
+    "pages/ucenter/scale/scale",
+    "pages/experience/exprience",
+    "pages/cloud/cloud",
+    "pages/cookdetails/cookdetails",
+    "pages/report/report",
+    "pages/ucenter/bodyupdate/bodyupdate",
+    "pages/clouddetail/clouddetail",
+    "pages/cookfood/cookfood",
+    "pages/cookfoodmutrition/cookfoodmutrition",
+    "pages/ucenter/bodyadd/bodyadd",
+    "pages/shopdetail/shopdetail",
+    "pages/shopserver/shopserver",
+    "pages/reportdetail/reportdetail"
   ],
   "window": {
     "navigationStyle": "default",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "宜厨优选",
+    "navigationBarTitleText": "宜厨妈妈",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },
   "tabBar": {
-    "backgroundColor": "#fafafa",
-    "borderStyle": "white",
-    "selectedColor": "#b4282d",
-    "color": "#666",
+    "backgroundColor": "#F7F7FA",
+    "color": "#A8ACBC",
+    "selectedColor": "#6AB8B6",
     "list": [
       {
         "pagePath": "pages/cookbook/cookbook",
-        "iconPath": "static/images/ic_menu_.cookbook_nor.png",
-        "selectedIconPath": "static/images/ic_menu_.cookbook_pressed.png",
-        "text": "餐谱"
+        "iconPath": "static/images/tabbar_hp.png",
+        "selectedIconPath": "static/images/tabbar_hp_pre.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/cloud/cloud",
+        "iconPath": "static/images/tabbar_ivideo.png",
+        "selectedIconPath": "static/images/tabbar_ivideo_pre.png",
+        "text": "云课堂"
       },
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/images/ic_menu_sort_nor.png",
-        "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
-        "text": "产品"
-      },
-      {
-        "pagePath": "pages/cart/cart",
-        "iconPath": "static/images/ic_menu_shoping_nor.png",
-        "selectedIconPath": "static/images/ic_menu_shoping_pressed.png",
-        "text": "购物车"
+        "iconPath": "static/images/tabbar_shop.png",
+        "selectedIconPath": "static/images/tabbar_shop_pre.png",
+        "text": "商城"
       },
       {
         "pagePath": "pages/ucenter/index/index",
-        "iconPath": "static/images/ic_menu_me_nor.png",
-        "selectedIconPath": "static/images/ic_menu_me_pressed.png",
+        "iconPath": "static/images/tabbar_my.png",
+        "selectedIconPath": "static/images/tabbar_my_pre.png",
         "text": "我的"
       }
     ]
@@ -90,5 +101,15 @@
     "downloadFile": 10000
   },
   "debug": true,
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "plugins": {
+    "yeecookscale": {
+      "version": "2.4.1",
+      "provider": "wx2a4ca48ed5e96748"
+    },
+    "yeecookscl": {
+      "version": "1.1.0",
+      "provider": "wx043a474648d3d591"
+    }
+  }
 }

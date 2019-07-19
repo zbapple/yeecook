@@ -5,12 +5,6 @@
         <image src="{{item.img_url}}" background-size="cover"></image>
       </swiper-item>
     </swiper>
-    <!-- <view class='fx_info'><button open-type="share" class='icon_fx'></button></view>
-     <view class="service-policy">
-      <view class="item">30天无忧退货</view>
-      <view class="item">48小时快速退款</view>
-      <view class="item">满88元免邮费</view>
-    </view> -->
     <view class="goods-info">
       <view class="c">
         <view class="tx price">
@@ -31,14 +25,6 @@
       <view class="t">请选择规格数量</view>
       <image class="i" src="../../static/images/address_right.png" background-size="cover"></image>
     </view>
-    <!--<view class="section-nav section-act">
-      <view class="t">
-        <view class="label">1个促销:</view>
-        <view class="tag">万圣趴</view>
-        <view class="text">全场满499，额外送糖果</view>
-      </view>
-      <image class="i" src="../../static/images/address_right.png" background-size="cover"></image>
-    </view>-->
     <view class="comments" wx:if="{{comment.count > 0}}">
       <view class="h">
         <navigator url="../comment/comment?valueId={{goods.id}}&typeId=0">
@@ -61,7 +47,6 @@
           <view class="imgs" wx:if="{{comment.data.pic_list.length > 0}}">
             <image class="img" wx:for="{{comment.data.pic_list}}" wx:key="{{item.id}}" src="{{item.pic_url}}"></image>
           </view>
-          <!-- <view class="spec">白色 2件</view> -->
         </view>
       </view>
     </view>
@@ -79,8 +64,6 @@
       <import src="../../lib/wxParse/wxParse.wxml" />
       <template is="wxParse" data="{{wxParseData:goodsDetail.nodes}}" />
     </view>
-
-
     <view class="common-problem">
       <view class="h">
         <view class="line"></view>
@@ -153,8 +136,8 @@
 
 <view class="bottom-btn">
   <view class="l l-collect homeBox" bindtap="goUrl">
-    <image class="icon" src="../../static/images/ic_menu_choice_nor.png"></image>
-    <text>首页</text>
+    <image class="icon" src="../../static/images/ic_menu_sort_nor.png"></image>
+    <text>产品</text>
   </view>
   <view class="l l-collect {{ openAttr ? 'back' : ''}}" bindtap="closeAttrOrCollect">
     <image class="icon" src="{{ collectBackImage }}"></image>

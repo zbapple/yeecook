@@ -126,8 +126,6 @@ Page({
   //处理数据
   
   deelData: function(event){
-    console.log(event)
-    console.log(event.length);
     var list_zc=new Array();
     var zc_sum=0;
     var list_zd=new Array();
@@ -190,7 +188,6 @@ Page({
         wand_length: list_wand.length,
         wandsum:wand_sum
       });
-      console.log(this.data.listwand)
     }
   },
   hidepop:function(){
@@ -199,14 +196,12 @@ Page({
     })
   },
   showpop: function(event){
-    console.log(this.data.day);
     this.setData({
       show:true
     })
   },
   //选择天数
   Popselectday: function(event){
-    console.log(event.currentTarget.dataset.day)
     if (event.currentTarget.dataset.day!=this.data.day){
       this.setData({
         day: event.currentTarget.dataset.day,

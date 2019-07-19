@@ -19,7 +19,7 @@ Page({
     this.setData({
       orderId: options.id
     });
-    console.log(options)
+
     wx.showLoading({
       title: '加载中...',
       success: function () {
@@ -37,7 +37,6 @@ Page({
   //     page: 1,
   //     orderList: []
   //   });
-  //   console.log(this.data.orderId)
   //   this.getOrderList();
   // },
 
@@ -45,7 +44,6 @@ Page({
        * 页面上拉触底事件的处理函数
        */
   onReachBottom: function () {
-    console.log("下一页")
     this.getOrderList()
   },
 
@@ -61,7 +59,6 @@ Page({
     that.data.orderId = that.data.orderId == -1 ? "" : that.data.orderId;
     util.request(api.OrderList, { page: that.data.page, size: that.data.size, order_status: that.data.orderId }).then(function (res) {
       if (res.errno === 0) {
-        console.log(res.data);
         that.setData({
           orderList: that.data.orderList.concat(res.data.data),
           page: res.data.currentPage + 1,
@@ -72,24 +69,20 @@ Page({
     });
   },
   cancelOrder(event) {
-    console.log('开始取消订单');
     let that = this;
     let orderIndex = event.currentTarget.dataset.orderIndex;
     let order = that.data.orderList[orderIndex];
-    console.log('可以取消订单的情况');
     wx.showModal({
       title: '',
       content: '确定要取消此订单？',
       success: function (res) {
         if (res.confirm) {
-          console.log('用户点击确定');
 
           util.request(api.OrderCancel, {
             orderId: order.id
           }).then(function (res) {
-            console.log(res.errno);
+
             if (res.errno === 0) {
-              console.log(res.data);
               wx.showModal({
                 title: '提示',
                 content: res.data,

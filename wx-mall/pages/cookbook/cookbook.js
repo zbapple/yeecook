@@ -1,4 +1,5 @@
 // pages/cookbook/cookbook.js
+const app = getApp();
 const util = require('../../utils/util.js');
 const api = require('../../config/api.js');
 const user = require('../../services/user.js');
@@ -7,83 +8,116 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: {
-    showModalStatus:false,
-    srcoll:false,
-    srcolltop:false,
-    delivery_type:'',
-    feeding_type:'',
-    scrollTop: 0,
-    scrollHeight:0,
-    titleHeight:0,
-    box_top:'',
-    title_position:'',
-    title_top:'',
-    list: [],
-    listlength:true,
-    src_img: [{ "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/0150179464907a.jpg"},
-      { "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/0150548877f7ec.jpg"},
-      {  "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/015142269b09f8.jpg"},
-      { "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/015238796618be.jpg"},
-      { "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/01531187b23df.jpg"},
-      { "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/0153296614819f.jpg"},{
-        "src":"https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/015508534e2e7f.jpg"
-      }]
-  },
-  onPullDownRefresh() {
-    // 增加下拉刷新数据的功能
-    var self = this;
-    this.getIndexData();
-  },
+  data: { 
+    sorce:'--', 
+    weight:'--',
+    bmi:'--', 
+    pwnum:400, 
+    zcpwnum:0,
+    zclist: [],
+    wcpwnum:0,
+    wclist:[],
+    wancpwnum:0,
+    wanclist:[],
+    showfood:true,
+    showscal:false,
+    showcompute:true,
+    number:1,
+    userheight:0,
+    userbody:'' 
+  }, 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    this.getIndexData();
-  },
+  onLoad: function (options) { 
+  }, 
   getIndexData: function(){
-    let that = this;
-    var data = new Object();
-    that.setData({
-      listlength:true
-    })
-    util.request(api.Cookbook, { deliveryWay: that.data.delivery_type, feedingWay:that.data.feeding_type}).then(function (res) {
-      if (res.errno === 0) {
-        data.list = that.ListSort(res.data);
-        console.log(res.data.length)
-        if(!res.data.length){
-          data.listlength=false;
+    //获取当前的时间
+    var dateTime =getNowFormatDate();
+    var that=this;
+    let p1 = new Promise(function (resolve, reject) {
+      util.request(api.Userbodyinfo, {}, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+            that.setData({
+              sorce: res.data.bodyinfolist.goalweight,
+              weight: res.data.bodyinfolist.weight,
+              bmi: res.data.bodyinfolist.bmi 
+            });
+          resolve();
+        }else{
+          reject();
         }
-        that.setData(data);
-      }
+      });
     });
-  },
+    p1.then(function(){
+      util.request(api.MenuDetailsmenuinfo, { today: dateTime }, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+          if (res.data.flag == 1) {
+            that.setData({
+              pwnum: res.data.sum,
+              zcpwnum: res.data.countgood,
+              zclist: res.data.beabreakfastlist,
+              wcpwnum: res.data.couteve,
+              wclist: res.data.namemLunchlistap1,
+              wancpwnum: res.data.sumcalluch,
+              wanclist: res.data.Dinnerlist
+            });
+          } else {
+            that.setData({
+              showfood: true,
+              showcompute: false
+            })
+          }
+        }
+      });
+      util.request(api.Userdetectioncycleinfo, { datetime: dateTime }, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+          if (res.data.flag == 1) {
+            if (res.data.state == 0) {
+              that.setData({
+                showscal: true,
+                showfood: false
+              });
+            } else {
+              that.setData({
+                number: res.data.cout,
+                showscal: false,
+                showfood: true
+              })
+            }
+          } else {
+            that.setData({
+              showscal: false,
+              showfood: true
+            })
+          }
+        }
+      });
+    });
+    p1.catch(function () {
+    
+    });
+  }
+,
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-    var query = wx.createSelectorQuery();
-    var that = this;
-    query.select('#cook_one_moth').boundingClientRect();
-    query.exec(function (res) {
-      that.setData({
-        scrollHeight: res[0].top,
-        titleHeight: res[0].height
-      });
-    })
+  onReady: function () {  
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.getIndexData();
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    
   },
 
   /**
@@ -97,7 +131,72 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    let that=this;
+    var dateTime = getNowFormatDate();
+    let p1 = new Promise(function (resolve, reject) {
+      util.request(api.Userbodyinfo, {}, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+          that.setData({
+            sorce: res.data.bodyinfolist.goalweight,
+            weight: res.data.bodyinfolist.weight,
+            bmi: res.data.bodyinfolist.bmi
+          });
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    });
+    p1.then(function () {
+      util.request(api.MenuDetailsmenuinfo, { today: dateTime }, 'POST', 'application/json').then(function (res) {
+        wx.stopPullDownRefresh();
+        if (res.errno === 0) {
+          if (res.data.flag == 1) {
+            that.setData({
+              pwnum: res.data.sum,
+              zcpwnum: res.data.countgood,
+              zclist: res.data.beabreakfastlist,
+              wcpwnum: res.data.couteve,
+              wclist: res.data.namemLunchlistap1,
+              wancpwnum: res.data.sumcalluch,
+              wanclist: res.data.Dinnerlist
+            });
+          } else {
+            that.setData({
+              showfood: true,
+              showcompute: false
+            })
+          }
+        }
+      });
+      util.request(api.Userdetectioncycleinfo, { datetime: dateTime }, 'POST', 'application/json').then(function (res) {
+        wx.stopPullDownRefresh();
+        if (res.errno === 0) {
+          if (res.data.flag == 1) {
+            if (res.data.state == 0) {
+              that.setData({
+                showscal: true,
+                showfood: false
+              });
+            } else {
+              that.setData({
+                number: res.data.cout,
+                showscal: false,
+                showfood: true
+              })
+            }
+          } else {
+            that.setData({
+              showscal: false,
+              showfood: true
+            })
+          }
+        }
+      });
+    })
+    p1.catch(function(){
+      wx.stopPullDownRefresh();
+    });
   },
 
   /**
@@ -113,113 +212,35 @@ Page({
   onShareAppMessage: function () {
 
   },
-  select: function(){
-    if (!this.data.showModalStatus){
-      this.showModal();
-    }else{
-      this.hideModal();
-    }
-    
+  toscal:function(event){
+      let id=1;
+      wx.navigateTo({
+        url: '/pages/ucenter/scale/scale', 
+      }); 
   },
-  showModal: function () {
-    // 显示遮罩层
-    var animation = wx.createAnimation({
-      duration: 500,
-      timingFunction: "linear",
-      delay: 0
-    })
-    this.animation = animation
-    animation.height(0).step()
-    this.setData({
-      animationData: animation.export(),
-      showModalStatus: true,
-      srcoll: true
-    })
-    setTimeout(function () {
-      animation.height('590rpx').step()
-      this.setData({
-        animationData: animation.export()
-      })
-    }.bind(this), 200)
-  },
-  hideModal: function () {
-    // 隐藏遮罩层
-    var animation = wx.createAnimation({
-      duration: 500,
-      timingFunction: "linear",
-      delay: 0
-    })
-    this.animation = animation
-    animation.height(0).step()
-    this.setData({
-      animationData: animation.export(),
-    })
-    setTimeout(function () {
-      animation.height('590rpx').step()
-      this.setData({
-        animationData: animation.export(),
-        showModalStatus: false,
-        srcoll: false
-      })
-    }.bind(this), 200)
-  },
-  delivery: function(event){
-    if (event.target.dataset.type){
-      console.log(event.target.dataset.type)
-      this.setData({
-        delivery_type: event.target.dataset.type
-      })
-    }
-  },
-  feeding: function(event){
-    if (event.currentTarget.dataset.type){
-      console.log(event.currentTarget.dataset.type);
-      this.setData({
-        feeding_type: event.currentTarget.dataset.type
-      })
-    }
-  },
-  reset: function(event){
-    this.setData({
-      delivery_type:'',
-      feeding_type:''
+  toreport: function(){
+    wx.navigateTo({
+      url: '/pages/report/report', 
     })
   },
-  submit: function(event){
-    this.hideModal();
-    this.getIndexData();
-  },
-  //监听屏幕滚动 判断上下滚动
-  onPageScroll: function (event) {
-    if (event.scrollTop >= this.data.scrollHeight){
-      var topnum = this.data.titleHeight+'px';
-      this.setData({
-        title_position:"fixed",
-        title_top:0,
-        srcolltop: true
-      });
-    }else{
-      this.setData({
-        title_position:'',
-        title_top:'',
-        srcolltop:false
-      });
-    }
-  },
-  //排序数组
-  ListSort: function(event){
-      if(event.length>0){
-        var temp;
-        for(var i=0;i<event.length-1;i++){
-          for(var j = 0; j<event.length-1-i;j++){
-            if (event[j].nlevel > event[j + 1].nlevel){
-              temp=event[j];
-              event[j]=event[j+1];
-              event[j+1]=temp;
-            }
-          }
-        }
-      }
-      return event;
+  todetail: function(){
+    wx.navigateTo({
+      url: '/pages/cookdetails/cookdetails',
+    })
   }
 })
+function getNowFormatDate() {
+  var date = new Date();
+  var seperator1 = "-";
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var strDate = date.getDate(); 
+  if (month >= 1 && month <= 9) {
+    month = "0" + month;
+  }
+  if (strDate >= 0 && strDate <= 9) {
+    strDate = "0" + strDate;
+  }
+  var currentdate = year + seperator1 + month + seperator1 + strDate;
+  return currentdate;
+}

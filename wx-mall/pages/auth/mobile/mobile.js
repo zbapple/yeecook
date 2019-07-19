@@ -3,7 +3,7 @@ var util = require('../../../utils/util.js');
 var app = getApp()
 
 Page({
-    data: {
+    data: { 
         mobile: '',
         userInfo: {
             avatarUrl: '',
@@ -64,7 +64,8 @@ Page({
         if (!this.bindCheckMobile(this.data.mobile)) {
             return
         }
-        util.request(api.SmsCode, {phone: this.data.mobile}, 'POST')
+        let that=this;
+      util.request(api.SmsCode, { phone: that.data.mobile }, 'POST', 'application/json')
             .then(function (res) {
               if (res.errno === 0) {
                     wx.showToast({
@@ -98,12 +99,12 @@ Page({
 
     bindLoginMobilecode: function (e) {
         var mobile = this.data.mobile;
-        // if (!this.bindCheckMobile(mobile)) {
-        //     return
-        // }
-        // if (!(e.detail.value.code && e.detail.value.code.length === 4)) {
-        //     return
-        // }
+        if (!this.bindCheckMobile(mobile)) {
+            return
+        }
+        if (!(e.detail.value.code && e.detail.value.code.length === 4)) {
+            return
+        }
         wx.showToast({
             title: '操作中...',
             icon: 'loading',

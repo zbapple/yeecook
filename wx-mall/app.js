@@ -3,7 +3,6 @@ var api = require('./config/api.js');
 var user = require('./services/user.js');
 var coolsite360 = require('./coolsite/index.js');
 
-
 App({
     coolsite360: coolsite360,
     onLaunch: function () {
@@ -51,7 +50,8 @@ App({
         token: '',
         userCoupon: 'NO_USE_COUPON',//默认不适用优惠券
         courseCouponCode: {},//购买课程的时候优惠券信息
-    },
+       
+     },
     // 下拉刷新
     onPullDownRefresh: function () {
         // 显示顶部刷新图标

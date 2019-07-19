@@ -92,7 +92,6 @@ Page({
 
   },
   findmuti: function(){
-    console.log(this.data.mutilist)
     wx.navigateTo({
       url: '/pages/cookbookmuti/cookbookmuti?list=' + JSON.stringify(this.data.mutilist),
     })

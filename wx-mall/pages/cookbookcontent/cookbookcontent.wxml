@@ -169,7 +169,7 @@
         </view>
       </view >
     </view>
-  </view>
+  </view> 
 </view>
 <!-- 弹出窗口选择 -->
 <view class="content_day" wx:if="{{show}}" bindtap='hidepop'>

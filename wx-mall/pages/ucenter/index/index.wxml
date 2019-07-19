@@ -2,84 +2,99 @@
 <button class='userbutton' open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
   <button class="userinfo">
     <view><image wx:if="{{userInfo && userInfo.avatarUrl}}" class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"></image></view>
-    <view>
+    <view style="padding-left:20rpx;">
       <text class="userinfo-nickname">{{ userInfo.userName?userInfo.userName:userInfo.nickName }}</text>
-          <text class="txt">绑定手机 {{hasMobile}}</text>
-      <!-- <view class="userinfo-mobile" v-if="hasMobile != ''">
-        <navigator url="/pages/auth/mobile/mobile" class="a">
-          <text class="icon phone"></text>
-          <text class="txt">绑定手机</text>
-        </navigator>
-      </view> -->
+      <text class="txt phonet" wx:if="{{hasMobile}}">{{hasMobile}}</text>
+       <text class="txt phonet" bindtap='Tophone' wx:else>尚未绑定手机号</text>
     </view>
 	</button>
-  </button>
+  </button> 
+  <view class="wig">
+    <view class="wig_title">
+      <view class="wig_title_btn"></view>
+      <view class="wig_title_con">身体数据</view>
+      <view class="wig_title_right" bindtap='bodyupdata' data-weight="{{mweight}}">
+        <text>编辑  </text><image class='ordergo' src="../../../static/images/go.png" background-size="cover"></image>
+      </view>
+    </view>
+    <view class="wig_con">
+      <view class="wig_con_item">
+        <view class="item_txt1">{{cweight}}</view>
+        <view class="item_txt2">初始体重</view>
+      </view>
+      <view class="wig_con_item">
+        <view class="item_txt1">{{mweight}}</view>
+        <view class="item_txt2">目标体重</view>
+      </view>
+      <view class="wig_con_item">
+        <view class="item_txt1">{{height}}</view>
+        <view class="item_txt2">身高</view>
+      </view>
+    </view>
+  </view>
   <view style="height:20rpx;background: #eee;width:100%;"></view>
   <view class="my_order">
-    <view class='cont'>
-      <view class="l">我的订单</view>
-      <view class='r'>
-        <navigator url="/pages/ucenter/order/order?id=-1" class="a"><text>查看全部订单  </text><image class='ordergo' src="../../../static/images/go.png" background-size="cover"></image></navigator>
-        <text class="jt"></text>
-      </view>
+    <view class='wig_title'>
+      <view class="wig_title_btn"></view>
+      <view class="wig_title_con">我的订单</view>
     </view>
     <view class='order_detai'>
        <view class='li'>
-         <navigator url="/pages/ucenter/order/order?id=0" class="a">
+         <navigator url="/pages/ucenter/order/order?id=-1" class="a">
           <text class="icon dfk"></text>
-          <text class="txt">待付款</text>
+          <text class="txt">订单</text>
         </navigator>
        </view>
        <view class='li'>
-         <navigator url="/pages/ucenter/order/order?id=201" class="a">
+         <navigator url="/pages/cart/cart" class="a">
           <text class="icon dfh"></text>
-          <text class="txt">待发货</text>
+          <text class="txt">购物车</text>
         </navigator>
        </view>
        <view class='li'>
-         <navigator url="/pages/ucenter/order/order?id=201" class="a">
+         <navigator url="/pages/ucenter/address/address" class="a">
           <text class="icon dsh"></text>
-          <text class="txt">待收货</text>
+          <text class="txt">收货地址</text>
         </navigator>
        </view>
        <view class='li'>
-         <navigator url="/pages/ucenter/return/return?id=201" class="a">
+         <navigator url="/pages/ucenter/coupon/coupon" class="a">
           <text class="icon tk"></text>
-          <text class="txt">退货/退款</text>
+          <text class="txt">优惠券</text>
         </navigator>
        </view>
     </view>
   </view>
-  <view style="clear:both;height:20rpx;background: #eee;width:100%;"></view>
   <view class="user-menu">
-    <view class='menu_tit'>
-      <text class='menu_top'>我的服务</text>
+    <view class='wig_title'>
+      <view class="wig_title_btn"></view>
+      <view class="wig_title_con">我的服务</view>
     </view>
-    <view class="item">
-      <navigator url="/pages/ucenter/coupon/coupon" class="a">
+    <view class="item"> 
+      <navigator url="/pages/ucenter/collect/collect" class="a" hover-class="none">
         <text class="icon coupon"></text>
-        <text class="txt">优惠券</text>
-      </navigator>
-    </view>
-    <view class="item">
-      <navigator url="/pages/ucenter/collect/collect" class="a">
-        <text class="icon sc"></text>
         <text class="txt">我的收藏</text>
       </navigator>
     </view>
     <view class="item">
-      <navigator url="/pages/ucenter/footprint/footprint" class="a">
-        <text class="icon security"></text>
+      <navigator url="/pages/ucenter/footprint/footprint" class="a" hover-class="none">
+        <text class="icon sc"></text>
         <text class="txt">我的足迹</text>
       </navigator>
     </view>
     <view class="item">
-      <navigator url="/pages/ucenter/feedback/feedback" class="a">
-        <text class="icon feedback"></text>
-        <text class="txt">意见反馈</text>
+      <navigator url="/pages/ucenter/helpInfo/helpInfo" class="a" hover-class="none">
+        <text class="icon address"></text>
+        <text class="txt">我的客服</text>
       </navigator>
     </view>
     <view class="item">
+      <navigator url="/pages/ucenter/feedback/feedback" class="a" hover-class="none">
+        <text class="icon security"></text>
+        <text class="txt">意见反馈</text>
+      </navigator>
+    </view>
+    <!-- <view class="item">
       <navigator url="../address/address" class="a">
         <text class="icon address"></text>
         <text class="txt">地址管理</text>
@@ -92,9 +107,9 @@
           <text class="txt">联系客服</text>
         </navigator>
       </view>
-    </button>
+    </button> -->
 
-    <view class="item">
+    <!-- <view class="item">
       <navigator url="/pages/auth/mobile/mobile" class="a">
         <text class="icon phone"></text>
         <text class="txt">绑定手机</text>
@@ -107,10 +122,16 @@
         <text class="txt">云课堂</text>
       </navigator>
     </view>
-    <!-- <view class="item item-bottom">
+    <view class="item item-bottom">
       <navigator url="/pages/ucenter/scale/scale" class="a">
         <text class="icon scale"></text>
-        <text class="txt">天平秤</text>
+        <text class="txt">体脂秤</text>
+      </navigator>
+    </view> -->
+    <!-- <view class="item item-bottom">
+      <navigator url="/pages/ucenter/scale_ceshi/text" class="a">
+        <text class="icon scale"></text>
+        <text class="txt">测试</text>
       </navigator>
     </view> -->
   </view>

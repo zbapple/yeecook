@@ -35,7 +35,6 @@ Page({
       }
     });
 
-
     this.getCategoryInfo();
 
   },
@@ -97,7 +96,7 @@ Page({
         nomore: true
       })
       return;
-    }
+    } 
 
     util.request(api.GoodsList, {categoryId: that.data.id, page: that.data.page, size: that.data.size})
       .then(function (res) {

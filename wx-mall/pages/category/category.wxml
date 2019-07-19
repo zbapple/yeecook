@@ -10,7 +10,7 @@
 
     <view class="cate-item">
         <view class="h">
-            <text class="name">{{currentCategory.name}}</text>
+            <text class="name">{{currentCategory.name}}</text> 
             <text class="desc">{{currentCategory.front_name}}</text>
         </view>
         <view class="b">

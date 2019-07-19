@@ -4,7 +4,7 @@ function formatTime(date) {
     var year = date.getFullYear()
     var month = date.getMonth() + 1
     var day = date.getDate()
-
+ 
     var hour = date.getHours()
     var minute = date.getMinutes()
     var second = date.getSeconds()
@@ -14,7 +14,7 @@ function formatTime(date) {
 }
 
 function formatNumber(n) {
-    n = n.toString()
+    n = n.toString()  
     return n[1] ? n : '0' + n
 }
 
@@ -22,9 +22,9 @@ function formatNumber(n) {
  * 封封微信的的request
  */
 function request(url, data = {}, method = "POST", header = "application/x-www-form-urlencoded") {
-    wx.showLoading({
-        title: '加载中...',
-    });
+    // wx.showLoading({
+    //     title: '加载中...',
+    // });
     return new Promise(function (resolve, reject) {
         wx.request({
             url: url,
@@ -35,10 +35,8 @@ function request(url, data = {}, method = "POST", header = "application/x-www-fo
                 'X-Nideshop-Token': wx.getStorageSync('token')
             },
             success: function (res) {
-                console.log("success");
                 wx.hideLoading();
                 if (res.statusCode == 200) {
-
                     if (res.data.errno == 401) {
                         //需要登录后才可以操作
                         wx.showModal({
@@ -46,9 +44,9 @@ function request(url, data = {}, method = "POST", header = "application/x-www-fo
                             content: '请先登录',
                             success: function (res) {
                                 if (res.confirm) {
+                                    
                                     wx.removeStorageSync("userInfo");
                                     wx.removeStorageSync("token");
-
                                     wx.switchTab({
                                         url: '/pages/ucenter/index/index'
                                     });
@@ -65,7 +63,6 @@ function request(url, data = {}, method = "POST", header = "application/x-www-fo
             },
             fail: function (err) {
                 reject(err)
-                console.log("failed")
             }
         })
     });
@@ -96,7 +93,7 @@ function login() {
             success: function (res) {
                 if (res.code) {
                     //登录远程服务器
-                    console.log(res)
+                   
                     resolve(res);
                 } else {
                     reject(res);

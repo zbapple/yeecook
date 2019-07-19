@@ -1,38 +1,60 @@
-var util = require('../../../utils/util.js');
+ var util = require('../../../utils/util.js');
 var api = require('../../../config/api.js');
 var user = require('../../../services/user.js');
 var app = getApp();
-
+ 
 Page({
     data: {
         userInfo: {},
-        hasMobile: ''
+        hasMobile: '', 
+        cweight:'--',
+        mweight:'--', 
+        height:'--'  
     },
     onLoad: function (options) {
-        // 页面初始化 options为页面跳转所带来的参数
+        // 页面初始化 options为页面跳转所带来的参数     
+    },
+    getIndexData: function(){ 
+      let that=this;
+      util.request(api.Userbodyinfo, {}, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+            that.setData({
+              cweight: res.data.bodyinfolist.weight,
+              mweight: res.data.bodyinfolist.goalweight,
+              height: res.data.bodyinfolist.userheight
+            });
+        }
+      }); 
     },
     onReady: function () {
 
-    },
+    }, 
     onShow: function () {
-
         let userInfo = wx.getStorageSync('userInfo');
         let token = wx.getStorageSync('token'); 
-      let mobile = wx.getStorageSync('mobile');
-        
+        let mobile = wx.getStorageSync('mobile');
         // 页面显示
-        if (token) {
+        if (token) { 
           app.globalData.userInfo = userInfo.userInfo;
           app.globalData.token = token;
+          this.getIndexData();
         }else{
           wx.removeStorageSync('userInfo');
         }
+        let tel = mobile;
+        let tel1;
+        if(tel){
+          tel = "" + tel;
+          tel1 = tel.replace(tel.substring(3, 7), "****");
+        }else{
+          tel1='';
+        }
         this.setData({
             userInfo: app.globalData.userInfo,
-            hasMobile: mobile
+            hasMobile: tel1
         });
 
-    },
+    }, 
     onHide: function () {
         // 页面隐藏
 
@@ -48,17 +70,28 @@ Page({
     
         if (e.detail.userInfo){
             //用户按了允许授权按钮
+            wx.showLoading({
+                title: '加载中...',
+            });
             user.loginByWeixin(e.detail).then(res => {
                 let userInfo = wx.getStorageSync('userInfo');
               let mobile = wx.getStorageSync('mobile');
+              let tel = mobile;
+              let tel1;
+              if (tel) {
+                tel = "" + tel;
+                tel1 = tel.replace(tel.substring(3, 7), "****");
+              } else {
+                tel1 ='';
+              }
                 this.setData({
                   userInfo: userInfo.userInfo,
-                  hasMobile: mobile
+                  hasMobile: tel1
                 });
                 app.globalData.userInfo = userInfo.userInfo;
                 app.globalData.token = res.data.openid;
+                this.getIndexData();
             }).catch((err) => {
-                console.log(err)
             }); 
         } else {
             //用户按了拒绝按钮
@@ -78,7 +111,6 @@ Page({
                                       app.globalData.userInfo = userInfo.userInfo;
                                       app.globalData.token = res.data.openid;
                                     }).catch((err) => {
-                                        console.log(err)
                                     });
                                 }
                             }
@@ -103,6 +135,38 @@ Page({
                 }
             }
         })
-    }
-    
+    },
+    /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+    onPullDownRefresh: function () {
+      var self = this;
+      let that = this;
+      util.request(api.Userbodyinfo, {}, 'POST', 'application/json').then(function (res) {
+        if (res.errno === 0) {
+          wx.stopPullDownRefresh();
+          that.setData({
+            cweight: res.data.bodyinfolist.weight,
+            mweight: res.data.bodyinfolist.goalweight,
+            height: res.data.bodyinfolist.userheight
+          });
+        }
+      }); 
+    },
+    bodyupdata: function(event){
+      if (event.currentTarget.dataset.weight=='--'){
+        wx.navigateTo({
+          url: '/pages/ucenter/bodyadd/bodyadd?name=0'
+        })
+      }else{
+        wx.navigateTo({
+          url: '/pages/ucenter/bodyupdate/bodyupdate'
+        })
+      }
+  },
+  Tophone:function(){
+    wx.navigateTo({
+      url: '/pages/auth/mobile/mobile'
+    })
+  }
 })

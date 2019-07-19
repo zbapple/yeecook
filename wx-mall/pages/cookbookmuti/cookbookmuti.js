@@ -13,7 +13,6 @@ Page({
    */
   onLoad: function (options) {
     var dlist = JSON.parse(options.list);
-    console.log(dlist)
     this.setData({
       list: dlist
     })

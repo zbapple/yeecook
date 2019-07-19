@@ -1,85 +1,111 @@
-<view class="content">
-  <view class="cook_header">
-    <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/01174077038121.png">
-      <!-- <view class="cook_header_btn">马上体验</view> -->
-    </image>
-  </view>
-  <view class="cook_titl" id="cook_one_moth" style="position:{{title_position}};top:{{title_top}}">
-    <view class="cook_title">标准化月子餐</view>
-    <view class="cook_icon_1" catchtap='select'>
-      <image src="../../static/images/ic_cookbook_shuaixuan.png"></image>
+ <view class="cook">
+    <view class="header">
+      <view class="header_left">
+        <view class="header_txt">
+        <block wx:if="{{sorce!=0}}">{{sorce}}</block>
+        <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">目标/KG</view>
+      </view> 
+      <view class="header_con">
+        <view class="header_txt con_txt">
+        <block wx:if="{{weight!=0}}">{{weight}}</block>
+        <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">当前/KG</view>
+      </view>
+      <view class="header_right">
+        <view class="header_txt">
+          <block wx:if="{{bmi!=0}}">{{bmi}}</block>
+          <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">BMI</view>
+      </view>
     </view>
   </view>
-  <view class="cook_con" wx:for="{{list}}"  wx:key="{{index}}"> 
-    <navigator url="/pages/cookbookcontent/cookbookcontent?nlevel={{item.nlevel}}&deliveryWay={{item.deliveryWay}}&feedingWay={{item.feedingWay}}&liliLength={{item.liliLength}}" hover-class="none" >
-      <view class="cook_con_item">
-        <image src="{{src_img[index].src}}">
-          <view class="item_bg"></view>     
-          <view class="item_title">
-            <view class="item_title_header">
-              <text hidden="{{!item.nlevel}}">标月{{item.nlevel}}：</text>
-              <text hidden="{{!item.deliveryWay}}">{{item.deliveryWay}}+</text>
-              <text hidden="{{!item.feedingWay}}">{{item.feedingWay}}+</text>
-              <text>{{item.liliLength}}天</text>
-            </view>
-            <view class="item_title_h1">
-              <view class="item_titel_h1_one">能量标准：{{item.theTotalEnergy}}kcal/d</view>
-              <view class="item_titel_h1_two">
-                <view class="itme_title_liu">
-                <image src="../../static/images/ic_cookbook_eye.png"></image>
-                {{item.wxViews}}浏览量</view>
-              </view>
-            </view>
-          </view>
-        </image>
+  <view class="cook">
+    <view class="con_one">
+      <view class="con_one_left">
+          <view bindtap='toreport'>
+            <image src="../../static/images/icon_report.png" class="icon_bg"></image>
+            <view class="icon_txt"> 健康报告</view>
+          </view>  
       </view>
-    </navigator>
+      <view class="con_one_right">
+        <view bindtap='todetail'> 
+          <image src="../../static/images/icon_diet.png" class="icon_bg"></image>
+          <view class="icon_txt">膳食计划</view>
+          </view>
+        <image src='../../static/images/icon_new.png' class="con_one_top"></image>
+      </view>
+    </view>
   </view>
-  <view hidden="{{listlength}}" class="nodata">暂时没有符合您查找的标准化月子餐</view>
- </view>
- <!-- 弹出层 -->
-  <view class="commodity_screen" bindtap="hideModal" wx:if="{{showModalStatus}}"  catchtouchmove="{{srcoll}}"></view>
-    <view animation="{{animationData}}" class="{{srcolltop==true?'commodity_attr_boxfix':'commodity_attr_box'}}" wx:if="{{showModalStatus}}"  catchtouchmove="{{srcoll}}">
-      <view class="cook_pop">
-        <view class="cook_pop_title">分娩方式:</view>
-        <view class="cook_type_one cook_delivery">
-          <view class="cook_type_box">
-            <button class="{{delivery_type == '顺产'?'btn_ing':'btn'}}" catchtap="delivery" data-type="顺产">顺产</button>
-          </view>
-          <view class="cook_type_box">
-            <button class="{{delivery_type== '剖宫产'?'btn_ing':'btn'}}" catchtap="delivery" data-type="剖宫产">剖宫产</button>
-          </view>
-          <view class="cook_type_box">
-            <button class="{{delivery_type =='流产(小产)'?'btn_ing':'btn'}}" catchtap="delivery" data-type="流产(小产)">流产(小产)</button>
-          </view>
-        </view>
-        <view class="cook_pop_title">喂哺方式：</view>
-        <view class="cook_type_one cook_feeding">
-          <view class="cook_type_box">
-            <view class="{{feeding_type == '母乳喂养'?'btn_ing':'btn'}}" bindtap="feeding" data-type="母乳喂养">
-              <text decode="{{true}}" class="text1">母乳喂养\n(母乳占比：100%)</text>
-            </view>
-          </view>
-          <view class="cook_type_box">
-            <view class="{{feeding_type == '混合喂养'?'btn_ing':'btn'}}" bindtap="feeding" data-type="混合喂养">
-              <text decode="{{true}}" class="text1">混合喂养\n(母乳占比：50%)</text>
-            </view>
-          </view>
-          <view class="cook_type_box">
-            <view class="{{feeding_type == '人工喂养'?'btn_ing':'btn'}}" bindtap="feeding" data-type="人工喂养" >
-              <text decode="{{true}}" class="text1">人工喂养\n(人工占比：0%)</text>
-            </view>
-          </view>
-        </view>
-        <view class="cook_pop_title">月子时长</view>
-        <view class="cook_type_one cook_day">
-          <view class="cook_type_box">
-            <button class="btn month_btn">30天</button>
-          </view>
+  <view class="con_tt"></view>
+  <view class="cook" hidden="{{showfood}}">
+    <view class="con_two">
+      <image src='../../static/images/icon_dailyplan.png' class="icon_two"></image>
+      <text class="con_two_txt1">今日食谱</text>
+      <text class="con_two_txt2">{{pwnum}}kcal</text>
+        <image src="../../static/images/go.png" class="icon_two_flat " bindtap='todetail'></image> 
+        <text class="con_two_txt2 flat" bindtap='todetail'>完整食谱</text>
+    </view>
+    <view class="con_two" wx:if="{{zclist.length>0}}"> 
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">早餐</view>
+        <view class="con_two_txt2 cont_text_num">{{zcpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{zclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.namegood}}<block wx:if="{{index<zclist.length-1}}">、</block>
+          </block>
         </view>
       </view>
-      <view class="cook_type_one ">
-          <view class="cook_type_sumbit" catchtap='reset'>重置</view>
-          <view class="cook_type_sumbit bg_sumbit" catchtap='submit'>确认</view>
+    </view>
+    <view class="con_two" wx:if="{{wclist.length>0}}">
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">午餐</view>
+        <view class="con_two_txt2 cont_text_num">{{wcpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{wclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.nameluch}}<block wx:if="{{index<wclist.length-1}}">、</block>
+          </block>
         </view>
+      </view>
+    </view>
+    <view class="con_two" wx:if="{{wanclist.length>0}}">
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">晚餐</view>
+        <view class="con_two_txt2 cont_text_num">{{wancpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{wanclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.nameev}}<block wx:if="{{index<wanclist.length-1}}">、</block>
+          </block>
+        </view> 
+      </view>
+    </view>
   </view>
+  <view class="cook" hidden="{{showscal}}"> 
+    <view class="foot_1">
+      <view class="foot_1_txt">请先上秤完成第{{number}}次体脂检测</view>
+      <view class="foot_1_txt2">针对您的健康报告，将会生成定制化的膳食计划哦</view> 
+    </view>
+    <view class="foot-btn" bindtap='toscal' data-number="{{number}}">立即上秤</view>
+  </view>
+  <view class="compute" hidden="{{showcompute}}">
+    <view class="compute-txt txt1">膳食计划正在定制中</view> 
+    <view class="compute-txt txt2">请耐心等待…</view>
+  </view> 
+
+
+
+
+
+
+
+
+
+
+
+  
