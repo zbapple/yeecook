@@ -41,6 +41,9 @@ public class ApiUserController extends ApiBaseAction {
     public Object smscode(@LoginUser UserVo loginUser) {
         JSONObject jsonParams = getJsonRequest();
         String phone = jsonParams.getString("phone");
+        if (null == phone ) {
+            return toResponsFail("请输入手机号码！");
+        }
         // 一分钟之内不能重复发送短信
         SmsLogVo smsLogVo = userService.querySmsCodeByUserId(loginUser.getUserId());
         if (null != smsLogVo && (System.currentTimeMillis() / 1000 - smsLogVo.getLog_date()) < 1 * 60) {
@@ -52,24 +55,24 @@ public class ApiUserController extends ApiBaseAction {
         // 发送短信
         String result = "";
         //获取云存储配置信息
-        SmsConfig config = sysConfigService.getConfigObject(Constant.SMS_CONFIG_KEY, SmsConfig.class);
-        if (StringUtils.isNullOrEmpty(config)) {
-            return toResponsFail("请先配置短信平台信息");
-        }
-        if (StringUtils.isNullOrEmpty(config.getName())) {
-            return toResponsFail("请先配置短信平台用户名");
-        }
-        if (StringUtils.isNullOrEmpty(config.getPwd())) {
-            return toResponsFail("请先配置短信平台密钥");
-        }
-        if (StringUtils.isNullOrEmpty(config.getSign())) {
-            return toResponsFail("请先配置短信平台签名");
-        }
+//        SmsConfig config = sysConfigService.getConfigObject(Constant.SMS_CONFIG_KEY, SmsConfig.class);
+//        if (StringUtils.isNullOrEmpty(config)) {
+//            return toResponsFail("请先配置短信平台信息");
+//        }
+//        if (StringUtils.isNullOrEmpty(config.getName())) {
+//            return toResponsFail("请先配置短信平台用户名");
+//        }
+//        if (StringUtils.isNullOrEmpty(config.getPwd())) {
+//            return toResponsFail("请先配置短信平台密钥");
+//        }
+//        if (StringUtils.isNullOrEmpty(config.getSign())) {
+//            return toResponsFail("请先配置短信平台签名");
+//        }
         try {
             /**
              * 状态,发送编号,无效号码数,成功提交数,黑名单数和消息，无论发送的号码是多少，一个发送请求只返回一个sendid，如果响应的状态不是“0”，则只有状态和消息
              */
-            result = SmsUtil.crSendSms(phone, sms_code);
+            result = SmsUtil.crSendSms(sms_code,phone);
         } catch (Exception e) {
             return toResponsFail("短信发送失败,网络波动！");
     }
