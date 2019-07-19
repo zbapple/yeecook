@@ -32,8 +32,8 @@ public class SmsUtil {
 
 
 
-    public static String crSendSms(String msg,String mobileString) {
-        DefaultProfile profile = DefaultProfile.getProfile("default", "LTAIt93CTJvH7XWp", "SkfXDlr3YlEqaDJMUUJDrL6mNmxVi3");
+    public static String crSendSms(String msg,String mobileString,String a,String b) {
+        DefaultProfile profile = DefaultProfile.getProfile("default", a, b);
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
