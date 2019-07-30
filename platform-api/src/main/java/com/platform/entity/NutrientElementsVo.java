@@ -33,7 +33,8 @@ public class NutrientElementsVo implements Serializable {
     private Double contentg;
     //菜品id
     private Integer dishesId;
-
+    //食材id
+    private Integer foodid;
     /**
      * 设置：
      */
@@ -114,5 +115,13 @@ public class NutrientElementsVo implements Serializable {
 
     public void setDishesId(Integer dishesId) {
         this.dishesId = dishesId;
+    }
+
+    public Integer getFoodid() {
+        return foodid;
+    }
+
+    public void setFoodid(Integer foodid) {
+        this.foodid = foodid;
     }
 }

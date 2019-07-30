@@ -21,6 +21,9 @@
 		<result property="max" column="max"/>
 		<result property="min" column="min"/>
 		<result property="avg" column="avg"/>
+		<result property="bodyShape" column="body_Shape"/>
+		<result property="bodyAge" column="body_Age"/>
+		<result property="sclscore" column="sclscore"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserHealthReportVo">
@@ -38,7 +41,10 @@
 			`body_water_rate`,
 			`protein`,
 			`bone_mass`,
-			`skeletal_muscle`
+			`skeletal_muscle`,
+			`body_Shape`,
+			`body_Age`,
+			`sclscore`
 		from user_health_report
 		where id = #{id}
 	</select>
@@ -58,14 +64,17 @@
     		`body_water_rate`,
     		`protein`,
     		`bone_mass`,
-    		`skeletal_muscle`
+    		`skeletal_muscle`,
+			`body_Shape`,
+			`body_Age`,
+			`sclscore`
 		from user_health_report
 		WHERE 1=1
 		<if test="nideshopUserid != null">
 			AND nideshop_user_id=#{nideshopUserid}
 		</if>
 		<if test="detectiontime !=null">
-			AND  detection_time=#{detectiontime}
+			AND  detection_time like concat('%',#{detectiontime},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -118,7 +127,10 @@
 			`body_water_rate`,
 			`protein`,
 			`bone_mass`,
-			`skeletal_muscle`)
+			`skeletal_muscle`,
+			`body_Shape`,
+			`body_Age`,
+			`sclscore`)
 		values(
 			#{id},
 			#{nideshopUserId},
@@ -133,7 +145,11 @@
 			#{bodyWaterRate},
 			#{protein},
 			#{boneMass},
-			#{skeletalMuscle})
+			#{skeletalMuscle},
+			#{bodyShape},
+			#{bodyAge},
+			#{sclscore}
+			)
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.UserHealthReportVo">
@@ -151,7 +167,10 @@
 			<if test="bodyWaterRate != null">`body_water_rate` = #{bodyWaterRate}, </if>
 			<if test="protein != null">`protein` = #{protein}, </if>
 			<if test="boneMass != null">`bone_mass` = #{boneMass}, </if>
-			<if test="skeletalMuscle != null">`skeletal_muscle` = #{skeletalMuscle}</if>
+			<if test="skeletalMuscle != null">`skeletal_muscle` = #{skeletalMuscle},</if>
+			<if test="bodyShape != null">`body_Shape` = #{bodyShape},</if>
+			<if test="bodyAge != null">`body_Age` = #{bodyAge},</if>
+			<if test="sclscore != null">`sclscore` = #{sclscore}</if>
 		</set>
 		where id = #{id}
 	</update>

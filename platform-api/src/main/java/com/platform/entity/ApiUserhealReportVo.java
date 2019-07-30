@@ -12,7 +12,7 @@ public class ApiUserhealReportVo {
     private  Integer count;
     private List<UserHealthReportVo> healportlistmap;
 
-    @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
+   @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
     public Date getTime() {
         return time;
     }

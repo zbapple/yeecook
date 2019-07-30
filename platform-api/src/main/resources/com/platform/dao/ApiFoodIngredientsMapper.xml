@@ -27,6 +27,7 @@
 
 	<select id="queryList" resultType="com.platform.entity.FoodIngredientsVo">
 		select
+		a.id,
 		a.food_material_name,
 		a.food_material_num,
 		b.food_unit

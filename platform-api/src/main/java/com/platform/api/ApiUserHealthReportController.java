@@ -15,9 +15,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 
 /**
@@ -54,58 +57,76 @@ public class ApiUserHealthReportController extends ApiBaseAction {
     public  Object add(@LoginUser UserVo loginuser){
         Map<String,Object> result=new HashMap<>();
         JSONObject addjsonparam=this.getJsonRequest();
-        Date detectiontime=addjsonparam.getDate("detectiontime");
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        String detectiontime1=simpleDateFormat.format(detectiontime);
+        Date detectiontime=addjsonparam.getSqlDate("detectiontime");
+        Calendar cl1=Calendar.getInstance();
+        cl1.setTime(detectiontime);
+        cl1.add(cl1.DAY_OF_WEEK,7);
         Long userid=loginuser.getUserId();
         Map addmap=new HashMap();
         addmap.put("nideshopUserid",userid);
         addmap.put("detectiontime",detectiontime);
         List<UserHealthReportVo> userHealthReportVoList=userHealthReportService.queryList(addmap);
-        List<UserDetectionCycleVo> userDetectionCycleVoList=userDetectionCycleService.queryList(addmap);
         UserHealthReportVo userHealthReportVo=new UserHealthReportVo();
+        List<UserDetectionCycleVo> userDetectionCycleVoList=userDetectionCycleService.queryList(addmap);
         UserDetectionCycleVo userDetectionCycleVo=new UserDetectionCycleVo();
-        if(addjsonparam!=null) {
-            userHealthReportVo.setNideshopUserId(userid);
-            //基础代谢量
-            userHealthReportVo.setBasicMetabolism(addjsonparam.getDouble("basicmetabolism"));
-            //BMI
-            userHealthReportVo.setBmi(addjsonparam.getDouble("BMI"));
-            //体脂率
-            userHealthReportVo.setBodyFatRade(addjsonparam.getDouble("bodyfatrade"));
-            //体水分率
-            userHealthReportVo.setBodyWaterRate(addjsonparam.getDouble("waterrate"));
-            //骨量
-            userHealthReportVo.setBoneMass(addjsonparam.getDouble("bonemass"));
-            //检测时间
-            userHealthReportVo.setDetectionTime(addjsonparam.getDate("detectiontime"));
-            //蛋白质
-            userHealthReportVo.setProtein(addjsonparam.getString("protein"));
-            //骨骼肌率
-            userHealthReportVo.setSkeletalMuscle(addjsonparam.getString("skeletalmuscle"));
-            //皮下脂肪率
-            userHealthReportVo.setSubFatPercentage(addjsonparam.getDouble("subfatpercentage"));
-            //更新时间
-            userHealthReportVo.setUpdateTime(addjsonparam.getDate("updatetime"));
-            //内脏脂肪等级
-            userHealthReportVo.setVisFatGrade(addjsonparam.getString("visfatgrade"));
-            //体重
-            userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
-        }else{
-            return toResponsFail("参数为空");
+        Date jiance=null;
+        Integer num=0;
+        for(UserDetectionCycleVo userDetectionCycleVoItem:userDetectionCycleVoList){
+             jiance=userDetectionCycleVoItem.getInspectionTime();
+             num=userDetectionCycleVoItem.getInspectionNum()+1;
         }
-        if(userHealthReportVoList.size()==0) {
-            userHealthReportService.save(userHealthReportVo);
-           userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
-            result.put("flag",1);
-            result.put("id",userHealthReportVo.getId());
-            return toResponsSuccess(result);
-        }else{
-            userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
-            userHealthReportService.update(userHealthReportVo);
-            result.put("flag",2);
-            return toResponsSuccess(result);
-        }
+            if (addjsonparam!=null) {
+                userHealthReportVo.setNideshopUserId(userid);
+                //基础代谢量
+                userHealthReportVo.setBasicMetabolism(addjsonparam.getDouble("basicmetabolism"));
+                //BMI
+                userHealthReportVo.setBmi(addjsonparam.getDouble("BMI"));
+                //体脂率
+                userHealthReportVo.setBodyFatRade(addjsonparam.getDouble("bodyfatrade"));
+                //体水分率
+                userHealthReportVo.setBodyWaterRate(addjsonparam.getDouble("waterrate"));
+                //骨量
+                userHealthReportVo.setBoneMass(addjsonparam.getDouble("bonemass"));
+                //检测时间
+                userHealthReportVo.setDetectionTime(detectiontime);
+                //蛋白质
+                userHealthReportVo.setProtein(addjsonparam.getString("protein"));
+                //骨骼肌率
+                userHealthReportVo.setSkeletalMuscle(addjsonparam.getString("skeletalmuscle"));
+                //皮下脂肪率
+                userHealthReportVo.setSubFatPercentage(addjsonparam.getDouble("subfatpercentage"));
+                //更新时间
+                userHealthReportVo.setUpdateTime(addjsonparam.getDate("updatetime"));
+                //内脏脂肪等级
+                userHealthReportVo.setVisFatGrade(addjsonparam.getString("visfatgrade"));
+                //体重
+                userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
+                //体型
+                userHealthReportVo.setBodyShape(addjsonparam.getString("bodyShape"));
+                //身体年龄
+                userHealthReportVo.setBodyAge(addjsonparam.getString("bodyAge"));
+                //健康评分
+                userHealthReportVo.setSclscore(addjsonparam.getString("sclscore"));
+            } else {
+                return toResponsFail("参数为空");
+            }
+            if (userHealthReportVoList.size() == 0) {
+                userHealthReportService.save(userHealthReportVo);
+                if(userDetectionCycleVoList!=null && jiance.equals(detectiontime)){
+                    userDetectionCycleVo.setId(userDetectionCycleVoList.get(0).getId());
+                    userDetectionCycleVo.setInspectionNum(num);
+                    userDetectionCycleVo.setInspectionTime(cl1.getTime());
+                    userDetectionCycleService.update(userDetectionCycleVo);
+                }
+                result.put("flag", 1);
+                result.put("id", userHealthReportVo.getId());
+                return toResponsSuccess(result);
+            } else {
+                userHealthReportVo.setId(userHealthReportVoList.get(0).getId());
+                userHealthReportService.update(userHealthReportVo);
+                result.put("flag", 2);
+                return toResponsSuccess(result);
+            }
     }
     @ApiOperation(value = "用户身体健康报告记录详情")
     @PostMapping("userbodyinfo")
@@ -123,11 +144,16 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         datemap.put("nideshopUserid", userid);
         List<UserHealthReportVo> userHealthReportVoList = userHealthReportService.queryList(datemap);
         List<ApiUserhealReportVo> apiUserhealReportVoList=new ArrayList<>();
-        UserHealthReportVo userHealthReportVo = new UserHealthReportVo();
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy MM");
+        for(UserHealthReportVo userHealthReportVoItem:userHealthReportVoList){
+          Date  detetime=userHealthReportVoItem.getDetetionTime();
+            String date=dateFormat.format(detetime);
+            ParsePosition pos=new ParsePosition(0);
+            Date datetime=dateFormat.parse(date,pos);
+            userHealthReportVoItem.setDetectionTime(datetime);
+        }
         Map<Date,List<UserHealthReportVo>> map = userHealthReportVoList.stream().collect(
-                Collectors.groupingBy(UserHealthReportVo::getDetetionTime
-                ));
-
+                Collectors.groupingBy(UserHealthReportVo::getDetetionTime));
             for(Date key:map.keySet()){
                 ApiUserhealReportVo apiUserhealReportVo=new ApiUserhealReportVo();
                 apiUserhealReportVo.setCount(map.get(key).size());
@@ -145,7 +171,6 @@ public class ApiUserHealthReportController extends ApiBaseAction {
         JSONObject maxuserjson=this.getJsonRequest();
         String datemin=maxuserjson.getString("datemm");
         Long nideshopuserid=logiUser.getUserId();
-        SimpleDateFormat formats=new SimpleDateFormat("M");
         Map maxmap=new HashMap();
         maxmap.put("datemm",datemin);
         maxmap.put("nideshopUserid",nideshopuserid);

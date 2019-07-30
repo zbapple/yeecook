@@ -3,6 +3,7 @@ package com.platform.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -58,6 +59,12 @@ public class UserHealthReportVo implements Serializable {
     private Double boneMass;
     //骨骼肌率
     private String skeletalMuscle;
+    //身体体型
+    private String bodyShape;
+    //身体年龄
+    private String bodyAge;
+    //健康评分
+    private String sclscore;
     //最大
     private Integer max;
     private Integer min;
@@ -99,7 +106,7 @@ public class UserHealthReportVo implements Serializable {
     /**
      * 获取：检测时间
      */
-    @JsonFormat(pattern = "MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy MM", timezone = "GMT+8")
     public Date getDetetionTime() {
         return detectionTime;
     }
@@ -113,7 +120,7 @@ public class UserHealthReportVo implements Serializable {
     /**
      * 获取：更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "MM-dd", timezone = "GMT+8")
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -270,5 +277,29 @@ public class UserHealthReportVo implements Serializable {
 
     public void setAvg(double avg) {
         this.avg = avg;
+    }
+
+    public String getBodyShape() {
+        return bodyShape;
+    }
+
+    public void setBodyShape(String bodyShape) {
+        this.bodyShape = bodyShape;
+    }
+
+    public String getBodyAge() {
+        return bodyAge;
+    }
+
+    public void setBodyAge(String bodyAge) {
+        this.bodyAge = bodyAge;
+    }
+
+    public String getSclscore() {
+        return sclscore;
+    }
+
+    public void setSclscore(String sclscore) {
+        this.sclscore = sclscore;
     }
 }

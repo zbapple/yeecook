@@ -55,6 +55,10 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         dayfoodmap.put("userid", userid);
         dayfoodmap.put("today", today);
         List<MenuDetailsVo> userlist = menuDetailsService.queryList(dayfoodmap);
+        Integer menustatus=0;
+        for(MenuDetailsVo menuDetailsVoItem:userlist){
+            menustatus=menuDetailsVoItem.getMenustatus();
+        }
         Double countgood = 0.0;
         Double sumcalluch = 0.0;
         Double couteve = 0.0;
@@ -62,39 +66,45 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         List beabreakfastlist=new ArrayList();
         List Lunchlist=new ArrayList();
         List Dinnerlist=new ArrayList();
-         if (userlist != null) {
-            for (MenuDetailsVo MenuDetailsVoItem : userlist) {
-                if (MenuDetailsVoItem.getMenuType().equals("0") || MenuDetailsVoItem.getMenuType().equals("3") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
-                    Map namemap=new HashMap();
-                    countgood += MenuDetailsVoItem.getDishescalories();
-                    namemap.put("namegood",MenuDetailsVoItem.getDishesName()) ;
-                    beabreakfastlist.add(namemap);
-                } else if (MenuDetailsVoItem.getMenuType().equals("1") || MenuDetailsVoItem.getMenuType().equals("4") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
-                    Map namemap1=new HashMap();
-                    sumcalluch += MenuDetailsVoItem.getDishescalories();
-                    namemap1.put("nameluch",MenuDetailsVoItem.getDishesName());
-                    Lunchlist.add(namemap1);
-                } else if (MenuDetailsVoItem.getMenuType().equals("2")  || MenuDetailsVoItem.getMenuType().equals("5") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
-                    Map namemap2=new HashMap();
-                    couteve += MenuDetailsVoItem.getDishescalories();
-                 namemap2.put("nameev",MenuDetailsVoItem.getDishesName());
-                 Dinnerlist.add(namemap2);
+        if(menustatus==1){
+            if (userlist != null ) {
+                for (MenuDetailsVo MenuDetailsVoItem : userlist) {
+                    if (MenuDetailsVoItem.getMenuType().equals("0") || MenuDetailsVoItem.getMenuType().equals("3") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                        Map namemap=new HashMap();
+                        countgood += MenuDetailsVoItem.getDishescalories();
+                        namemap.put("namegood",MenuDetailsVoItem.getDishesName()) ;
+                        beabreakfastlist.add(namemap);
+                    } else if (MenuDetailsVoItem.getMenuType().equals("1") || MenuDetailsVoItem.getMenuType().equals("4") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                        Map namemap1=new HashMap();
+                        sumcalluch += MenuDetailsVoItem.getDishescalories();
+                        namemap1.put("nameluch",MenuDetailsVoItem.getDishesName());
+                        Lunchlist.add(namemap1);
+                    } else if (MenuDetailsVoItem.getMenuType().equals("2")  || MenuDetailsVoItem.getMenuType().equals("5") && userid.equals(MenuDetailsVoItem.getNideshopUserid())) {
+                        Map namemap2=new HashMap();
+                        couteve += MenuDetailsVoItem.getDishescalories();
+                        namemap2.put("nameev",MenuDetailsVoItem.getDishesName());
+                        Dinnerlist.add(namemap2);
+                    }
                 }
+                sum = countgood + sumcalluch + couteve;
+                result.put("beabreakfastlist", beabreakfastlist);
+                result.put("countgood", countgood);
+                result.put("namemLunchlistap1", Lunchlist);
+                result.put("sumcalluch", sumcalluch);
+                result.put("Dinnerlist", Dinnerlist);
+                result.put("couteve", couteve);
+                result.put("sum", sum);
+                result.put("flag", 1);
+                return toResponsSuccess(result);
+            } else {
+                result.put("flag", 0);
+                return toResponsSuccess(result);
             }
-            sum = countgood + sumcalluch + couteve;
-            result.put("beabreakfastlist", beabreakfastlist);
-            result.put("countgood", countgood);
-            result.put("namemLunchlistap1", Lunchlist);
-            result.put("sumcalluch", sumcalluch);
-            result.put("Dinnerlist", Dinnerlist);
-            result.put("couteve", couteve);
-            result.put("sum", sum);
-            result.put("flag", 1);
-            return toResponsSuccess(result);
-        } else {
-            result.put("flag", 0);
+        }else{
+            result.put("flag",0);
             return toResponsSuccess(result);
         }
+
     }
 
     @ApiOperation(value = "用户一天的食谱")
@@ -109,6 +119,10 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         todaymap.put("todays", todays);
         List<MenuDetailsVo> menuDetailsVoList = menuDetailsService.querListvo(todaymap); //查询出菜谱所有菜品信息
         List<ApiMenuDetaileVo> apiMenuDetaileVos = new ArrayList<>();    //传给前端的数据格式
+        Integer menustatus1=0;//检测签约   0未签约/1签约
+        for(MenuDetailsVo menuDetailsVoItem1:menuDetailsVoList){
+            menustatus1=menuDetailsVoItem1.getMenustatus();
+        }
         Double breakfastcal=0.0; //早餐总能量
         Double lunchcal=0.0;     //午餐总能量
         Double dinnercal=0.0;    //晚餐总能量
@@ -132,7 +146,7 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         List<Map> jiacan_3=new ArrayList<>();      //加餐早餐集合
         List<Map> jiacan_4=new ArrayList<>();      //加餐中餐集合
         List<Map> jiacan_5=new ArrayList<>();      //加餐晚餐集合
-
+        if(menustatus1==1){
         //迭代总的餐单菜品
         for (MenuDetailsVo menuDetailsVoItem : menuDetailsVoList) {
 
@@ -228,6 +242,11 @@ public class ApiMenuDetailsController extends ApiBaseAction {
         apiMenuDetaileVos.add(apiMenuDetaileVo_3);
 
         return toResponsSuccess(apiMenuDetaileVos);
+        }else{
+            result.put("flag",0);
+            return toResponsSuccess(result);
+        }
     }
+
 }
 

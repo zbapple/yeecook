@@ -42,6 +42,9 @@ public class ApiCloudClassroomController extends ApiBaseAction {
     @PostMapping("list")
     public Object list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size){
+        JSONObject jsonObject=this.getJsonRequest();
+       page=jsonObject.getInteger("page");
+       size=jsonObject.getInteger("size");
         Map params = new HashMap();
         params.put("fields", "id,video_cover_pic,video_title,video_subtitle");
         params.put("page", page);

@@ -11,16 +11,19 @@
         <result property="functionalDescription" column="functional_description"/>
 		<result property="dishesId" column="dishes_id"/>
 		<result property="contentg" column="content_g"/>
+		<result property="foodid" column="food_material_id"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.NutrientElementsVo">
 		select
-			`id`,
-			`nutrient_elements_name`,
-			`nutrient_elements_pic`,
-			`unit`,
-			`functional_description`
-		from nutrient_elements
+		a.nutrient_elements_name,
+		a.nutrient_elements_pic,
+		a.unit,
+		b.content_g,
+		FROM nutrient_elements a
+		LEFT join food_nutrient_elements b
+		on a.id=b.nutrient_elements_id
+		left join food_ingredients c on c.id= b.food_material_id
 		where id = #{id}
 	</select>
 
@@ -33,8 +36,8 @@
 		LEFT join food_nutrient_elements b
 		on a.id=b.nutrient_elements_id
 		left join food_ingredients c on c.id= b.food_material_id
-		<if test="dishesid != null ">
-			AND c.dishes_id=#{dishesid}
+		<if test="id != null ">
+			AND b.food_material_id=#{id}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

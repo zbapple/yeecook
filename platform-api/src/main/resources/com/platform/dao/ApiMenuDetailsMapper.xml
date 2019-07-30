@@ -15,6 +15,7 @@
 		<result property="dishescalories" column="dishes_calories"/>
 		<result property="dishescoverpic" column="dishes_cover_pic"/>
 		<result property="nideshopuserid" column="nideshop_user_id"/>
+		<result property="menustatus" column="menu_status"/>
     </resultMap>
 	<select id="queryObject" resultType="com.platform.entity.MenuDetailsVo">
 		select
@@ -36,7 +37,8 @@
 		a.menu_type as menutype,
 		a.dishes_name as dishesName,
 		c.dishes_calories as dishescalories,
-		b.nideshop_user_id as  nideshopuserid
+		b.nideshop_user_id as  nideshopuserid,
+		b.menu_status as menustatus
 		from menu_details  a
 		LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
 		LEFT join dishes c on a.dishes_id=c.id
@@ -67,7 +69,8 @@
 		c.dishes_calories as dishescalories,
 		a.meal_time as mealTime,
 		c.dishes_cover_pic as dishescoverpic,
-		b.nideshop_user_id as  nideshopuserid
+		b.nideshop_user_id as  nideshopuserid,
+		b.menu_status as menustatus
 		from menu_details  a
 		LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
 		LEFT join dishes c on a.dishes_id=c.id

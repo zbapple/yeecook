@@ -46,7 +46,7 @@ public class ApiUserHealthReportService  {
         return userHealthReportDao.save(userHealthReport);
     }
     public int update(UserHealthReportVo userHealthReport) {
-        return userHealthReportDao.update(userHealthReport);
+            return userHealthReportDao.update(userHealthReport);
     }
     public int delete(Integer id) {
         return userHealthReportDao.delete(id);

@@ -50,7 +50,8 @@ public class MenuDetailsVo implements Serializable {
     private String dishescoverpic;
     //用户id
     private  Long nideshopuserid;
-
+    //签约
+    private  Integer menustatus;
     /**
      * 设置：
      */
@@ -193,5 +194,13 @@ public class MenuDetailsVo implements Serializable {
 
     public void setNideshopUserid(Long nideshopuserid) {
         this.nideshopuserid = nideshopuserid;
+    }
+
+    public Integer getMenustatus() {
+        return menustatus;
+    }
+
+    public void setMenustatus(Integer menustatus) {
+        this.menustatus = menustatus;
     }
 }

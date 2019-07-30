@@ -8,8 +8,10 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
+import com.platform.entity.FoodIngredientsVo;
 import com.platform.entity.NutrientElementsVo;
 
+import com.platform.service.ApiFoodIngredientsService;
 import com.platform.service.ApiNutrientElementsService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
@@ -38,6 +40,8 @@ import org.springframework.web.bind.annotation.*;
 public class ApiNutrientElementsController extends ApiBaseAction {
     @Autowired
     private ApiNutrientElementsService nutrientElementsService;
+    @Autowired
+    private ApiFoodIngredientsService foodIngredientsService;
 
     @ApiOperation(value = "获取菜品中的营养元素")
     @PostMapping("nutrieninfo")
@@ -45,7 +49,20 @@ public class ApiNutrientElementsController extends ApiBaseAction {
         JSONObject dishesinfojson=this.getJsonRequest();
         Map nutrieninfomap=new HashMap();
         nutrieninfomap.put("dishesid",dishesinfojson.getLong("dishesid"));
-        List<NutrientElementsVo> nutrientElementsVos=nutrientElementsService.queryList(nutrieninfomap);
+        List<FoodIngredientsVo>  foodIngredientsVos=foodIngredientsService.queryList(nutrieninfomap);
+        Integer id=0;
+        Map map=new HashMap();
+        for(FoodIngredientsVo foodIngredientsVoItem:foodIngredientsVos){
+            id=foodIngredientsVoItem.getId();
+            map.put("id",id);
+        }
+      List<NutrientElementsVo> nutrientElementsVos=nutrientElementsService.queryList(map);
+//        Double nutrinum=0.0;
+//        String nutriName="";
+
+//        for(NutrientElementsVo nutrientElementsVoItem:nutrientElementsVos){
+//
+//        }
         return toResponsSuccess(nutrientElementsVos);
     }
     @ApiOperation(value = "营养比例")
