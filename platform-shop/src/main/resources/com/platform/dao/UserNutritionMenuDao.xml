@@ -116,7 +116,7 @@
 			<if test="cateringServiceOrgName != null">`catering_service_org_name` = #{cateringServiceOrgName}, </if>
 			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}, </if>
 			<if test="serviceCycleSt != null">`service_cycle_st` = #{serviceCycleSt}, </if>
-			<if test="servcieCycleEt != null">`service_cycle_et` = #{serviceCycleEt},</if>
+			<if test="serviceCycleEt != null">`service_cycle_et` = #{serviceCycleEt},</if>
 			<if test="serviceStage != null">`service_stage` = #{serviceStage},</if>
 			<if test="menuStatus !=null">`menu_status`=#{menuStatus}</if>
 		</set>

@@ -108,7 +108,6 @@ public class MenuPlanController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("menuplan:update")
     public R update(@RequestBody Integer id) {
         menuPlanService.update(id);
 
@@ -142,6 +141,8 @@ public class MenuPlanController {
     *
     * 更新详情信息
     **/
+   @RequestMapping("/updateInfo")
+   @RequiresPermissions("menuplan:update")
    public R updateinfo(@RequestBody MenuPlanEntity menuPlan){
        menuPlanService.updateinfo(menuPlan);
        return  R.ok();

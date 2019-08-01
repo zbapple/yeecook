@@ -48,7 +48,7 @@
                 <i-input v-model="userComments.commentsScore" placeholder="评论分数"/>
             </Form-item>
             <Form-item label="评论时间" prop="commentsTime">
-                <i-input v-model="userComments.commentsTime" placeholder="评论时间"/>
+                <Date-picker v-model="userComments.commentsTime" placeholder="评论时间"/>
             </Form-item>
             <Form-item label="回复类型 0是 1否" prop="replyType">
                 <i-input v-model="userComments.replyType" placeholder="回复类型 0是 1否"/>

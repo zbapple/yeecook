@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:14:48
  */
+@Data
 public class UserHealthReportEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -43,7 +46,12 @@ public class UserHealthReportEntity implements Serializable {
     private Double boneMass;
     //骨骼肌率
     private String skeletalMuscle;
-
+    //身体体型
+    private String bodyShape;
+    //身体年龄
+    private String bodyAge;
+    //健康评分
+    private String sclscore;
     /**
      * 设置：
      */

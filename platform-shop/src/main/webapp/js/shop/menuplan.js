@@ -34,8 +34,7 @@ $(function () {
                 }
             },
             {  label:'操作',name:'check', width: 80,index:'check',sortable:false, formatter: function(value,col,row){
-                    return  '<button  style="width: 30px;" onclick="vm.lookDetail('+  row.id  +')">查看</button>'
-                    // + '<button  style="width: 30px;" onclick="vm.update('+  row.id  +')">修改</button>';
+                    return  '<button  style="width: 40px;line-height: 30px" onclick="vm.lookDetail('+  row.id  +')">查看</button>'
 
                 }
             },
@@ -133,7 +132,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         foodlistadd:[
@@ -141,7 +141,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         foodlist1:[
@@ -149,7 +150,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         foodlistadd1:[
@@ -157,7 +159,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         foodlist2:[
@@ -165,7 +168,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         foodlistadd2:[
@@ -173,7 +177,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
             }
         ],
         showcamera:true,
@@ -235,38 +240,44 @@ let vm = new Vue({
                           vm.zaolist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                       } else if(vm.menumaptype[i].menuType == '1') {
                           vm.wulist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                       } else if(vm.menumaptype[i].menuType == '2'){
                           vm.wanlist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                           console.log(vm.wanlist);
                       } else if (vm.menumaptype[i].menuType == '3') {
                           vm.zaoaddlist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                       }else if (vm.menumaptype[i].menuType == '4') {
                           vm.wuaddlist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                       }else if (vm.menumaptype[i].menuType == '5') {
                           vm.wanaddlist.push({
                               dishesName:vm.menumaptype[i].dishesName,
                               dishesCoverPic:vm.menumaptype[i].dishesCoverPic,
-                              dishesCalories:vm.menumaptype[i].dishesCalories
+                              dishesCalories:vm.menumaptype[i].dishesCalories,
+                              menuDate:vm.menumaptype[i].menuDate
                           });
                       }
                   }
@@ -279,14 +290,22 @@ let vm = new Vue({
             if (id == null) {
                 return;
             }
-            vm.lookDetail(id);
-            vm.uploadList = [];
-            vm.showList = true;
-            vm.showfoods=false;
+            vm.showList = false;
+            vm.showfoods = false;
+            vm.details = false;
             vm.title = "修改";
+            vm.uploadList = [];
+            vm.getInfo(id);
+            vm.getCaterings();
+            vm.addfoodlist();
+            vm.addfoodlistadd();
+            vm.addfoodlist1();
+            vm.addfoodlistadd1();
+            vm.addfoodlist2();
+            vm.addfoodlistadd2();
         },
         saveOrUpdate: function (event) {
-            let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/update";
+            let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/updateInfo";
             vm.servermenuPlan.menuCoverPics=vm.uploadList;
             vm.servermenuPlan.foodlist=this.foodlist;
             vm.servermenuPlan.foodlistadd=this.foodlistadd;
@@ -302,7 +321,13 @@ let vm = new Vue({
                 contentType: "application/json",
                 successCallback: function (r) {
                     alert('操作成功', function (index) {
-                        vm.reload();
+                            vm.servermenuPlan.splice(0,vm.servermenuPlan.length);
+                        // vm.servermenuPlan.foodlist.splice(0,vm.servermenuPlan.foodlist.length);
+                        // vm.servermenuPlan.foodlistadd.splice(0,vm.servermenuPlan.foodlistadd.length);
+                        // vm.servermenuPlan.foodlist1.splice(0,vm.servermenuPlan.foodlist1.length);
+                        // vm.servermenuPlan.foodlistadd1.splice(0,vm.servermenuPlan.foodlistadd1.length);
+                        // vm.servermenuPlan.foodlist2.splice(0,vm.servermenuPlan.foodlist2.length);
+                        // vm.servermenuPlan.foodlistadd2.splice(0,vm.servermenuPlan.foodlistadd2.length);
                     });
                 }
             });
@@ -332,7 +357,7 @@ let vm = new Vue({
                 url: "../menuplan/info/" + id,
                 async: true,
                 successCallback: function (r) {
-                    vm.menuPlan = r.menuPlan;
+                    vm.servermenuPlan = r.menuPlan;
                 }
             });
         },
@@ -380,6 +405,7 @@ let vm = new Vue({
                 }
             });
         },
+
         /**
          * 添加机构名字
          */
@@ -414,6 +440,7 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.NutritionMenuTypes = r.list;
+
                 }
             });
         },
@@ -552,7 +579,8 @@ let vm = new Vue({
                 dishesId:'',
                 dishesName:'',
                 dishesCoverPic:'',
-                dishesCalories:''
+                dishesCalories:'',
+                menuDate:''
 
             })},
         /**
@@ -703,6 +731,7 @@ let vm = new Vue({
             this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd2[i].dishesName=this.targetKeys3[num].dishesName;
         },
+
     },
     mounted() {
         this.adddd();

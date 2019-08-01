@@ -20,7 +20,11 @@ $(function () {
 			{label: '体水分率', name: 'bodyWaterRate', index: 'body_water_rate', width: 80},
 			{label: '蛋白质', name: 'protein', index: 'protein', width: 80},
 			{label: '骨量', name: 'boneMass', index: 'bone_mass', width: 80},
-			{label: '骨骼肌率', name: 'skeletalMuscle', index: 'skeletal_muscle', width: 80}]
+			{label: '骨骼肌率', name: 'skeletalMuscle', index: 'skeletal_muscle', width: 80},
+            {label: '身体体型', name: 'bodyShape', index: 'body_shape', width: 80},
+            {label: '身体年龄', name: 'bodyAge', index: 'body_age', width: 80},
+            {label: '健康评分', name: 'sclscore', index: 'sclscore', width: 80}
+		]
     });
 });
 

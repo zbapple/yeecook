@@ -1,5 +1,9 @@
 package com.platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +16,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:05:27
  */
+@Data
 public class UserNutritionMenuEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

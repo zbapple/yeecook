@@ -13,13 +13,13 @@
         <result property="fatherId" column="father_id"/>
         <result property="mealTime" column="meal_time"/>
         <result property="menuDate" column="menu_date"/>
-		<result property="dishesCalories" column="dishes_calories"/>
-		<result property="dishesCoverPic" column="dishes_cover_pic"/>
-		<result property="nidehopUserId" column="nideshop_user_id"/>
+        <result property="dishesCalories" column="dishes_calories"/>
+        <result property="dishesCoverPic" column="dishes_cover_pic"/>
+        <result property="nidehopUserId" column="nideshop_user_id"/>
 
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.MenuDetailsEntity">
+    <select id="queryObject" resultType="com.platform.entity.MenuDetailsEntity">
 		select
 			`id`,
 			`user_nutrition_menu_id`,
@@ -34,68 +34,94 @@
 		where user_nutrition_menu_id = #{userNutritionMenuId}
 	</select>
 
-	<select id="queryListvo" resultType="com.platform.entity.MenuDetailsEntity">
-		select
-		a.id,
-		a.leaf_node as leafNode,
-		a.menu_type as menutype,
-		a.father_id as fatherid,
-		a.dishes_name as dishesname,
-		a.dishes_id as  dishesId,
-		c.dishes_calories as dishescalories,
-		a.meal_time as mealTime,
-		a.menu_date as menuDate,
-		c.dishes_cover_pic as dishescoverpic,
-		b.nideshop_user_id as  nideshopuserid
-		from menu_details  a
-		LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
-		LEFT join dishes c on a.dishes_id=c.id
-		WHERE a.user_nutrition_menu_id=#{userNutritionMenuId}
-		<choose>
-			<when test="sidx != null and sidx.trim() != ''">
-				order by ${sidx} ${order}
-			</when>
-		</choose>
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
-		</if>
-	</select>
+    <select id="queryListvo" resultType="com.platform.entity.MenuDetailsEntity">
+        select
+        a.id,
+        a.leaf_node as leafNode,
+        a.menu_type as menutype,
+        a.father_id as fatherid,
+        a.dishes_name as dishesname,
+        a.dishes_id as dishesId,
+        c.dishes_calories as dishescalories,
+        a.meal_time as mealTime,
+        a.menu_date as menuDate,
+        c.dishes_cover_pic as dishescoverpic,
+        b.nideshop_user_id as nideshopuserid
+        from menu_details a
+        LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
+        LEFT join dishes c on a.dishes_id=c.id
+        WHERE 1=1
+        <if test="userNutritionMenuId != null ">
+            AND user_nutrition_menu_id = #{userNutritionMenuId}
+        </if>
+        <if test="todays != null">
+            AND menu_date = #{todays}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
 
-	<select id="queryList" resultType="com.platform.entity.MenuDetailsEntity">
-		select
-		a.menu_type as menutype,
-		a.dishes_name as dishesName,
-		c.dishes_calories as dishescalories,
-		b.nideshop_user_id as  nideshopuserid
-		from menu_details  a
-		LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
-		LEFT join dishes c on a.dishes_id=c.id
-		WHERE b.nideshop_user_id = #{value}
-		<if test="userid != null">
-			AND  nideshop_user_id=#{userid}
-		</if>
-		<if test="today!=null">
-			and a.menu_date=#{today}
-		</if>
-		<choose>
-			<when test="sidx != null and sidx.trim() != ''">
-				order by ${sidx} ${order}
-			</when>
-		</choose>
-		<if test="offset != null and limit != null">
-			limit #{offset}, #{limit}
-		</if>
-	</select>
-	
- 	<select id="queryTotal" resultType="int">
-		select count(*) from menu_details
-		WHERE 1=1
+    <select id="queryList" resultType="com.platform.entity.MenuDetailsEntity">
+        select
+        *
+        from menu_details
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND id LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="com.platform.entity.MenuDetailsEntity">
+        select
+        a.menu_type as menutype,
+        a.dishes_name as dishesName,
+        c.dishes_calories as dishescalories,
+        b.nideshop_user_id as nideshopuserid
+        from menu_details a
+        LEFT JOIN user_nutrition_menu b on a.user_nutrition_menu_id=b.id
+        LEFT join dishes c on a.dishes_id=c.id
+        WHERE b.nideshop_user_id = #{value}
+        <if test="userid != null">
+            AND nideshop_user_id=#{userid}
+        </if>
+        <if test="today!=null">
+            and a.menu_date=#{today}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="queryTotal" resultType="int">
+        select count(*) from menu_details
+        WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND menu_type LIKE concat('%',#{name},'%')
         </if>
-	</select>
-	 
-	<insert id="save" parameterType="com.platform.entity.MenuDetailsEntity">
+    </select>
+
+    <insert id="save" parameterType="com.platform.entity.MenuDetailsEntity">
 		insert into menu_details(
 			`user_nutrition_menu_id`,
 			`menu_type`,
@@ -115,31 +141,31 @@
 			#{mealTime},
 			#{menuDate})
 	</insert>
-	 
-	<update id="update" parameterType="com.platform.entity.MenuDetailsEntity">
-		update menu_details 
-		<set>
-			<if test="userNutritionMenuId != null">`user_nutrition_menu_id` = #{userNutritionMenuId}, </if>
-			<if test="menuType != null">`menu_type` = #{menuType}, </if>
-			<if test="dishesId != null">`dishes_id` = #{dishesId}, </if>
-			<if test="dishesName != null">`dishes_name` = #{dishesName}, </if>
-			<if test="leafNode != null">`leaf_node` = #{leafNode}, </if>
-			<if test="fatherId != null">`father_id` = #{fatherId}, </if>
-			<if test="mealTime != null">`meal_time` = #{mealTime}, </if>
-			<if test="menuDate != null">`menu_date` = #{menuDate}</if>
-		</set>
-		where id = #{id}
-	</update>
-	
-	<delete id="delete">
+
+    <update id="update" parameterType="com.platform.entity.MenuDetailsEntity">
+        update menu_details
+        <set>
+            <if test="userNutritionMenuId != null">`user_nutrition_menu_id` = #{userNutritionMenuId},</if>
+            <if test="menuType != null">`menu_type` = #{menuType},</if>
+            <if test="dishesId != null">`dishes_id` = #{dishesId},</if>
+            <if test="dishesName != null">`dishes_name` = #{dishesName},</if>
+            <if test="leafNode != null">`leaf_node` = #{leafNode},</if>
+            <if test="fatherId != null">`father_id` = #{fatherId},</if>
+            <if test="mealTime != null">`meal_time` = #{mealTime},</if>
+            <if test="menuDate != null">`menu_date` = #{menuDate}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
 		delete from menu_details where id = #{value}
 	</delete>
-	
-	<delete id="deleteBatch">
-		delete from menu_details where id in 
-		<foreach item="id" collection="array" open="(" separator="," close=")">
-			#{id}
-		</foreach>
-	</delete>
+
+    <delete id="deleteBatch">
+        delete from menu_details where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

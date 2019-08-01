@@ -61,10 +61,10 @@
                 <i-input v-model="userNutritionMenu.cateringServiceOrgName" placeholder="膳食服务机构名称"/>
             </Form-item>
             <Form-item label="服务周期开始时间" prop="serviceCycleSt">
-                <i-input v-model="userNutritionMenu.serviceCycleSt" placeholder="服务周期开始时间"/>
+                <Date-picker v-model="userNutritionMenu.serviceCycleSt" placeholder="服务周期开始时间"/>
             </Form-item>
-            <Form-item label="服务周期结束时间" prop="servcieCycleEt">
-                <i-input v-model="userNutritionMenu.servcieCycleEt" placeholder="服务周期结束时间"/>
+            <Form-item label="服务周期结束时间" prop="serviceCycleEt">
+                <Date-picker v-model="userNutritionMenu.serviceCycleEt" placeholder="服务周期结束时间"/>
             </Form-item>
             <Form-item label="服务阶段" prop="serviceStage">
                 <i-input v-model="userNutritionMenu.serviceStage" placeholder="服务阶段"/>

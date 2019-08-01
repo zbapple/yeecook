@@ -39,15 +39,15 @@
                 <i-input v-model="userHealthReport.nideshopUserId" placeholder="用户id"/>
             </Form-item>
             <Form-item label="检测时间" prop="detectionTime">
-                <i-input v-model="userHealthReport.detectionTime" placeholder="检测时间"/>
+                <Date-picker v-model="userHealthReport.detectionTime" placeholder="检测时间"/>
             </Form-item>
             <Form-item label="更新时间" prop="updateTime">
-                <i-input v-model="userHealthReport.updateTime" placeholder="更新时间"/>
+                <Date-picker v-model="userHealthReport.updateTime" placeholder="更新时间"/>
             </Form-item>
             <Form-item label="体重" prop="weight">
                 <i-input v-model="userHealthReport.weight" placeholder="体重"/>
             </Form-item>
-            <Form-item label="" prop="bmi">
+            <Form-item label="BMI" prop="bmi">
                 <i-input v-model="userHealthReport.bmi" placeholder=""/>
             </Form-item>
             <Form-item label="体脂率" prop="bodyFatRade">
@@ -73,6 +73,15 @@
             </Form-item>
             <Form-item label="骨骼肌率" prop="skeletalMuscle">
                 <i-input v-model="userHealthReport.skeletalMuscle" placeholder="骨骼肌率"/>
+            </Form-item>
+            <Form-item label="身体体型" prop="bodyShape">
+                <i-input v-model="userHealthReport.bodyShape" placeholder="骨骼肌率"/>
+            </Form-item>
+            <Form-item label="身体年龄" prop="bodyAge">
+                <i-input v-model="userHealthReport.bodyAge" placeholder="骨骼肌率"/>
+            </Form-item>
+            <Form-item label="健康评分" prop="sclscore">
+                <i-input v-model="userHealthReport.sclscore" placeholder="骨骼肌率"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

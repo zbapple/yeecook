@@ -54,10 +54,10 @@
                 <i-input v-model="menuDetails.fatherId" placeholder="父类id"/>
             </Form-item>
             <Form-item label="用餐时间" prop="mealTime">
-                <i-input v-model="menuDetails.mealTime" placeholder="用餐时间"/>
+                <Date-picker type="datetime" v-model="menuDetails.mealTime" placeholder="用餐时间"/>
             </Form-item>
             <Form-item label="餐单日期" prop="menuDate">
-                <i-input v-model="menuDetails.menuDate" placeholder="餐单日期"/>
+                <Date-picker v-model="menuDetails.menuDate" placeholder="餐单日期"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

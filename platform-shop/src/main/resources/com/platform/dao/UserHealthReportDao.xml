@@ -18,6 +18,9 @@
         <result property="protein" column="protein"/>
         <result property="boneMass" column="bone_mass"/>
         <result property="skeletalMuscle" column="skeletal_muscle"/>
+		<result property="bodyShape" column="body_shape"/>
+		<result property="bodyAge" column="body_age"/>
+		<result property="sclscore" column="sclscore"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserHealthReportEntity">
@@ -35,7 +38,10 @@
 			`body_water_rate`,
 			`protein`,
 			`bone_mass`,
-			`skeletal_muscle`
+			`skeletal_muscle`,
+			`body_shape`,
+			`body_age`,
+			`sclscore`
 		from user_health_report
 		where id = #{id}
 	</select>
@@ -55,7 +61,10 @@
     		`body_water_rate`,
     		`protein`,
     		`bone_mass`,
-    		`skeletal_muscle`
+    		`skeletal_muscle`,
+		    `body_shape`,
+		    `body_age`,
+		    `sclscore`
 		from user_health_report
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -105,7 +114,10 @@
 			`body_water_rate`,
 			`protein`,
 			`bone_mass`,
-			`skeletal_muscle`)
+			`skeletal_muscle`,
+			`body_shape`,
+			`body_age`,
+			`sclscore`)
 		values(
 			#{id},
 			#{nideshopUserId},
@@ -120,7 +132,11 @@
 			#{bodyWaterRate},
 			#{protein},
 			#{boneMass},
-			#{skeletalMuscle})
+			#{skeletalMuscle},
+			#{bodyShape},
+			#{bodyAge},
+			#{sclscore}
+			)
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.UserHealthReportEntity">
@@ -138,7 +154,10 @@
 			<if test="bodyWaterRate != null">`body_water_rate` = #{bodyWaterRate}, </if>
 			<if test="protein != null">`protein` = #{protein}, </if>
 			<if test="boneMass != null">`bone_mass` = #{boneMass}, </if>
-			<if test="skeletalMuscle != null">`skeletal_muscle` = #{skeletalMuscle}</if>
+			<if test="skeletalMuscle != null">`skeletal_muscle` = #{skeletalMuscle},</if>
+			<if test="bodyShape != null">`body_shape`= #{bodyShape},</if>
+			<if test="bodyAge != null">`body_age`= #{bodyAge},</if>
+			<if test="sclscore != null">`sclscore`= #{sclscore},</if>
 		</set>
 		where id = #{id}
 	</update>

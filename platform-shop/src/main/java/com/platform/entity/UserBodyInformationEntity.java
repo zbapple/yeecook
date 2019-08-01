@@ -26,6 +26,8 @@ public class UserBodyInformationEntity implements Serializable {
     //目标体重
     private Double goalWeight;
 
+
+
     /**
      * 设置：
      */

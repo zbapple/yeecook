@@ -39,22 +39,22 @@
                 <i-input v-model="userDetectionCycle.nideshopUserId" placeholder="用户id"/>
             </Form-item>
             <Form-item label="检测开始日期" prop="inspectionStartDate">
-                <i-input v-model="userDetectionCycle.inspectionStartDate" placeholder="检测开始日期"/>
+                <Date-Picker v-model="userDetectionCycle.inspectionStartDate" placeholder="检测开始日期"/>
             </Form-item>
             <Form-item label="检测结束日期" prop="inspectionEndDate">
-                <i-input v-model="userDetectionCycle.inspectionEndDate" placeholder="检测结束日期"/>
+                <Date-Picker v-model="userDetectionCycle.inspectionEndDate" placeholder="检测结束日期"/>
             </Form-item>
             <Form-item label="已检测次数" prop="inspectionNum">
                 <i-input v-model="userDetectionCycle.inspectionNum" placeholder="已检测次数"/>
             </Form-item>
             <Form-item label="检测执行日期" prop="inspectionTime">
-                <i-input v-model="userDetectionCycle.inspectionTime" placeholder="检测执行日期"/>
+                <Date-Picker v-model="userDetectionCycle.inspectionTime" placeholder="检测执行日期"/>
             </Form-item>
             <Form-item label="检测周期" prop="inspectionCycle">
                 <i-input v-model="userDetectionCycle.inspectionCycle" placeholder="检测周期"/>
             </Form-item>
             <Form-item label="下次检测时间" prop="inspectionCycle">
-                <i-input v-model="userDetectionCycle.nextTime" placeholder="下次检测时间"/>
+                <Date-Picker v-model="userDetectionCycle.nextTime" placeholder="下次检测时间"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

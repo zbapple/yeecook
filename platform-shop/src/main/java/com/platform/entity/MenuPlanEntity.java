@@ -1,8 +1,10 @@
 package com.platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.platform.dao.UserNutritionMenuDao;
 import com.platform.utils.DateUtils;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.rmi.MarshalledObject;
@@ -84,6 +86,26 @@ public class MenuPlanEntity implements Serializable {
     private List<MenuDetailsEntity> foodlistadd2;
 
     private List<MenuPlanEntity> menuCoverPics;
+
+
+    public void setServiceCycleSt(Date serviceCycleSt) {
+        this.serviceCycleSt = serviceCycleSt;
+    }
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public Date getServiceCycleSt() {
+        return serviceCycleSt;
+    }
+
+    public void setServiceCycleEt(Date serviceCycleEt) {
+        this.serviceCycleEt = serviceCycleEt;
+    }
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    public Date getServiceCycleEt() {
+        return serviceCycleEt;
+    }
+
 
 
     /**

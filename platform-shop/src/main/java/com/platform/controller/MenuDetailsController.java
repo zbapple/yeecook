@@ -2,8 +2,8 @@ package com.platform.controller;
 
 import java.util.*;
 
+import com.alibaba.fastjson.JSONObject;
 import com.platform.entity.MenuDetailsDemo;
-import com.platform.entity.MenuPlanEntity;
 import com.platform.entity.UserEntity;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,64 +105,70 @@ public class MenuDetailsController {
         return R.ok().put("list", list);
     }
 
-    /**
-     *  餐单详情
-     **/
-    public R menuinfo() {
-        Map<String, Object> result = new HashMap<>();
-        UserEntity userEntity = new UserEntity();
-        Integer userid = userEntity.getId();
-        Map dayfoodmap = new HashMap();
-        dayfoodmap.put("userid", userid);
-        List<MenuDetailsEntity> userlist = menuDetailsService.queryList(dayfoodmap);
-        String namegood = null;
-        String nameluch = null;
-        String nameeve = null;
-        Double countgood = 0.0;
-        Double sumcalluch = 0.0;
-        Double couteve = 0.0;
-        Double sum = 0.0;
-        if (userlist != null) {
-            for (MenuDetailsEntity MenuDetailsVoItem : userlist) {
-                if (MenuDetailsVoItem.getMenuType().equals("0") && userid.equals(MenuDetailsVoItem.getId())) {
-                    countgood += MenuDetailsVoItem.getDishesCalories();
-                    namegood = MenuDetailsVoItem.getDishesName();
-                } else if (MenuDetailsVoItem.getMenuType().equals("1") && userid.equals(MenuDetailsVoItem.getNideshopUserId())) {
-                    sumcalluch += MenuDetailsVoItem.getDishesCalories();
-                    nameluch = MenuDetailsVoItem.getDishesName();
-                } else if (MenuDetailsVoItem.getMenuType().equals("2") && userid.equals(MenuDetailsVoItem.getNideshopUserId())) {
-                    couteve += MenuDetailsVoItem.getDishesCalories();
-                    nameeve = MenuDetailsVoItem.getDishesName();
-                }
-            }
-            sum = countgood + sumcalluch + couteve;
-            Map namemap=new HashMap();
-            namemap.put("namegood",namegood);
-            Map namemap1=new HashMap();
-            namemap1.put("nameluch",nameluch);
-            Map namemap2=new HashMap();
-            namemap2.put("nameeve",nameeve);
-            result.put("namemap", namemap);
-            result.put("countgood", countgood);
-            result.put("namemap1", namemap1);
-            result.put("sumcalluch", sumcalluch);
-            result.put("namemap2", namemap2);
-            result.put("couteve", couteve);
-            result.put("sum", sum);
-            result.put("flag", 1);
-            return R.ok(result);
-        } else {
-            result.put("flag", 0);
-            return R.ok(result);
-        }
-    }
+//    /**
+//     *  餐单详情
+//     **/
+//    public R menuinfo(@RequestBody MenuDetailsEntity me) {
+//        Map<String, Object> result = new HashMap<>();
+//        UserEntity userEntity = new UserEntity();
+//        Date today=me.getMenuDate();
+//        Integer userid = userEntity.getId();
+//        Map dayfoodmap = new HashMap();
+//        dayfoodmap.put("userid", userid);
+//        dayfoodmap.put("today",today);
+//        List<MenuDetailsEntity> userlist = menuDetailsService.queryList(dayfoodmap);
+//        String namegood = null;
+//        String nameluch = null;
+//        String nameeve = null;
+//        Double countgood = 0.0;
+//        Double sumcalluch = 0.0;
+//        Double couteve = 0.0;
+//        Double sum = 0.0;
+//        if (userlist != null) {
+//            for (MenuDetailsEntity MenuDetailsVoItem : userlist) {
+//                if (MenuDetailsVoItem.getMenuType().equals("0") && userid.equals(MenuDetailsVoItem.getId())) {
+//                    countgood += MenuDetailsVoItem.getDishesCalories();
+//                    namegood = MenuDetailsVoItem.getDishesName();
+//                } else if (MenuDetailsVoItem.getMenuType().equals("1") && userid.equals(MenuDetailsVoItem.getNideshopUserId())) {
+//                    sumcalluch += MenuDetailsVoItem.getDishesCalories();
+//                    nameluch = MenuDetailsVoItem.getDishesName();
+//                } else if (MenuDetailsVoItem.getMenuType().equals("2") && userid.equals(MenuDetailsVoItem.getNideshopUserId())) {
+//                    couteve += MenuDetailsVoItem.getDishesCalories();
+//                    nameeve = MenuDetailsVoItem.getDishesName();
+//                }
+//            }
+//            sum = countgood + sumcalluch + couteve;
+//            Map namemap=new HashMap();
+//            namemap.put("namegood",namegood);
+//            Map namemap1=new HashMap();
+//            namemap1.put("nameluch",nameluch);
+//            Map namemap2=new HashMap();
+//            namemap2.put("nameeve",nameeve);
+//            result.put("namemap", namemap);
+//            result.put("countgood", countgood);
+//            result.put("namemap1", namemap1);
+//            result.put("sumcalluch", sumcalluch);
+//            result.put("namemap2", namemap2);
+//            result.put("couteve", couteve);
+//            result.put("sum", sum);
+//            result.put("flag", 1);
+//            return R.ok(result);
+//        } else {
+//            result.put("flag", 0);
+//            return R.ok(result);
+//        }
+//    }
 
-    public R todayinfo() {
-        Map<String, Object> result = new HashMap<>();
-        UserEntity userEntity=new UserEntity();
-        Integer userid = userEntity.getId();
+    /**
+     *  查看今日菜谱
+     **/
+    @RequestMapping("/todayinfo")
+    public R todayinfo(@RequestBody MenuDetailsEntity me) {
+        Date todays=me.getMenuDate();
+        Integer menuId=me.getUserNutritionMenuId();
         Map todaymap = new HashMap();
-        todaymap.put("nideshopUserid", userid);
+        todaymap.put("userNutritionMenuId", menuId);
+        todaymap.put("todays",todays);
         List<MenuDetailsEntity> menuDetailsVoList = menuDetailsService.queryListvo(todaymap); //查询出菜谱所有菜品信息
         List<MenuDetailsDemo> apiMenuDetaileVos = new ArrayList<>();    //传给前端的数据格式
         Double breakfastcal=0.0; //早餐总能量

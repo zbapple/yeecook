@@ -4,7 +4,9 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '序号', name: 'stepsNum', index: 'steps_num', width: 80},
-			{label: '菜品步骤图片', name: 'stepsPic', index: 'steps_pic', width: 80},
+			{label: '菜品步骤图片', name: 'stepsPic', index: 'steps_pic', width: 80,
+                formatter: function (value) {
+                    return transImg(value);}},
 			{label: '步骤描述', name: 'stepsDescribe', index: 'steps_describe', width: 80},
 			{label: '菜品id', name: 'dishesId', index: 'dishes_id', width: 80}]
     });

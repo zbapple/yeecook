@@ -42,7 +42,8 @@
         `menu_name`,
         `menu_sn`,
         `service_cycle_et`,
-        `menu_status`
+        `menu_status`,
+         u.menu_cover_pic
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
         where u.id = #{id}
@@ -156,16 +157,18 @@
         <set>
             <if test="id != null">`id` = #{id},</if>
             <if test="menuStatus != null">`menu_status` = #{menuStatus},</if>
+            <if test="serviceStage != null">`service_stage`=#{serviceStage},</if>
+            <if test="menuCoverPic != null">`menu_cover_pic` = #{menuCoverPic}</if>
         </set>
         where id = #{id}
     </update>
 
     <delete id="delete">
-		delete from menu_plan where id = #{value}
+		delete from user_nutrition_menu where id = #{value}
 	</delete>
 
     <delete id="deleteBatch">
-        delete from menu_plan where id in
+        delete from user_nutrition_menu where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

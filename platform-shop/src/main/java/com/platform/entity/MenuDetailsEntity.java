@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -148,6 +150,7 @@ public class MenuDetailsEntity implements Serializable {
     /**
      * 获取：用餐时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getMealTime() {
         return mealTime;
     }
@@ -162,6 +165,7 @@ public class MenuDetailsEntity implements Serializable {
     /**
      * 获取：餐单日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getMenuDate() {
         return menuDate;
     }

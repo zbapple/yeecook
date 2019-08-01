@@ -104,7 +104,7 @@ var vm = new Vue({
         query: function () {
             vm.reload();
         },
-        add: function () {
+        u: function () {
             vm.showList = false;
             vm.title = "新增";
             vm.uploadList = [];
