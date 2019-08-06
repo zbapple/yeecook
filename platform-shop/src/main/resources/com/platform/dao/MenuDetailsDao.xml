@@ -31,7 +31,7 @@
 			`meal_time`,
 			`menu_date`
 		from menu_details
-		where user_nutrition_menu_id = #{userNutritionMenuId}
+		where id=#{id}
 	</select>
 
     <select id="queryListvo" resultType="com.platform.entity.MenuDetailsEntity">

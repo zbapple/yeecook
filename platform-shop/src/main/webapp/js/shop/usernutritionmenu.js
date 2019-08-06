@@ -12,7 +12,7 @@ $(function () {
                 }
 			},
 			{label: '营养原理', name: 'nutritionPrinciple', index: 'nutrition_principle', width: 80},
-			{label: '膳食服务机构id', name: 'cateringServiceOrgId', index: 'catering_service_org_id', width: 80},
+			// {label: '膳食服务机构id', name: 'cateringServiceOrgId', index: 'catering_service_org_id', width: 80},
 			{label: '膳食服务机构名称', name: 'cateringServiceOrgName', index: 'catering_service_org_name', width: 80},
 			{label: '服务周期开始时间', name: 'serviceCycleSt', index: 'service_cycle_st', width: 80,
                 formatter: function (value) {

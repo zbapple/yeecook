@@ -38,14 +38,17 @@
         n.avatar as avatar,
         nutrition_menu_type,
         `service_cycle_st`,
+        `service_stage`,
         `catering_service_org_name`,
         `menu_name`,
         `menu_sn`,
         `service_cycle_et`,
         `menu_status`,
-         u.menu_cover_pic
+         u.menu_cover_pic,
+         udc.inspection_cycle as inspection_cycle
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
+        left join user_detection_cycle udc on u.nideshop_user_id= udc.nideshop_user_id
         where u.id = #{id}
 	</select>
 

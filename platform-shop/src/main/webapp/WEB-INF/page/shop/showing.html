@@ -7,20 +7,38 @@
 <body>
 <div id="rrapp" v-cloak>
     <div v-show="showList">
-        <Row :gutter="16">
+        <Row :gutter="15">
             <div class="search-group">
-                <i-col span="4">
-                    <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                <i-col span="20 ">
+                    <i-input  v-model="q.name" size="large" @on-enter="query" placeholder="菜谱名查询"/>
                 </i-col>
-                     <i-button @click="query">查询</i-button>
-                    <i-button @click="reloadSearch">重置</i-button></div>
+                     <i-button @click="query" size="large">查询</i-button>
+                    <i-button @click="reloadSearch" size="large">重置</i-button></div>
             <div class="buttons-group">
                 #if($shiro.hasPermission("menu:update"))
-                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;详情</i-button>
+                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o" size="large"></i>&nbsp;详情</i-button>
                 #end
             </div>
         </Row>
-        <table id="jqGrid"></table>
+        <table id="jqGrid">
+            <!--<span>排序方式:-->
+                <!--<i-select style="width: 100px" filterable placeholder="默认" clearable=true>-->
+                <!--<i-option value="0">默认</i-option>-->
+                <!--<i-option value="1">最新</i-option>-->
+            <!--</i-select>-->
+            <!--</span>-->
+                <!--<span style="margin-left: 20px;">筛选:-->
+            <!--<i-select v-model="q.categoryName" filterable style="width: 200px" placeholder="类型" @click="query" clearable=true>-->
+                <!--<i-option value="0" >肉类</i-option>-->
+                <!--<i-option value="1">小吃与沙拉</i-option>-->
+                <!--<i-option value="2">蔬菜与配菜</i-option>-->
+                <!--<i-option value="3">烘焙</i-option>-->
+                <!--<i-option value="4">鱼和海鲜</i-option>-->
+                <!--<i-option value="5">鸡蛋食品／餐后甜点</i-option>-->
+                <!--<i-option value="6">家禽</i-option>-->
+            <!--</i-select>-->
+                <!--</span>-->
+        </table>
         <div id="jqGridPager"></div>
     </div>
 

@@ -379,12 +379,12 @@
             <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 436px;">
                 <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="6" placeholder="营养原理"/>
             </Form-item>
-            <Form-item>
-                <i-button type="primary" @click="handleSubmit">提交</i-button>
+        </i-form>
+            <div style="padding-left: 20px; margin-bottom: 30px">
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>
                 取消</i-button>
-            </Form-item>
-        </i-form>
+            </div>
     </Card>
 
     <Card v-show="details">

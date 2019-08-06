@@ -305,7 +305,8 @@ let vm = new Vue({
             vm.addfoodlistadd2();
         },
         saveOrUpdate: function (event) {
-            let url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/updateInfo";
+            console.log(777888);
+            var url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/updateInfo";
             vm.servermenuPlan.menuCoverPics=vm.uploadList;
             vm.servermenuPlan.foodlist=this.foodlist;
             vm.servermenuPlan.foodlistadd=this.foodlistadd;
