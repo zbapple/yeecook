@@ -6,7 +6,6 @@
     <resultMap type="com.platform.entity.NutrientElementsEntity" id="nutrientElementsMap">
         <result property="id" column="id"/>
         <result property="nutrientElementsName" column="nutrient_elements_name"/>
-        <result property="nutrientElementsPic" column="nutrient_elements_pic"/>
         <result property="unit" column="unit"/>
         <result property="functionalDescription" column="functional_description"/>
     </resultMap>
@@ -15,7 +14,6 @@
 		select
 			`id`,
 			`nutrient_elements_name`,
-			`nutrient_elements_pic`,
 			`unit`,
 			`functional_description`
 		from nutrient_elements
@@ -26,7 +24,6 @@
 		select
     		`id`,
     		`nutrient_elements_name`,
-    		`nutrient_elements_pic`,
     		`unit`,
     		`functional_description`
 		from nutrient_elements
@@ -59,13 +56,11 @@
 		insert into nutrient_elements(
 			`id`,
 			`nutrient_elements_name`,
-			`nutrient_elements_pic`,
 			`unit`,
 			`functional_description`)
 		values(
 			#{id},
 			#{nutrientElementsName},
-			#{nutrientElementsPic},
 			#{unit},
 			#{functionalDescription})
 	</insert>
@@ -74,7 +69,6 @@
 		update nutrient_elements 
 		<set>
 			<if test="nutrientElementsName != null">`nutrient_elements_name` = #{nutrientElementsName}, </if>
-			<if test="nutrientElementsPic != null">`nutrient_elements_pic` = #{nutrientElementsPic}, </if>
 			<if test="unit != null">`unit` = #{unit}, </if>
 			<if test="functionalDescription != null">`functional_description` = #{functionalDescription}</if>
 		</set>

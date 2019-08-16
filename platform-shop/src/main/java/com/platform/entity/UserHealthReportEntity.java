@@ -22,6 +22,8 @@ public class UserHealthReportEntity implements Serializable {
     private Integer id;
     //用户id
     private Integer nideshopUserId;
+    //用户名称
+    private  String nickname;
     //检测时间
     private Date detectionTime;
     //更新时间

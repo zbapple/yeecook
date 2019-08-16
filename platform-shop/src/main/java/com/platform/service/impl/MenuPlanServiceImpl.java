@@ -90,22 +90,25 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         menuPlan.setServiceCycleEt(dddd);
         //传入阶段状态标识
         String stages=menuPlan.getServiceStage();
-        if (stages != null && stages.equals("0")){
-            menuPlan.setServiceStage("第一周疗养阶段");
-        }else if (stages.equals("1")){
-            menuPlan.setServiceStage("第二周疗养阶段");
-        }else if (stages.equals("2")){
-            menuPlan.setServiceStage("第三周疗养阶段");
-        }else{
-            menuPlan.setServiceStage("第四周疗养阶段");
-        }
         //传入餐单类型
         String type=menuPlan.getNutritionMenuType();
-        if (type != null && type.equals("1")){
-            menuPlan.setNutritionMenuType("月子餐类型A");
-        }else{
-            menuPlan.setNutritionMenuType("月子餐类型B");
-        }
+        menuPlan.setServiceStage(stages);
+        menuPlan.setNutritionMenuType(type);
+//        if (stages != null && stages.equals("0")){
+//            menuPlan.setServiceStage("第一周疗养阶段");
+//        }else if (stages.equals("1")){
+//            menuPlan.setServiceStage("第二周疗养阶段");
+//        }else if (stages.equals("2")){
+//            menuPlan.setServiceStage("第三周疗养阶段");
+//        }else{
+//            menuPlan.setServiceStage("第四周疗养阶段");
+//        }
+
+//        if (type != null && type.equals("1")){
+//            menuPlan.setNutritionMenuType("月子餐类型A");
+//        }else{
+//            menuPlan.setNutritionMenuType("月子餐类型B");
+//        }
         //餐单封面图
         List<MenuPlanEntity> llist=menuPlan.getMenuCoverPics();
         if (llist !=null &&llist.size()>0){

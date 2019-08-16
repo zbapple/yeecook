@@ -3,15 +3,15 @@ $(function () {
         url: '../usernutritionmenu/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '用户id', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80},
+            {label: '用户名称', name: 'nickname', index: 'nickname', width: 80},
 			{label: '餐单名称', name: 'menuName', index: 'menu_name', width: 80},
             {label: '主表餐单类型',name: 'nutritionMenuType', index:'nutrition_menu_type',width:80},
+            // {label: '营养原理', name: 'nutritionPrinciple', index: 'nutrition_principle', width: 80},
 			{label: '餐单封面图片', name: 'menuCoverPic', index: 'menu_cover_pic', width: 80,
                 formatter: function (value) {
                     return transImg(value);
                 }
 			},
-			{label: '营养原理', name: 'nutritionPrinciple', index: 'nutrition_principle', width: 80},
 			// {label: '膳食服务机构id', name: 'cateringServiceOrgId', index: 'catering_service_org_id', width: 80},
 			{label: '膳食服务机构名称', name: 'cateringServiceOrgName', index: 'catering_service_org_name', width: 80},
 			{label: '服务周期开始时间', name: 'serviceCycleSt', index: 'service_cycle_st', width: 80,
@@ -35,6 +35,7 @@ $(function () {
             }
         ]
     });
+    vm.getUserNames();
 });
 
 let vm = new Vue({
@@ -50,7 +51,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        UserNames:[]
 	},
 	methods: {
 		query: function () {
@@ -114,23 +116,32 @@ let vm = new Vue({
                 }
             });
 		},
+        /**
+         * 获取用户nickname别名
+         */
+        getUserNames: function () {
+            Ajax.request({
+                url: "../user/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.UserNames = r.list;
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.nideshopUserId},
+                postData: {'name': vm.q.nickname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                nideshopUserId: ''
+                nickname: ''
             }
             vm.reload();
-        },
-        handleSuccessmenuCoverPic: function (res, file) {
-            vm.userNutritionMenu.menuCoverPic = file.response.url;
         },
         handleSubmit: function (name) {
             handleSubmitValidate(this, name, function () {
@@ -139,6 +150,25 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleSuccessmenuCoverPic: function (res, file) {
+            vm.userNutritionMenu.menuCoverPic = file.response.url;
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 20m。'
+            });
+        },
+        eyeImagemenuCoverPic: function () {
+            var url =vm.userNutritionMenu.menuCoverPic;
+            eyeImage(url);
         }
 	}
 });

@@ -48,22 +48,107 @@ public class ApiNutrientElementsController extends ApiBaseAction {
     public Object nutrieninfo(){
         JSONObject dishesinfojson=this.getJsonRequest();
         Map nutrieninfomap=new HashMap();
-        nutrieninfomap.put("dishesid",dishesinfojson.getLong("dishesid"));
+        nutrieninfomap.put("dishesid",dishesinfojson.getInteger("dishesid"));
         List<FoodIngredientsVo>  foodIngredientsVos=foodIngredientsService.queryList(nutrieninfomap);
-        Integer id=0;
-        Map map=new HashMap();
+        Integer foodmaterialid=0;
         for(FoodIngredientsVo foodIngredientsVoItem:foodIngredientsVos){
-            id=foodIngredientsVoItem.getId();
-            map.put("id",id);
+            foodmaterialid=foodIngredientsVoItem.getFoodMaterialId();
         }
+        Map map=new HashMap();
+        map.put("id",foodmaterialid);
       List<NutrientElementsVo> nutrientElementsVos=nutrientElementsService.queryList(map);
-//        Double nutrinum=0.0;
-//        String nutriName="";
+            for(NutrientElementsVo nutrientElementsVoItem:nutrientElementsVos){
+                if(nutrientElementsVoItem.getNutrientElementsName().equals("钙")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else if(nutrientElementsVoItem.getNutrientElementsName().equals("蛋白质")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("铁")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("碳水化合物")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("锌")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("镁")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("脂肪")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("钾")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("钠")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("磷")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("膳食纤维")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("维生素A")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("维生素C")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("维生素E")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("胡萝卜素")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("维生素B1")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("维生素B2")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("烟酸")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("胆固醇")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("铜")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("锰")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+                else  if(nutrientElementsVoItem.getNutrientElementsName().equals("晒")){
+                    Double nutrienM=+nutrientElementsVoItem.getContentg();
+                    nutrientElementsVoItem.setContentg(nutrienM);
+                }
+            }
+            return toResponsSuccess(nutrientElementsVos);
 
-//        for(NutrientElementsVo nutrientElementsVoItem:nutrientElementsVos){
-//
-//        }
-        return toResponsSuccess(nutrientElementsVos);
     }
     @ApiOperation(value = "营养比例")
     @PostMapping("proportion")
@@ -74,7 +159,14 @@ public class ApiNutrientElementsController extends ApiBaseAction {
         Integer dishesid=dishesinfojson.getInteger("dishesid");
         Map nutrieninfomap=new HashMap();
         nutrieninfomap.put("dishesid",dishesid);
-        List<NutrientElementsVo> nutrientElementsVoss=nutrientElementsService.queryList(nutrieninfomap);
+        List<FoodIngredientsVo>  foodIngredientsVos=foodIngredientsService.queryList(nutrieninfomap);
+        Integer foodmaterid=0;
+        for(FoodIngredientsVo foodIngredientsVoItem:foodIngredientsVos){
+            foodmaterid=foodIngredientsVoItem.getFoodMaterialId();
+        }
+        Map foodmatermap=new HashMap();
+        foodmatermap.put("id",foodmaterid);
+        List<NutrientElementsVo> nutrientElementsVoss=nutrientElementsService.queryList(foodmatermap);
         Double protein=0.0;
         Double fat=0.0;
         Double co2=0.0;

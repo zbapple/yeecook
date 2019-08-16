@@ -34,18 +34,15 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="nutrientElements" :rules="ruleValidate" :label-width="80">
+		<i-form ref="formValidate" :model="nutrientElements" :rules="ruleValidate" :label-width="100">
             <Form-item label="营养元素名称" prop="nutrientElementsName">
-                <i-input v-model="nutrientElements.nutrientElementsName" placeholder="营养元素名称"/>
-            </Form-item>
-            <Form-item label="营养元素图片" prop="nutrientElementsPic">
-                <i-input v-model="nutrientElements.nutrientElementsPic" placeholder="营养元素图片"/>
+                <i-input v-model="nutrientElements.nutrientElementsName" placeholder="营养元素名称" style="width: 300px"/>
             </Form-item>
             <Form-item label="单位" prop="unit">
-                <i-input v-model="nutrientElements.unit" placeholder="单位"/>
+                <i-input v-model="nutrientElements.unit" placeholder="单位" style="width: 300px"/>
             </Form-item>
             <Form-item label="营养元素功能描述" prop="functionalDescription">
-                <i-input v-model="nutrientElements.functionalDescription" placeholder="营养元素功能描述"/>
+                <i-input v-model="nutrientElements.functionalDescription" type="textarea" :rows="6" placeholder="营养元素功能描述" style="width: 300px"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

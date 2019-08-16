@@ -34,22 +34,58 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="cloudClassroom" :rules="ruleValidate" :label-width="80">
+		<i-form ref="formValidate" :model="cloudClassroom" :rules="ruleValidate" :label-width="100">
             <Form-item label="视频主标题" prop="videoTitle">
-                <i-input v-model="cloudClassroom.videoTitle" placeholder="视频主标题"/>
+                <i-input v-model="cloudClassroom.videoTitle" placeholder="视频主标题" style="width: 300px" />
             </Form-item>
             <Form-item label="视频副标题" prop="videoSubtitle">
-                <i-input v-model="cloudClassroom.videoSubtitle" placeholder="视频副标题"/>
+                <i-input v-model="cloudClassroom.videoSubtitle" placeholder="视频副标题" style="width: 300px" />
             </Form-item>
             <Form-item label="视频描述" prop="videoDescribe">
-                <i-input v-model="cloudClassroom.videoDescribe" placeholder="视频描述"/>
+                <i-input v-model="cloudClassroom.videoDescribe" placeholder="视频描述" style="width: 300px" />
             </Form-item>
-            <Form-item label="视频封面图片" prop="videoCoverPic">
-                <i-input v-model="cloudClassroom.videoCoverPic" placeholder="视频封面图片"/>
-            </Form-item>
-            <Form-item label="视频地址" prop="videoAdress">
-                <i-input v-model="cloudClassroom.videoAdress" placeholder="视频地址"/>
-            </Form-item>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="视频封面图片" prop="videoCoverPic">
+                        <i-input v-model="cloudClassroom.videoCoverPic" placeholder="视频封面图片" style="width: 630px"/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="20480"
+                                :on-success="handleSuccessvideoCoverPic" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline" style="margin-left: 20px">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagevideoCoverPic">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="视频地址" prop="videoAdress">
+                        <i-input v-model="cloudClassroom.videoAdress" placeholder="视频地址" style="width: 630px" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="20480"
+                                :on-success="handleSuccessvideoAdress" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline" style="margin-left: 20px">上传视频</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+            </Row>
+
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>

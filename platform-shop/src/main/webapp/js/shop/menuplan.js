@@ -57,6 +57,8 @@ let vm = new Vue({
         visible: false,
         imgName: '',
         title: null,
+        nutritionMenuTypelist:['月子餐类型A','月子餐类型B'],
+        serviceStagelsit:['第一周疗养阶段','第二周疗养阶段','第三周疗养阶段','第四周疗养阶段'],
         uploadList: [],
         servermenuPlan: {
             cateringServiceOrgName:'',
@@ -753,7 +755,7 @@ var vmm = new Vue({
     },
     methods: {
         sumbit:function () {
-            let that=this;
+            var that=this;
             console.log("fidif"+that.id);
             Ajax.request({
                 type: "POST",
@@ -761,7 +763,13 @@ var vmm = new Vue({
                 contentType: "application/json",
                 params: JSON.stringify(that.id),
                 successCallback: function(r) {
-                    vm.reload();
+                    console.log("uu"+vm.details);
+                    vm.details=true;
+
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+                    console.log("uu"+vm.details);
+                        vm.reload();
                 }
             });
         },

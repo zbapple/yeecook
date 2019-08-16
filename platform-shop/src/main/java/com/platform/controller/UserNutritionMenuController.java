@@ -1,8 +1,11 @@
 package com.platform.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.UserEntity;
+import com.platform.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,8 @@ Controller
 public class UserNutritionMenuController {
     @Autowired
     private UserNutritionMenuService userNutritionMenuService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 查看列表
      */
@@ -65,6 +69,14 @@ public class UserNutritionMenuController {
     @RequestMapping("/save")
     @RequiresPermissions("usernutritionmenu:save")
     public R save(@RequestBody UserNutritionMenuEntity userNutritionMenu) {
+        String nickname=userNutritionMenu.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userNutritionMenu.setNideshopUserId(userid);
+        }
         userNutritionMenuService.save(userNutritionMenu);
 
         return R.ok();
@@ -76,6 +88,14 @@ public class UserNutritionMenuController {
     @RequestMapping("/update")
     @RequiresPermissions("usernutritionmenu:update")
     public R update(@RequestBody UserNutritionMenuEntity userNutritionMenu) {
+        String nickname=userNutritionMenu.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userNutritionMenu.setNideshopUserId(userid);
+        }
         userNutritionMenuService.update(userNutritionMenu);
 
         return R.ok();

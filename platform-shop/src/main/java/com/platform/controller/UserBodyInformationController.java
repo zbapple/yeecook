@@ -1,8 +1,11 @@
 package com.platform.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.UserEntity;
+import com.platform.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,8 @@ Controller
 public class UserBodyInformationController {
     @Autowired
     private UserBodyInformationService userBodyInformationService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 查看列表
      */
@@ -65,6 +69,15 @@ public class UserBodyInformationController {
     @RequestMapping("/save")
     @RequiresPermissions("userbodyinformation:save")
     public R save(@RequestBody UserBodyInformationEntity userBodyInformation) {
+        String nickname=userBodyInformation.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userBodyInformation.setNideshopUserId(userid);
+        }
+
         userBodyInformationService.save(userBodyInformation);
 
         return R.ok();
@@ -76,6 +89,14 @@ public class UserBodyInformationController {
     @RequestMapping("/update")
     @RequiresPermissions("userbodyinformation:update")
     public R update(@RequestBody UserBodyInformationEntity userBodyInformation) {
+        String nickname=userBodyInformation.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userBodyInformation.setNideshopUserId(userid);
+        }
         userBodyInformationService.update(userBodyInformation);
 
         return R.ok();

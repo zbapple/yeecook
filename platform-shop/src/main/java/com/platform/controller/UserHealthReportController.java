@@ -1,8 +1,12 @@
 package com.platform.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.platform.entity.UserEntity;
+import com.platform.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +34,8 @@ Controller
 public class UserHealthReportController {
     @Autowired
     private UserHealthReportService userHealthReportService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 查看列表
      */
@@ -65,6 +70,14 @@ public class UserHealthReportController {
     @RequestMapping("/save")
     @RequiresPermissions("userhealthreport:save")
     public R save(@RequestBody UserHealthReportEntity userHealthReport) {
+        String nickname=userHealthReport.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userHealthReport.setNideshopUserId(userid);
+        }
         userHealthReportService.save(userHealthReport);
 
         return R.ok();
@@ -76,6 +89,14 @@ public class UserHealthReportController {
     @RequestMapping("/update")
     @RequiresPermissions("userhealthreport:update")
     public R update(@RequestBody UserHealthReportEntity userHealthReport) {
+        String nickname=userHealthReport.getNickname();
+        Map params=new HashMap();
+        params.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(params);
+        for(UserEntity userEntityiTem:userEntityList){
+            Integer userid=userEntityiTem.getId();
+            userHealthReport.setNideshopUserId(userid);
+        }
         userHealthReportService.update(userHealthReport);
 
         return R.ok();

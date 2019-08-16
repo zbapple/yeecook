@@ -9,30 +9,33 @@
         <result property="stepsPic" column="steps_pic"/>
         <result property="stepsDescribe" column="steps_describe"/>
         <result property="dishesId" column="dishes_id"/>
+		<result property="dishesname" column="dishes_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.DishesStepsEntity">
 		select
-			`id`,
-			`steps_num`,
-			`steps_pic`,
-			`steps_describe`,
-			`dishes_id`
-		from dishes_steps
-		where id = #{id}
+			a.id,
+			a.steps_num,
+			a.steps_pic,
+			a.steps_describe,
+			b.dishes_name
+		from dishes_steps a
+		LEFT JOIN dishes b on b.id=a.dishes_id
+		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.DishesStepsEntity">
 		select
-    		`id`,
-    		`steps_num`,
-    		`steps_pic`,
-    		`steps_describe`,
-    		`dishes_id`
-		from dishes_steps
+			a.id,
+			a.steps_num,
+			a.steps_pic,
+			a.steps_describe,
+			b.dishes_name
+		from dishes_steps a
+		LEFT JOIN dishes b on b.id=a.dishes_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND dishes_id LIKE concat('%',#{name},'%')
+			AND b.dishes_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -48,10 +51,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from dishes_steps
+		select count(*) from dishes_steps a
+		LEFT JOIN dishes b on b.id=a.dishes_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND dishes_id LIKE concat('%',#{name},'%')
+            AND b.dishes_name LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 

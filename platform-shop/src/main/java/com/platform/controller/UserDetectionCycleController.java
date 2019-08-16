@@ -2,10 +2,12 @@ package com.platform.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.platform.entity.UserEntity;
+import com.platform.service.UserService;
 import com.platform.utils.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,8 @@ Controller
 public class UserDetectionCycleController {
     @Autowired
     private UserDetectionCycleService userDetectionCycleService;
-
+    @Autowired
+    private UserService userService;
     /**
      * 查看列表
      */
@@ -88,6 +91,14 @@ public class UserDetectionCycleController {
     @RequestMapping("/save")
     @RequiresPermissions("userdetectioncycle:save")
     public R save(@RequestBody UserDetectionCycleEntity userDetectionCycle) {
+        String nickname=userDetectionCycle.getNickname();
+        Map nickmap=new HashMap();
+        nickmap.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(nickmap);
+        for(UserEntity userEntityItem:userEntityList){
+            Integer userid=userEntityItem.getId();
+            userDetectionCycle.setNideshopUserId(userid);
+        }
         userDetectionCycleService.save(userDetectionCycle);
 
         return R.ok();
@@ -99,6 +110,14 @@ public class UserDetectionCycleController {
     @RequestMapping("/update")
     @RequiresPermissions("userdetectioncycle:update")
     public R update(@RequestBody UserDetectionCycleEntity userDetectionCycle) {
+        String nickname=userDetectionCycle.getNickname();
+        Map nickmap=new HashMap();
+        nickmap.put("nickname",nickname);
+        List<UserEntity> userEntityList=userService.queryList(nickmap);
+        for(UserEntity userEntityItem:userEntityList){
+            Integer userid=userEntityItem.getId();
+            userDetectionCycle.setNideshopUserId(userid);
+        }
         userDetectionCycleService.update(userDetectionCycle);
 
         return R.ok();

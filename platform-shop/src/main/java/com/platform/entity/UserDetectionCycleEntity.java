@@ -32,6 +32,8 @@ public class UserDetectionCycleEntity implements Serializable {
     private String inspectionCycle;
     //用户id
     private Integer nideshopUserId;
+    //用户名称
+    private String nickname;
     //下次检测时间
     private Date nextTime;
 

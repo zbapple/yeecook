@@ -9,30 +9,33 @@
         <result property="userHeight" column="user_height"/>
         <result property="userBirthday" column="user_birthday"/>
         <result property="goalWeight" column="goal_weight"/>
+		<result property="nickname" column="nickname"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserBodyInformationEntity">
 		select
-			`id`,
-			`nideshop_user_id`,
-			`user_height`,
-			`user_birthday`,
-			`goal_weight`
-		from user_body_information
-		where id = #{id}
+			a.id,
+			b.nickname,
+			a.user_height,
+			a.user_birthday,
+			a.goal_weight
+		from user_body_information a
+		LEFT join nideshop_user b on b.id=a.nideshop_user_id
+		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.UserBodyInformationEntity">
 		select
-    		`id`,
-    		`nideshop_user_id`,
-    		`user_height`,
-    		`user_birthday`,
-    		`goal_weight`
-		from user_body_information
+			a.id,
+			b.nickname,
+			a.user_height,
+			a.user_birthday,
+			a.goal_weight
+		from user_body_information a
+		LEFT join nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND nideshop_user_id LIKE concat('%',#{name},'%')
+			AND b.nickname LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -48,10 +51,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from user_body_information
+		select count(*) from user_body_information a
+		LEFT join nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND nideshop_user_id LIKE concat('%',#{name},'%')
+            AND b.nickname LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 

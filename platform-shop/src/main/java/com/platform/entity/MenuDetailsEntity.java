@@ -21,6 +21,8 @@ public class MenuDetailsEntity implements Serializable {
     private Integer id;
     //餐单id
     private Integer userNutritionMenuId;
+    //餐单名称
+    private  String menuname;
     //餐单类型
     private String menuType;
     //餐品id
@@ -193,5 +195,13 @@ public class MenuDetailsEntity implements Serializable {
 
     public void setNideshopUserId(Long nideshopUserId) {
         this.nideshopUserId = nideshopUserId;
+    }
+
+    public String getMenuname() {
+        return menuname;
+    }
+
+    public void setMenuname(String menuname) {
+        this.menuname = menuname;
     }
 }

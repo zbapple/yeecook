@@ -3,7 +3,7 @@ $(function () {
         url: '../userhealthreport/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '用户id', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80},
+			{label: '用户名称', name: 'nickname', index: 'nickname', width: 80},
 			{label: '检测时间', name: 'detectionTime', index: 'detection_time', width: 80,
                 formatter: function (value) {
                     return transDate(value).substring(0, 10);
@@ -26,6 +26,7 @@ $(function () {
             {label: '健康评分', name: 'sclscore', index: 'sclscore', width: 80}
 		]
     });
+    vm.getUserNames();
 });
 
 let vm = new Vue({
@@ -41,7 +42,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        UserNames:[]
 	},
 	methods: {
 		query: function () {
@@ -105,18 +107,31 @@ let vm = new Vue({
                 }
             });
 		},
+		/**
+		获取用户名
+		 */
+        getUserNames: function () {
+            Ajax.request({
+                url: "../user/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.UserNames = r.list;
+
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.nideshopUserId},
+                postData: {'name': vm.q.nickname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                nideshopUserId: ''
+                nickname: ''
             }
             vm.reload();
         },

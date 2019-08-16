@@ -19,6 +19,8 @@ public class UserBodyInformationEntity implements Serializable {
     private Integer id;
     //用户id
     private Integer nideshopUserId;
+    //用户名称
+    private  String nickname;
     //身高
     private Double userHeight;
     //生日
@@ -92,5 +94,13 @@ public class UserBodyInformationEntity implements Serializable {
      */
     public Double getGoalWeight() {
         return goalWeight;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

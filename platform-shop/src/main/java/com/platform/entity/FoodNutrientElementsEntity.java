@@ -19,8 +19,12 @@ public class FoodNutrientElementsEntity implements Serializable {
     private Integer id;
     //食材id
     private Integer foodMaterialId;
+    //食材名称
+    private  String foodmaterialname;
     //营养元素id
     private Integer nutrientElementsId;
+    //元素名称
+    private  String  nutrientelementsname;
     //每克含量
     private String contentG;
 
@@ -75,5 +79,21 @@ public class FoodNutrientElementsEntity implements Serializable {
      */
     public String getContentG() {
         return contentG;
+    }
+
+    public String getFoodmaterialname() {
+        return foodmaterialname;
+    }
+
+    public void setFoodmaterialname(String foodmaterialname) {
+        this.foodmaterialname = foodmaterialname;
+    }
+
+    public String getNutrientelementsname() {
+        return nutrientelementsname;
+    }
+
+    public void setNutrientelementsname(String nutrientelementsname) {
+        this.nutrientelementsname = nutrientelementsname;
     }
 }

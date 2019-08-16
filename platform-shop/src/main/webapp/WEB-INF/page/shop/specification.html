@@ -34,7 +34,7 @@
         <p slot="title">{{title}}</p>
         <i-form ref="formValidate" :model="specification" :rules="ruleValidate" :label-width="80">
             <Form-item label="规格名称" prop="name">
-                <i-input v-model="specification.name" placeholder="规范名称"/>
+                <i-input v-model="specification.name" placeholder="规范名称" style="width: 300px"/>
             </Form-item>
             <Form-item label="排序" prop="sortOrder">
                 <Input-number :min="0" :step="1" v-model="specification.sortOrder" placeholder="排序"

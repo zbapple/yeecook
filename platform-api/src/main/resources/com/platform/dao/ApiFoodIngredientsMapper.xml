@@ -27,10 +27,11 @@
 
 	<select id="queryList" resultType="com.platform.entity.FoodIngredientsVo">
 		select
-		a.id,
+		a.food_material_id,
 		a.food_material_name,
 		a.food_material_num,
-		b.food_unit
+		b.food_unit,
+		a.dishes_id
 		FROM food_ingredients a
 		LEFT join food_material b on a.food_material_id=b.id
 		WHERE 1=1

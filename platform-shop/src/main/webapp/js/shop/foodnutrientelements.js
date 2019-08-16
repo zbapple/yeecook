@@ -3,8 +3,8 @@ $(function () {
         url: '../foodnutrientelements/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '食材id', name: 'foodMaterialId', index: 'food_material_id', width: 80},
-			{label: '营养元素id', name: 'nutrientElementsId', index: 'nutrient_elements_id', width: 80},
+			{label: '食材名称', name: 'foodmaterialname', index: 'food_material_name', width: 80},
+			{label: '营养元素名称', name: 'nutrientelementsname', index: 'nutrient_elements_name', width: 80},
 			{label: '每克含量', name: 'contentG', index: 'content_g', width: 80}]
     });
 });
@@ -90,14 +90,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.foodMaterialId},
+                postData: {'name': vm.q.foodmaterialname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                foodMaterialId: ''
+                foodmaterialname: ''
             }
             vm.reload();
         },

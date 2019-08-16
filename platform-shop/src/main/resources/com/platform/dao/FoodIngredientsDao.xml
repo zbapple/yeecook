@@ -10,29 +10,32 @@
         <result property="foodMaterialNum" column="food_material_num"/>
         <result property="foodMaterialSumcal" column="food_material_sumcal"/>
         <result property="dishesId" column="dishes_id"/>
+		<result property="dishesname" column="dishes_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.FoodIngredientsEntity">
 		select
-			`id`,
-			`food_material_id`,
-			`food_material_name`,
-			`food_material_num`,
-			`food_material_sumcal`,
-			`dishes_id`
-		from food_ingredients
-		where id = #{id}
+			a.id,
+			a.food_material_id,
+			a.food_material_name,
+			a.food_material_num,
+			a.food_material_sumcal,
+			b.dishes_name
+		from food_ingredients a
+		LEFT join dishes b on b.id=a.dishes_id
+		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.FoodIngredientsEntity">
 		select
-    		`id`,
-    		`food_material_id`,
-    		`food_material_name`,
-    		`food_material_num`,
-    		`food_material_sumcal`,
-    		`dishes_id`
-		from food_ingredients
+			a.id,
+			a.food_material_id,
+			a.food_material_name,
+			a.food_material_num,
+			a.food_material_sumcal,
+			b.dishes_name
+		from food_ingredients a
+		LEFT join dishes b on b.id=a.dishes_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND food_material_name LIKE concat('%',#{name},'%')

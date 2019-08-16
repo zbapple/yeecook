@@ -19,6 +19,8 @@ public class UserCommentsEntity implements Serializable {
     private Integer id;
     //用户id
     private Integer nideshopUserId;
+    //用户名称
+    private  String nickname;
     //用户评论
     private String userComment;
     //课件id
@@ -135,5 +137,13 @@ public class UserCommentsEntity implements Serializable {
      */
     public Integer getReplyId() {
         return replyId;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

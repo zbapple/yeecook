@@ -3,7 +3,7 @@ $(function () {
         url: '../usercomments/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '用户id', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80},
+			{label: '用户名称', name: 'nickname', index: 'nickname', width: 80},
 			{label: '用户评论', name: 'userComment', index: 'user_comment', width: 80},
 			{label: '课件id', name: 'videoId', index: 'video_id', width: 80},
 			{label: '评论分数', name: 'commentsScore', index: 'comments_score', width: 80},
@@ -14,6 +14,7 @@ $(function () {
 			{label: '回复类型 0是 1否', name: 'replyType', index: 'reply_type', width: 80},
 			{label: '回复id', name: 'replyId', index: 'reply_id', width: 80}]
     });
+    vm.getUserNames();
 });
 
 let vm = new Vue({
@@ -29,7 +30,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        UserNames:[]
 	},
 	methods: {
 		query: function () {
@@ -93,18 +95,31 @@ let vm = new Vue({
                 }
             });
 		},
+        /**
+		 * 获取用户
+         */
+        getUserNames: function () {
+            Ajax.request({
+                url: "../user/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.UserNames = r.list;
+
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.nideshopUserId},
+                postData: {'name': vm.q.nickname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                nideshopUserId: ''
+                nickname: ''
             }
             vm.reload();
         },

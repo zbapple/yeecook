@@ -46,7 +46,10 @@ public class UserNutritionMenuEntity implements Serializable {
     private String serviceStage;
     //服务状态  0未签约 1已签约
     private Integer menuStatus;
-
+    //用户名称
+    private  String username;
+    //用户名称
+    private  String nickname;
     /**
      * 设置：餐单id
      */

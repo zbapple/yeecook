@@ -111,6 +111,25 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleSuccessdishesCoverPic: function (res, file) {
+            vm.dishes.dishesCoverPic = file.response.url;
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 20m。'
+            });
+        },
+        eyeImagedishesCoverPic: function () {
+            var url =vm.dishes.dishesCoverPic;
+            eyeImage(url);
         }
 	}
 });

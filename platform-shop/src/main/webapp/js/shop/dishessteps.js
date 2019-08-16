@@ -3,12 +3,13 @@ $(function () {
         url: '../dishessteps/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '序号', name: 'stepsNum', index: 'steps_num', width: 80},
+            {label: '菜品名称', name: 'dishesname', index: 'dishes_name', width: 80},
+			{label: '菜品步骤', name: 'stepsNum', index: 'steps_num', width: 80},
 			{label: '菜品步骤图片', name: 'stepsPic', index: 'steps_pic', width: 80,
                 formatter: function (value) {
                     return transImg(value);}},
-			{label: '步骤描述', name: 'stepsDescribe', index: 'steps_describe', width: 80},
-			{label: '菜品id', name: 'dishesId', index: 'dishes_id', width: 80}]
+			{label: '步骤描述', name: 'stepsDescribe', index: 'steps_describe', width: 80}
+			]
     });
 });
 
@@ -93,14 +94,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.dishesId},
+                postData: {'name': vm.q.dishesname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                dishesId: ''
+                dishesname: ''
             }
             vm.reload();
         },
@@ -111,6 +112,25 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleSuccessstepsPic: function (res, file) {
+            vm.dishesSteps.stepsPic = file.response.url;
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 20m。'
+            });
+        },
+        eyeImagestepsPic: function () {
+            var url =vm.dishesSteps.stepsPic;
+            eyeImage(url);
         }
 	}
 });

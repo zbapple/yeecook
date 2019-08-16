@@ -3,11 +3,12 @@ $(function () {
         url: '../foodingredients/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '食材id', name: 'foodMaterialId', index: 'food_material_id', width: 80},
+			// {label: '食材id', name: 'foodMaterialId', index: 'food_material_id', width: 80},
+            {label: '菜品名称', name: 'dishesname', index: 'dishes_name', width: 80},
 			{label: '食材名字', name: 'foodMaterialName', index: 'food_material_name', width: 80},
 			{label: '食材数量', name: 'foodMaterialNum', index: 'food_material_num', width: 80},
-			{label: '食材总卡路里', name: 'foodMaterialSumcal', index: 'food_material_sumcal', width: 80},
-			{label: '菜品id', name: 'dishesId', index: 'dishes_id', width: 80}]
+			{label: '食材总卡路里', name: 'foodMaterialSumcal', index: 'food_material_sumcal', width: 80}
+		]
     });
 });
 

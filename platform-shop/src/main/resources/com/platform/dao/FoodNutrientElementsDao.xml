@@ -8,28 +8,34 @@
         <result property="foodMaterialId" column="food_material_id"/>
         <result property="nutrientElementsId" column="nutrient_elements_id"/>
         <result property="contentG" column="content_g"/>
+		<result property="foodmaterialname" column="food_material_name"/>
+		<result property="nutrientelementsname" column="nutrient_elements_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.FoodNutrientElementsEntity">
 		select
-			`id`,
-			`food_material_id`,
-			`nutrient_elements_id`,
-			`content_g`
-		from food_nutrient_elements
-		where id = #{id}
+			a.id,
+			b.food_material_name,
+			c.nutrient_elements_name,
+			a.content_g
+		from food_nutrient_elements a
+		LEFT  join food_material b on b.id=a.food_material_id
+		LEFT  join nutrient_elements c on c.id=a.nutrient_elements_id
+		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.FoodNutrientElementsEntity">
 		select
-    		`id`,
-    		`food_material_id`,
-    		`nutrient_elements_id`,
-    		`content_g`
-		from food_nutrient_elements
+			a.id,
+			b.food_material_name,
+			c.nutrient_elements_name,
+			a.content_g
+		from food_nutrient_elements a
+		LEFT  join food_material b on b.id=a.food_material_id
+		LEFT  join nutrient_elements c on c.id=a.nutrient_elements_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND food_material_id LIKE concat('%',#{name},'%')
+			AND b.food_material_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -45,10 +51,12 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from food_nutrient_elements
+		select count(*) from food_nutrient_elements a
+		LEFT  join food_material b on b.id=a.food_material_id
+		LEFT  join nutrient_elements c on c.id=a.nutrient_elements_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND food_material_id LIKE concat('%',#{name},'%')
+            AND b.food_material_name LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 

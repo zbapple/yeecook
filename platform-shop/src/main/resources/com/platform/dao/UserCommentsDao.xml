@@ -12,36 +12,39 @@
         <result property="commentsTime" column="comments_time"/>
         <result property="replyType" column="reply_type"/>
         <result property="replyId" column="reply_id"/>
+		<result property="nickname" column="nickname"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserCommentsEntity">
 		select
-			`id`,
-			`nideshop_user_id`,
-			`user_comment`,
-			`video_id`,
-			`comments_score`,
-			`comments_time`,
-			`reply_type`,
-			`reply_id`
-		from user_comments
-		where id = #{id}
+			a.id,
+			b.nickname,
+			a.user_comment,
+			a.video_id,
+			a.comments_score,
+			a.comments_time,
+			a.reply_type,
+			a.reply_id
+		from user_comments a
+		LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
+		where a.id=#{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.UserCommentsEntity">
 		select
-    		`id`,
-    		`nideshop_user_id`,
-    		`user_comment`,
-    		`video_id`,
-    		`comments_score`,
-    		`comments_time`,
-    		`reply_type`,
-    		`reply_id`
-		from user_comments
+			a.id,
+			b.nickname,
+			a.user_comment,
+			a.video_id,
+			a.comments_score,
+			a.comments_time,
+			a.reply_type,
+			a.reply_id
+		from user_comments a
+		LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND nideshop_user_id LIKE concat('%',#{name},'%')
+			AND b.nickname LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -57,10 +60,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from user_comments
+		select count(*) from user_comments a
+		LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND nideshop_user_id LIKE concat('%',#{name},'%')
+            AND b.nickname LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 

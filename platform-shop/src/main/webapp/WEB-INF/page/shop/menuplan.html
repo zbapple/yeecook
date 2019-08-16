@@ -161,8 +161,12 @@
             </Form-item>
             <Form-item label="计划类型" prop="nutritionMenuType" style="width: 300px;display: inline-block;">
                 <i-select v-model="servermenuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
-                    <i-option value="1">月子餐类型A</i-option>
-                    <i-option value="2">月子餐类型B</i-option>
+                    <!--<i-option value="1">月子餐类型A</i-option>-->
+                    <!--<i-option value="2">月子餐类型B</i-option>-->
+                    <i-option v-for="item in nutritionMenuTypelist"
+                              :value="item"
+                              :key="item">{{item}}
+                    </i-option>
                 </i-select>
             </Form-item>
             <From-item style="margin-left: 110px">
@@ -180,14 +184,18 @@
             <!--<i-input v-model="menuPlan.menuType" placeholder="早餐午餐晚餐"/>-->
             <!--</Form-item>-->
             <Form-item label="食谱名称" prop="menuName">
-                <i-input v-model="servermenuPlan.menuName" placeholder="食谱名称"/>
+                <i-input v-model="servermenuPlan.menuName" placeholder="食谱名称" style="width: 300px"/>
             </Form-item>
             <Form-item label="疗养阶段" prop="serviceStage" style="width: 268px;display: inline-block ">
-                <i-select v-model="servermenuPlan.serviceStage" clearable=true>
-                    <i-option value="0">第一周疗养阶段</i-option>
-                    <i-option value="1">第二周疗养阶段</i-option>
-                    <i-option value="2">第三周疗养阶段</i-option>
-                    <i-option value="3">第四周疗养阶段</i-option>
+                <i-select v-model="servermenuPlan.serviceStage" filterable placeholder="疗养阶段" clearable=true>
+                    <i-option v-for="item in serviceStagelsit"
+                              :value="item"
+                              :key="item">{{item}}
+                    </i-option>
+                    <!--<i-option value="0">第一周疗养阶段</i-option>-->
+                    <!--<i-option value="1">第二周疗养阶段</i-option>-->
+                    <!--<i-option value="2">第三周疗养阶段</i-option>-->
+                    <!--<i-option value="3">第四周疗养阶段</i-option>-->
                 </i-select>
             </Form-item>
             <Form-item label="计划开始时间" prop="serviceCycleSt" style="width:268px;display: inline-block;margin-left:30px"

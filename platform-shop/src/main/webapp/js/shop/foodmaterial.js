@@ -4,13 +4,13 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '食材名', name: 'foodMaterialName', index: 'food_material_name', width: 80},
-			{label: '食材图片', name: 'foodMaterialPic', index: 'food_material_pic', width: 80,
-                formatter: function (value) {
-                    return transImg(value);}},
+			// {label: '食材图片', name: 'foodMaterialPic', index: 'food_material_pic', width: 80,
+            //     formatter: function (value) {
+            //         return transImg(value);}},
 			{label: '食材描述', name: 'foodMaterialDescribe', index: 'food_material_describe', width: 80},
-            {label: '食材单位', name: 'foodUnit', index: 'food_unit', width: 80},
-			{label: '食材卡路里', name: 'foodMaterialCalories', index: 'food_material_calories', width: 80},
-			{label: '食材类型id', name: 'foodTypeId', index: 'food_type_id', width: 80}]
+            // {label: '食材单位', name: 'foodUnit', index: 'food_unit', width: 80},
+			{label: '食材卡路里', name: 'foodMaterialCalories', index: 'food_material_calories', width: 80}]
+			// {label: '食材类型', name: 'foodTypeId', index: 'food_type_id', width: 80}]
     });
 });
 
@@ -113,6 +113,25 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleSuccessfoodMaterialPic: function (res, file) {
+            vm.foodMaterial.foodMaterialPic = file.response.url;
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 20m。'
+            });
+        },
+        eyeImagefoodMaterialPic: function () {
+            var url =vm.foodMaterial.foodMaterialPic;
+            eyeImage(url);
         }
 	}
 });

@@ -1,8 +1,11 @@
 package com.platform.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.DishesEntity;
+import com.platform.service.DishesService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,8 @@ Controller
 public class DishesStepsController {
     @Autowired
     private DishesStepsService dishesStepsService;
-
+    @Autowired
+    private DishesService dishesService;
     /**
      * 查看列表
      */
@@ -65,6 +69,14 @@ public class DishesStepsController {
     @RequestMapping("/save")
     @RequiresPermissions("dishessteps:save")
     public R save(@RequestBody DishesStepsEntity dishesSteps) {
+        String dishesname=dishesSteps.getDishesname();
+        Map dishestepmap=new HashMap();
+        dishestepmap.put("name",dishesname);
+        List<DishesEntity> dishesEntityList=dishesService.queryList(dishestepmap);
+        for(DishesEntity dishesEntityItem:dishesEntityList){
+            Integer dishesid=dishesEntityItem.getId();
+            dishesSteps.setDishesId(dishesid);
+        }
         dishesStepsService.save(dishesSteps);
 
         return R.ok();
@@ -76,6 +88,14 @@ public class DishesStepsController {
     @RequestMapping("/update")
     @RequiresPermissions("dishessteps:update")
     public R update(@RequestBody DishesStepsEntity dishesSteps) {
+        String dishesname=dishesSteps.getDishesname();
+        Map dishestepmap=new HashMap();
+        dishestepmap.put("name",dishesname);
+        List<DishesEntity> dishesEntityList=dishesService.queryList(dishestepmap);
+        for(DishesEntity dishesEntityItem:dishesEntityList){
+            Integer dishesid=dishesEntityItem.getId();
+            dishesSteps.setDishesId(dishesid);
+        }
         dishesStepsService.update(dishesSteps);
 
         return R.ok();

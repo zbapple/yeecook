@@ -11,7 +11,7 @@
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
-                    <i-input v-model="q.nideshopUserId" @on-enter="query" placeholder="用户id查询"/>
+                    <i-input v-model="q.nickname" @on-enter="query" placeholder="用户名称"/>
                 </i-col>
                 <i-button @click="query">查询</i-button>
                 <i-button @click="reloadSearch">重置</i-button>
@@ -34,54 +34,59 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="userHealthReport" :rules="ruleValidate" :label-width="80">
-            <Form-item label="用户id" prop="nideshopUserId">
-                <i-input v-model="userHealthReport.nideshopUserId" placeholder="用户id"/>
+		<i-form ref="formValidate" :model="userHealthReport" :rules="ruleValidate" :label-width="100">
+            <Form-item label="用户名称" prop="nickname" style="width: 300px;">
+                <i-select v-model="userHealthReport.nickname" filterable placeholder="用户名称" clearable=true style="width: 300px">
+                    <i-option v-for="item in UserNames"
+                              :value="item.nickname"
+                              :key="item.nickname">{{item.nickname}}
+                    </i-option>
+                </i-select>
             </Form-item>
             <Form-item label="检测时间" prop="detectionTime">
-                <Date-picker v-model="userHealthReport.detectionTime" placeholder="检测时间"/>
+                <Date-picker v-model="userHealthReport.detectionTime" placeholder="检测时间" style="width: 300px"/>
             </Form-item>
             <Form-item label="更新时间" prop="updateTime">
-                <Date-picker v-model="userHealthReport.updateTime" placeholder="更新时间"/>
+                <Date-picker v-model="userHealthReport.updateTime" placeholder="更新时间" style="width: 300px"/>
             </Form-item>
             <Form-item label="体重" prop="weight">
-                <i-input v-model="userHealthReport.weight" placeholder="体重"/>
+                <i-input v-model="userHealthReport.weight" placeholder="体重" style="width: 300px"/>
             </Form-item>
             <Form-item label="BMI" prop="bmi">
-                <i-input v-model="userHealthReport.bmi" placeholder=""/>
+                <i-input v-model="userHealthReport.bmi" placeholder="BMI" style="width: 300px"/>
             </Form-item>
             <Form-item label="体脂率" prop="bodyFatRade">
-                <i-input v-model="userHealthReport.bodyFatRade" placeholder="体脂率"/>
+                <i-input v-model="userHealthReport.bodyFatRade" placeholder="体脂率" style="width: 300px"/>
             </Form-item>
             <Form-item label="皮下脂肪率" prop="subFatPercentage">
-                <i-input v-model="userHealthReport.subFatPercentage" placeholder="皮下脂肪率"/>
+                <i-input v-model="userHealthReport.subFatPercentage" placeholder="皮下脂肪率" style="width: 300px"/>
             </Form-item>
             <Form-item label="基础代谢量" prop="basicMetabolism">
-                <i-input v-model="userHealthReport.basicMetabolism" placeholder="基础代谢量"/>
+                <i-input v-model="userHealthReport.basicMetabolism" placeholder="基础代谢量" style="width: 300px"/>
             </Form-item>
             <Form-item label="内脏脂肪等级" prop="visFatGrade">
-                <i-input v-model="userHealthReport.visFatGrade" placeholder="内脏脂肪等级"/>
+                <i-input v-model="userHealthReport.visFatGrade" placeholder="内脏脂肪等级" style="width: 300px"/>
             </Form-item>
             <Form-item label="体水分率" prop="bodyWaterRate">
-                <i-input v-model="userHealthReport.bodyWaterRate" placeholder="体水分率"/>
+                <i-input v-model="userHealthReport.bodyWaterRate" placeholder="体水分率" style="width: 300px"/>
             </Form-item>
             <Form-item label="蛋白质" prop="protein">
-                <i-input v-model="userHealthReport.protein" placeholder="蛋白质"/>
+                <i-input v-model="userHealthReport.protein" placeholder="蛋白质" style="width: 300px"/>
             </Form-item>
             <Form-item label="骨量" prop="boneMass">
-                <i-input v-model="userHealthReport.boneMass" placeholder="骨量"/>
+                <i-input v-model="userHealthReport.boneMass" placeholder="骨量" style="width: 300px"/>
             </Form-item>
             <Form-item label="骨骼肌率" prop="skeletalMuscle">
-                <i-input v-model="userHealthReport.skeletalMuscle" placeholder="骨骼肌率"/>
+                <i-input v-model="userHealthReport.skeletalMuscle" placeholder="骨骼肌率" style="width: 300px"/>
             </Form-item>
             <Form-item label="身体体型" prop="bodyShape">
-                <i-input v-model="userHealthReport.bodyShape" placeholder="骨骼肌率"/>
+                <i-input v-model="userHealthReport.bodyShape" placeholder="骨骼肌率" style="width: 300px"/>
             </Form-item>
             <Form-item label="身体年龄" prop="bodyAge">
-                <i-input v-model="userHealthReport.bodyAge" placeholder="骨骼肌率"/>
+                <i-input v-model="userHealthReport.bodyAge" placeholder="骨骼肌率" style="width: 300px"/>
             </Form-item>
             <Form-item label="健康评分" prop="sclscore">
-                <i-input v-model="userHealthReport.sclscore" placeholder="骨骼肌率"/>
+                <i-input v-model="userHealthReport.sclscore" placeholder="骨骼肌率" style="width: 300px"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

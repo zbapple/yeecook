@@ -3,8 +3,8 @@
         url: '../menu/list',
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '种类名称', name: 'categoryName', index: 'category_Name', width: 80},
             {label: '菜谱名', name: 'menuName', index: 'menu_name', width: 80},
+            {label: '种类名称', name: 'categoryName', index: 'category_Name', width: 80},
             {label: '创建人', name: 'user', index: 'user', width: 80},
             {label: '菜谱图片', name: 'menuPicUrl', index: 'menu_pic_url', width: 100, formatter: function (value) {
                     return transImg(value);

@@ -4,7 +4,6 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '营养元素名称', name: 'nutrientElementsName', index: 'nutrient_elements_name', width: 80},
-			{label: '营养元素图片', name: 'nutrientElementsPic', index: 'nutrient_elements_pic', width: 80},
 			{label: '单位', name: 'unit', index: 'unit', width: 80},
 			{label: '营养元素功能描述', name: 'functionalDescription', index: 'functional_description', width: 80}]
     });

@@ -16,44 +16,48 @@
         <result property="serviceCycleEt" column="service_cycle_et"/>
 		<result property="serviceStage" column="service_stage"/>
 		<result property="menuStatus" column="menu_status"/>
+		<result property="username" column="username"/>
+		<result property="nickname" column="nickname"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserNutritionMenuEntity">
 		select
-			`id`,
-			`menu_name`,
-			`nutrition_menu_type`,
-			`menu_cover_pic`,
-			`nutrition_principle`,
-			`catering_service_org_id`,
-			`catering_service_org_name`,
-			`nideshop_user_id`,
-			`service_cycle_st`,
-			`service_cycle_et`,
-			`service_stage`,
-			`menu_status`
-		from user_nutrition_menu
-		where id = #{id}
+		a.id,
+		a.menu_name,
+		a.nutrition_menu_type,
+		a.menu_cover_pic,
+		a.nutrition_principle,
+		a.catering_service_org_id,
+		a.catering_service_org_name,
+		b.nickname,
+		a.service_cycle_st,
+		a.service_cycle_et,
+		a.service_stage,
+		a.menu_status
+		from user_nutrition_menu a
+		LEFT join  nideshop_user b on b.id=a.nideshop_user_id
+		where a.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.UserNutritionMenuEntity">
 		select
-    		`id`,
-    		`menu_name`,
-		    `nutrition_menu_type`,
-    		`menu_cover_pic`,
-    		`nutrition_principle`,
-    		`catering_service_org_id`,
-    		`catering_service_org_name`,
-    		`nideshop_user_id`,
-    		`service_cycle_st`,
-    		`service_cycle_et`,
-		    `service_stage`,
-		    `menu_status`
-		from user_nutrition_menu
+		a.id,
+		a.menu_name,
+		a.nutrition_menu_type,
+		a.menu_cover_pic,
+		a.nutrition_principle,
+		a.catering_service_org_id,
+		a.catering_service_org_name,
+		b.nickname,
+		a.service_cycle_st,
+		a.service_cycle_et,
+		a.service_stage,
+		a.menu_status
+		from user_nutrition_menu a
+		LEFT join  nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND nideshop_user_id LIKE concat('%',#{name},'%')
+			AND b.nickname LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -69,10 +73,11 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from user_nutrition_menu
+		select count(*) from user_nutrition_menu a
+		LEFT join  nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND nideshop_user_id LIKE concat('%',#{name},'%')
+            AND b.nickname LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 
@@ -114,7 +119,7 @@
 			<if test="nutritionPrinciple != null">`nutrition_principle` = #{nutritionPrinciple}, </if>
 			<if test="cateringServiceOrgId != null">`catering_service_org_id` = #{cateringServiceOrgId}, </if>
 			<if test="cateringServiceOrgName != null">`catering_service_org_name` = #{cateringServiceOrgName}, </if>
-			<if test="nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}, </if>
+			<if test=" nideshopUserId != null">`nideshop_user_id` = #{nideshopUserId}, </if>
 			<if test="serviceCycleSt != null">`service_cycle_st` = #{serviceCycleSt}, </if>
 			<if test="serviceCycleEt != null">`service_cycle_et` = #{serviceCycleEt},</if>
 			<if test="serviceStage != null">`service_stage` = #{serviceStage},</if>

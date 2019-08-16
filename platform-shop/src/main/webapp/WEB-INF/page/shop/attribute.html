@@ -35,11 +35,11 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-        <i-form ref="formValidate" :model="attribute" :rules="ruleValidate" :label-width="80">
+        <i-form ref="formValidate" :model="attribute" :rules="ruleValidate" :label-width="100">
             <Form-item label="名称" prop="name">
-                <i-input v-model="attribute.name" placeholder="名称"/>
+                <i-input v-model="attribute.name" placeholder="名称" style="width: 300px"/>
             </Form-item>
-            <Form-item label="所属种类" prop="attributeCategoryId" style="width: 268px;">
+            <Form-item label="所属种类" prop="attributeCategoryId" style="width: 300px;">
                 <i-select v-model="attribute.attributeCategoryId" filterable>
                     <i-option v-for="category in categories" :value="category.id" :key="category.id">{{category.name}}
                     </i-option>

@@ -3,7 +3,7 @@ $(function () {
         url: '../userbodyinformation/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '用户id', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80},
+			{label: '用户id', name: 'nickname', index: 'nickname', width: 80},
 			{label: '身高', name: 'userHeight', index: 'user_height', width: 80},
 			{label: '生日', name: 'userBirthday', index: 'user_birthday', width: 80,
 				formatter: function (value) {
@@ -11,6 +11,7 @@ $(function () {
                 }},
 			{label: '目标体重', name: 'goalWeight', index: 'goal_weight', width: 80}]
     });
+    vm.getUserNames();
 });
 
 let vm = new Vue({
@@ -26,7 +27,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        UserNames:[]
 	},
 	methods: {
 		query: function () {
@@ -90,18 +92,27 @@ let vm = new Vue({
                 }
             });
 		},
+        getUserNames: function () {
+            Ajax.request({
+                url: "../user/queryAll",
+                async: true,
+                successCallback: function (r) {
+                    vm.UserNames = r.list;
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.nideshopUserId},
+                postData: {'name': vm.q.nickname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                nideshopUserId: ''
+                nickname: ''
             }
             vm.reload();
         },

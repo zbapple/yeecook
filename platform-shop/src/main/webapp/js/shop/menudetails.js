@@ -3,12 +3,27 @@ $(function () {
         url: '../menudetails/list',
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '餐单id', name: 'userNutritionMenuId', index: 'user_nutrition_menu_id', width: 80},
-			{label: '餐单类型', name: 'menuType', index: 'menu_type', width: 80},
-			{label: '餐品id', name: 'dishesId', index: 'dishes_id', width: 80},
+			{label: '餐单名称', name: 'menuname', index: 'menu_name', width: 80},
+			{label: '餐单类型', name: 'menuType', index: 'menu_type', width: 80,formatter: function (value) {
+                    if (value == '0') {
+                        return '早餐';
+                    } else if (value == '1') {
+                        return '午餐';
+                    } else if (value == '2') {
+                        return '晚餐';
+                    } else if (value == '3') {
+                        return '早餐加餐';
+                    } else if (value == '4'){
+                        return '午餐加餐';
+                    } else if (value == '5'){
+                        return '晚餐加餐';
+                    }
+                    return '-';
+                }},
+			// {label: '餐品id', name: 'dishesId', index: 'dishes_id', width: 80},
 			{label: '餐品名', name: 'dishesName', index: 'dishes_name', width: 80},
-			{label: '叶子节点', name: 'leafNode', index: 'leaf_node', width: 80},
-			{label: '父类id', name: 'fatherId', index: 'father_id', width: 80},
+			// {label: '叶子节点', name: 'leafNode', index: 'leaf_node', width: 80},
+			// {label: '父类id', name: 'fatherId', index: 'father_id', width: 80},
 			{label: '用餐时间', name: 'mealTime', index: 'meal_time', width: 80},
 			{label: '餐单日期', name: 'menuDate', index: 'menu_date', width: 80}]
     });
@@ -94,14 +109,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.menuType},
+                postData: {'name': vm.q.menuname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                menuType: ''
+                menuname: ''
             }
             vm.reload();
         },

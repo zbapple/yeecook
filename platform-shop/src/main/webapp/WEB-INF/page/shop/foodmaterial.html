@@ -35,24 +35,45 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="foodMaterial" :rules="ruleValidate" :label-width="80">
+		<i-form ref="formValidate" :model="foodMaterial" :rules="ruleValidate" :label-width="100">
             <Form-item label="食材名" prop="foodMaterialName">
-                <i-input v-model="foodMaterial.foodMaterialName" placeholder="食材名"/>
+                <i-input v-model="foodMaterial.foodMaterialName" placeholder="食材名" style="width: 300px"/>
             </Form-item>
-            <Form-item label="食材图片" prop="foodMaterialPic">
-                <i-input v-model="foodMaterial.foodMaterialPic" placeholder="食材图片"/>
+            <Row>
+                <i-col span="16" >
+                    <Form-item label="食材图片" prop="foodMaterialPic">
+                        <i-input v-model="foodMaterial.foodMaterialPic" placeholder="食材图片" style="width: 630px"/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="20480"
+                                :on-success="handleSuccessfoodMaterialPic" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline" style="margin-left: 20px">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagefoodMaterialPic">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+
+            <Form-item label="食材卡路里" prop="foodMaterialCalories">
+                <i-input v-model="foodMaterial.foodMaterialCalories" placeholder="食材卡路里" style="width: 300px"/>
             </Form-item>
-            <Form-item label="食材描述" prop="foodMaterialDescribe">
-                <i-input v-model="foodMaterial.foodMaterialDescribe" placeholder="食材描述"/>
+            <Form-item label="食材类型" prop="foodTypeId">
+                <i-input v-model="foodMaterial.foodTypeId" placeholder="食材类型"  style="width: 300px"/>
             </Form-item>
             <Form-item label="食材单位" prop="foodUnit">
-                <i-input v-model="foodMaterial.foodUnit" placeholder="食材单位"/>
+                <i-input v-model="foodMaterial.foodUnit" placeholder="食材单位" style="width: 300px"/>
             </Form-item>
-            <Form-item label="食材卡路里" prop="foodMaterialCalories">
-                <i-input v-model="foodMaterial.foodMaterialCalories" placeholder="食材卡路里"/>
-            </Form-item>
-            <Form-item label="食材类型id" prop="foodTypeId">
-                <i-input v-model="foodMaterial.foodTypeId" placeholder="食材类型id"/>
+            <Form-item label="食材描述" prop="foodMaterialDescribe">
+                <i-input v-model="foodMaterial.foodMaterialDescribe" type="textarea" :rows="6" placeholder="食材描述"  style="width: 300px"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

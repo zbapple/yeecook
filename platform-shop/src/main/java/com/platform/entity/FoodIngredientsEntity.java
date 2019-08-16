@@ -19,6 +19,7 @@ public class FoodIngredientsEntity implements Serializable {
     private Integer id;
     //食材id
     private Integer foodMaterialId;
+
     //食材名字
     private String foodMaterialName;
     //食材数量
@@ -27,7 +28,8 @@ public class FoodIngredientsEntity implements Serializable {
     private String foodMaterialSumcal;
     //
     private Integer dishesId;
-
+    //菜品名称
+    private  String dishesname;
     /**
      * 设置：
      */
@@ -105,5 +107,13 @@ public class FoodIngredientsEntity implements Serializable {
      */
     public Integer getDishesId() {
         return dishesId;
+    }
+
+    public String getDishesname() {
+        return dishesname;
+    }
+
+    public void setDishesname(String dishesname) {
+        this.dishesname = dishesname;
     }
 }

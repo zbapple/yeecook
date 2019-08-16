@@ -1,8 +1,11 @@
 package com.platform.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.entity.FoodMaterialEntity;
+import com.platform.service.FoodMaterialService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,8 @@ Controller
 public class FoodNutrientElementsController {
     @Autowired
     private FoodNutrientElementsService foodNutrientElementsService;
-
+    @Autowired
+    private FoodMaterialService foodMaterialService;
     /**
      * 查看列表
      */
@@ -65,6 +69,14 @@ public class FoodNutrientElementsController {
     @RequestMapping("/save")
     @RequiresPermissions("foodnutrientelements:save")
     public R save(@RequestBody FoodNutrientElementsEntity foodNutrientElements) {
+        String foodmater=foodNutrientElements.getFoodmaterialname();
+        Map foodmatermap=new HashMap();
+        foodmatermap.put("name",foodmater);
+        List<FoodMaterialEntity> foodMaterialEntityList=foodMaterialService.queryList(foodmatermap);
+        for(FoodMaterialEntity foodMaterialEntityItem:foodMaterialEntityList){
+            Integer foodmaterid=foodMaterialEntityItem.getId();
+            foodNutrientElements.setFoodMaterialId(foodmaterid);
+        }
         foodNutrientElementsService.save(foodNutrientElements);
 
         return R.ok();
@@ -76,6 +88,14 @@ public class FoodNutrientElementsController {
     @RequestMapping("/update")
     @RequiresPermissions("foodnutrientelements:update")
     public R update(@RequestBody FoodNutrientElementsEntity foodNutrientElements) {
+        String foodmater=foodNutrientElements.getFoodmaterialname();
+        Map foodmatermap=new HashMap();
+        foodmatermap.put("name",foodmater);
+        List<FoodMaterialEntity> foodMaterialEntityList=foodMaterialService.queryList(foodmatermap);
+        for(FoodMaterialEntity foodMaterialEntityItem:foodMaterialEntityList){
+            Integer foodmaterid=foodMaterialEntityItem.getId();
+            foodNutrientElements.setFoodMaterialId(foodmaterid);
+        }
         foodNutrientElementsService.update(foodNutrientElements);
 
         return R.ok();

@@ -23,8 +23,10 @@ public class DishesStepsEntity implements Serializable {
     private String stepsPic;
     //步骤描述
     private String stepsDescribe;
-    //
+    //菜品id
     private Integer dishesId;
+    //菜品名称
+    private  String dishesname;
 
     /**
      * 设置：
@@ -90,5 +92,13 @@ public class DishesStepsEntity implements Serializable {
      */
     public Integer getDishesId() {
         return dishesId;
+    }
+
+    public String getDishesname() {
+        return dishesname;
+    }
+
+    public void setDishesname(String dishesname) {
+        this.dishesname = dishesname;
     }
 }

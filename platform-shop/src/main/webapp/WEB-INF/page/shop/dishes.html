@@ -34,18 +34,39 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="dishes" :rules="ruleValidate" :label-width="80">
+		<i-form ref="formValidate" :model="dishes" :rules="ruleValidate" :label-width="100">
             <Form-item label="菜品名字" prop="dishesName">
-                <i-input v-model="dishes.dishesName" placeholder="菜品名字"/>
-            </Form-item>
-            <Form-item label="菜品描述" prop="dishesDescribe">
-                <i-input v-model="dishes.dishesDescribe" placeholder="菜品描述"/>
-            </Form-item>
-            <Form-item label="菜品封面图片" prop="dishesCoverPic">
-                <i-input v-model="dishes.dishesCoverPic" placeholder="菜品封面图片"/>
+                <i-input v-model="dishes.dishesName" placeholder="菜品名字" style="width: 300px" />
             </Form-item>
             <Form-item label="菜品卡路里" prop="dishesCalories">
-                <i-input v-model="dishes.dishesCalories" placeholder="菜品卡路里"/>
+                <i-input v-model="dishes.dishesCalories" placeholder="菜品卡路里" style="width: 300px" />
+            </Form-item>
+
+            <Row>
+                <i-col span="16">
+                    <Form-item label="菜品封面图片" prop="dishesCoverPic">
+                        <i-input v-model="dishes.dishesCoverPic" placeholder="菜品封面图片" style="width: 630px" />
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/upload" :format="['jpg','jpeg','png']"
+                                max-size="20480"
+                                :on-success="handleSuccessdishesCoverPic" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline" style="margin-left: 20px">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagedishesCoverPic">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="菜品描述" prop="dishesDescribe">
+                <i-input v-model="dishes.dishesDescribe" type="textarea" :rows="6" placeholder="菜品描述" style="width: 300px"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

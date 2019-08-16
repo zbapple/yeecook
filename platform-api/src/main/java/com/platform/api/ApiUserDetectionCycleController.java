@@ -52,6 +52,8 @@ public class ApiUserDetectionCycleController extends ApiBaseAction {
             Map infomap = new HashMap();
             infomap.put("nideshopUserid", userid);
             List<UserDetectionCycleVo> userDetectionCycleVoList = userDetectionCycleService.queryList(infomap);
+            //state 表式检测周期 ;0表式不需要检测 1表式需要检测
+            //flag 表式用户有没有检测周期安排 0没有/1有
             if (userDetectionCycleVoList != null) {
                 for (UserDetectionCycleVo userDetectionCycleVoItem : userDetectionCycleVoList) {
                     jiancedate = userDetectionCycleVoItem.getInspectionTime();
