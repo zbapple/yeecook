@@ -27,6 +27,7 @@
         <result property="menuStatus" column="menu_status"/>
         <result property="nutritionPrinciple" column="nutrition_principle"/>
         <result property="serviceStage" column="service_stage"/>
+        <result property="deptId" column="dept_id" />
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.MenuPlanEntity">
@@ -45,11 +46,13 @@
         `service_cycle_et`,
         `menu_status`,
          u.menu_cover_pic,
+         `dept_id`,
          udc.inspection_cycle as inspection_cycle
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
         left join user_detection_cycle udc on u.nideshop_user_id= udc.nideshop_user_id
         where u.id = #{id}
+
 	</select>
 
 
@@ -89,10 +92,13 @@
         `menu_name`,
         `menu_sn`,
         `service_cycle_et`,
-        `menu_status`
+        `menu_status`,
+         `dept_id`
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
         where 1=1
+        <!--  数据过滤  -->
+        ${filterSql}
         <if test="name != null and name.trim() != ''">
             AND menu_name LIKE concat('%',#{name},'%')
         </if>
@@ -139,7 +145,9 @@
 			`service_stage`,
 			`menu_sn`,
 			`menu_status`,
-			`menu_name`)
+			`menu_name`,
+			`dept_id`
+			)
 		values(
 		    #{id},
 			#{nideshopUserId},
@@ -152,7 +160,8 @@
 			#{serviceStage},
 			#{menuSn},
 			#{menuStatus},
-			#{menuName})
+			#{menuName},
+			#{deptId})
 	</insert>
 
     <update id="update" parameterType="com.platform.entity.MenuPlanEntity">

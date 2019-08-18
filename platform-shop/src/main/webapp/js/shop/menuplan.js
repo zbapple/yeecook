@@ -1,6 +1,7 @@
 $(function () {
+    let nutritionMenuType = getQueryString("nutritionMenuType");
     $("#jqGrid").Grid({
-        url: '../menuplan/list',
+        url: '../menuPlan/list',
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '', name: 'nideshopUserId', index: 'nideshop_user_id', width: 80,hidden:true},
@@ -61,6 +62,7 @@ let vm = new Vue({
         serviceStagelsit:['第一周疗养阶段','第二周疗养阶段','第三周疗养阶段','第四周疗养阶段'],
         uploadList: [],
         servermenuPlan: {
+            deptId:'',
             cateringServiceOrgName:'',
             nutritionMenuType:'',
             nickName:'',
@@ -79,9 +81,11 @@ let vm = new Vue({
             menuCoverPics:{},
             nutritionPrinciple:'',
         },
+        mPlan:[],
         menuPlan: {},
         menumap:[],
-        sdfd:{},
+        listmap:[],
+        foods:[],
         data3:[],
         targetKeys3: [],
         listStyle: {
@@ -215,28 +219,23 @@ let vm = new Vue({
             vm.title = "详情"
             console.log(rowId);
             Ajax.request({
-                url: "../menuplan/menuinfo/" + rowId,
+                url: "../menuPlan/menuinfo/" + rowId,
                 async: true,
                 successCallback: function (r) {
-                    console.log(2212222);
-                    console.log(r.menumap);
                     vm.menumap = r.menumap;
                     vm.menumapuser=vm.menumap.infomsg;
                     vm.menumapsys=vm.menumap.sysuser;
+                    console.log(vm.menumapsys);
                     vm.menumaptype=vm.menumap.menutype;
                     vm.menumapweight=vm.menumap.weight||'';
-
                     vm.menumapst=vm.menumap.serviceCycleSt;
                     vm.menumapet=vm.menumap.serviceCycleEt;
-                    // vm.menutp=vm.menumap.menutype[0];
-                    //
-                    // console.log(vm.menutp);
-                    // vm.menutp1=vm.menumap.menutype[1];
-                    // vm.menutp2=vm.menumap.menutype[2];
-                    // vm.menutp3=vm.menumap.menutype[3];
-                    // vm.menutp4=vm.menumap.menutype[4];
-                    // vm.menutp5=vm.menumap.menutype[5];
-                    // vm.menutp6=vm.menumap.menutype[6];
+                    vm.zaolist=[];
+                    vm.wulist=[];
+                    vm.wanlist=[];
+                    vm.zaoaddlist=[];
+                    vm.wuaddlist=[];
+                    vm.wanaddlist=[];
                   for (let i=0;i<vm.menumaptype.length;i++) {
                       if (vm.menumaptype[i].menuType == '0'){
                           vm.zaolist.push({
@@ -259,7 +258,6 @@ let vm = new Vue({
                               dishesCalories:vm.menumaptype[i].dishesCalories,
                               menuDate:vm.menumaptype[i].menuDate
                           });
-                          console.log(vm.wanlist);
                       } else if (vm.menumaptype[i].menuType == '3') {
                           vm.zaoaddlist.push({
                               dishesName:vm.menumaptype[i].dishesName,
@@ -290,8 +288,8 @@ let vm = new Vue({
         update: function (event) {
             let id = getSelectedRow("#jqGrid");
             if (id == null) {
-                return;
-            }
+                return;}
+
             vm.showList = false;
             vm.showfoods = false;
             vm.details = false;
@@ -299,16 +297,11 @@ let vm = new Vue({
             vm.uploadList = [];
             vm.getInfo(id);
             vm.getCaterings();
-            vm.addfoodlist();
-            vm.addfoodlistadd();
-            vm.addfoodlist1();
-            vm.addfoodlistadd1();
-            vm.addfoodlist2();
-            vm.addfoodlistadd2();
+
         },
         saveOrUpdate: function (event) {
             console.log(777888);
-            var url = vm.menuPlan.id == null ? "../menuplan/save" : "../menuplan/updateInfo";
+            var url = vm.menuPlan.id == null ? "../menuPlan/save" : "../menuPlan/updateInfo";
             vm.servermenuPlan.menuCoverPics=vm.uploadList;
             vm.servermenuPlan.foodlist=this.foodlist;
             vm.servermenuPlan.foodlistadd=this.foodlistadd;
@@ -324,7 +317,14 @@ let vm = new Vue({
                 contentType: "application/json",
                 successCallback: function (r) {
                     alert('操作成功', function (index) {
-                            vm.servermenuPlan.splice(0,vm.servermenuPlan.length);
+                        vm.reload();
+                        vm.servermenuPlan={};
+                        vm.zaolist=[];
+                        vm.wulist=[];
+                        vm.wanlist=[];
+                        vm.zaoaddlist=[];
+                        vm.wuaddlist=[];
+                        vm.wanaddlist=[];
                         // vm.servermenuPlan.foodlist.splice(0,vm.servermenuPlan.foodlist.length);
                         // vm.servermenuPlan.foodlistadd.splice(0,vm.servermenuPlan.foodlistadd.length);
                         // vm.servermenuPlan.foodlist1.splice(0,vm.servermenuPlan.foodlist1.length);
@@ -343,7 +343,7 @@ let vm = new Vue({
 
             confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-                    url: "../menuplan/delete",
+                    url: "../menuPlan/delete",
                     params: JSON.stringify(ids),
                     type: "POST",
                     contentType: "application/json",
@@ -357,10 +357,57 @@ let vm = new Vue({
         },
         getInfo: function (id) {
             Ajax.request({
-                url: "../menuplan/info/" + id,
+                url: "../menuPlan/info/" + id,
                 async: true,
                 successCallback: function (r) {
-                    vm.servermenuPlan = r.menuPlan;
+                    vm.menuPlan = r.mPlan.menuPlan;
+                    vm.servermenuPlan=vm.menuPlan;
+                    vm.foods=vm.mPlan.listmap;
+                    for (let i=0;i<vm.foods.length;i++) {
+                        if (vm.foods[i].menuType == '0'){
+                            vm.servermenuPlan.foodlist.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        } else if(vm.foods[i].menuType == '1') {
+                            vm.servermenuPlan.foodlist1.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        } else if(vm.foods[i].menuType == '2'){
+                            vm.servermenuPlan.foodlist2.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        } else if (vm.foods[i].menuType == '3') {
+                            vm.servermenuPlan.foodlistadd.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        }else if (vm.foods[i].menuType == '4') {
+                            vm.servermenuPlan.foodlistadd1.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        }else if (vm.foods[i].menuType == '5') {
+                            vm.servermenuPlan.foodlistadd2.push({
+                                dishesName:vm.foods[i].dishesName,
+                                dishesCoverPic:vm.foods[i].dishesCoverPic,
+                                dishesCalories:vm.foods[i].dishesCalories,
+                                menuDate:vm.foods[i].menuDate
+                            });
+                        }
+                    }
                 }
             });
         },
@@ -379,7 +426,6 @@ let vm = new Vue({
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
-            console.log(this.targetKeys3);
         },
         reloadSearch: function () {
             vm.q = {
@@ -439,7 +485,7 @@ let vm = new Vue({
          */
         getNutritionMenuTypes: function () {
             Ajax.request({
-                url: "../menuplan/queryAll",
+                url: "../menuPlan/queryAll",
                 async: true,
                 successCallback: function (r) {
                     vm.NutritionMenuTypes = r.list;
@@ -469,16 +515,16 @@ let vm = new Vue({
                 content: '../shop/menuplanPrint.html?Id=' + rowId
             })
         },
-        adddd:function(){
-            let that=this;
-            Ajax.request({
-                url:'../dishes/queryAll',
-                successCallback: function (r) {
-                    console.log(r);
-                    that.ddww=r.list;
-                }
-            })
-        },
+        // adddd:function(){
+        //     let that=this;
+        //     Ajax.request({
+        //         url:'../dishes/queryAll',
+        //         successCallback: function (r) {
+        //             console.log(r);
+        //             that.ddww=r.list;
+        //         }
+        //     })
+        // },
         /**
          *  菜品选择穿梭框
          */
@@ -687,7 +733,6 @@ let vm = new Vue({
 
         selectfood:function(event,i){
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlist[i].dishesId=this.targetKeys3[num].id;
             this.foodlist[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -695,7 +740,6 @@ let vm = new Vue({
         },
         selectfood1:function(event,i){
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlistadd[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -703,7 +747,6 @@ let vm = new Vue({
         },
         selectfood2:function(event,i){
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlist1[i].dishesId=this.targetKeys3[num].id;
             this.foodlist1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -711,7 +754,6 @@ let vm = new Vue({
         },
         selectfood3:function(event,i){
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlistadd1[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd1[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd1[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -719,7 +761,6 @@ let vm = new Vue({
         },
         selectfood4:function(event,i){
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlist2[i].dishesId=this.targetKeys3[num].id;
             this.foodlist2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlist2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -728,7 +769,6 @@ let vm = new Vue({
         selectfood5:function(event,i){
 
             let num=event.value;
-            console.log(this.targetKeys3[num].dishesCoverPic);
             this.foodlistadd2[i].dishesId=this.targetKeys3[num].id;
             this.foodlistadd2[i].dishesCalories=this.targetKeys3[num].dishesCalories;
             this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
@@ -737,7 +777,7 @@ let vm = new Vue({
 
     },
     mounted() {
-        this.adddd();
+        // this.adddd();
         this.data3=this.getMockData();
         this.targetKeys3=this.getTargetKeys();
     }
@@ -755,21 +795,14 @@ var vmm = new Vue({
     },
     methods: {
         sumbit:function () {
-            var that=this;
-            console.log("fidif"+that.id);
+            let that=this;
             Ajax.request({
                 type: "POST",
-                url: "../menuplan/update",
+                url: "../menuPlan/update",
                 contentType: "application/json",
                 params: JSON.stringify(that.id),
                 successCallback: function(r) {
-                    console.log("uu"+vm.details);
-                    vm.details=true;
-
-                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layer.close(index);
-                    console.log("uu"+vm.details);
-                        vm.reload();
+                    vm.reload();
                 }
             });
         },

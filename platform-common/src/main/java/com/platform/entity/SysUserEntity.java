@@ -34,7 +34,10 @@ public class SysUserEntity implements Serializable {
      * 密码
      */
     private transient String password;
-
+    /**
+     * 头像
+     **/
+    private String avatar;
     /**
      * 邮箱
      */
@@ -233,5 +236,13 @@ public class SysUserEntity implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

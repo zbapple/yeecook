@@ -1,11 +1,13 @@
 package com.platform.service.impl;
 
+import com.platform.annotation.DataFilter;
 import com.platform.dao.*;
 import com.platform.entity.*;
 import com.platform.service.MenuDetailsService;
 import com.platform.service.UserNutritionMenuService;
 import com.platform.utils.DateUtils;
 import com.platform.utils.RRException;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +34,6 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     private UserDao userDao;
     @Autowired
     private MenuDetailsDao menuDetailsDao;
-    @Autowired
-    private UserNutritionMenuDao userNutritionMenuDao;
-    @Autowired
-    private UserDetectionCycleDao userDetectionCycleDao;
-    @Autowired
-    private UserHealthReportDao userHealthReportDao;
 
 
     @Override
@@ -54,6 +50,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 
 
     @Override
+    @DataFilter(deptAlias = "dept_id")
     public List<MenuPlanEntity> queryList(Map<String, Object> map) {
         return menuPlanDao.queryList(map);
     }
@@ -66,7 +63,6 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @Transactional
     public int save(MenuPlanEntity menuPlan){
-
 
         //插入用户信息
         String nickname=menuPlan.getNickName();

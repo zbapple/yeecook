@@ -58,13 +58,12 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
 
-                    <li class="dropdown">
-                        <!--<a href="javascript:;" @click="love"><i class="fa fa-rmb"></i> &nbsp;捐赠</a>-->
-                    </li>
+                    <!--<li class="dropdown">-->
+                        <!--&lt;!&ndash;<a href="javascript:;" @click="love"><i class="fa fa-rmb"></i> &nbsp;捐赠</a>&ndash;&gt;-->
+                    <!--</li>-->
                     <li class="dropdown">
                         <a href="javascript:;" @click="toggleFullScreen"><i class="fa fa-arrows-alt"></i> &nbsp;全屏</a>
                     </li>
-                    <li><a href="javascript:;" @click="updatePassword"><i class="fa fa-lock"></i> &nbsp;修改密码</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <i class="fa fa-bell"></i> <span class="label label-primary">2</span>
@@ -103,9 +102,20 @@
                             <i class="fa fa-tasks"></i> 主题
                         </a>
                     </li>
-                    <li><a><img src="">头像</a></li>
+                    <li><a><img :src="user.avatar" style="width: 34px;
+                                                          height: 34px;
+                                                          border-radius: 50%;
+                                                          align-items: center;
+                                                          justify-content: center;overflow: hidden;"></a></li>
 
-                    <li><a>用户名</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown">{{user.username}}</a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <div class="text-center link-block">
+                    <li><a href="javascript:;" @click="updatePassword"><i class="fa fa-lock"></i> &nbsp;修改密码</a></li>
+                            </div>
+                        </ul>
+                    </li>
                     <li><a @click="logout"><i class="fa fa fa-sign-out"></i>退出</a></li>
                 </ul>
             </nav>
@@ -237,7 +247,7 @@
 
                     <div class="sidebar-title">
                         <h3><i class="fa fa-comments-o"></i> 最新通知</h3>
-                        <small><i class="fa fa-tim"></i> </small>
+                        <small><i class="fa fa-tim"></i></small>
                     </div>
 
                     <div>

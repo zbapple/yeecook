@@ -54,6 +54,7 @@ public class MenuPlanEntity implements Serializable {
     //服务阶段
     private String serviceStage;
     //0:未签约 1:已签约
+    private Long deptId;
     private Integer menuStatus = 0;
     //检测周期
     private String inspectionCycle;
@@ -84,7 +85,6 @@ public class MenuPlanEntity implements Serializable {
     private List<MenuDetailsEntity> foodlistadd1;
     private List<MenuDetailsEntity> foodlist2;
     private List<MenuDetailsEntity> foodlistadd2;
-
     private List<MenuPlanEntity> menuCoverPics;
 
 
