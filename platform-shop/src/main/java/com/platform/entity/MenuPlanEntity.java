@@ -68,6 +68,8 @@ public class MenuPlanEntity implements Serializable {
     private String dishesName;
     //菜品描述
     private String dishesDescribe;
+    //菜品能量
+    private String dishescalories;
     //菜品图片
     private String dishesCoverPic;
     //菜品卡路里

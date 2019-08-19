@@ -79,7 +79,7 @@ let vm = new Vue({
             foodlist2:[],
             foodlistadd2:[],
             menuCoverPics:{},
-            nutritionPrinciple:'',
+            nutritionPrinciple:''
         },
         mPlan:[],
         menuPlan: {},
@@ -210,6 +210,7 @@ let vm = new Vue({
         },
         addfoods:function (){
             vm.showfoods = true;
+            vm.adddd();
         },
         /**
          *  查看详情操作
@@ -325,7 +326,7 @@ let vm = new Vue({
                         vm.zaoaddlist=[];
                         vm.wuaddlist=[];
                         vm.wanaddlist=[];
-                        // vm.servermenuPlan.foodlist.splice(0,vm.servermenuPlan.foodlist.length);
+                        vm.servermenuPlan.foodlist.splice(0,vm.servermenuPlan.foodlist.length);
                         // vm.servermenuPlan.foodlistadd.splice(0,vm.servermenuPlan.foodlistadd.length);
                         // vm.servermenuPlan.foodlist1.splice(0,vm.servermenuPlan.foodlist1.length);
                         // vm.servermenuPlan.foodlistadd1.splice(0,vm.servermenuPlan.foodlistadd1.length);
@@ -356,58 +357,70 @@ let vm = new Vue({
             });
         },
         getInfo: function (id) {
+            console.log("5")
             Ajax.request({
                 url: "../menuPlan/info/" + id,
                 async: true,
                 successCallback: function (r) {
-                    vm.menuPlan = r.mPlan.menuPlan;
-                    vm.servermenuPlan=vm.menuPlan;
-                    vm.foods=vm.mPlan.listmap;
-                    for (let i=0;i<vm.foods.length;i++) {
-                        if (vm.foods[i].menuType == '0'){
-                            vm.servermenuPlan.foodlist.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        } else if(vm.foods[i].menuType == '1') {
-                            vm.servermenuPlan.foodlist1.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        } else if(vm.foods[i].menuType == '2'){
-                            vm.servermenuPlan.foodlist2.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        } else if (vm.foods[i].menuType == '3') {
-                            vm.servermenuPlan.foodlistadd.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        }else if (vm.foods[i].menuType == '4') {
-                            vm.servermenuPlan.foodlistadd1.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        }else if (vm.foods[i].menuType == '5') {
-                            vm.servermenuPlan.foodlistadd2.push({
-                                dishesName:vm.foods[i].dishesName,
-                                dishesCoverPic:vm.foods[i].dishesCoverPic,
-                                dishesCalories:vm.foods[i].dishesCalories,
-                                menuDate:vm.foods[i].menuDate
-                            });
-                        }
-                    }
+                    console.log(r);
+                    vm.servermenuPlan = r.menuPlan;
+                   // vm.servermenuPlan=vm.menuPlan;
+                    console.log(vm.servermenuPlan)
+                    console.log(vm.servermenuPlan.foodlist);
+
+
+                    // vm.foods=vm.mPlan.listmap;
+                    // vm.servermenuPlan.foodlist=
+                    // for (let i=0;i<vm.foods.length;i++) {
+                    //     if (vm.foods[i].menuType == '0'){
+                    //         vm.servermenuPlan.foodlist.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     } else if(vm.foods[i].menuType == '1') {
+                    //         vm.servermenuPlan.foodlist1.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     } else if(vm.foods[i].menuType == '2'){
+                    //         vm.servermenuPlan.foodlist2.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     } else if (vm.foods[i].menuType == '3') {
+                    //         vm.servermenuPlan.foodlistadd.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     }else if (vm.foods[i].menuType == '4') {
+                    //         vm.servermenuPlan.foodlistadd1.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     }else if (vm.foods[i].menuType == '5') {
+                    //         vm.servermenuPlan.foodlistadd2.push({
+                    //             dishesName:vm.foods[i].dishesName,
+                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
+                    //             dishesCalories:vm.foods[i].dishesCalories,
+                    //             menuDate:vm.foods[i].menuDate
+                    //         });
+                    //     }
+                    // }
+                    // vm.servermenuPlan=vm.mPlan.listmap;
+                    let arry=[];
+                    arry=arry.concat(vm.servermenuPlan.foodlist,vm.servermenuPlan.foodlist1,vm.servermenuPlan.foodlist2,vm.servermenuPlan.foodlistadd,vm.servermenuPlan.foodlistadd1,vm.servermenuPlan.foodlistadd2);
+                    // console.log(arry)
+                    vm.targetKeys3=vm.getTargetKeys1(arry);
                 }
             });
         },
@@ -515,22 +528,27 @@ let vm = new Vue({
                 content: '../shop/menuplanPrint.html?Id=' + rowId
             })
         },
-        // adddd:function(){
-        //     let that=this;
-        //     Ajax.request({
-        //         url:'../dishes/queryAll',
-        //         successCallback: function (r) {
-        //             console.log(r);
-        //             that.ddww=r.list;
-        //         }
-        //     })
-        // },
+        adddd:function(){
+            let that=this;
+            console.log("zhahzhah");
+            Ajax.request({
+                url:'../dishes/queryAll',
+                successCallback: function (r) {
+                    console.log(r);
+                    that.ddww=r.list;
+                    that.data3=that.getMockData();
+                    // that.targetKeys3=that.getTargetKeys();
+                }
+            })
+        },
         /**
          *  菜品选择穿梭框
          */
         getMockData: function () {
             let mockData=[];
             let list=this.ddww;
+            console.log("222");
+            console.log(this.ddww);
            for (let i = 0; i <= list.length-1; i++) {
                 mockData.push({
                     key: list[i],
@@ -540,6 +558,19 @@ let vm = new Vue({
             }
             return mockData;
         },
+        getMockData1: function () {
+            let mockData1=[];
+            let list1=this.ddww;
+            for (let i = 0; i <= list1.length-1; i++) {
+                mockData1.push({
+                    key: list1[i],
+                    label: list1[i].dishesName,
+                    description: i,
+                });
+            }
+            return mockData1;
+
+        },
         getTargetKeys: function () {
             return this.getMockData()
                 .filter(() => {
@@ -547,6 +578,20 @@ let vm = new Vue({
                 })
                 .map(item => item);
         },
+        getTargetKeys1: function (list) {
+            let mockData1=[];
+            console.log("ww");
+            console.log(list);
+            for (let i = 0; i <= list.length-1; i++) {
+                mockData1.push({
+                    key: list[i].dishesName,
+                    label: list[i].dishesName,
+                    description: i,
+                });
+            }
+            console.log(mockData1);
+            return mockData1;
+            },
         handleChange3: function (newTargetKeys) {
             this.targetKeys3 = newTargetKeys;
         },
@@ -777,9 +822,7 @@ let vm = new Vue({
 
     },
     mounted() {
-        // this.adddd();
-        this.data3=this.getMockData();
-        this.targetKeys3=this.getTargetKeys();
+
     }
 });
 var vmm = new Vue({
