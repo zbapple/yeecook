@@ -16,6 +16,7 @@
 		select
 			a.id,
 			b.food_material_name,
+			food_material_id,
 			c.nutrient_elements_name,
 			a.content_g
 		from food_nutrient_elements a
@@ -28,6 +29,7 @@
 		select
 			a.id,
 			b.food_material_name,
+			food_material_id,
 			c.nutrient_elements_name,
 			a.content_g
 		from food_nutrient_elements a
@@ -36,6 +38,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND b.food_material_name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="foodMaterialId != null">
+			and food_material_id=#{foodMaterialId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -58,6 +63,9 @@
         <if test="name != null and name.trim() != ''">
             AND b.food_material_name LIKE concat('%',#{name},'%')
         </if>
+		<if test="foodMaterialId != null">
+			and food_material_id=#{foodMaterialId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.FoodNutrientElementsEntity">

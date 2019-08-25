@@ -20,6 +20,7 @@
 			a.food_material_name,
 			a.food_material_num,
 			a.food_material_sumcal,
+			a.dishes_id,
 			b.dishes_name
 		from food_ingredients a
 		LEFT join dishes b on b.id=a.dishes_id
@@ -33,12 +34,16 @@
 			a.food_material_name,
 			a.food_material_num,
 			a.food_material_sumcal,
+			a.dishes_id,
 			b.dishes_name
 		from food_ingredients a
 		LEFT join dishes b on b.id=a.dishes_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND food_material_name LIKE concat('%',#{name},'%')
+			AND b.dishes_name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="dishesId != null ">
+			AND dishes_id=#{dishesId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -55,10 +60,14 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from food_ingredients
+		left  join  dishes on dishes.id=food_ingredients.dishes_id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND food_material_name LIKE concat('%',#{name},'%')
         </if>
+		<if test="dishesId != null ">
+			AND dishes_id=#{dishesId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.FoodIngredientsEntity">

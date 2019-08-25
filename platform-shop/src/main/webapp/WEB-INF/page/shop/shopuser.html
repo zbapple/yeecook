@@ -70,7 +70,7 @@
             <!--<Form-item label="最后登录Ip" prop="lastLoginIp">-->
             <!--<i-input v-model="user.lastLoginIp" placeholder="最后登录Ip"/>-->
             <!--</Form-item>-->
-            <Form-item label="会员等级" prop="userLevelId" style="width: 268px;">
+            <Form-item label="会员等级" prop="userLevelId" style="width: 300px;">
                 <i-select v-model="user.userLevelId" filterable>
                     <i-option v-for="userLevel in userLevels" :value="userLevel.id" :key="userLevel.id">
                         {{userLevel.name}}

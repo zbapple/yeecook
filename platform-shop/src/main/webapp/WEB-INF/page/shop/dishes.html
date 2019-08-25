@@ -26,6 +26,8 @@
                 #if($shiro.hasPermission("dishes:delete"))
                 <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
                 #end
+                <i-button type="warning" @click="foodint"><i class="fa fa-pencil-square-o"></i>&nbsp;食材</i-button>
+                <i-button type="warning" @click="dishestep"><i class="fa fa-pencil-square-o"></i>&nbsp;步骤</i-button>
             </div>
         </Row>
 	    <table id="jqGrid"></table>
@@ -38,6 +40,15 @@
             <Form-item label="菜品名字" prop="dishesName">
                 <i-input v-model="dishes.dishesName" placeholder="菜品名字" style="width: 300px" />
             </Form-item>
+            <Form-item label="菜品类型" prop="categoryname">
+                <i-input v-model="dishes.categoryname" placeholder="菜品名字" style="width: 300px" />
+                <!--<i-select v-model="dishes.categoryname" filterable placeholder="菜品类型" clearable=true style="width: 300px">-->
+                    <!--<i-option v-for="item in category"-->
+                              <!--:value="item.categoryname"-->
+                              <!--:key="item.categoryname">{{item.categoryname}}-->
+                    <!--</i-option>-->
+                <!--</i-select>-->
+            </Form-item>
             <Form-item label="菜品卡路里" prop="dishesCalories">
                 <i-input v-model="dishes.dishesCalories" placeholder="菜品卡路里" style="width: 300px" />
             </Form-item>
@@ -45,7 +56,7 @@
             <Row>
                 <i-col span="16">
                     <Form-item label="菜品封面图片" prop="dishesCoverPic">
-                        <i-input v-model="dishes.dishesCoverPic" placeholder="菜品封面图片" style="width: 630px" />
+                        <i-input v-model="dishes.dishesCoverPic" placeholder="菜品封面图片" style="width: 730px" />
                     </Form-item>
                 </i-col>
                 <i-col span="3">

@@ -115,7 +115,7 @@
             <p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span
                     v-if="servermenuPlan.nickName">{{servermenuPlan.nickName}}</span><span v-else>待选择</span></p>
         </div>
-        <div style="width: 84px; height:81px;float: right;">
+        <div style="width: 50px; height:50px;float: right;">
             <div class="upload-list" v-for="item in uploadList" style="width: 84px;height: 81px">
                 <template v-if="item.status == 'finished'">
                     <img :src="item.menuCoverPic"/>
@@ -141,7 +141,7 @@
                     multiple
                     type="drag"
                     action="../sys/oss/upload"
-                    style="display: inline-block;width: 84px;" v-show="showcamera">
+                    style="display: inline-block;width: 84px;" v-show="showcamera" >
                 <div style="width: 84px;height:81px;line-height: 84px;">
                     <Icon type="camera" size="20"></Icon>
                 </div>
@@ -216,10 +216,10 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select clearable=true label-in-value=true
+                            <i-select  v-model="fooditem.dishesName" clearable=true label-in-value=true
                                       @on-change="selectfood($event,i)" :placeholder="fooditem.dishesName">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
+                                <i-option v-for="(v,index) in targetKeys3" :label="v.label" :value="v.label" >
+                                    {{v.label}}
                                 </i-option>
                             </i-select>
                         </Form-item>
@@ -247,7 +247,7 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select clearable=true label-in-value=true
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
                                       @on-change="selectfood1($event,i)"  :placeholder="fooditem.dishesName">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
@@ -275,7 +275,7 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select clearable=true label-in-value=true
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
                                       @on-change="selectfood2($event,i)" :placeholder="fooditem.dishesName">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
@@ -303,7 +303,7 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select  clearable=true label-in-value=true
+                            <i-select v-model="fooditem.dishesName"  clearable=true label-in-value=true
                                       @on-change="selectfood3($event,i)" :placeholder="fooditem.dishesName" >
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
@@ -331,7 +331,7 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select clearable=true label-in-value=true
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
                                       @on-change="selectfood4($event,i)" :placeholder="fooditem.dishesName">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
@@ -359,7 +359,7 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select  clearable=true label-in-value=true
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
                                       @on-change="selectfood5($event,i)" :placeholder="fooditem.dishesName">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}

@@ -4,12 +4,19 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '菜品名字', name: 'dishesName', index: 'dishes_name', width: 80},
+            {label: '菜品类型', name: 'categoryname', index: 'category_name', width: 80},
 			{label: '菜品描述',name:'dishesDescribe',index:'dishes_describe',width: 80},
 			{label: '菜品封面图片', name: 'dishesCoverPic', index: 'dishes_cover_pic', width: 80,
                 formatter: function (value) {
                     return transImg(value);}},
-			{label: '菜品卡路里', name: 'dishesCalories', index: 'dishes_calories', width: 80}]
+			{label: '菜品卡路里', name: 'dishesCalories', index: 'dishes_calories', width: 80},
+            // {  label:'所需食材',name:'check', width: 80,index:'check',sortable:false, formatter:function(value,col,row){
+            //     return  '<button  style="width: 40px;line-height: 30px" onclick="vm.lookDetail('+  row.id  +')">查看</button>'
+            //     }
+            // },
+        ]
     });
+    vm.getcategory();
 });
 
 let vm = new Vue({
@@ -25,7 +32,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        category:[]
 	},
 	methods: {
 		query: function () {
@@ -60,6 +68,28 @@ let vm = new Vue({
                 }
 			});
 		},
+        foodint: function () {
+            var id = getSelectedRow("#jqGrid");
+            if (id == null) {
+                return;
+            }
+            openWindow({
+                type: 2,
+                title: '所需食材',
+                content: '../shop/foodingredients.html?dishesId=' + id
+            })
+        },
+        dishestep: function () {
+            var id = getSelectedRow("#jqGrid");
+            if (id == null) {
+                return;
+            }
+            openWindow({
+                type: 2,
+                title: '所需食材',
+                content: '../shop/dishessteps.html?dishesId=' + id
+            })
+        },
 		del: function (event) {
             let ids = getSelectedRows("#jqGrid");
 			if (ids == null){
@@ -89,6 +119,16 @@ let vm = new Vue({
                 }
             });
 		},
+        getcategory: function(){
+            Ajax.request({
+                url: "../dishes/querytype",
+                async: true,
+                successCallback: function (r) {
+                    vm.category = r.list;
+                    console.log(vm.category)
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');

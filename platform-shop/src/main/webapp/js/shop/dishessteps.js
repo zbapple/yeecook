@@ -1,6 +1,11 @@
 $(function () {
+    let dishesId = getQueryString("dishesId");
+    let url = '../dishessteps/list';
+    if (dishesId) {
+        url += '?dishesId=' + dishesId;
+    }
     $("#jqGrid").Grid({
-        url: '../dishessteps/list',
+        url: url,
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '菜品名称', name: 'dishesname', index: 'dishes_name', width: 80},

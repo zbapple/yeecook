@@ -41,26 +41,26 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="supplier" :rules="ruleValidate" :label-width="80">
+		<i-form ref="formValidate" :model="supplier" :rules="ruleValidate" :label-width="100">
             <Form-item label="公司名称" prop="companyName">
-                <i-input v-model="supplier.companyName" placeholder="供应商公司名称"/>
+                <i-input v-model="supplier.companyName" placeholder="供应商公司名称" style="width: 300px"/>
             </Form-item>
             <Form-item label="开户银行" prop="openingBank">
-                <i-input v-model="supplier.openingBank" placeholder="开户银行"/>
+                <i-input v-model="supplier.openingBank" placeholder="开户银行" style="width: 300px"/>
             </Form-item>
             <Form-item label="银行账号" prop="bankAccount">
-                <i-input v-model="supplier.bankAccount" placeholder="银行账号"/>
+                <i-input v-model="supplier.bankAccount" placeholder="银行账号" style="width: 300px"/>
             </Form-item>
             <Form-item label="收款户名" prop="beneficiaryName">
-                <i-input v-model="supplier.beneficiaryName" placeholder="收款户名"/>
+                <i-input v-model="supplier.beneficiaryName" placeholder="收款户名" style="width: 300px"/>
             </Form-item>
             <Form-item label="电话" prop="telephone">
-                <i-input v-model="supplier.telephone" placeholder="电话"/>
+                <i-input v-model="supplier.telephone" placeholder="电话" style="width: 300px"/>
             </Form-item>
             <Form-item label="手机" prop="mobile">
-                <i-input v-model="supplier.mobile" placeholder="手机"/>
+                <i-input v-model="supplier.mobile" placeholder="手机" style="width: 300px"/>
             </Form-item>
-            <Form-item label="部门名称" prop="deptName" style="width: 268px;">
+            <Form-item label="部门名称" prop="deptName" style="width: 300px">
                 <i-select v-model="supplier.deptName" filterable  placeholder="请选择供应商管理部门"  clearable=true >
                     <i-option v-for="dept in depts" :value="dept.deptId+','+dept.name"
                               :key="dept.deptId">{{dept.name}}
@@ -68,7 +68,7 @@
                 </i-select>
             </Form-item>
             <Form-item label="地址" prop="address">
-                <i-input v-model="supplier.address" placeholder="地址"/>
+                <i-input v-model="supplier.address" placeholder="地址" style="width: 300px"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>

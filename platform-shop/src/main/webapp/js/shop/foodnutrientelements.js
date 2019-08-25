@@ -1,6 +1,11 @@
 $(function () {
+    let foodMaterialId = getQueryString("foodMaterialId");
+    let url = '../foodnutrientelements/list';
+    if (foodMaterialId) {
+        url += '?foodMaterialId=' + foodMaterialId;
+    }
     $("#jqGrid").Grid({
-        url: '../foodnutrientelements/list',
+        url: url,
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '食材名称', name: 'foodmaterialname', index: 'food_material_name', width: 80},
@@ -83,6 +88,7 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.foodNutrientElements = r.foodNutrientElements;
+                    console.log(vm.foodNutrientElements)
                 }
             });
 		},
