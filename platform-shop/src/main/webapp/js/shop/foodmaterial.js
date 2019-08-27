@@ -62,6 +62,17 @@ let vm = new Vue({
                 }
 			});
 		},
+        foodnutr: function () {
+            var id = getSelectedRow("#jqGrid");
+            if (id == null) {
+                return;
+            }
+            openWindow({
+                type: 2,
+                title: '营养元素',
+                content: '../shop/foodnutrientelements.html?foodMaterialId=' + id
+            })
+        },
 		del: function (event) {
             let ids = getSelectedRows("#jqGrid");
 			if (ids == null){

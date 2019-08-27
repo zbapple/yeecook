@@ -26,7 +26,7 @@ public class FoodIngredientsEntity implements Serializable {
     private String foodMaterialNum;
     //食材总卡路里
     private String foodMaterialSumcal;
-    //
+    //菜品Id
     private Integer dishesId;
     //菜品名称
     private  String dishesname;

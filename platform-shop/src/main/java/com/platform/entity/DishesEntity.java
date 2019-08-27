@@ -15,7 +15,7 @@ import java.util.Date;
 public class DishesEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //
+    //菜品Id
     private Integer id;
     //菜品名字
     private String dishesName;
@@ -25,7 +25,8 @@ public class DishesEntity implements Serializable {
     private String dishesCoverPic;
     //菜品卡路里
     private String dishesCalories;
-
+    //菜品类型
+    private String categoryname;
     /**
      * 设置：
      */
@@ -87,5 +88,13 @@ public class DishesEntity implements Serializable {
 
     public void setDishesDescribe(String dishesDescribe) {
         this.dishesDescribe = dishesDescribe;
+    }
+
+    public String getCategoryname() {
+        return categoryname;
+    }
+
+    public void setCategoryname(String categoryname) {
+        this.categoryname = categoryname;
     }
 }

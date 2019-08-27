@@ -9,11 +9,13 @@
 		<result property="dishesDescribe" column="dishes_describe"/>
         <result property="dishesCoverPic" column="dishes_cover_pic"/>
         <result property="dishesCalories" column="dishes_calories"/>
+		<result property="categoryname" column="category_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.DishesEntity">
 		select
 			`id`,
+			category_name,
 			`dishes_name`,
 			`dishes_describe`,
 			`dishes_cover_pic`,
@@ -25,6 +27,7 @@
 	<select id="queryList" resultType="com.platform.entity.DishesEntity">
 		select
     		`id`,
+			category_name,
     		`dishes_name`,
 		    `dishes_describe`,
     		`dishes_cover_pic`,
@@ -46,7 +49,12 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
+
+	<select  id="querylisttype" resultType="com.platform.entity.DishesEntity">
+		select category_name from dishes
+		where id in (select max(id) from dishes GROUP BY category_name )
+	</select>
+
  	<select id="queryTotal" resultType="int">
 		select count(*) from dishes
 		WHERE 1=1
@@ -58,12 +66,14 @@
 	<insert id="save" parameterType="com.platform.entity.DishesEntity">
 		insert into dishes(
 			`id`,
+			category_name,
 			`dishes_name`,
 			`dishes_describe`,
 			`dishes_cover_pic`,
 			`dishes_calories`)
 		values(
 			#{id},
+			#{categoryname},
 			#{dishesName},
 			#{dishesDescribe},
 			#{dishesCoverPic},
@@ -73,6 +83,7 @@
 	<update id="update" parameterType="com.platform.entity.DishesEntity">
 		update dishes 
 		<set>
+			<if test="categoryname !=null"> `category_name`= #{categoryname},</if>
 			<if test="dishesName != null">`dishes_name` = #{dishesName}, </if>
 			<if test="dishesDescribe != null">`dishes_describe` = #{dishesDescribe}, </if>
 			<if test="dishesCoverPic != null">`dishes_cover_pic` = #{dishesCoverPic}, </if>

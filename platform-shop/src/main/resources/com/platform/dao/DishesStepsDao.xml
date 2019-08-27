@@ -18,6 +18,7 @@
 			a.steps_num,
 			a.steps_pic,
 			a.steps_describe,
+			a.dishes_id,
 			b.dishes_name
 		from dishes_steps a
 		LEFT JOIN dishes b on b.id=a.dishes_id
@@ -30,12 +31,16 @@
 			a.steps_num,
 			a.steps_pic,
 			a.steps_describe,
+			a.dishes_id,
 			b.dishes_name
 		from dishes_steps a
 		LEFT JOIN dishes b on b.id=a.dishes_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND b.dishes_name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="dishesId != null ">
+			AND dishes_id=#{dishesId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -57,6 +62,9 @@
         <if test="name != null and name.trim() != ''">
             AND b.dishes_name LIKE concat('%',#{name},'%')
         </if>
+		<if test="dishesId != null ">
+			AND dishes_id=#{dishesId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.DishesStepsEntity">

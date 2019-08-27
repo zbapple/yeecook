@@ -1,6 +1,11 @@
 $(function () {
+    let dishesId = getQueryString("dishesId");
+    let url = '../foodingredients/list';
+    if (dishesId) {
+        url += '?dishesId=' + dishesId;
+    }
     $("#jqGrid").Grid({
-        url: '../foodingredients/list',
+        url: url,
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			// {label: '食材id', name: 'foodMaterialId', index: 'food_material_id', width: 80},
@@ -86,6 +91,7 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.foodIngredients = r.foodIngredients;
+                    console.log(vm.foodIngredients)
                 }
             });
 		},
@@ -93,7 +99,7 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.foodMaterialName},
+                postData: {'name': vm.q.dishesname},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

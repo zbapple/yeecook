@@ -32,6 +32,10 @@ public interface DishesService {
     List<DishesEntity> queryList(Map<String, Object> map);
 
     /**
+     * 菜品类型查询
+     */
+    List<DishesEntity> querylisttype(Map<String,Object> map);
+    /**
      * 分页统计总数
      *
      * @param map 参数

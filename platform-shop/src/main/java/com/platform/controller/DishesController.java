@@ -102,4 +102,14 @@ public class DishesController {
 
         return R.ok().put("list", list);
     }
+    /**
+     * 查询菜品的类型
+     */
+    @RequestMapping("/querytype")
+    public R querytype(@RequestParam Map<String,Object> params){
+
+        List<DishesEntity> listtype=dishesService.querylisttype(params);
+
+        return R.ok().put("listtype",listtype);
+    }
 }
