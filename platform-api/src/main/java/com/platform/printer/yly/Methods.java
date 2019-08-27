@@ -133,6 +133,30 @@ public class Methods {
         return result;
     }
 
+    public String getFreedomToken1()  {
+
+        String result = "";
+        if (!StringUtils.isNotEmpty(token) || !StringUtils.isNotEmpty(refresh_token)) {
+            result = LAVApi.getToken(CLIENT_ID,
+                    "client_credentials",
+                    LAVApi.getSin(),
+                    "all",
+                    String.valueOf(System.currentTimeMillis() / 1000),
+                    LAVApi.getuuid());
+            try {
+                JSONObject json = new JSONObject(result);
+                JSONObject body = json.getJSONObject("body");
+                token = body.getString("access_token");
+                refresh_token = body.getString("refresh_token");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+
+            }
+        }
+        return result;
+    }
+
     /**
      * 刷新token
      */

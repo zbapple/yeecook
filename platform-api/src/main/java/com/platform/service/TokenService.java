@@ -66,6 +66,7 @@ public class TokenService {
         Map<String, Object> map = new HashMap<>();
         map.put("token", token);
         map.put("expire", EXPIRE);
+        map.put("user", EXPIRE);
 
         return map;
     }
