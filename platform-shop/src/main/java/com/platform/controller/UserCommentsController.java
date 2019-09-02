@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.platform.entity.UserEntity;
 import com.platform.service.UserService;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +63,15 @@ public class UserCommentsController {
 
         return R.ok().put("userComments", userComments);
     }
+    /**
+     * 回复
+     **/
+    @RequestMapping("/reply")
+    @RequiresPermissions("usercomments:reply")
+    public R reply(@RequestBody UserCommentsEntity replyContent){
 
+        return R.ok();
+    }
     /**
      * 保存
      */

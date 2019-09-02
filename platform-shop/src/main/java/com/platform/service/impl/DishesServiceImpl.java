@@ -34,7 +34,7 @@ public class DishesServiceImpl implements DishesService {
     }
 
     @Override
-    public List<DishesEntity> querylisttype(Map<String,Object> map){return dishesDao.querylisttype(map);}
+    public List<DishesEntity> queryListType(Map<String,Object> map){return dishesDao.queryListType(map);}
 
     @Override
     public int queryTotal(Map<String, Object> map) {

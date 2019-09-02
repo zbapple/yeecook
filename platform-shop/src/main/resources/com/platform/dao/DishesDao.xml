@@ -50,9 +50,8 @@
 		</if>
 	</select>
 
-	<select  id="querylisttype" resultType="com.platform.entity.DishesEntity">
-		select category_name from dishes
-		where id in (select max(id) from dishes GROUP BY category_name )
+	<select  id="queryListType" resultType="com.platform.entity.DishesEntity">
+		select distinct category_name from dishes where category_name is not null
 	</select>
 
  	<select id="queryTotal" resultType="int">

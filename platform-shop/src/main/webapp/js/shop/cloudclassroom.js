@@ -6,9 +6,20 @@ $(function () {
 			{label: '视频主标题', name: 'videoTitle', index: 'video_title', width: 80},
 			{label: '视频副标题', name: 'videoSubtitle', index: 'video_subtitle', width: 80},
             {label: '视频描述', name: 'videoDescribe', index: 'video_describe', width: 80},
-			{label: '视频封面图片', name: 'videoCoverPic', index: 'video_cover_pic', width: 80},
-			{label: '视频地址', name: 'videoAdress', index: 'video_adress', width: 80}]
+			{label: '视频封面图片', name: 'videoCoverPic', index: 'video_cover_pic', width: 80,
+                formatter: function (value) {
+                    return transImg(value);},
+            },
+			{label: '视频地址', name: 'videoAdress', index: 'video_adress', width: 80
+                },
+            {  label:'查看',name:'check', width: 80,index:'check',sortable:false, formatter: function(value,col,row){
+                    return  '<button  style="width: 80px;line-height: 30px;border: none;outline" onclick="vm.getGoods('+  row.id  +')">关联商品</button>'+
+                        '<button  style="width: 80px;line-height: 30px;margin-left:10px;border: none;outline" onclick="vm.getUserCom('+  row.id  +')">用户评论</button>'
+
+                }
+            }]
     });
+    $('#jqGrid').css("textAlign","center");
 });
 
 let vm = new Vue({
@@ -88,6 +99,20 @@ let vm = new Vue({
                 }
             });
 		},
+        getGoods:function(rowId){
+            openWindow({
+                type: 2,
+                title: '关联商品',
+                content: '../shop/cloudclassroomgood.html?videoId=' + rowId
+            })
+        },
+        getUserCom:function(rowId){
+            openWindow({
+                type: 2,
+                title: '用户评论',
+                content: '../shop/usercomments.html?videoId=' + rowId
+            })
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');

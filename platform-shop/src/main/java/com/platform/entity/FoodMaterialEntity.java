@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +15,8 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:28:09
  */
+
+@Data
 public class FoodMaterialEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +34,8 @@ public class FoodMaterialEntity implements Serializable {
     private String foodMaterialCalories;
     //食材类型id
     private Integer foodTypeId;
-
+    //食材类型
+    private String typeName;
     /**
      * 设置：食材id
      */

@@ -11,31 +11,36 @@
 		<result property="foodUnit" column="food_unit"/>
         <result property="foodMaterialCalories" column="food_material_calories"/>
         <result property="foodTypeId" column="food_type_id"/>
+		<result property="typeName" column="type_name" />
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.FoodMaterialEntity">
 		select
-			`id`,
-			`food_material_name`,
-			`food_material_pic`,
-			`food_material_describe`,
-			`food_unit`,
-			`food_material_calories`,
-			`food_type_id`
-		from food_material
-		where id = #{id}
-	</select>
-
-	<select id="queryList" resultType="com.platform.entity.FoodMaterialEntity">
-		select
-    		`id`,
+    		fm.id,
     		`food_material_name`,
     		`food_material_pic`,
     		`food_material_describe`,
 		    `food_unit`,
     		`food_material_calories`,
-    		`food_type_id`
-		from food_material
+    		`food_type_id`,
+		    ft.type_name type_name
+		from food_material  fm
+		LEFT JOIN food_type  ft ON ft.id=fm.food_type_id
+		where fm.id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.FoodMaterialEntity">
+		select
+		    fm.id,
+    		`food_material_name`,
+    		`food_material_pic`,
+    		`food_material_describe`,
+		    `food_unit`,
+    		`food_material_calories`,
+    		`food_type_id`,
+		    ft.type_name type_name
+		from food_material  fm
+		LEFT JOIN food_type  ft ON ft.id=fm.food_type_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			and food_material_name LIKE concat('%',#{name},'%')
@@ -45,7 +50,7 @@
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id
+                order by fm.id
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">

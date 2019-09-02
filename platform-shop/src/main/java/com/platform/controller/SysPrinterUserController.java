@@ -51,7 +51,6 @@ public class SysPrinterUserController {
      * 查看信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("sysprinteruser:info")
     public R info(@PathVariable("id") Long id) {
         SysPrinterUserEntity sysPrinterUser = sysPrinterUserService.queryObject(id);
 

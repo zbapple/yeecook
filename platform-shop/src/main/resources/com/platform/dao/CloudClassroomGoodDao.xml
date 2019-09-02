@@ -7,33 +7,56 @@
         <result property="id" column="id"/>
         <result property="videoId" column="video_id"/>
         <result property="goodsId" column="goods_id"/>
+		<result property="videoTitle" column="video_title"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="primaryPicUrl" column="primary_pic_url"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.CloudClassroomGoodEntity">
 		select
-			`id`,
-			`video_id`,
-			`goods_id`
-		from cloud_classroom_good
-		where id = #{id}
+		ccg.id,
+		cc.id video_id,
+		cc.video_title video_title,
+		g.id goods_id,
+		g.name goods_name,
+		g.primary_pic_url primary_pic_url
+		from cloud_classroom_good ccg
+		LEFT join cloud_classroom cc on cc.id=ccg.video_id
+		LEFT join nideshop_goods g ON g.id = ccg.goods_id
+		where ccg.id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.CloudClassroomGoodEntity">
 		select
-    		`id`,
-    		`video_id`,
-    		`goods_id`
-		from cloud_classroom_good
+		ccg.id,
+		cc.id video_id,
+		cc.video_title video_title,
+		g.id goods_id,
+		g.name goods_name,
+		g.primary_pic_url primary_pic_url
+		from cloud_classroom_good ccg
+		LEFT join cloud_classroom cc on cc.id=ccg.video_id
+		LEFT join nideshop_goods g ON g.id = ccg.goods_id
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND video_id LIKE concat('%',#{name},'%')
+		<if test="goodsId != null">
+			AND ccg.goods_id = #{goodsId}
 		</if>
+		<if test="videoId != null">
+			AND ccg.video_id = #{videoId}
+		</if>
+		<if test="videoTitle != null and videoTitle.trim() != ''">
+			AND cc.video_title LIKE concat('%',#{videoTitle},'%')
+		</if>
+		<if test="goodsName != null and goodsName.trim() != ''">
+			AND g.name LIKE concat('%',#{goodsName},'%')
+		</if>
+
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id
+                order by ccg.id
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -43,13 +66,21 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from cloud_classroom_good
+		LEFT JOIN nideshop_goods ON nideshop_goods.id = cloud_classroom_good.goods_id
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND video_id LIKE concat('%',#{name},'%')
-        </if>
+		<if test="goodsName != null and goodsName.trim() != ''">
+			AND nideshop_goods.name LIKE concat('%',#{goodsName},'%')
+		</if>
+		<if test="goodsId != null">
+			AND cloud_classroom_good.goods_id = #{goodsId}
+		</if>
+		<if test="videoId != null">
+			AND cloud_classroom_good.video_id = #{videoId}
+		</if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.CloudClassroomGoodEntity">
+	<insert id="save" parameterType="com.platform.entity.CloudClassroomGoodEntity" useGeneratedKeys="true"
+			keyProperty="id">
 		insert into cloud_classroom_good(
 			`id`,
 			`video_id`,

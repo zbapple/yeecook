@@ -54,7 +54,7 @@ public interface MenuPlanService {
      * 根据主键更新实体
      * @return 更新条数
      */
-    int update(Integer id);
+    int update(MenuPlanEntity menuPlan);
 
     /**
      * 根据主键删除
@@ -76,7 +76,7 @@ public interface MenuPlanService {
      *
      * @Param
      **/
-     void updateinfo(MenuPlanEntity menuPlan);
+     int updateInfo(Integer id);
 
 
 }

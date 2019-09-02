@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:34:57
  */
+@Data
 public class CloudClassroomGoodEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,9 +22,14 @@ public class CloudClassroomGoodEntity implements Serializable {
     private Integer id;
     //课件id
     private Integer videoId;
+    //视频标题
+    private String videoTitle;
     //商品id
     private Integer goodsId;
-
+    //商品名
+    private String goodsName;
+    //主图片
+    private String primaryPicUrl;
     /**
      * 设置：
      */

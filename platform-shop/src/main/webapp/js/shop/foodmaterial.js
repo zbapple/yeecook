@@ -4,13 +4,14 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '食材名', name: 'foodMaterialName', index: 'food_material_name', width: 80},
-			// {label: '食材图片', name: 'foodMaterialPic', index: 'food_material_pic', width: 80,
-            //     formatter: function (value) {
-            //         return transImg(value);}},
+            {label: '食材类型', name: 'typeName', index: 'food_type_id', width: 80},
+			{label: '食材图片', name: 'foodMaterialPic', index: 'food_material_pic', width: 80,
+                formatter: function (value) {
+                    return transImg(value);}},
 			{label: '食材描述', name: 'foodMaterialDescribe', index: 'food_material_describe', width: 80},
-            // {label: '食材单位', name: 'foodUnit', index: 'food_unit', width: 80},
-			{label: '食材卡路里', name: 'foodMaterialCalories', index: 'food_material_calories', width: 80}]
-			// {label: '食材类型', name: 'foodTypeId', index: 'food_type_id', width: 80}]
+			{label: '食材卡路里', name: 'foodMaterialCalories', index: 'food_material_calories', width: 80},
+            {label: '食材单位', name: 'foodUnit', index: 'food_unit', width: 80},
+			]
     });
 });
 
@@ -27,7 +28,8 @@ let vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        foodType:[],
 	},
 	methods: {
 		query: function () {
@@ -102,6 +104,15 @@ let vm = new Vue({
                 }
             });
 		},
+        getType :function(){
+		    Ajax.request({
+                url:"../foodtype/list",
+                async: true,
+                successCallback:function(r){
+                    vm.foodType = r.list;
+                }
+            });
+        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');

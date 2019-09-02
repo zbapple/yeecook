@@ -34,7 +34,7 @@ public interface DishesService {
     /**
      * 菜品类型查询
      */
-    List<DishesEntity> querylisttype(Map<String,Object> map);
+    List<DishesEntity> queryListType(Map<String,Object> map);
     /**
      * 分页统计总数
      *

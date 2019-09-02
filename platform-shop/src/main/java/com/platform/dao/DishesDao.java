@@ -15,5 +15,5 @@ Dao
  */
 public interface DishesDao extends BaseDao<DishesEntity> {
     //菜品类型
-    List<DishesEntity> querylisttype(Map<String,Object> map);
+    List<DishesEntity> queryListType(Map<String,Object> map);
 }

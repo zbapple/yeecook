@@ -1,18 +1,23 @@
 $(function () {
+    let videoId = getQueryString("videoId");
+    let url = '../usercomments/list';
+    if (videoId) {
+        url += '?videoId=' + videoId;
+    }
     $("#jqGrid").Grid({
-        url: '../usercomments/list',
+        url: url,
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '用户名称', name: 'nickname', index: 'nickname', width: 80},
 			{label: '用户评论', name: 'userComment', index: 'user_comment', width: 80},
-			{label: '课件id', name: 'videoId', index: 'video_id', width: 80},
+			{label: '视频名称', name: 'videoTitle', index: 'video_id', width: 80},
 			{label: '评论分数', name: 'commentsScore', index: 'comments_score', width: 80},
 			{label: '评论时间', name: 'commentsTime', index: 'comments_time', width: 80,
 				 formatter: function (value) {
                     return transDate(value).substring(0, 10);
                 }},
-			{label: '回复类型 0是 1否', name: 'replyType', index: 'reply_type', width: 80},
-			{label: '回复id', name: 'replyId', index: 'reply_id', width: 80}]
+			{label: '回复类型 0是 1否', name: 'replyType', index: 'reply_type', width: 80,hidden: true},
+			{label: '回复id', name: 'replyId', index: 'reply_id', width: 80,hidden: true}]
     });
     vm.getUserNames();
 });
@@ -42,6 +47,13 @@ let vm = new Vue({
 			vm.title = "新增";
 			vm.userComments = {};
 		},
+        reply:function(rowId){
+            // openWindow({
+            //     type: 2,
+            //     title: '关联商品',
+            //     content: '../shop.html?Id=' + rowId
+            // })
+        },
 		update: function (event) {
             let id = getSelectedRow("#jqGrid");
 			if (id == null) {

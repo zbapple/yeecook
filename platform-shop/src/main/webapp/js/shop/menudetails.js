@@ -1,9 +1,14 @@
 $(function () {
+    let userNutritionMenuId = getQueryString("userNutritionMenuId");
+    let url='../menudetails/list';
+    if (userNutritionMenuId) {
+        url += '?userNutritionMenuId=' + userNutritionMenuId;
+    }
     $("#jqGrid").Grid({
-        url: '../menudetails/list',
+        url: url,
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '餐单id', name: 'userNutritionMenuId', index: 'user_nutrition_menu_id', width: 80},
+            {label: '餐单id', name: 'userNutritionMenuId', index: 'user_nutrition_menu_id', width: 80,hidden: true},
             {
                 label: '餐单类型', name: 'menuType', index: 'menu_type', width: 80, formatter: function (value) {
                     if (value == '0') {
@@ -22,13 +27,15 @@ $(function () {
                     return '-';
                 }
             },
-            {label: '餐品id', name: 'dishesId', index: 'dishes_id', width: 80},
+            {label: '餐品id', name: 'dishesId', index: 'dishes_id', width: 80,hidden: true},
             {label: '餐品名', name: 'dishesName', index: 'dishes_name', width: 80},
-            {label: '叶子节点', name: 'leafNode', index: 'leaf_node', width: 80},
-            {label: '父类id', name: 'fatherId', index: 'father_id', width: 80},
+            {label: '叶子节点', name: 'leafNode', index: 'leaf_node', width: 80,hidden: true},
+            {label: '父类id', name: 'fatherId', index: 'father_id', width: 80,
+                hidden: true},
             {label: '用餐时间', name: 'mealTime', index: 'meal_time', width: 80},
             {label: '餐单日期', name: 'menuDate', index: 'menu_date', width: 80}]
     });
+    $('#jqGrid').css("textAlign","center");
 });
 
 let vm = new Vue({

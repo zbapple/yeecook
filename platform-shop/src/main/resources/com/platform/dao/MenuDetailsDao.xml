@@ -80,12 +80,18 @@
         <if test="name != null and name.trim() != ''">
             AND b.menu_name LIKE concat('%',#{name},'%')
         </if>
+        <if test="userNutritionMenuId != null">
+            AND b.id =#{userNutritionMenuId}
+        </if>
+        <if test="userNutritionMenuId != null">
+            AND a.user_nutrition_menu_id = #{userNutritionMenuId}
+        </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by id
+                order by a.id
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -124,6 +130,12 @@
         WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND b.menu_name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="userNutritionMenuId != null">
+            AND b.id =#{userNutritionMenuId}
+        </if>
+        <if test="userNutritionMenuId != null">
+            AND a.user_nutrition_menu_id = #{userNutritionMenuId}
         </if>
     </select>
 

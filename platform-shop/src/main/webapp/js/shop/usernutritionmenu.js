@@ -32,10 +32,16 @@ $(function () {
                         '<span class="label label-danger">未签约</span>' :
                         '<span class="label label-success">已签约</span>';
                 }
-            }
+            },
+            {  label:'查看',name:'check', width: 80,index:'check',sortable:false, formatter: function(value,col,row){
+                    return  '<button  style="width: 40px;line-height: 30px" onclick="vm.getDetails('+  row.id  +')">详情</button>'
+
+                }
+            },
         ]
     });
     vm.getUserNames();
+    $('#jqGrid').css("textAlign","center");
 });
 
 let vm = new Vue({
@@ -116,6 +122,13 @@ let vm = new Vue({
                 }
             });
 		},
+        getDetails:function(rowId){
+            openWindow({
+                type: 2,
+                title: '餐单详情',
+                content: '../shop/menudetails.html?userNutritionMenuId=' + rowId
+            })
+        },
         /**
          * 获取用户nickname别名
          */

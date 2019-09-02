@@ -25,6 +25,7 @@ let vm = new Vue({
         showList: true,
         title: null,
 		dishes: {},
+        listtype:{},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
@@ -119,16 +120,6 @@ let vm = new Vue({
                 }
             });
 		},
-        getcategory: function(){
-            Ajax.request({
-                url: "../dishes/querytype",
-                async: true,
-                successCallback: function (r) {
-                    vm.category = r.list;
-                    console.log(vm.category)
-                }
-            });
-        },
 		reload: function (event) {
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');

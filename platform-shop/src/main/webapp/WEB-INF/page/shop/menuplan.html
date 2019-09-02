@@ -64,18 +64,22 @@
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
-                    <i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>
-                        <i-option v-for="item in CateringServiceOrgNames"
-                                  :value="item.name"
-                                  :key="item.name">{{item.name}}
-                        </i-option>
-                    </i-select>
+                    <!--<i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>-->
+                        <!--<i-option v-for="item in CateringServiceOrgNames"-->
+                                  <!--:value="item.name"-->
+                                  <!--:key="item.name">{{item.name}}-->
+                        <!--</i-option>-->
+                        <!--<i-option value="1" selected>-->
+                            <!--{{menumapsysdept.name}}-->
+                        <!--</i-option>-->
+                    <!--</i-select>-->
+                    <span>{{dept.name}}</span>
                 </i-col>
                 <i-col span="3">
                     <i-select v-model="q.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
-                        <i-option v-for="items in NutritionMenuTypes"
-                                  :value="items.nutritionMenuType"
-                                  :key="items.nutritionMenuType">{{items.nutritionMenuType}}
+                        <i-option v-for="items in nutritionMenuTypelist"
+                                  :value="items"
+                                  :key="items">{{items}}
                         </i-option>
                     </i-select>
                 </i-col>
@@ -90,7 +94,7 @@
             </div>
             <div class="button-group" style="float: right;margin-right: 25px ">
                 #if($shiro.hasPermission("menuplan:save"))
-                <i-button type="info" @click="add" style="font-size: 13px"><i class="fa fa-plus"></i>新增项目
+                <i-button type="info" @click="add" style="font-size: 13dpx"><i class="fa fa-plus"></i>新增项目
                 </i-button>
                 #end
                 #if($shiro.hasPermission("menuplan:update"))
@@ -115,9 +119,9 @@
             <p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span
                     v-if="servermenuPlan.nickName">{{servermenuPlan.nickName}}</span><span v-else>待选择</span></p>
         </div>
-        <div style="width: 50px; height:50px;float: right;">
+        <div style="width: 84px; height:81px;float: right;">
             <div class="upload-list" v-for="item in uploadList" style="width: 84px;height: 81px">
-                <template v-if="item.status == 'finished'">
+                <template v-if="item.status === 'finished'">
                     <img :src="item.menuCoverPic"/>
                     <div class="upload-list-cover">
                         <Icon type="ios-eye-outline" @click.native="handleView(item.menuCoverPic)"></Icon>
@@ -125,7 +129,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    <Progress v-if="item.showProgress" percent="item.percentage" hide-info></Progress>
+                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
                 </template>
             </div>
             <Upload
@@ -141,7 +145,7 @@
                     multiple
                     type="drag"
                     action="../sys/oss/upload"
-                    style="display: inline-block;width: 84px;" v-show="showcamera" >
+                    style="display: inline-block;width: 84px;" v-show="showcamera">
                 <div style="width: 84px;height:81px;line-height: 84px;">
                     <Icon type="camera" size="20"></Icon>
                 </div>
@@ -152,13 +156,13 @@
         </div>
         <i-form ref="formValidate" :model="menuPlan" :rules="ruleValidate" :label-width="80">
             <Form-item label="机构名称" prop="name" style="width: 300px;display: inline-block;">
-                <i-select v-model="servermenuPlan.cateringServiceOrgName"  filterable placeholder="月子机构" clearable=true >
-                    <i-option v-for="item in Caterings"
-                              :value="item.name"
-                              :key="item.name">{{item.name}}
-                    </i-option>
-                </i-select>
-                <!--<i-input v-model="servermenuPlan.cateringServiceOrgName" v-else  readonly="readonly"/>-->
+                <!--<i-select v-model="servermenuPlan.cateringServiceOrgName"  filterable placeholder="月子机构" clearable=true >-->
+                    <!--<i-option v-for="item in Caterings"-->
+                              <!--:value="item.name"-->
+                              <!--:key="item.name">{{item.name}}-->
+                    <!--</i-option>-->
+                <!--</i-select>-->
+                <i-input v-model="servermenuPlan.cateringServiceOrgName"  readonly="readonly"/>
             </Form-item>
             <Form-item label="计划类型" prop="nutritionMenuType" style="width: 300px;display: inline-block;">
                 <i-select v-model="servermenuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
@@ -170,9 +174,9 @@
                     </i-option>
                 </i-select>
             </Form-item>
-            <From-item style="margin-left: 110px">
-                <i-button type="info"  @click="addfoods"><i class="fa fa-add" style=""></i>添加餐饮计划</i-button>
-            </From-item>
+            <!--<From-item style="margin-left: 110px">-->
+                <!--<i-button type="info"  @click="addfoods"><i class="fa fa-add" style=""></i>添加餐饮计划</i-button>-->
+            <!--</From-item>-->
             <Form-item label="用户名称" prop="nickname" style="width: 300px;">
                 <i-select v-model="servermenuPlan.nickName" filterable placeholder="用户名称"  clearable=true>
                     <i-option v-for="item in UserNames"
@@ -182,8 +186,8 @@
                 </i-select>
                 <!--<i-input v-model="servermenuPlan.nickName"  v-else  readonly="readonly"/>-->
             </Form-item>
-            <Form-item label="食谱名称" prop="menuName">
-                <i-input v-model="servermenuPlan.menuName" placeholder="食谱名称" style="width: 300px"/>
+            <Form-item label="食谱名称" prop="menuName" style="width: 300px">
+                <i-input v-model="servermenuPlan.menuName" placeholder="食谱名称"/>
             </Form-item>
             <Form-item label="疗养阶段" prop="serviceStage" style="width: 268px;display: inline-block ">
                 <i-select v-model="servermenuPlan.serviceStage" filterable placeholder="疗养阶段" clearable=true>
@@ -208,18 +212,23 @@
             <Form-item label="周期" prop="inspectionCycle" style="width: 268px; display: inline-block">
                 <i-input v-model="servermenuPlan.inspectionCycle" placeholder="周期"/>
             </Form-item>
+            <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 500px;">
+                <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="4" placeholder="营养原理"/>
+            </Form-item>
+        </i-form>
+        <div style="padding:0 20px 0;border-bottom:1px solid gainsboro;"> </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">早餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlist">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select  v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood($event,i)" :placeholder="fooditem.dishesName">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.label" :value="v.label" >
-                                    {{v.label}}
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
+                                      @on-change="selectfood($event,i)">
+                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
+                                    {{v.dishesName}}
                                 </i-option>
                             </i-select>
                         </Form-item>
@@ -241,14 +250,14 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlistadd">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
                             <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood1($event,i)"  :placeholder="fooditem.dishesName">
+                                      @on-change="selectfood1($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
                                 </i-option>
@@ -269,14 +278,14 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">午餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlist1">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist1">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
                             <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood2($event,i)" :placeholder="fooditem.dishesName">
+                                      @on-change="selectfood2($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
                                 </i-option>
@@ -297,14 +306,14 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlistadd1">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd1">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName"  clearable=true label-in-value=true
-                                      @on-change="selectfood3($event,i)" :placeholder="fooditem.dishesName" >
+                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
+                                      @on-change="selectfood3($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
                                 </i-option>
@@ -325,14 +334,14 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">晚餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlist2">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist2">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
                             <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood4($event,i)" :placeholder="fooditem.dishesName">
+                                      @on-change="selectfood4($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
                                 </i-option>
@@ -353,14 +362,14 @@
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
-                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in servermenuPlan.foodlistadd2">
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd2">
                     <div style="width:50px;height: 50px;float:left;margin-left:80px;">
                         <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
                             <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood5($event,i)" :placeholder="fooditem.dishesName">
+                                      @on-change="selectfood5($event,i)">
                                 <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
                                     {{v.dishesName}}
                                 </i-option>
@@ -380,7 +389,7 @@
                 </div>
             </div>
             <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 436px;">
-                <i-input type="textarea" :rows="6" :placeholder="servermenuPlan.nutritionPrinciple"/>
+                <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="6" placeholder="营养原理"/>
             </Form-item>
         </i-form>
         <div style="padding-left: 20px; margin-bottom: 30px">
@@ -393,18 +402,18 @@
     <Card v-show="details">
         <p slot="title">{{title}}</p>
         <div class="button-group" style="float: right; ">
-            <i-button type="primary" @click="openStatus" style="font-size: 16px" v-if="menumapuser.menuStatus === 0">
-                审核
-            </i-button>
+            <!--<i-button type="primary" @click="openStatus" style="font-size: 16px" v-if="menumapuser.menuStatus === 0">-->
+                <!--审核-->
+            <!--</i-button>-->
             <i-button type="primary" @click="printDetail(' + row.id + ')" style="font-size: 16px"
-                      v-else="menumapuser.menuStatus === '1'"><i class="fa fa-print"></i>打印
+                      ><i class="fa fa-print"></i>打印
             </i-button>
         </div>
         <div class="cyp-header">
-            <div>状态：<span v-if="menumapuser.menuStatus==0">待审核</span><span v-else>已审核</span></div>
+            <div>状态：<span v-if="menumapuser.menuStatus==0">未签约</span><span v-else>已签约</span></div>
             <div style="padding-top:20px">
                 <Icon type="checkmark-circled" class="cyp-header-span"></Icon>
-                <span class="cyp-header-span">{{menumapsys.username}}</span>
+                <span class="cyp-header-span">{{menumapsysdept.name}}</span>
                 <span class="cyp-header-span">创建了月子餐单</span>
                 <span class="cyp-header-span">{{menumaptype.menuDate}}</span>
             </div>
@@ -451,11 +460,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;float:left;"><img :src="menutp3.dishesCoverPic" style="width:50px;height: 50px;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{dishesName}}</div>-->
-                <!--<div style="float: left;line-height: 50px;">{{dishesCalories}}</div>-->
-                <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
@@ -465,11 +469,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">菜品名字</div>-->
-                <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
-                <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">午餐</h4>
@@ -479,11 +478,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">菜品名字</div>-->
-                <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
-                <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
@@ -493,11 +487,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;"></div>-->
-                <!--<div style="float: left;line-height: 50px;"></div>-->
-                <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">晚餐</h4>
@@ -507,11 +496,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">菜品名字</div>-->
-                <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
-                <!--</div>-->
             </div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px">加餐</h4>
@@ -521,11 +505,6 @@
                     <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
                     <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
                 </div>
-                <!--<div style="overflow: hidden;padding-bottom: 10px;">-->
-                <!--<div style="width:50px;height: 50px;background: red;float:left;"></div>-->
-                <!--<div style="float:left;margin-left:200px;line-height: 50px;width:260px;">菜品名字</div>-->
-                <!--<div style="float: left;line-height: 50px;">300kcal</div>-->
-                <!--</div>-->
             </div>
             <div style="margin-top:40px;overflow: hidden;">
                 <div style="float: left;width:103px;">营养原理</div>

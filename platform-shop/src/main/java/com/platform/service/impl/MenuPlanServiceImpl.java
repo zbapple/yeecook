@@ -1,22 +1,20 @@
 package com.platform.service.impl;
 
 import com.platform.annotation.DataFilter;
-import com.platform.dao.*;
+import com.platform.dao.MenuDetailsDao;
+import com.platform.dao.MenuPlanDao;
+import com.platform.dao.SysDeptDao;
+import com.platform.dao.UserDao;
 import com.platform.entity.*;
-import com.platform.service.MenuDetailsService;
-import com.platform.service.UserNutritionMenuService;
+import com.platform.service.MenuPlanService;
 import com.platform.utils.DateUtils;
 import com.platform.utils.RRException;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
-import com.platform.service.MenuPlanService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 /**
  * 用户膳食计划Service实现类
@@ -52,6 +50,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     @Override
     @DataFilter(deptAlias = "dept_id")
     public List<MenuPlanEntity> queryList(Map<String, Object> map) {
+
         return menuPlanDao.queryList(map);
     }
 
@@ -105,6 +104,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 //        }else{
 //            menuPlan.setNutritionMenuType("月子餐类型B");
 //        }
+
         //餐单封面图
         List<MenuPlanEntity> llist=menuPlan.getMenuCoverPics();
         if (llist !=null &&llist.size()>0){
@@ -113,7 +113,9 @@ public class MenuPlanServiceImpl implements MenuPlanService {
             }
         }
 
-               menuPlanDao.save(menuPlan);
+
+
+                   menuPlanDao.save(menuPlan);
 
 
                //保存餐品详情
@@ -198,15 +200,63 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 
 
     @Override
-    public int update(Integer id) {
-        MenuPlanEntity menuPlan=menuPlanDao.queryObject(id);
-        Integer menustatus=menuPlan.getMenuStatus();
-        if (1 == menustatus){
-            throw new RRException("当前状态已审核");
+    public int update(MenuPlanEntity menuPlan) {
+        if (menuPlan != null) {
+            List<MenuDetailsEntity> zaocan = menuPlan.getFoodlist();
+            List<MenuDetailsEntity> wucan = menuPlan.getFoodlist1();
+            List<MenuDetailsEntity> wancan = menuPlan.getFoodlist2();
+            List<MenuDetailsEntity> zaoadd = menuPlan.getFoodlistadd();
+            List<MenuDetailsEntity> wuadd = menuPlan.getFoodlistadd1();
+            List<MenuDetailsEntity> wanadd = menuPlan.getFoodlistadd2();
+
+            if (null != zaocan && zaocan.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : zaocan) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+                    }
+                }
+            }
+
+            if (null != wucan && wucan.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : wucan) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+                    }
+                }
+            }
+            if (null != wancan && wancan.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : wancan) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+
+                    }
+                }
+            }
+            if (null != zaoadd && zaoadd.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : zaoadd) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+                    }
+                }
+            }
+            if (null != wuadd && wuadd.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : wuadd) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+                    }
+
+                }
+            }
+            if (null != wanadd && wanadd.size() > 0) {
+                for (MenuDetailsEntity menuDetailsEntity : wanadd) {
+                    if (menuDetailsEntity.getDishesName() != null && menuDetailsEntity.getDishesId() != null) {
+                        menuDetailsDao.update(menuDetailsEntity);
+                    }
+                }
+            }
+
         }
-        menuPlan.setMenuStatus(1);
-        menuPlanDao.update(menuPlan);
-        return id;
+        return menuPlanDao.update(menuPlan);
     }
 
     @Override
@@ -220,9 +270,14 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     }
 
     @Override
-    public void updateinfo(MenuPlanEntity menuPlan) {
-
-         menuPlanDao.update(menuPlan);
+    public int updateInfo(Integer id) {
+        MenuPlanEntity menuPlan = menuPlanDao.queryObject(id);
+        Integer menustatus = menuPlan.getMenuStatus();
+        if (1 == menustatus) {
+            throw new RRException("当前状态已审核");
+        }
+        menuPlan.setMenuStatus(1);
+        return menuPlanDao.update(menuPlan);
     }
 
 

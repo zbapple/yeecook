@@ -3,6 +3,7 @@ package com.platform.printer.yly;
 import com.platform.utils.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,6 +15,7 @@ import java.util.UUID;
  * 所有接口调用的地方 ,这里比较简陋
  */
 
+@RequestMapping("LAVApi")
 public class LAVApi {
 
     /**

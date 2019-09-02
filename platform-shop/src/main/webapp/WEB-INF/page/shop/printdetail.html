@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    #parse("sys/header.html")
+    <style>
+        #printdetail{
+            padding:30px;
+        }
+        .list_detail{
+            margin-bottom: 20px;
+        }
+        .list_detail ul{
+            width:100%;
+        }
+        .list_detail li{
+            list-style-type: none;
+            float:left;
+            width:80px;
+            height:30px;
+        }
+        .content_print{
+            margin:0 auto;
+            margin-top:50px;
+            padding:10px;
+            border:1px solid gray;
+            width:340px;
+            height:236px;
+            font-size: 20px;
+            overflow: hidden;
+        }
+        .content_print:empty::before{
+            content: attr(placeholder);
+            font-size: 14px;
+            color: #CCC;
+            /*line-height: 20px;*/
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="printdetail">
+        <div class="list_detail">
+            <ul>
+                <li><i-button type="primary" style="width: 70px;height:25px;line-height: 12px;vertical-align:middle;margin:0px auto;padding:0px;" @click="oncenter">居中</i-button></li>
+                <li><i-button type="primary" style="width: 70px;height:25px;line-height: 12px;vertical-align:middle;margin:0px auto;padding:0px;" @click="onleft">居左</i-button></li>
+                <li><i-button type="primary" style="width: 70px;height:25px;line-height: 12px;vertical-align:middle;margin:0px auto;padding:0px;" @click="onblod">字体加粗</i-button></li>
+                <li><i-button type="primary" style="width: 70px;height:25px;line-height: 12px;vertical-align:middle;margin:0px auto;padding:0px;" @click="onfontD">字体加大</i-button></li>
+                <li><i-button type="primary" style="width: 70px;height:25px;line-height: 12px;vertical-align:middle;margin:0px auto;padding:0px;" @click="onfontX">字体变小</i-button></li>
+                <li style="float: right"><i-button type="primary" style="width: 80px;height:25px;background:#ff9933;border-color:#ff9933 ;line-height: 10px;" @click="onreset">上一步</i-button></li>
+            </ul>
+        </div>
+        <!--<div>
+            <i-input type="textarea" :autosize="{minRows: 14,maxRows: 14}"style="width: 100%;margin-top:20px;" v-model="textdata"></i-input>
+        </div>-->
+        <div id="content" contenteditable="true" class="content_print"></div>
+        <div>
+                <i-button type="primary" style="width: 150px;height:40px;float: right;margin-top:30px;" @click="getdata">确认打印</i-button>
+        </div>
+    </div>
+    <script src="${rc.contextPath}/js/shop/printdetail.js?_${date.systemTime}"></script>
+</body>
+</html>

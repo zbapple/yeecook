@@ -8,6 +8,7 @@
         <result property="nideshopUserId" column="nideshop_user_id"/>
         <result property="userComment" column="user_comment"/>
         <result property="videoId" column="video_id"/>
+		<result property="videoTitle" column="video_title"/>
         <result property="commentsScore" column="comments_score"/>
         <result property="commentsTime" column="comments_time"/>
         <result property="replyType" column="reply_type"/>
@@ -36,15 +37,23 @@
 			b.nickname,
 			a.user_comment,
 			a.video_id,
+		    cc.video_title video_title,
 			a.comments_score,
 			a.comments_time,
 			a.reply_type,
 			a.reply_id
 		from user_comments a
 		LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
+		LEFT JOIN cloud_classroom cc on cc.id=a.video_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND b.nickname LIKE concat('%',#{name},'%')
+		</if>
+		<if test="videoId !=null">
+			AND a.video_id = #{videoId}
+		</if>
+		<if test="nideshopUserId !=null" >
+			AND a.nideshop_user_id = #{nideshopUserId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -66,6 +75,12 @@
         <if test="name != null and name.trim() != ''">
             AND b.nickname LIKE concat('%',#{name},'%')
         </if>
+		<if test="videoId !=null">
+			AND a.video_id = #{videoId}
+		</if>
+		<if test="nideshopUserId !=null" >
+			AND a.nideshop_user_id = #{nideshopUserId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.UserCommentsEntity" useGeneratedKeys="true" keyProperty="id">

@@ -40,6 +40,8 @@ public class MenuPlanController {
     private  UserHealthReportService userHealthReportService;
     @Autowired
     private  SysUserService sysUserService;
+    @Autowired
+    private SysDeptService sysDeptService;
     /**
      * 查看列表
      */
@@ -72,12 +74,17 @@ public class MenuPlanController {
         HashMap menumap=new HashMap();
         //从session获取当前管理员账户
         SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+        Long udeptId=user.getDeptId();
+        SysDeptEntity dept=sysDeptService.queryObject(udeptId);
+        menumap.put("sysdept",dept);
         menumap.put("sysuser",user);
         menumap.put("weight",userHealthReportService.queryWeight(uid));
         menumap.put("infomsg",menuPlanService.queryMenu(uid));
         menumap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
         menumap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
         HashMap map=new HashMap();
+        //Date todays=menuPlan.getMenuDate();
+        //map.put("menuDate",todays);
         map.put("userNutritionMenuId",mid);
         menumap.put("menutype",menuDetailsService.queryListvo(map));
 
@@ -92,8 +99,10 @@ public class MenuPlanController {
     public R info(@PathVariable("id") Integer id) {
        MenuPlanEntity menuPlan=menuPlanService.queryObject(id);
        Integer mid=menuPlan.getId();
+//       Date todays=menuPlan.getMenuDate();
        Map map=new HashMap();
        map.put("userNutritionMenuId",mid);
+//       map.put("menuDate",todays);
        List<MenuDetailsEntity> me=menuDetailsService.queryListvo(map);
        List<MenuDetailsEntity> foodlist=new ArrayList<>();
        List<MenuDetailsEntity> foodlist1=new ArrayList<>();
@@ -105,42 +114,54 @@ public class MenuPlanController {
            switch (menuDetailsEntity.getMenuType()) {
                case "0":
                    MenuDetailsEntity menuDetailsEntity1=new MenuDetailsEntity();
+                   menuDetailsEntity1.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity1.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity1.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity1.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity1.setDishesCalories(menuDetailsEntity.getDishesCalories());
                   foodlist.add(menuDetailsEntity1);
                    break;
                case "1":
                    MenuDetailsEntity menuDetailsEntity2=new MenuDetailsEntity();
+                   menuDetailsEntity2.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity2.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity2.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity2.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity2.setDishesCalories(menuDetailsEntity.getDishesCalories());
                    foodlist1.add(menuDetailsEntity2);
                    break;
                case "2":
                    MenuDetailsEntity menuDetailsEntity3=new MenuDetailsEntity();
+                   menuDetailsEntity3.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity3.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity3.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity3.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity3.setDishesCalories(menuDetailsEntity.getDishesCalories());
                    foodlist2.add(menuDetailsEntity3);
                    break;
                case "3":
                    MenuDetailsEntity menuDetailsEntity4=new MenuDetailsEntity();
+                   menuDetailsEntity4.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity4.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity4.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity4.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity4.setDishesCalories(menuDetailsEntity.getDishesCalories());
                    foodlistadd.add(menuDetailsEntity4);
                    break;
                case "4":
                    MenuDetailsEntity menuDetailsEntity5=new MenuDetailsEntity();
+                   menuDetailsEntity5.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity5.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity5.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity5.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity5.setDishesCalories(menuDetailsEntity.getDishesCalories());
                    foodlistadd1.add(menuDetailsEntity5);
                    break;
                case "5":
                    MenuDetailsEntity menuDetailsEntity6=new MenuDetailsEntity();
+                   menuDetailsEntity6.setDishesId(menuDetailsEntity.getDishesId());
                    menuDetailsEntity6.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                   menuDetailsEntity6.setMenuDate(menuDetailsEntity.getMenuDate());
                    menuDetailsEntity6.setDishesName(menuDetailsEntity.getDishesName());
                    menuDetailsEntity6.setDishesCalories(menuDetailsEntity.getDishesCalories());
                    foodlistadd2.add(menuDetailsEntity6);
@@ -173,8 +194,8 @@ public class MenuPlanController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("menuPlan:update")
-    public R update(@RequestBody Integer id) {
-        menuPlanService.update(id);
+    public R update(@RequestBody MenuPlanEntity menuPlan) {
+        menuPlanService.update(menuPlan);
 
         return R.ok();
     }
@@ -207,9 +228,8 @@ public class MenuPlanController {
     * 更新详情信息
     **/
    @RequestMapping("/updateInfo")
-   @RequiresPermissions("menuPlan:updateInfo")
-   public R updateinfo(@RequestBody MenuPlanEntity menuPlan){
-       menuPlanService.updateinfo(menuPlan);
+   public R updateInfo(@RequestBody Integer id){
+       menuPlanService.updateInfo(id);
        return  R.ok();
    }
 

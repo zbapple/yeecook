@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-06-16 14:19:06
  */
+@Data
 public class UserCommentsEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +36,8 @@ public class UserCommentsEntity implements Serializable {
     private Integer replyType;
     //回复id
     private Integer replyId;
+    //视频标题
+    private String videoTitle;
 
     /**
      * 设置：

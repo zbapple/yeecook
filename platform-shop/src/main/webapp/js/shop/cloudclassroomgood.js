@@ -1,11 +1,22 @@
 $(function () {
+    let videoId = getQueryString("videoId");
+    let url = '../cloudclassroomgood/list';
+    if (videoId) {
+        url += '?videoId=' + videoId;
+    }
     $("#jqGrid").Grid({
-        url: '../cloudclassroomgood/list',
+        url: url,
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '课件id', name: 'videoId', index: 'video_id', width: 80},
-			{label: '商品id', name: 'goodsId', index: 'goods_id', width: 80}]
+			{label: '视频课件', name: 'videoTitle', index: 'video_id', width: 80},
+			{label: '商品', name: 'goodsName', index: 'goods_id', width: 80},
+			{label: '商品图片', name:'primaryPicUrl',index:'goods_id',width:80,
+                formatter: function (value) {
+                    return transImg(value);}
+			}
+		]
     });
+    $('#jqGrid').css("textAlign","center");
 });
 
 let vm = new Vue({
@@ -20,17 +31,47 @@ let vm = new Vue({
 			]
 		},
 		q: {
-		    name: ''
-		}
+            videoTitle: ''
+		},
+        good:[],
+        goods: [],
+        videos:[],
 	},
 	methods: {
 		query: function () {
 			vm.reload();
 		},
+		getVideos:function(){
+            Ajax.request({
+                url: "../cloudclassroom/queryAll/",
+                async: true,
+                successCallback: function (r) {
+                    vm.videos = r.list;
+                }
+            });
+		},
+        getGoods: function () {
+            Ajax.request({
+                url: "../goods/queryAll/",
+                async: true,
+                successCallback: function (r) {
+                    vm.goods = r.list;
+                }
+            });
+        },
+        selectGood:function(val){
+            for(let i=0;i<this.goods.length;i++){
+                if(this.goods[i].id==val){
+                    this.cloudClassroomGood.primaryPicUrl=this.goods[i].primaryPicUrl;
+                }
+            }
+        },
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
 			vm.cloudClassroomGood = {};
+            vm.getGoods();
+            vm.getVideos();
 		},
 		update: function (event) {
             let id = getSelectedRow("#jqGrid");
@@ -40,7 +81,7 @@ let vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
 
-            vm.getInfo(id)
+            vm.getInfo(id);
 		},
 		saveOrUpdate: function (event) {
             let url = vm.cloudClassroomGood.id == null ? "../cloudclassroomgood/save" : "../cloudclassroomgood/update";
@@ -82,6 +123,8 @@ let vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.cloudClassroomGood = r.cloudClassroomGood;
+                    vm.getGoods();
+                    vm.getVideos();
                 }
             });
 		},
@@ -89,14 +132,14 @@ let vm = new Vue({
 			vm.showList = true;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.videoId},
+                postData: {'videoTitle': vm.q.videoTitle},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
 		},
         reloadSearch: function() {
             vm.q = {
-                videoId: ''
+                videoTitle: ''
             }
             vm.reload();
         },
@@ -107,6 +150,29 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
-        }
-	}
+        },
+        //上传组件
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+            });
+        },
+        handleSuccess: function (res, file) {
+            vm.cloudClassroomGood.primaryPicUrl = file.response.url;
+        },
+        eyeImage: function () {
+            var url = vm.cloudClassroomGood.primaryPicUrl;
+            eyeImage(url);
+        },
+	},
+	mounted(){
+        this.getGoods();
+    }
 });

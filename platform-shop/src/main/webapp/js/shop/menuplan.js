@@ -1,5 +1,4 @@
 $(function () {
-    let nutritionMenuType = getQueryString("nutritionMenuType");
     $("#jqGrid").Grid({
         url: '../menuPlan/list',
         colModel: [
@@ -34,8 +33,10 @@ $(function () {
                         '<span class="label label-success">已签约</span>';
                 }
             },
-            {  label:'操作',name:'check', width: 80,index:'check',sortable:false, formatter: function(value,col,row){
-                    return  '<button  style="width: 40px;line-height: 30px" onclick="vm.lookDetail('+  row.id  +')">查看</button>'
+            {  label:'操作',name:'check', width: 120,index:'check',sortable:false, formatter: function(value,col,row){
+                    return  '<button  style="width: 40px;line-height: 30px;border: none;outline:none" onclick="vm.lookDetail('+  row.id  +')">查看</button>'+
+                        '<button style="border: none;outline:none;width: 40px;line-height: 30px;margin-left: 10px" onclick="vm.openStatus(' + row.id +  ')">审核</button>'
+                        +'<button style="border: none;outline:none;width: 40px;line-height: 30px;margin-left: 10px" onclick="vm.add(' + row.id +  ')">完善</button>';
 
                 }
             },
@@ -45,6 +46,7 @@ $(function () {
     vm.getCaterings();
     vm.getNutritionMenuTypes();
     vm.getUserNames();
+    vm.getPrint();
     $('#jqGrid').css("textAlign","center");
 });
 
@@ -58,9 +60,10 @@ let vm = new Vue({
         visible: false,
         imgName: '',
         title: null,
-        nutritionMenuTypelist:['月子餐类型A','月子餐类型B'],
+        nutritionMenuTypelist:['老人餐A','老人餐B','月子餐类型A','月子餐类型B'],
         serviceStagelsit:['第一周疗养阶段','第二周疗养阶段','第三周疗养阶段','第四周疗养阶段'],
         uploadList: [],
+        listType:{},
         servermenuPlan: {
             deptId:'',
             cateringServiceOrgName:'',
@@ -79,7 +82,8 @@ let vm = new Vue({
             foodlist2:[],
             foodlistadd2:[],
             menuCoverPics:{},
-            nutritionPrinciple:''
+            menuCoverPics:'',
+            nutritionPrinciple:'',
         },
         mPlan:[],
         menuPlan: {},
@@ -123,6 +127,8 @@ let vm = new Vue({
         menumaptype:[],
         menumapweight:{},
         menumapsys:{},
+        menumapsysdept:{},
+        dept:{},
         menumapst:'',
         menumapet:'',
         menutp:'',
@@ -206,11 +212,32 @@ let vm = new Vue({
             vm.showfoods = false;
             vm.uploadList = [];
             vm.title = "新增套餐";
+            vm.servermenuPlan ={
+                    deptId:'',
+                    cateringServiceOrgName:'',
+                    nutritionMenuType:'',
+                    nickName:'',
+                    menuName:'',
+                    menuSn:'',
+                    serviceStage:'',
+                    serviceCycleSt:'',
+                    serviceCycleEt:'',
+                    inspectionCycle:'',
+                    foodlist:[],
+                    foodlistadd:[],
+                    foodlist1:[],
+                    foodlistadd1:[],
+                    foodlist2:[],
+                    foodlistadd2:[],
+                    menuCoverPics:{},
+                    menuCoverPic:'',
+                nutritionPrinciple:'',
+            },
             vm.menuPlan = {menuStatus: '0'};
+
         },
         addfoods:function (){
             vm.showfoods = true;
-            vm.adddd();
         },
         /**
          *  查看详情操作
@@ -218,6 +245,7 @@ let vm = new Vue({
         lookDetail: function (rowId) {
             vm.details = true;
             vm.title = "详情"
+            console.log(rowId);
             Ajax.request({
                 url: "../menuPlan/menuinfo/" + rowId,
                 async: true,
@@ -225,6 +253,8 @@ let vm = new Vue({
                     vm.menumap = r.menumap;
                     vm.menumapuser=vm.menumap.infomsg;
                     vm.menumapsys=vm.menumap.sysuser;
+                    vm.menumapsysdept=vm.menumap.sysdept;
+                    console.log(vm.menumap);
                     vm.menumaptype=vm.menumap.menutype;
                     vm.menumapweight=vm.menumap.weight||'';
                     vm.menumapst=vm.menumap.serviceCycleSt;
@@ -288,19 +318,17 @@ let vm = new Vue({
             let id = getSelectedRow("#jqGrid");
             if (id == null) {
                 return;}
-
             vm.showList = false;
-            vm.showfoods = false;
-            vm.details = false;
             vm.title = "修改";
-            vm.uploadList = [];
             vm.getInfo(id);
             vm.getCaterings();
+            vm.getPrint();
+            console.log( vm.getPrint())
 
         },
         saveOrUpdate: function (event) {
             console.log(777888);
-            var url = vm.menuPlan.id == null ? "../menuPlan/save" : "../menuPlan/updateInfo";
+            var url = vm.servermenuPlan.id == null ? "../menuPlan/save" : "../menuPlan/update";
             vm.servermenuPlan.menuCoverPics=vm.uploadList;
             vm.servermenuPlan.foodlist=this.foodlist;
             vm.servermenuPlan.foodlistadd=this.foodlistadd;
@@ -311,7 +339,6 @@ let vm = new Vue({
             Ajax.request({
                 url: url,
                 params: JSON.stringify(vm.servermenuPlan),
-                type: "POST",
                 type: "POST",
                 contentType: "application/json",
                 successCallback: function (r) {
@@ -355,69 +382,12 @@ let vm = new Vue({
             });
         },
         getInfo: function (id) {
-            console.log("5")
             Ajax.request({
                 url: "../menuPlan/info/" + id,
                 async: true,
                 successCallback: function (r) {
-                    console.log(r);
                     vm.servermenuPlan = r.menuPlan;
-                   // vm.servermenuPlan=vm.menuPlan;
-                    console.log(vm.servermenuPlan)
-                    console.log(vm.servermenuPlan.foodlist);
-
-
-                    // vm.foods=vm.mPlan.listmap;
-                    // vm.servermenuPlan.foodlist=
-                    // for (let i=0;i<vm.foods.length;i++) {
-                    //     if (vm.foods[i].menuType == '0'){
-                    //         vm.servermenuPlan.foodlist.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     } else if(vm.foods[i].menuType == '1') {
-                    //         vm.servermenuPlan.foodlist1.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     } else if(vm.foods[i].menuType == '2'){
-                    //         vm.servermenuPlan.foodlist2.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     } else if (vm.foods[i].menuType == '3') {
-                    //         vm.servermenuPlan.foodlistadd.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     }else if (vm.foods[i].menuType == '4') {
-                    //         vm.servermenuPlan.foodlistadd1.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     }else if (vm.foods[i].menuType == '5') {
-                    //         vm.servermenuPlan.foodlistadd2.push({
-                    //             dishesName:vm.foods[i].dishesName,
-                    //             dishesCoverPic:vm.foods[i].dishesCoverPic,
-                    //             dishesCalories:vm.foods[i].dishesCalories,
-                    //             menuDate:vm.foods[i].menuDate
-                    //         });
-                    //     }
-                    // }
-                    // vm.servermenuPlan=vm.mPlan.listmap;
-                    let arry=[];
-                    arry=arry.concat(vm.servermenuPlan.foodlist,vm.servermenuPlan.foodlist1,vm.servermenuPlan.foodlist2,vm.servermenuPlan.foodlistadd,vm.servermenuPlan.foodlistadd1,vm.servermenuPlan.foodlistadd2);
-                    vm.targetKeys3=vm.getTargetKeys1(arry);
+                    console.log( vm.servermenuPlan);
                 }
             });
         },
@@ -426,12 +396,13 @@ let vm = new Vue({
             vm.details = false;
             vm.showfoods =false;
             let page = $("#jqGrid").jqGrid('getGridParam', 'page');
+
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {
                     'name': vm.q.menuName,
                     'nickName': vm.q.nickName,
                     'cateringServiceOrgName': vm.q.cateringServiceOrgName,
-                    'nutritionMenuType': vm.q.nutritionMenuType
+                    'nutritionMenuType': vm.q.nutritionMenuType,
                 },
                 page: page
             }).trigger("reloadGrid");
@@ -451,6 +422,18 @@ let vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        /**
+         * 获取部门名字
+         */
+        getDeptName:function(){
+            Ajax.request({
+                url: "../sys/dept/info",
+                async: true,
+                successCallback: function (r) {
+                    vm.CateringServiceOrgNames = r.list;
+                }
+            });
         },
         /**
          * 获取机构名字
@@ -504,18 +487,56 @@ let vm = new Vue({
             });
         },
         /**
-         *  审核窗口
+         * 获取菜品类型
          */
-        openStatus: function () {
-            var id = getSelectedRow("#jqGrid");
-            openWindow({
-                type: 2,
-                title: '审核',
-                area: ['400px', '300px'],
-                content: '../shop/menuplancheck.html?Id=' + id
-            })
+        getCategory: function(){
+            Ajax.request({
+                url: "../dishes/queryType",
+                async: true,
+                successCallback: function (r) {
+                    vm.category = r.listType;
+                    console.log(vm.category)
+                }
+            });
         },
         /**
+         *  审核窗口
+         */
+        openStatus: function (rowId) {
+            // openWindow({
+            //     type: 2,
+            //     title: '审核',
+            //     area: ['400px', '300px'],
+            //     content: '../shop/menuplancheck.html?Id=' + rowId
+            // })
+            confirm('确定签约是否成功？', function () {
+                Ajax.request({
+                    type: "POST",
+                    url: "../menuPlan/updateInfo",
+                    params: JSON.stringify(rowId),
+                    contentType: "application/json",
+                    type: 'POST',
+                    successCallback: function () {
+                        alert('提交成功', function (index) {
+                            vm.reload();
+                        });
+                    }
+                });
+            });
+        },
+        getPrint:function(){
+            Ajax.request({
+              type:"POST",
+              url:"../printer/prt",
+              contentType:"application/json",
+                successCallback: function () {
+                    alert('提交成功', function (index) {
+                        vm.reload();
+                    });
+                }
+
+            })        },
+          /**
          * 打印
          */
         printDetail: function (rowId) {
@@ -527,14 +548,11 @@ let vm = new Vue({
         },
         adddd:function(){
             let that=this;
-            console.log("zhahzhah");
             Ajax.request({
                 url:'../dishes/queryAll',
                 successCallback: function (r) {
                     console.log(r);
                     that.ddww=r.list;
-                    that.data3=that.getMockData();
-                    that.targetKeys3=that.getTargetKeys1();
                 }
             })
         },
@@ -544,8 +562,6 @@ let vm = new Vue({
         getMockData: function () {
             let mockData=[];
             let list=this.ddww;
-            console.log("222");
-            console.log(this.ddww);
            for (let i = 0; i <= list.length-1; i++) {
                 mockData.push({
                     key: list[i],
@@ -555,19 +571,6 @@ let vm = new Vue({
             }
             return mockData;
         },
-        getMockData1: function () {
-            let mockData1=[];
-            let list1=this.ddww;
-            for (let i = 0; i <= list1.length-1; i++) {
-                mockData1.push({
-                    key: list1[i],
-                    label: list1[i].dishesName,
-                    description: i,
-                });
-            }
-            return mockData1;
-
-        },
         getTargetKeys: function () {
             return this.getMockData()
                 .filter(() => {
@@ -575,20 +578,6 @@ let vm = new Vue({
                 })
                 .map(item => item);
         },
-        getTargetKeys1: function (list) {
-            let mockData1=[];
-            console.log("ww");
-            console.log(list);
-            for (let i = 0; i <= list.length-1; i++) {
-                mockData1.push({
-                    key: list[i],
-                    label: list[i].dishesName,
-                    description: i,
-                });
-            }
-            console.log(mockData1);
-            return mockData1;
-            },
         handleChange3: function (newTargetKeys) {
             this.targetKeys3 = newTargetKeys;
         },
@@ -609,18 +598,18 @@ let vm = new Vue({
         handleRemove(file) {
             // 从 upload 实例删除数据
             const fileList = this.uploadList;
-            this.showcamera=true;
+            // this.showcamera=true;
             this.uploadList.splice(fileList.indexOf(file), 1);
         },
         handleSuccess(res, file) {
             // 因为上传过程为实例，这里模拟添加 url
             file.menuCoverPic = res.url;
             file.name = res.url;
-            vm.uploadList.add(file);
+            vm.uploadList.add(file)
         },
         handleBeforeUpload() {
             const check = this.uploadList.length < 2;
-            this.showcamera=false;
+            // this.showcamera=false;
             if (!check) {
                 this.$Notice.warning({
                     title: '最多只能上传 1 张图片。'
@@ -641,25 +630,16 @@ let vm = new Vue({
                 desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
             });
         },
+        handleSubmit: function (name) {
+            handleSubmitValidate(this, name, function () {
+                vm.saveOrUpdate()
+            });
+        },
         handleReset: function (name) {
             handleResetForm(this, name);
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.menuPlan.menuCoverPic = file.response.url;
-        },
-        handleSuccessListPicUrl: function (res, file) {
-            vm.menuPlan.menuCoverPic = file.response.url;
-        },
-        eyeImagePicUrl: function () {
-            var url = vm.menuPlan.menuCoverPic;
-            eyeImage(url);
-        },
-        eyeImageListPicUrl: function () {
-            var url = vm.menuPlan.menuCoverPic;
-            eyeImage(url);
-        },
-        eyeImage: function (e) {
-            eyeImage($(e.target).attr('src'));
+            vm.servermenuPlan.menuCoverPic = file.response.url;
         },
         /**
          *  添加早餐菜品
@@ -775,24 +755,10 @@ let vm = new Vue({
 
         selectfood:function(event,i){
             let num=event.value;
-            console.log("11"+num);
-            let list=this.targetKeys3;
-            console.log(list)
-            for(let j=0;j<list.length;j++){
-                if(list[j].key.dishesName == num){
-                    console.log(i+num);
-                    this.servermenuPlan.foodlist[i].dishesCalories=list[j].key.dishesCalories;
-                    console.log(this.servermenuPlan.foodlist[i].dishesCalories);
-                    this.servermenuPlan.foodlist[i].dishesCoverPic=list[j].key.dishesCoverPic;
-                    console.log(this.servermenuPlan.foodlist[i].dishesCoverPic);
-                    this.servermenuPlan.foodlist[i].dishesName=list[j].key.dishesName;
-                    console.log(this.servermenuPlan.foodlist[i].dishesName);
-                }
-            };
-            // this.foodlist[i].dishesId=this.targetKeys3[num].id;
-            // this.foodlist[i].dishesCalories=this.targetKeys3[num].dishesCalories;
-            // this.foodlist[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
-            // this.foodlist[i].dishesName=this.targetKeys3[num].dishesName;
+            this.foodlist[i].dishesId=this.targetKeys3[num].id;
+            this.foodlist[i].dishesCalories=this.targetKeys3[num].dishesCalories;
+            this.foodlist[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
+            this.foodlist[i].dishesName=this.targetKeys3[num].dishesName;
         },
         selectfood1:function(event,i){
             let num=event.value;
@@ -830,49 +796,12 @@ let vm = new Vue({
             this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd2[i].dishesName=this.targetKeys3[num].dishesName;
         },
-        layt:function () {
-            alert("ii")
-        }
 
     },
     mounted() {
-
-    }
-});
-function  layt(){
-    vm.reload();
-}
-var vmm = new Vue({
-    el: '#munuplancheck',
-    data: {
-        menuPlan :{menuStatus: '0'},
-        show:false,
-        id:'',
-    },
-    mounted(){
-        let  Id=getQueryString("Id");
-        this.id=Id;
-    },
-    methods: {
-        sumbit:function () {
-            let that=this;
-            Ajax.request({
-                type: "POST",
-                url: "../menuPlan/update",
-                contentType: "application/json",
-                params: JSON.stringify(that.id),
-                successCallback: function(r) {
-                    let index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                    parent.layt();
-                    parent.layer.close(index);
-                }
-            });
-        },
-        close:function(){
-            this.show=false;
-        },
-        affirm:function(event){
-
-        }
+        // this.adddd();
+        this.data3=this.getMockData();
+        this.targetKeys3=this.getTargetKeys();
+        this.uploadList = this.$refs.upload.fileList;
     }
 });

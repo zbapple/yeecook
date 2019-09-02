@@ -44,7 +44,12 @@
     </mvc:annotation-driven>
 
     <tx:annotation-driven/>
-
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/framework/**"/>
+            <ref bean="authorizationInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close">
         <property name="url">
@@ -71,7 +76,7 @@
         </property>
         <property name="connectionInitSqls" value="set names utf8mb4;"/>
     </bean>
-
+    <bean id="authorizationInterceptor" class="com.platform.interceptor.AuthorizationInterceptor"/>
     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
         <property name="slowSqlMillis" value="1000"/>
         <property name="logSlowSql" value="true"/>

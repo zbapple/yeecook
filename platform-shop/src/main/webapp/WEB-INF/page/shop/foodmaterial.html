@@ -68,7 +68,9 @@
                 <i-input v-model="foodMaterial.foodMaterialCalories" placeholder="食材卡路里" style="width: 300px"/>
             </Form-item>
             <Form-item label="食材类型" prop="foodTypeId">
-                <i-input v-model="foodMaterial.foodTypeId" placeholder="食材类型"  style="width: 300px"/>
+                <i-select v-model="foodMaterial.foodTypeId"   filterable style="width: 288px;" clearable=true>
+                <i-option v-for="item in foodType"  :value="item.foodTypeId" :key="item.foodTypeId">{{item.typeName}}</i-option>
+            </i-select>
             </Form-item>
             <Form-item label="食材单位" prop="foodUnit">
                 <i-input v-model="foodMaterial.foodUnit" placeholder="食材单位" style="width: 300px"/>
