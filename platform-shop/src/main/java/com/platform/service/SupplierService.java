@@ -21,7 +21,7 @@ public interface SupplierService {
      * @return 实体
      */
     SupplierEntity queryObject(Long id);
-
+    SupplierEntity queryName(Long deptId);
     /**
      * 分页查询
      *

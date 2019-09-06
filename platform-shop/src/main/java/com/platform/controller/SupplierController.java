@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.platform.annotation.SysLog;
+import com.platform.entity.SysDeptEntity;
+import com.platform.entity.SysUserEntity;
+import com.platform.service.SysDeptService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +34,8 @@ import com.platform.utils.R;
 public class SupplierController {
     @Autowired
     private SupplierService supplierService;
+    @Autowired
+    private SysDeptService sysDeptService;
 
     /**
      * 查看列表
@@ -104,5 +110,22 @@ public class SupplierController {
         List<SupplierEntity> list = supplierService.queryList(params);
 
         return R.ok().put("list", list);
+    }
+
+    /**
+     * 查找供应商
+     **/
+    @RequestMapping("/name")
+    public R queryName(){
+
+        SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+        Long deptId=user.getDeptId();
+        if (deptId==1) {
+            deptId=10l;
+            SupplierEntity supplier = supplierService.queryName(deptId);
+            return R.ok().put("supplier",supplier);
+        }
+        SupplierEntity supplier = supplierService.queryName(deptId);
+        return R.ok().put("supplier",supplier);
     }
 }

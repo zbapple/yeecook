@@ -97,11 +97,12 @@
                         <i-input v-model="goods.goodsSn" placeholder="商品序列号"  style="width: 300px"/>
                     </Form-item>
                     <Form-item label="供应商" prop="supplierId" style="width: 300px">
-                    <i-select v-model="goods.supplierId" filterable  placeholder="供应商"    clearable=true >
+                    <i-select v-model="goods.supplierId" filterable  placeholder="供应商"  clearable=true v-if="user.deptId==10">
                         <i-option v-for="supplier in suppliers" :value="supplier.id"
-                                  :key="supplier.id">{{supplier.companyName}}
+                                  :key="supplier.id" > {{supplier.companyName}}
                         </i-option>
                     </i-select>
+                      <i-input  v-else  readonly="readonly" v-model="user.companyName" />
                     </Form-item>
                     <Form-item label="名称" prop="name" >
                         <i-input v-model="goods.name" placeholder="名称"  style="width: 300px"/>

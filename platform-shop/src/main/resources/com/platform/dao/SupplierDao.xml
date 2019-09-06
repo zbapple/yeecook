@@ -30,6 +30,24 @@
 			`address`
 		from nideshop_supplier
 		where id = #{id}
+
+	</select>
+
+	<select id="queryName" resultType="com.platform.entity.SupplierEntity">
+		select
+			`id`,
+			`company_name`,
+			`opening_bank`,
+			`bank_account`,
+			`beneficiary_name`,
+			`telephone`,
+			`mobile`,
+			`dept_id`,
+			`dept_name`,
+			`address`
+		from nideshop_supplier
+		where dept_id = #{deptId}
+
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.SupplierEntity">
@@ -53,6 +71,9 @@
 		</if>
 		<if test="deptName != null and deptName.trim() != ''">
 			AND `dept_name` LIKE concat('%',#{deptName},'%')
+		</if>
+		<if test="deptId != null">
+			AND `dept_id` =#{deptId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

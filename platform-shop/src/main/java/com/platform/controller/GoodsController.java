@@ -1,14 +1,21 @@
 package com.platform.controller;
 
 import com.platform.entity.GoodsEntity;
+import com.platform.entity.SupplierEntity;
+import com.platform.entity.SysDeptEntity;
+import com.platform.entity.SysUserEntity;
 import com.platform.service.GoodsService;
+import com.platform.service.SupplierService;
+import com.platform.service.SysDeptService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +31,8 @@ import java.util.Map;
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
-
+    @Autowired
+    private SupplierService supplierService;
     /**
      * 查看列表
      */
@@ -49,6 +57,7 @@ public class GoodsController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("goods:info")
     public R info(@PathVariable("id") Integer id) {
+
         GoodsEntity goods = goodsService.queryObject(id);
 
         return R.ok().put("goods", goods);

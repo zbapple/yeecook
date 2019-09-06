@@ -2,6 +2,7 @@ package com.platform.controller;
 
 import com.platform.annotation.SysLog;
 import com.platform.entity.SysUserEntity;
+import com.platform.service.SysDeptService;
 import com.platform.service.SysUserRoleService;
 import com.platform.service.SysUserService;
 import com.platform.utils.*;
@@ -33,7 +34,6 @@ public class SysUserController extends AbstractController {
     private SysUserService sysUserService;
     @Autowired
     private SysUserRoleService sysUserRoleService;
-
     /**
      * 所有用户列表
      */

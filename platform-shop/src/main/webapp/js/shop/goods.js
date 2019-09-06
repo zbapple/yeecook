@@ -71,7 +71,7 @@ var vm = new Vue({
         uploadList: [],
         imgName: '',
         visible: false,
-
+        user:{},
         goods: {
             primaryPicUrl: '',
             listPicUrl: '',
@@ -87,9 +87,9 @@ var vm = new Vue({
             name: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
             ],
-            supplierId: [
-                {required: true, message: '供应商不能为空', trigger: 'blur'}
-            ]
+            // supplierId: [
+            //     {required: true, message: '供应商不能为空', trigger: 'blur'}
+            // ]
         },
         q: {
             name: '',
@@ -177,6 +177,16 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.macros = r.list;
+                }
+            });
+        },
+        getUser: function () {
+            Ajax.request({
+                url: "../sys/user/info",
+                async: true,
+                successCallback: function (r) {
+                    vm.user = r.user;
+                    console.log(vm.user);
                 }
             });
         },
@@ -305,8 +315,19 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.goods = r.goods;
+                    console.log(r);
                     $('#goodsDesc').editable('setHTML', vm.goods.goodsDesc);
                     vm.getCategory();
+                }
+            });
+        },
+        getSupplier: function (){
+            Ajax.request({
+                url: "../supplier/name/",
+                async: true,
+                successCallback: function (r) {
+                    vm.user = r.supplier;
+                    console.log(vm.user);
                 }
             });
         },
@@ -420,5 +441,6 @@ var vm = new Vue({
     },
     mounted() {
         this.uploadList = this.$refs.upload.fileList;
+        this.getSupplier();
     }
 });

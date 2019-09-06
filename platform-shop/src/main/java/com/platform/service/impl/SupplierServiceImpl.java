@@ -32,6 +32,11 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    public SupplierEntity queryName(Long deptId) {
+        return supplierDao.queryName(deptId);
+    }
+
+    @Override
     @DataFilter(deptAlias = "dept_id")
     public List<SupplierEntity> queryList(Map<String, Object> map) {
 

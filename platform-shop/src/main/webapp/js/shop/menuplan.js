@@ -46,7 +46,6 @@ $(function () {
     vm.getCaterings();
     vm.getNutritionMenuTypes();
     vm.getUserNames();
-    vm.getPrint();
     $('#jqGrid').css("textAlign","center");
 });
 
@@ -119,6 +118,7 @@ let vm = new Vue({
             cateringServiceOrgName:'',
             nutritionMenuType:''
         },
+        user:{},
         NutritionMenuTypes:[],
         CateringServiceOrgNames:[],
         Caterings:[],
@@ -322,8 +322,6 @@ let vm = new Vue({
             vm.title = "修改";
             vm.getInfo(id);
             vm.getCaterings();
-            vm.getPrint();
-            console.log( vm.getPrint())
 
         },
         saveOrUpdate: function (event) {
@@ -440,7 +438,7 @@ let vm = new Vue({
          */
         getCateringServiceOrgNames: function () {
             Ajax.request({
-                url: "../sys/dept/list",
+                url: "../sys/dept/list/12",
                 async: true,
                 successCallback: function (r) {
                     vm.CateringServiceOrgNames = r.list;
@@ -453,7 +451,7 @@ let vm = new Vue({
          */
         getCaterings: function (){
             Ajax.request({
-                url:"../sys/dept/list",
+                url:"../sys/dept/list/12",
                 async: true,
                 successCallback: function(r) {
                     vm.Caterings = r.list;
@@ -470,6 +468,19 @@ let vm = new Vue({
                 successCallback: function (r) {
                     vm.UserNames = r.list;
 
+                }
+            });
+        },
+        /**
+         * 获取session用户
+         */
+        getUser: function () {
+            Ajax.request({
+                url: "../sys/user/info",
+                async: true,
+                successCallback: function (r) {
+                    vm.user = r.user;
+                    console.log(vm.user);
                 }
             });
         },
@@ -524,18 +535,6 @@ let vm = new Vue({
                 });
             });
         },
-        getPrint:function(){
-            Ajax.request({
-              type:"POST",
-              url:"../printer/prt",
-              contentType:"application/json",
-                successCallback: function () {
-                    alert('提交成功', function (index) {
-                        vm.reload();
-                    });
-                }
-
-            })        },
           /**
          * 打印
          */
@@ -796,12 +795,17 @@ let vm = new Vue({
             this.foodlistadd2[i].dishesCoverPic=this.targetKeys3[num].dishesCoverPic;
             this.foodlistadd2[i].dishesName=this.targetKeys3[num].dishesName;
         },
+        created:function(){
+            this.getUser();
+        }
 
     },
+
     mounted() {
         // this.adddd();
         this.data3=this.getMockData();
         this.targetKeys3=this.getTargetKeys();
         this.uploadList = this.$refs.upload.fileList;
+        this.getUser();
     }
 });
