@@ -32,6 +32,8 @@ public class UserNutritionMenuVo implements Serializable {
     private Date serviceCycleSt;
     //服务周期结束时间
     private Date servcieCycleEt;
+    //商家id
+    private Integer stroeid;
     /**
      * 设置：餐单id
      */
@@ -146,5 +148,13 @@ public class UserNutritionMenuVo implements Serializable {
      */
     public Date getServcieCycleEt() {
         return servcieCycleEt;
+    }
+
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
     }
 }

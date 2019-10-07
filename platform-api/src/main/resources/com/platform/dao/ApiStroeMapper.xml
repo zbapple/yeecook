@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiStroeMapper">
+
+    <resultMap type="com.platform.entity.StroeEntity" id="stroeMap">
+        <result property="id" column="id"/>
+        <result property="storeName" column="store_name"/>
+        <result property="storeType" column="store_type"/>
+        <result property="storePicrue" column="store_picrue"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="distrct" column="distrct"/>
+        <result property="address" column="address"/>
+        <result property="departmentid" column="departmentid"/>
+        <result property="supplierid" column="supplierid"/>
+		<result property="stroephone" column="stroe_phone"/>
+		<result property="longitude" column="Longitude"/>
+		<result property="latitude" column="Latitude"/>
+		<result property="sendingfee" column="sendingfee"/>
+		<result property="deliveryfee" column="deliveryfee"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.StroeEntity">
+		select
+			`id`,
+			`store_name`,
+			`store_type`,
+			`store_picrue`,
+			`country`,
+			`province`,
+			`city`,
+			`distrct`,
+			`address`,
+			`departmentid`,
+			`supplierid`,
+			stroe_phone,
+			deliveryfee,
+			sendingfee
+		from stroe
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.StroeEntity">
+		select
+    		*
+		from stroe
+		WHERE 1=1
+		<if test="minLng != null ">
+			AND Longitude &gt; #{minLng}
+		</if>
+		<if test="maxLng != null ">
+			AND Longitude &lt;  #{maxLng}
+		</if>
+		<if test="minLat != null ">
+			AND Latitude &gt; #{minLat}
+		</if>
+		<if test="maxLat != null ">
+			AND Latitude &lt; #{maxLat}
+		</if>
+		<if test="storeType != null ">
+			AND store_type=#{storeType}
+		</if>
+		<if test="stroeid !=null">
+			AND id=#{stroeid}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id asc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from stroe
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.StroeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into stroe(
+			`store_name`,
+			`store_type`,
+			`store_picrue`,
+			`country`,
+			`province`,
+			`city`,
+			`distrct`,
+			`address`,
+			`departmentid`,
+			`supplierid`,
+			stroe_phone,
+			deliveryfee,
+			sendingfee
+			)
+		values(
+			#{storeName},
+			#{storeType},
+			#{storePicrue},
+			#{country},
+			#{province},
+			#{city},
+			#{distrct},
+			#{address},
+			#{departmentid},
+			#{supplierid}),
+			#{stroephone}
+			#{deliveryfee},
+			#{sendingfee}
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.StroeEntity">
+		update stroe 
+		<set>
+			<if test="storeName != null">`store_name` = #{storeName}, </if>
+			<if test="storeType != null">`store_type` = #{storeType}, </if>
+			<if test="storePicrue != null">`store_picrue` = #{storePicrue}, </if>
+			<if test="country != null">`country` = #{country}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="distrct != null">`distrct` = #{distrct}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="departmentid != null">`departmentid` = #{departmentid}, </if>
+			<if test="supplierid != null">`supplierid` = #{supplierid},</if>
+			<if test="stroephone !=null">'stroe_phone'=#{stroephone}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from stroe where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from stroe where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

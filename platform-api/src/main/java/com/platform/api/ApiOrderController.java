@@ -165,7 +165,20 @@ public class ApiOrderController extends ApiBaseAction {
         }
         return toResponsFail("提交失败");
     }
-
+    @ApiOperation(value = "餐单订单提交")
+    @PostMapping("Mealsubmit")
+    public Object Mealsubmit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId) {
+        Map resultObj = null;
+        try {
+            resultObj = orderService.mealsubmit(getJsonRequest(), loginUser,couponId,type,postscript,addressId);
+            if (null != resultObj) {
+                return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return toResponsFail("提交失败");
+    }
     /**
      * 获取订单列表
      */

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiMealMapper">
+
+    <resultMap type="com.platform.entity.MealEntity" id="mealMap">
+        <result property="id" column="id"/>
+        <result property="mealName" column="meal_name"/>
+        <result property="mealPriue" column="meal_priue"/>
+        <result property="nutritionExplain" column="nutrition_explain"/>
+        <result property="stroeid" column="stroeid"/>
+        <result property="mealType" column="meal_type"/>
+        <result property="mealPice" column="meal_pice"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.MealEntity">
+		select
+			`id`,
+			`meal_name`,
+			`meal_priue`,
+			`nutrition_explain`,
+			`stroeid`,
+			`meal_type`,
+			`meal_pice`
+		from meal
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.MealEntity">
+		select
+    		`id`,
+    		`meal_name`,
+    		`meal_priue`,
+    		`nutrition_explain`,
+    		`stroeid`,
+    		`meal_type`,
+    		`meal_pice`
+		from meal
+		WHERE 1=1
+		<if test="stroeid != null ">
+			AND stroeid=#{stroeid}
+		</if>
+		<if test="mealid !=null">
+			and  meal_type=#{mealid}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from meal
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.MealEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into meal(
+			`meal_name`,
+			`meal_priue`,
+			`nutrition_explain`,
+			`stroeid`,
+			`meal_type`,
+			`meal_pice`)
+		values(
+			#{mealName},
+			#{mealPriue},
+			#{nutritionExplain},
+			#{stroeid},
+			#{mealType},
+			#{mealPice})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.MealEntity">
+		update meal 
+		<set>
+			<if test="mealName != null">`meal_name` = #{mealName}, </if>
+			<if test="mealPriue != null">`meal_priue` = #{mealPriue}, </if>
+			<if test="nutritionExplain != null">`nutrition_explain` = #{nutritionExplain}, </if>
+			<if test="stroeid != null">`stroeid` = #{stroeid}, </if>
+			<if test="mealType != null">`meal_type` = #{mealType}, </if>
+			<if test="mealPice != null">`meal_pice` = #{mealPice}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from meal where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from meal where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

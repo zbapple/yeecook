@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiMealDisheMapper">
+
+    <resultMap type="com.platform.entity.MealDisheEntity" id="mealDisheMap">
+        <result property="id" column="id"/>
+        <result property="mealid" column="mealid"/>
+        <result property="disheid" column="disheid"/>
+		<result property="dishesname" column="dishes_name"/>
+		<result property="mealname" column="meal_name"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.MealDisheEntity">
+		select
+			`id`,
+			`mealid`,
+			`disheid`
+		from meal_dishe
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.MealDisheEntity">
+		select
+			b.dishes_name,
+			a.mealid
+		FROM meal_dishe a
+		left JOIN dishes b on b.id=a.disheid
+		left join meal c on c.id=a.mealid
+		WHERE 1=1
+		<if test="mealid != null ">
+			AND mealid=#{mealid}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from meal_dishe
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.MealDisheEntity">
+		insert into meal_dishe(
+			`id`,
+			`mealid`,
+			`disheid`)
+		values(
+			#{id},
+			#{mealid},
+			#{disheid})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.MealDisheEntity">
+		update meal_dishe 
+		<set>
+			<if test="mealid != null">`mealid` = #{mealid}, </if>
+			<if test="disheid != null">`disheid` = #{disheid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from meal_dishe where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from meal_dishe where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

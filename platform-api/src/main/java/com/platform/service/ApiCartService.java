@@ -67,7 +67,7 @@ public class ApiCartService {
             }
         }
     }
-
+    public void mealsave(CartVo cart){cartDao.mealsave(cart);}
     public void update(CartVo cart) {
         cartDao.update(cart);
     }

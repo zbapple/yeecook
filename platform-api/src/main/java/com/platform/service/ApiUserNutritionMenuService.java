@@ -20,7 +20,6 @@ public class ApiUserNutritionMenuService  {
     @Autowired
     private ApiUserNutritionMenuMapper userNutritionMenuDao;
 
-
     public UserNutritionMenuVo queryObject(Integer id) {
         return userNutritionMenuDao.queryObject(id);
     }
@@ -28,6 +27,12 @@ public class ApiUserNutritionMenuService  {
     public List<UserNutritionMenuVo> queryList(Map<String, Object> map) {
         return userNutritionMenuDao.queryList(map);
     }
+    //门店套餐
+    public List<UserNutritionMenuVo> querlistmenu(Map<String, Object> map){
+        return userNutritionMenuDao.querlistmenu(map);}
+     //门店套餐详情
+    public List<UserNutritionMenuVo> querlistmenuinfo(Map<String, Object> map){
+        return userNutritionMenuDao.querlistmenuinfo(map);}
 
     public int queryTotal(Map<String, Object> map) {
         return userNutritionMenuDao.queryTotal(map);

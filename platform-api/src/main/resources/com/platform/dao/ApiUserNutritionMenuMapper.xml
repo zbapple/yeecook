@@ -13,6 +13,7 @@
         <result property="nideshopUserId" column="nideshop_user_id"/>
         <result property="serviceCycleSt" column="service_cycle_st"/>
         <result property="servcieCycleEt" column="servcie_cycle_et"/>
+		<result property="stroeid" column="stroeid"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.UserNutritionMenuVo">
@@ -51,6 +52,58 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<select id="querlistmenu" resultType="com.platform.entity.UserNutritionMenuVo">
+		select
+		a.id,
+		a.menu_name,
+		a.price,
+		d.freight_price,
+		c.`name`
+		from user_nutrition_menu a
+		left join stroe b on b.id=a.stroeid
+		left join nideshop_coupon c on c.stroeid=b.id
+		left join nideshop_order d on d.stroeid=b.id
+		WHERE 1=1
+		<if test="stroeid != null">
+			AND  stroeid=#{stroeid}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="querlistmenuinfo" resultType="com.platform.entity.UserNutritionMenuVo">
+		select
+		a.menu_name,
+		a.nutrition_principle,
+		a.menu_cover_pic,
+		c.comments_score
+		from user_nutrition_menu a
+		left join stroe b on b.id=a.stroeid
+		left join user_comments c on  a.nideshop_user_id=c.nideshop_user_id
+		WHERE 1=1
+		<if test="stroeid != null">
+			AND  stroeid=#{stroeid}
+		</if>
+		<if test="menuid != null">
+			AND  menuid=#{menuid}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
  	<select id="queryTotal" resultType="int">
 		select count(*) from user_nutrition_menu
 		WHERE 1=1

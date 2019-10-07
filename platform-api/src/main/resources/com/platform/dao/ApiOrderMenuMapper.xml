@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiOrderMenuMapper">
+
+    <resultMap type="com.platform.entity.OrderMenuEntity" id="orderMenuMap">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="mealId" column="meal_id"/>
+        <result property="mealname" column="meal_name"/>
+        <result property="goodsSn" column="goods_sn"/>
+        <result property="productId" column="product_id"/>
+        <result property="marketPrice" column="market_price"/>
+        <result property="retailPrice" column="retail_price"/>
+        <result property="goodsSpecifitionNameValue" column="goods_specifition_name_value"/>
+        <result property="storeid" column="storeid"/>
+        <result property="number" column="number"/>
+        <result property="price" column="price"/>
+        <result property="isReal" column="is_real"/>
+        <result property="goodsSpecifitionIds" column="goods_specifition_ids"/>
+        <result property="listPicUrl" column="list_pic_url"/>
+        <result property="yqm" column="yqm"/>
+        <result property="orderType" column="order_type"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.OrderMenuEntity">
+		select
+			`id`,
+			`order_id`,
+			`meal_id`,
+			`meal_name`,
+			`goods_sn`,
+			`product_id`,
+			`market_price`,
+			`retail_price`,
+			`goods_specifition_name_value`,
+			`storeid`,
+			`number`,
+			`price`,
+			`is_real`,
+			`goods_specifition_ids`,
+			`list_pic_url`,
+			`yqm`,
+			`order_type`
+		from nideshop_order_menu
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.OrderMenuEntity">
+		select
+    		`id`,
+    		`order_id`,
+    		`meal_id`,
+    		`meal_name`,
+    		`goods_sn`,
+    		`product_id`,
+    		`market_price`,
+    		`retail_price`,
+    		`goods_specifition_name_value`,
+    		`storeid`,
+    		`number`,
+    		`price`,
+    		`is_real`,
+    		`goods_specifition_ids`,
+    		`list_pic_url`,
+    		`yqm`,
+    		`order_type`
+		from nideshop_order_menu
+		WHERE 1=1
+		<if test="order_id != null ">
+			AND order_id=#{order_id}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_order_menu
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.OrderMenuEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_order_menu(
+			`order_id`,
+			`meal_id`,
+			`meal_name`,
+			`goods_sn`,
+			`product_id`,
+			`market_price`,
+			`retail_price`,
+			`goods_specifition_name_value`,
+			`storeid`,
+			`number`,
+			`price`,
+			`is_real`,
+			`goods_specifition_ids`,
+			`list_pic_url`,
+			`yqm`,
+			`order_type`)
+		values(
+			#{orderId},
+			#{mealId},
+			#{mealname},
+			#{goodsSn},
+			#{productId},
+			#{marketPrice},
+			#{retailPrice},
+			#{goodsSpecifitionNameValue},
+			#{storeid},
+			#{number},
+			#{retailPrice},
+			#{isReal},
+			#{goodsSpecifitionIds},
+			#{listPicUrl},
+			#{yqm},
+			#{orderType})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.OrderMenuEntity">
+		update nideshop_order_menu 
+		<set>
+			<if test="orderId != null">`order_id` = #{orderId}, </if>
+			<if test="mealId != null">`meal_id` = #{mealId}, </if>
+			<if test="mealName != null">`meal_name` = #{mealName}, </if>
+			<if test="goodsSn != null">`goods_sn` = #{goodsSn}, </if>
+			<if test="productId != null">`product_id` = #{productId}, </if>
+			<if test="marketPrice != null">`market_price` = #{marketPrice}, </if>
+			<if test="retailPrice != null">`retail_price` = #{retailPrice}, </if>
+			<if test="goodsSpecifitionNameValue != null">`goods_specifition_name_value` = #{goodsSpecifitionNameValue}, </if>
+			<if test="storeid != null">`storeid` = #{storeid}, </if>
+			<if test="number != null">`number` = #{number}, </if>
+			<if test="price != null">`price` = #{price}, </if>
+			<if test="isReal != null">`is_real` = #{isReal}, </if>
+			<if test="goodsSpecifitionIds != null">`goods_specifition_ids` = #{goodsSpecifitionIds}, </if>
+			<if test="listPicUrl != null">`list_pic_url` = #{listPicUrl}, </if>
+			<if test="yqm != null">`yqm` = #{yqm}, </if>
+			<if test="orderType != null">`order_type` = #{orderType}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_order_menu where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_order_menu where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

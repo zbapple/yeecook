@@ -43,7 +43,10 @@ public class ApiCartController extends ApiBaseAction {
     private ApiCouponService apiCouponService;
     @Autowired
     private ApiCouponMapper apiCouponMapper;
-
+    @Autowired
+    private ApiMealService mealService;
+    @Autowired
+    private ApiStroeService stroeService;
     /**
      * 获取购物车中的数据
      */
@@ -119,7 +122,31 @@ public class ApiCartController extends ApiBaseAction {
         resultObj.put("cartTotal", cartTotal);
         return resultObj;
     }
-
+    @ApiOperation(value = "获取门店购物车中的数据")
+    @PostMapping("getMealCart")
+    public  Object getMealCart(@LoginUser UserVo loginUser,Integer stroeid){
+        Map<String, Object> resultObj = new HashMap();
+        JSONObject jsonParam = getJsonRequest();
+        //查询列表数据
+        Map param = new HashMap();
+        param.put("user_id", loginUser.getUserId());
+        param.put("stroeid",stroeid);
+//        param.put("mealid",mealid);
+        List<CartVo> cartList = cartService.queryList(param);
+        //获取购物车统计信息
+        Integer mealCount = 0;
+        BigDecimal mealsAmount = new BigDecimal(0.00);
+        for (CartVo cartItem : cartList) {
+            mealCount += cartItem.getNumber();
+            mealsAmount = mealsAmount.add(cartItem.getRetail_price().multiply(new BigDecimal(cartItem.getNumber())));
+        }
+        resultObj.put("cartList", cartList);
+        Map<String, Object> cartTotal1 = new HashMap();
+        cartTotal1.put("mealCount", mealCount);
+        cartTotal1.put("mealsAmount", mealsAmount);
+        resultObj.put("cartTotal1",cartTotal1);
+        return resultObj;
+    }
     /**
      * 获取购物车信息，所有对购物车的增删改操作，都要重新返回购物车的信息
      */
@@ -208,7 +235,42 @@ public class ApiCartController extends ApiBaseAction {
         }
         return toResponsSuccess(getCart(loginUser));
     }
-
+    /**
+     * 门店点添加到购物车
+     */
+    @ApiOperation(value = "添加商品到门店购物车")
+    @PostMapping("addstroe")
+    public  Object addstroe(@LoginUser UserVo loginUser){
+        JSONObject jsonParam = getJsonRequest();
+        Integer stroeid=jsonParam.getInteger("stroeid");
+        Integer mealid=jsonParam.getInteger("mealid");
+        Integer number=jsonParam.getInteger("number");
+        MealEntity mealEntity=mealService.queryObject(mealid);
+        Map addmap=new HashMap();
+        addmap.put("stroeid",stroeid);
+        addmap.put("user_id",loginUser.getUserId());
+        addmap.put("mealid",mealid);
+        List<CartVo> cartVoList=cartService.queryList(addmap);
+        CartVo cartVo=null !=cartVoList && cartVoList.size()>0 ? cartVoList.get(0):null;
+        if(null == cartVo){
+            cartVo=new CartVo();
+            cartVo.setStroeid(stroeid);
+            cartVo.setGoods_name(mealEntity.getMealName());
+            cartVo.setNumber(number);
+            cartVo.setList_pic_url(mealEntity.getMealPriue());
+            cartVo.setRetail_price(mealEntity.getMealPice());
+            cartVo.setSession_id("1");
+            cartVo.setUser_id(loginUser.getUserId());
+            cartVo.setChecked(1);
+            cartVo.setMealid(mealEntity.getId());
+            cartService.mealsave(cartVo);
+        }else{
+            Integer num=cartVo.getNumber();
+            cartVo.setNumber(num + number);
+            cartService.update(cartVo);
+        }
+        return toResponsSuccess(getMealCart(loginUser,cartVo.getStroeid()));
+    }
     /**
      * 减少商品到购物车
      */
@@ -239,7 +301,35 @@ public class ApiCartController extends ApiBaseAction {
         }
         return toResponsSuccess(cart_num);
     }
-
+    /**
+     * 减少购物车门店餐单商品
+     */
+    @ApiOperation(value = "减少门店商品到购物车")
+    @PostMapping("minusstroe")
+    public Object minusstroe(@LoginUser UserVo loginUser){
+        JSONObject jsonParam = getJsonRequest();
+        Integer stroeid=jsonParam.getInteger("stroeid");
+        Integer mealid=jsonParam.getInteger("mealid");
+        Integer number=jsonParam.getInteger("number");
+        Map cartParam = new HashMap();
+        cartParam.put("stroeid", stroeid);
+        cartParam.put("mealid", mealid);
+        cartParam.put("user_id", loginUser.getUserId());
+        List<CartVo> cartInfoList = cartService.queryList(cartParam);
+        CartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
+        int cart_num = 0;
+        if (null != cartInfo) {
+            if (cartInfo.getNumber() > number) {
+                cartInfo.setNumber(cartInfo.getNumber() - number);
+                cartService.update(cartInfo);
+                cart_num = cartInfo.getNumber();
+            } else if (cartInfo.getNumber() == 1) {
+                cartService.delete(cartInfo.getId());
+                cart_num = 0;
+            }
+        }
+        return  toResponsSuccess(cart_num);
+    }
     /**
      * 更新指定的购物车信息
      */
@@ -483,7 +573,104 @@ public class ApiCartController extends ApiBaseAction {
         resultObj.put("actualPrice", actualPrice);
         return toResponsSuccess(resultObj);
     }
+    /**
+     * 订单提交前的检验和填写相关订单信息
+     */
+    @ApiOperation(value = "餐单订单提交前的检验和填写相关订单信息")
+    @PostMapping("checklet")
+    public Object checklet(@LoginUser UserVo loginUser, Integer couponId, @RequestParam(defaultValue = "cart") String type,Integer addressId,Integer stroeid){
+        Map<String, Object> resultObj = new HashMap();
+        //根据收货地址计算运费
 
+        BigDecimal freightPrice = new BigDecimal(0.00);
+        //默认收货地址
+        if(null!=addressId&&addressId>0){
+            AddressVo addressVo=addressService.queryObject(addressId);
+            if (null == addressVo ) {
+                resultObj.put("checkedAddress", new AddressVo());
+            } else {
+                resultObj.put("checkedAddress", addressVo);
+            }
+        }else {
+            Map param = new HashMap();
+            param.put("user_id", loginUser.getUserId());
+            List addressEntities = addressService.queryList(param);
+
+            if (null == addressEntities || addressEntities.size() == 0) {
+                resultObj.put("checkedAddress", new AddressVo());
+            } else {
+                resultObj.put("checkedAddress", addressEntities.get(0));
+            }
+        }
+        // * 获取要购买的商品和总价
+        ArrayList checkedGoodsList = new ArrayList();
+        BigDecimal goodsTotalPrice;
+        if (type.equals("cart")) {
+            Map<String, Object> cartData = (Map<String, Object>) this.getMealCart(loginUser,stroeid);
+
+            for (CartVo cartEntity : (List<CartVo>) cartData.get("cartList")) {
+                if (cartEntity.getChecked() == 1) {
+                    checkedGoodsList.add(cartEntity);
+                }
+            }
+//            get("cartTotal")).get("mealsAmount")
+            goodsTotalPrice = (BigDecimal) ((HashMap) cartData.get("cartTotal1")).get("mealsAmount");
+        } else { // 是直接购买的
+            BuMealVo buMealVo = (BuMealVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "mealname" + loginUser.getUserId() + "");
+            MealEntity mealinfo = mealService.queryObject(buMealVo.getMealid());
+            //计算订单的费用
+            //商品总价
+            goodsTotalPrice = mealinfo.getMealPice().multiply(new BigDecimal(buMealVo.getNumber()));
+            //添加规格名和值
+//            String[] goodsSepcifitionValue = null;
+//            if (null != productInfo.getGoods_specification_ids()) {
+//                Map specificationParam = new HashMap();
+//                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
+//                specificationParam.put("goodsId", goodsVO.getGoodsId());
+//                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+//                goodsSepcifitionValue = new String[specificationEntities.size()];
+//                for (int i = 0; i < specificationEntities.size(); i++) {
+//                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+//                }
+//            }
+            CartVo cartVo = new CartVo();
+            cartVo.setGoods_name(mealinfo.getMealName());
+            cartVo.setNumber(buMealVo.getNumber());
+            cartVo.setRetail_price(mealinfo.getMealPice());
+            cartVo.setList_pic_url(mealinfo.getMealPriue());
+//            cartVo.setGoods_specifition_ids(mealinfo.getGoods_specification_ids());
+//            if (null != goodsSepcifitionValue) {
+//                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
+            checkedGoodsList.add(cartVo);
+        }
+
+
+//        //获取可用的优惠券信息
+//        BigDecimal couponPrice = new BigDecimal(0.00);
+//        if (couponId != null && couponId != 0) {
+//            CouponVo couponVo = apiCouponMapper.getUserCoupon(couponId);
+//            if (couponVo != null) {
+//                couponPrice = couponVo.getType_money();
+//            }
+//        }
+
+        //订单的总价
+//        BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
+//
+//        //
+//        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+        StroeEntity stroelist=stroeService.queryObject(stroeid);
+         Double deliveryfee=stroelist.getDeliveryfee();
+        resultObj.put("freightPrice", deliveryfee);
+
+//        resultObj.put("couponPrice", couponPrice);
+        resultObj.put("checkedGoodsList", checkedGoodsList);
+        resultObj.put("goodsTotalPrice", goodsTotalPrice);
+//        resultObj.put("orderTotalPrice", orderTotalPrice);
+//        resultObj.put("actualPrice", actualPrice);
+        return toResponsSuccess(resultObj);
+    }
     /**
      * 选择优惠券列表
      */

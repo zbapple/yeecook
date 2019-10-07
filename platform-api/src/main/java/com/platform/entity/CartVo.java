@@ -46,6 +46,12 @@ public class CartVo implements Serializable {
 
     //商品图片
     private String list_pic_url;
+    //门店id
+    private Integer stroeid;
+    //餐单id
+    private Integer mealid;
+    //配送费
+    private  Integer deliveryfee;
 
     public Integer getId() {
         return id;
@@ -176,5 +182,29 @@ public class CartVo implements Serializable {
 
     public void setCrash_save_price(BigDecimal crash_save_price) {
         this.crash_save_price = crash_save_price;
+    }
+
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
+    }
+
+    public Integer getMealid() {
+        return mealid;
+    }
+
+    public void setMealid(Integer mealid) {
+        this.mealid = mealid;
+    }
+
+    public Integer getDeliveryfee() {
+        return deliveryfee;
+    }
+
+    public void setDeliveryfee(Integer deliveryfee) {
+        this.deliveryfee = deliveryfee;
     }
 }

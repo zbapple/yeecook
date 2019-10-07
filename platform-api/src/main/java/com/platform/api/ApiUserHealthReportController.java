@@ -57,6 +57,7 @@ public class ApiUserHealthReportController extends ApiBaseAction {
     public  Object add(@LoginUser UserVo loginuser){
         Map<String,Object> result=new HashMap<>();
         JSONObject addjsonparam=this.getJsonRequest();
+        Double bmi=addjsonparam.getDouble("BMI");
         Date detectiontime=addjsonparam.getSqlDate("detectiontime");
         Calendar cl1=Calendar.getInstance();
         cl1.setTime(detectiontime);
@@ -75,12 +76,23 @@ public class ApiUserHealthReportController extends ApiBaseAction {
              jiance=userDetectionCycleVoItem.getInspectionTime();
              num=userDetectionCycleVoItem.getInspectionNum()+1;
         }
-            if (addjsonparam!=null) {
+        String bodyShape=null;
+        if(bmi<18.5){
+            bodyShape="0";
+        }else if(bmi>=18.5 && bmi <24.0){
+            bodyShape="1";
+        }else if(bmi>=24 && bmi<28){
+            bodyShape="2";
+        }else if(bmi>=28){
+            bodyShape="3";
+        }
+
+        if (addjsonparam!=null) {
                 userHealthReportVo.setNideshopUserId(userid);
                 //基础代谢量
                 userHealthReportVo.setBasicMetabolism(addjsonparam.getDouble("basicmetabolism"));
                 //BMI
-                userHealthReportVo.setBmi(addjsonparam.getDouble("BMI"));
+                userHealthReportVo.setBmi(bmi);
                 //体脂率
                 userHealthReportVo.setBodyFatRade(addjsonparam.getDouble("bodyfatrade"));
                 //体水分率
@@ -102,8 +114,8 @@ public class ApiUserHealthReportController extends ApiBaseAction {
                 //体重
                 userHealthReportVo.setWeight(addjsonparam.getDouble("weight"));
                 //体型
-                userHealthReportVo.setBodyShape(addjsonparam.getString("bodyShape"));
-                //身体年龄
+                userHealthReportVo.setBodyShape(bodyShape);
+                //身体年龄dd
                 userHealthReportVo.setBodyAge(addjsonparam.getString("bodyAge"));
                 //健康评分
                 userHealthReportVo.setSclscore(addjsonparam.getString("sclscore"));

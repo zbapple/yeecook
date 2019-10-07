@@ -20,6 +20,9 @@
         <result property="goods_specifition_ids" column="goods_specifition_ids"/>
         <result property="checked" column="checked"/>
         <result property="list_pic_url" column="list_pic_url"/>
+        <result property="stroeid" column="stroe_id"/>
+        <result property="mealid" column="meal_id"/>
+        <result property="deliveryfee" column="deliveryfee"/>
     </resultMap>
 
     <select id="queryObject" resultMap="cartMap">
@@ -29,10 +32,12 @@
     <select id="queryList" resultMap="cartMap">
         select a.*,
         b.list_pic_url as list_pic_url,
-        c.retail_price as retail_product_price
+        c.retail_price as retail_product_price,
+        d.deliveryfee
         from nideshop_cart a
         left join nideshop_goods b on a.goods_id = b.id
         left join nideshop_product c on c.goods_id = a.goods_id and c.id = a.product_id
+        left JOIN stroe  d   on d.id=a.stroe_id
         where 1 = 1
         <if test="user_id != null">
             AND a.user_id = #{user_id}
@@ -45,6 +50,12 @@
         </if>
         <if test="checked != null">
             AND a.checked = #{checked}
+        </if>
+        <if test="stroeid !=null">
+            and a.stroe_id=#{stroeid}
+        </if>
+        <if test="mealid">
+            AND a.meal_id=#{mealid}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -91,7 +102,9 @@
 			`goods_specifition_name_value`, 
 			`goods_specifition_ids`, 
 			`checked`, 
-			`list_pic_url`
+			`list_pic_url`,
+			stroe_id,
+			meal_id
 		)
 		values
 		(
@@ -107,7 +120,47 @@
 			#{goods_specifition_name_value}, 
 			#{goods_specifition_ids}, 
 			#{checked}, 
-			#{list_pic_url}
+			#{list_pic_url},
+			#{stroeid},
+			#{mealid}
+		)
+	</insert>
+    <insert id="mealsave" parameterType="com.platform.entity.CartVo" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_cart
+		(
+			`user_id`,
+			`session_id`,
+			`goods_id`,
+			`goods_sn`,
+			`product_id`,
+			`goods_name`,
+			`market_price`,
+			`retail_price`,
+			`number`,
+			`goods_specifition_name_value`,
+			`goods_specifition_ids`,
+			`checked`,
+			`list_pic_url`,
+			stroe_id,
+			meal_id
+		)
+		values
+		(
+			#{user_id},
+			#{session_id},
+			#{goods_id},
+			#{goods_sn},
+			#{product_id},
+			#{goods_name},
+			#{market_price},
+			#{retail_price},
+			#{number},
+			#{goods_specifition_name_value},
+			#{goods_specifition_ids},
+			#{checked},
+			#{list_pic_url},
+			#{stroeid},
+			#{mealid}
 		)
 	</insert>
 
