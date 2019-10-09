@@ -49,7 +49,7 @@ public class StroeEntity implements Serializable {
     //商家电话
     private String stroephone;
     //距离
-    private Double juli;
+    private String juli;
     //起送费
     private Double sendingfee;
     //配送费
@@ -227,13 +227,6 @@ public class StroeEntity implements Serializable {
     }
 
 
-    public Double getJuli() {
-        return juli;
-    }
-
-    public void setJuli(Double juli) {
-        this.juli = juli;
-    }
 
     public Integer getStoreType() {
         return storeType;
@@ -266,5 +259,13 @@ public class StroeEntity implements Serializable {
 
     public void setDeliveryfee(Double deliveryfee) {
         this.deliveryfee = deliveryfee;
+    }
+
+    public String getJuli() {
+        return juli;
+    }
+
+    public void setJuli(String juli) {
+        this.juli = juli;
     }
 }

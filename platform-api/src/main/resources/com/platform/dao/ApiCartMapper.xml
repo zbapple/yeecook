@@ -230,6 +230,6 @@
     </delete>
     <delete id="deleteAll">
         delete from nideshop_cart
-        where user_id=#{user_id} and stroeid=#{stroid}
+        where user_id=#{user_id} and stroe_id=#{stroid}
     </delete>
 </mapper>
