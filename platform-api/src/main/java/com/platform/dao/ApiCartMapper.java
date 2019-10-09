@@ -18,4 +18,5 @@ public interface ApiCartMapper extends BaseDao<CartVo> {
 
     void deleteByCart(@Param("user_id") Long user_id, @Param("session_id") Integer session_id, @Param("checked") Integer checked);
     void mealsave(CartVo cart);
+    void deleteAll(@Param("user_id") Long user_id, @Param("stroid") Integer stroid);
 }

@@ -260,7 +260,9 @@ public class ApiOrderService {
         Integer freightPrice = 0;
         // * 获取要购买的商品
         List<CartVo> checkedGoodsList = new ArrayList<>();
-        BigDecimal goodsTotalPrice;
+        BigDecimal goodsTotalPrice = null;
+        BigDecimal total=new BigDecimal(0.00);
+        Integer deliveryfee=0;
         if (type.equals("cart")) {
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("user_id", loginUser.getUserId());
@@ -285,15 +287,14 @@ public class ApiOrderService {
             Map mapcat=new HashMap();
             mapcat.put("user_id",loginUser.getUserId());
           List<CartVo>  catlist=cartService.queryList(mapcat);
-          Integer id=0;
-          Integer deliveryfee=0;
           for(CartVo cartVoitem:catlist){
-              id=cartVoitem.getId();
+              Integer number=cartVoitem.getNumber();
+              goodsTotalPrice = cartVoitem.getRetail_price().multiply(new BigDecimal(number));
               deliveryfee=cartVoitem.getDeliveryfee();
+                  total=total.add(goodsTotalPrice);
           }
-            CartVo cartVo=cartService.queryObject(id);
-            goodsTotalPrice = cartVo.getRetail_price().multiply(new BigDecimal(cartVo.getNumber())).add(new BigDecimal(deliveryfee));
-//            String[] goodsSepcifitionValue = null;
+
+//            String[] goodsSepcifitionValue = null;   .add(new BigDecimal(cartVoitem.getDeliveryfee()))
 //            if (null != productInfo.getGoods_specification_ids()) {
 //                Map specificationParam = new HashMap();
 //                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
@@ -310,14 +311,14 @@ public class ApiOrderService {
 //            cartVo.setProduct_id(goodsVo.getProductId());
 //            if (null != goodsSepcifitionValue) {
 //                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-//            }
 //            cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
 //            checkedGoodsList.add(cartVo);
         }
 
 //        //获取订单使用的优惠券
 //        BigDecimal couponPrice = new BigDecimal(0.00);
-//        CouponVo couponVo = null;
+//        CouponVo couponVo = null;//            }
+////
 //        if (couponId != null && couponId != 0) {
 //            couponVo = apiCouponMapper.getUserCoupon(couponId);
 //            if (couponVo != null && couponVo.getCoupon_status() == 1) {
@@ -326,7 +327,7 @@ public class ApiOrderService {
 //        }
 
         //订单价格计算
-        BigDecimal orderTotalPrice = goodsTotalPrice.add(new BigDecimal(freightPrice)); //订单的总价
+        BigDecimal orderTotalPrice = total.add(new BigDecimal(freightPrice)); //订单的总价
 
 //        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
 
@@ -353,8 +354,8 @@ public class ApiOrderService {
 //        orderInfo.setCoupon_price(couponPrice);
         orderInfo.setAdd_time(new Date());
         orderInfo.setGoods_price(goodsTotalPrice);
-        orderInfo.setOrder_price(orderTotalPrice);
-        orderInfo.setActual_price(goodsTotalPrice);
+        orderInfo.setOrder_price(total.add(new BigDecimal(deliveryfee)));
+        orderInfo.setActual_price(total.add(new BigDecimal(deliveryfee)));
         // 待付款
         orderInfo.setOrder_status(0);
         orderInfo.setShipping_status(0);
@@ -370,40 +371,47 @@ public class ApiOrderService {
         }
 
         //开启事务，插入订单信息和订单商品
-        orderDao.save(orderInfo);
+        apiOrderMapper.save(orderInfo);
         if (null == orderInfo.getId()) {
             resultObj.put("errno", 1);
             resultObj.put("errmsg", "订单提交失败");
             return resultObj;
         }
         //统计商品总价
-        List<OrderMenuEntity> orderMenuEntities = new ArrayList<>();
+//        List<OrderMenuEntity> orderMenuEntities = new ArrayList<>();
+        Map checkmap=new HashMap();
+        checkmap.put("user_id",loginUser.getUserId());
+        checkedGoodsList=cartService.queryList(checkmap);
+        List<OrderGoodsVo> orderGoodsData = new ArrayList<OrderGoodsVo>();
         for (CartVo goodsItem : checkedGoodsList) {
-            OrderMenuEntity orderMenuVo=new OrderMenuEntity();
-            orderMenuVo.setOrderId(orderInfo.getId());
-            orderMenuVo.setMealId(goodsItem.getMealid());
-            orderMenuVo.setMealname(goodsItem.getGoods_name());
-            orderMenuVo.setListPicUrl(goodsItem.getList_pic_url());
-            orderMenuVo.setNumber(goodsItem.getNumber());
-            orderMenuVo.setRetailPrice(goodsItem.getRetail_price());
-//            OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
-//            orderGoodsVo.setOrder_id(orderInfo.getId());
-//            orderGoodsVo.setGoods_id(goodsItem.getGoods_id());
-//            orderGoodsVo.setGoods_sn(goodsItem.getGoods_sn());
-//            orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
-//            orderGoodsVo.setGoods_name(goodsItem.getGoods_name());
-//            orderGoodsVo.setList_pic_url(goodsItem.getList_pic_url());
-//            orderGoodsVo.setMarket_price(goodsItem.getMarket_price());
-//            orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
-//            orderGoodsVo.setNumber(goodsItem.getNumber());
-//            orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
-//            orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
-            orderMenuEntities.add(orderMenuVo);
-            orderMenuService.save(orderMenuVo);
+//            OrderMenuEntity orderMenuVo=new OrderMenuEntity();
+//            orderMenuVo.setOrderId(orderInfo.getId());
+//            orderMenuVo.setMealId(goodsItem.getMealid());
+//            orderMenuVo.setMealname(goodsItem.getGoods_name());
+//            orderMenuVo.setListPicUrl(goodsItem.getList_pic_url());
+//            orderMenuVo.setNumber(goodsItem.getNumber());
+//            orderMenuVo.setRetailPrice(goodsItem.getRetail_price());
+            OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+            orderGoodsVo.setOrder_id(orderInfo.getId());
+            orderGoodsVo.setGoods_id(goodsItem.getGoods_id());
+            orderGoodsVo.setGoods_sn(goodsItem.getGoods_sn());
+            orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
+            orderGoodsVo.setGoods_name(goodsItem.getGoods_name());
+            orderGoodsVo.setList_pic_url(goodsItem.getList_pic_url());
+            orderGoodsVo.setMarket_price(goodsItem.getMarket_price());
+            orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
+            orderGoodsVo.setNumber(goodsItem.getNumber());
+            orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
+            orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
+            orderGoodsVo.setDeliery_time(goodsItem.getDeliverytime());
+//            orderMenuEntities.add(orderMenuVo);
+//            orderMenuService.save(orderMenuVo);
+        orderGoodsData.add(orderGoodsVo);
+        apiOrderGoodsService.save(orderGoodsVo);
         }
 
         //清空已购买的商品
-        apiCartMapper.deleteByCart(loginUser.getUserId(), 1, 1);
+        cartService.deleteByCart(loginUser.getUserId(), 1, 1);
         resultObj.put("errno", 0);
         resultObj.put("errmsg", "订单提交成功");
         //
@@ -416,7 +424,7 @@ public class ApiOrderService {
 //            couponVo.setCoupon_status(2);
 //            apiCouponMapper.updateUserCoupon(couponVo);
 //        }
-        getGroupBymealforDept(orderInfo.getId());
+        getGroupByGoosforDept(orderInfo.getId());
         return resultObj;
 
     }

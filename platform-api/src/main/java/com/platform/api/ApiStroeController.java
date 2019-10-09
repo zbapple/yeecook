@@ -133,4 +133,12 @@ public class ApiStroeController extends ApiBaseAction {
         }
         return result;
     }
+    @ApiOperation(value = "门店地址")
+    @PostMapping("stroeaddress")
+    public Object stroeaddress(){
+        JSONObject addressjson=this.getJsonRequest();
+        Integer stroid=addressjson.getInteger("id");
+        StroeEntity stroeinfo=stroeService.queryObject(stroid);
+        return stroeinfo;
+    }
 }

@@ -24,6 +24,7 @@
         <result property="attribute_category" column="attribute_category"/>
         <result property="batch_id" column="batch_id"/>
         <result property="yqm" column="yqm"/>
+
     </resultMap>
 
     <select id="queryObject" resultMap="orderGoodsMap">
@@ -95,6 +96,7 @@
 			`goods_specifition_ids`,
 			`yqm`,
 			`list_pic_url`
+
 		)
 		values
 		(
@@ -111,6 +113,7 @@
 			#{goods_specifition_ids},
 			#{yqm},
 			#{list_pic_url}
+
 		)
 	</insert>
 
@@ -132,6 +135,7 @@
             <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{goods_specifition_ids},</if>
             <if test="yqm != null">`yqm` = #{yqm},</if>
             <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url}</if>
+
         </set>
         where id = #{id}
     </update>

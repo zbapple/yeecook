@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,6 +54,8 @@ public class CartVo implements Serializable {
     private Integer mealid;
     //配送费
     private  Integer deliveryfee;
+    //送达时间
+    private DateTime deliverytime;
 
     public Integer getId() {
         return id;
@@ -206,5 +210,13 @@ public class CartVo implements Serializable {
 
     public void setDeliveryfee(Integer deliveryfee) {
         this.deliveryfee = deliveryfee;
+    }
+
+    public DateTime getDeliverytime() {
+        return deliverytime;
+    }
+
+    public void setDeliverytime(DateTime deliverytime) {
+        this.deliverytime = deliverytime;
     }
 }

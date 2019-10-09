@@ -142,7 +142,8 @@
 			`checked`,
 			`list_pic_url`,
 			stroe_id,
-			meal_id
+			meal_id,
+
 		)
 		values
 		(
@@ -160,7 +161,7 @@
 			#{checked},
 			#{list_pic_url},
 			#{stroeid},
-			#{mealid}
+			#{mealid},
 		)
 	</insert>
 
@@ -182,6 +183,7 @@
             <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{goods_specifition_ids},</if>
             <if test="checked != null">`checked` = #{checked},</if>
             <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url}</if>
+
         </set>
         where id = #{id}
     </update>
@@ -226,5 +228,8 @@
         delete from nideshop_cart
         where  user_id = #{user_id} and  session_id = #{session_id} and  checked = #{checked}
     </delete>
-
+    <delete id="deleteAll">
+        delete from nideshop_cart
+        where user_id=#{user_id} and stroeid=#{stroid}
+    </delete>
 </mapper>

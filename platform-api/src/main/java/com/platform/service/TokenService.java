@@ -16,7 +16,7 @@ public class TokenService {
     @Autowired
     private ApiTokenMapper tokenDao;
     //12小时后过期
-    private final static int EXPIRE = 3600 *100000 *350;
+    private final static int EXPIRE = 3600 *24 *350;
 
     public TokenEntity queryByUserId(Long userId) {
         return tokenDao.queryByUserId(userId);

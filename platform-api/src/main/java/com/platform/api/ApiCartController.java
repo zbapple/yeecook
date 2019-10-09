@@ -9,6 +9,7 @@ import com.platform.entity.*;
 import com.platform.service.*;
 import com.platform.util.ApiBaseAction;
 import com.qiniu.util.StringUtils;
+import com.sun.corba.se.spi.ior.ObjectKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -702,5 +703,15 @@ public class ApiCartController extends ApiBaseAction {
             }
         }
         return toResponsSuccess(couponVos);
+    }
+    @ApiOperation(value = "购物车清空")
+    @PostMapping("deleteall")
+    public Object deleteall(@LoginUser UserVo loginuser){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject deletjosn=this.getJsonRequest();
+        Integer stroeid=deletjosn.getInteger("stroeid");
+        cartService.deleteAll(loginuser.getUserId(),stroeid);
+        result.put("flag",1);
+        return result;
     }
 }

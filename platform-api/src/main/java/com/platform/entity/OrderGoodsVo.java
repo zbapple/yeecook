@@ -2,6 +2,7 @@ package com.platform.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -57,6 +58,8 @@ public class OrderGoodsVo implements Serializable {
     @Setter
     @Getter
     private String supplierName;
+
+    private DateTime deliery_time;
 
     public Integer getId() {
         return id;
@@ -176,5 +179,14 @@ public class OrderGoodsVo implements Serializable {
 
     public void setDept_id(Integer dept_id) {
         this.dept_id = dept_id;
+    }
+
+
+    public DateTime getDeliery_time() {
+        return deliery_time;
+    }
+
+    public void setDeliery_time(DateTime deliery_time) {
+        this.deliery_time = deliery_time;
     }
 }
