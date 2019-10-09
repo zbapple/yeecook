@@ -424,7 +424,7 @@ public class ApiOrderService {
 //            couponVo.setCoupon_status(2);
 //            apiCouponMapper.updateUserCoupon(couponVo);
 //        }
-        getGroupByGoosforDept(orderInfo.getId());
+        getGroupBymealforDept(orderInfo.getId());
         return resultObj;
 
     }

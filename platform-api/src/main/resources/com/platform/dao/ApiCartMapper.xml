@@ -142,7 +142,7 @@
 			`checked`,
 			`list_pic_url`,
 			stroe_id,
-			meal_id,
+			meal_id
 
 		)
 		values
@@ -161,7 +161,7 @@
 			#{checked},
 			#{list_pic_url},
 			#{stroeid},
-			#{mealid},
+			#{mealid}
 		)
 	</insert>
 
