@@ -2,7 +2,9 @@ package com.platform.api;
 
 import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.CategoryVo;
+import com.platform.entity.GoodsVo;
 import com.platform.service.ApiCategoryService;
+import com.platform.service.ApiGoodsService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,7 +31,8 @@ import java.util.Map;
 public class ApiCatalogController extends ApiBaseAction {
     @Autowired
     private ApiCategoryService categoryService;
-
+    @Autowired
+    private ApiGoodsService goodsService;
     /**
      * 获取分类栏目数据
      */
@@ -65,10 +68,16 @@ public class ApiCatalogController extends ApiBaseAction {
         //获取子分类数据
         if (null != currentCategory && null != currentCategory.getId()) {
             params.put("parent_id", currentCategory.getId());
-            currentCategory.setSubCategoryList(categoryService.queryList(params));
+            List<CategoryVo> subCategoryList=categoryService.queryList(params);
+            currentCategory.setSubCategoryList(subCategoryList);
+           Integer value=subCategoryList.get(0).getId();
+           Map goodsmap=new HashMap();
+           goodsmap.put("category_id",value);
+           List<GoodsVo> goodsVo=goodsService.queryList(goodsmap);
+            resultObj.put("goodsVo",goodsVo);
         }
 
-        resultObj.put("categoryList", data);
+//        resultObj.put("categoryList", data);
         resultObj.put("currentCategory", currentCategory);
         return toResponsSuccess(resultObj);
     }
@@ -82,17 +91,20 @@ public class ApiCatalogController extends ApiBaseAction {
     public Object current(Integer id) {
         Map<String, Object> resultObj = new HashMap();
         Map params = new HashMap();
-        params.put("parent_id", 0);
         CategoryVo currentCategory = null;
         if (null != id) {
             currentCategory = categoryService.queryObject(id);
         }
         //获取子分类数据
         if (null != currentCategory && null != currentCategory.getId()) {
-            params.put("parent_id", currentCategory.getId());
-            currentCategory.setSubCategoryList(categoryService.queryList(params));
+            params.put("parent_id", currentCategory.getParent_id());
+            List<CategoryVo> subCategoryList=categoryService.queryList(params);
+            currentCategory.setSubCategoryList(subCategoryList);
+            Map goodsmap=new HashMap();
+            goodsmap.put("category_id",id);
+            List<GoodsVo> goodsVo=goodsService.queryList(goodsmap);
+            resultObj.put("goodsVo",goodsVo);
         }
-        resultObj.put("currentCategory", currentCategory);
         return toResponsSuccess(resultObj);
     }
 }

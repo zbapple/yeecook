@@ -46,7 +46,7 @@ public class ApiStroeController extends ApiBaseAction {
             double lat=listjson.getDouble("lat");
             double lon=listjson.getDouble("lon");
             Integer storeType=listjson.getInteger("storeType");
-            Map<String,Double> json=MapUtils.getAround(lon,lat,5000.0);
+            Map<String,Double> json=MapUtils.getAround(lon,lat,6000.0);
             Double minLng=json.get("minLng");
             Double maxLng=json.get("maxLng");
             Double minLat=json.get("minLat");
@@ -83,7 +83,7 @@ public class ApiStroeController extends ApiBaseAction {
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
-                        String dstance4=dstance2+","+m;
+                        String dstance4=dstance2+m;
                         stroeEntity.setJuli(dstance4);
                         result.put("flg",1);
                         result.put("stroeEntityList",stroeEntityList);

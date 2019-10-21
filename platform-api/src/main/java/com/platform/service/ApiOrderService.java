@@ -253,7 +253,7 @@ public class ApiOrderService {
         return resultObj;
     }
     @Transactional
-    public Map<String,Object>  mealsubmit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId){
+    public Map<String,Object>  mealsubmit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId,Integer num,Integer stroeid){
         Map<String, Object> resultObj = new HashMap<String, Object>();
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
         AddressVo addressVo = apiAddressMapper.queryObject(addressId);
@@ -277,7 +277,10 @@ public class ApiOrderService {
             //统计商品总价
             goodsTotalPrice = new BigDecimal(0.00);
             for (CartVo cartItem : checkedGoodsList) {
-                goodsTotalPrice = goodsTotalPrice.add(cartItem.getRetail_price().multiply(new BigDecimal(cartItem.getNumber())));
+                Integer number=cartItem.getNumber();
+                goodsTotalPrice = cartItem.getRetail_price().multiply(new BigDecimal(number));
+                deliveryfee=cartItem.getDeliveryfee();
+                total=total.add(goodsTotalPrice);
             }
         } else {
 //            BuyGoodsVo goodsVo = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId());
@@ -337,16 +340,100 @@ public class ApiOrderService {
         OrderVo orderInfo = new OrderVo();
         orderInfo.setOrder_sn(CommonUtil.generateOrderNumber());
         orderInfo.setUser_id(loginUser.getUserId());
-        //收货地址和运费
-        orderInfo.setConsignee(addressVo.getUserName());
-        orderInfo.setMobile(addressVo.getTelNumber());
-        orderInfo.setCountry(addressVo.getNationalCode());
-        orderInfo.setProvince(addressVo.getProvinceName());
-        orderInfo.setCity(addressVo.getCityName());
-        orderInfo.setDistrict(addressVo.getCountyName());
-        orderInfo.setAddress(addressVo.getDetailInfo());
+        if(num==0){
+            //收货地址和运费
+            orderInfo.setConsignee(addressVo.getUserName());
+            orderInfo.setMobile(addressVo.getTelNumber());
+            orderInfo.setCountry(addressVo.getNationalCode());
+            orderInfo.setProvince(addressVo.getProvinceName());
+            orderInfo.setCity(addressVo.getCityName());
+            orderInfo.setDistrict(addressVo.getCountyName());
+            orderInfo.setAddress(addressVo.getDetailInfo());
+            orderInfo.setFreight_price(deliveryfee);
+        }else if(num==1){
+
+            //留言
+            orderInfo.setPostscript(postscript);
+            //使用的优惠券
+            orderInfo.setCoupon_id(couponId);
+//        orderInfo.setCoupon_price(couponPrice);
+            orderInfo.setAdd_time(new Date());
+            orderInfo.setGoods_price(goodsTotalPrice);
+            orderInfo.setOrder_price(total);
+            orderInfo.setActual_price(total);
+            // 待付款
+            orderInfo.setOrder_status(0);
+            orderInfo.setShipping_status(0);
+            orderInfo.setPay_status(0);
+            orderInfo.setShipping_id(0);
+            orderInfo.setShipping_fee(new BigDecimal(0));
+            orderInfo.setIntegral(0);
+            orderInfo.setIntegral_money(new BigDecimal(0));
+            if (type.equals("cart")) {
+                orderInfo.setOrder_type("1");
+            } else {
+                orderInfo.setOrder_type("4");
+            }
+
+            //开启事务，插入订单信息和订单商品
+            apiOrderMapper.save(orderInfo);
+            if (null == orderInfo.getId()) {
+                resultObj.put("errno", 1);
+                resultObj.put("errmsg", "订单提交失败");
+                return resultObj;
+            }
+            //统计商品总价
+//        List<OrderMenuEntity> orderMenuEntities = new ArrayList<>();
+            Map checkmap=new HashMap();
+            checkmap.put("user_id",loginUser.getUserId());
+            checkedGoodsList=cartService.queryList(checkmap);
+            List<OrderGoodsVo> orderGoodsData = new ArrayList<OrderGoodsVo>();
+            for (CartVo goodsItem : checkedGoodsList) {
+//            OrderMenuEntity orderMenuVo=new OrderMenuEntity();
+//            orderMenuVo.setOrderId(orderInfo.getId());
+//            orderMenuVo.setMealId(goodsItem.getMealid());
+//            orderMenuVo.setMealname(goodsItem.getGoods_name());
+//            orderMenuVo.setListPicUrl(goodsItem.getList_pic_url());
+//            orderMenuVo.setNumber(goodsItem.getNumber());
+//            orderMenuVo.setRetailPrice(goodsItem.getRetail_price());
+                OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+                orderGoodsVo.setOrder_id(orderInfo.getId());
+                orderGoodsVo.setGoods_id(goodsItem.getGoods_id());
+                orderGoodsVo.setGoods_sn(goodsItem.getGoods_sn());
+                orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
+                orderGoodsVo.setGoods_name(goodsItem.getGoods_name());
+                orderGoodsVo.setList_pic_url(goodsItem.getList_pic_url());
+                orderGoodsVo.setMarket_price(goodsItem.getMarket_price());
+                orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
+                orderGoodsVo.setNumber(goodsItem.getNumber());
+                orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
+                orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
+                orderGoodsVo.setDeliery_time(goodsItem.getDeliverytime());
+//            orderMenuEntities.add(orderMenuVo);
+//            orderMenuService.save(orderMenuVo);
+                orderGoodsData.add(orderGoodsVo);
+                apiOrderGoodsService.save(orderGoodsVo);
+            }
+
+            //清空已购买的商品
+            cartService.deleteByCart(loginUser.getUserId(), 1, 1);
+            resultObj.put("errno", 0);
+            resultObj.put("errmsg", "订单提交成功");
+            //
+            Map<String, OrderVo> orderInfoMap = new HashMap<String, OrderVo>();
+            orderInfoMap.put("orderInfo", orderInfo);
+            //
+            resultObj.put("data", orderInfoMap);
+//        // 优惠券标记已用
+//        if (couponVo != null && couponVo.getCoupon_status() == 1) {
+//            couponVo.setCoupon_status(2);
+//            apiCouponMapper.updateUserCoupon(couponVo);
+//        }
+            getGroupBymealforDept(orderInfo.getId());
+            return resultObj;
+        }
         //
-        orderInfo.setFreight_price(freightPrice);
+        orderInfo.setFreight_price(deliveryfee);
         //留言
         orderInfo.setPostscript(postscript);
         //使用的优惠券
@@ -428,6 +515,140 @@ public class ApiOrderService {
         return resultObj;
 
     }
+    @Transactional
+    public Map<String,Object> meanusubmit(JSONObject jsonParam,UserVo loginUser,Integer couponId,String postscript,Integer addressId,Integer num,Integer population,String specification,Integer fate,Integer chacke,Integer stroeid) {
+        Map<String, Object> resultObj = new HashMap<>();
+        AddressVo addressVo = apiAddressMapper.queryObject(addressId);
+        //        String[] specife=specification.split(new char[1]{'/'});
+        Double total = new Double(0.00);
+        if(chacke==0){
+            total = population * (new Double(specification)) * fate*1;
+        }else if(chacke==1){
+            total = population * (new Double(specification)) * fate*1;
+        }else if(chacke==2){
+            total = population * (new Double(specification)) * fate*2;
+        }
+        OrderVo orderInfo = new OrderVo();
+        orderInfo.setOrder_sn(CommonUtil.generateOrderNumber());
+        orderInfo.setUser_id(loginUser.getUserId());
+        //收货地址和运费
+        if (num == 0) {
+            orderInfo.setConsignee(addressVo.getUserName());
+            orderInfo.setMobile(addressVo.getTelNumber());
+            orderInfo.setCountry(addressVo.getNationalCode());
+            orderInfo.setProvince(addressVo.getProvinceName());
+            orderInfo.setCity(addressVo.getCityName());
+            orderInfo.setDistrict(addressVo.getCountyName());
+            orderInfo.setAddress(addressVo.getDetailInfo());
+            orderInfo.setFreight_price(5);
+        } else if (num == 1) {
+            //留言
+            orderInfo.setPostscript(postscript);
+            //使用的优惠券
+            orderInfo.setCoupon_id(couponId);
+//        orderInfo.setCoupon_price(couponPrice);
+            orderInfo.setAdd_time(new Date());
+            orderInfo.setGoods_price((new BigDecimal(specification)));
+            orderInfo.setOrder_price((new BigDecimal(total)));
+            orderInfo.setActual_price((new BigDecimal(total)));
+            // 待付款
+            orderInfo.setOrder_status(0);
+            orderInfo.setShipping_status(0);
+            orderInfo.setPay_status(0);
+            orderInfo.setShipping_id(0);
+            orderInfo.setShipping_fee(new BigDecimal(0));
+            orderInfo.setIntegral(0);
+            orderInfo.setIntegral_money(new BigDecimal(0));
+            //开启事务，插入订单信息和订单商品
+            apiOrderMapper.save(orderInfo);
+            if (null == orderInfo.getId()) {
+                resultObj.put("errno", 1);
+                resultObj.put("errmsg", "订单提交失败");
+                return resultObj;
+            }
+            //统计商品总价
+            List<OrderGoodsVo> orderGoodsData = new ArrayList<>();
+            String listpic = "https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190925/1653468560f147.png";
+            OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+            orderGoodsVo.setOrder_id(orderInfo.getId());
+            orderGoodsVo.setPopulation(population);
+            orderGoodsVo.setFate(fate);
+            orderGoodsVo.setGoods_name("订餐计划");
+            orderGoodsVo.setList_pic_url(listpic);
+            orderGoodsVo.setRetail_price((new BigDecimal(total)));
+            orderGoodsVo.setNumber(1);
+            orderGoodsVo.setGoods_specifition_name_value
+                    (specification);
+            orderGoodsData.add(orderGoodsVo);
+            apiOrderGoodsService.save(orderGoodsVo);
+            //清空已购买的商品
+            cartService.deleteByCart(loginUser.getUserId(), 1, 1);
+            resultObj.put("errno", 0);
+            resultObj.put("errmsg", "订单提交成功");
+            //
+            Map<String, OrderVo> orderInfoMap = new HashMap<String, OrderVo>();
+            orderInfoMap.put("orderInfo", orderInfo);
+            //
+            resultObj.put("data", orderInfoMap);
+
+            getGroupbymenuforDept(orderInfo.getId());
+            return resultObj;
+        }
+        orderInfo.setFreight_price(5);
+        //留言
+        orderInfo.setPostscript(postscript);
+        //使用的优惠券
+        orderInfo.setCoupon_id(couponId);
+//        orderInfo.setCoupon_price(couponPrice);
+        orderInfo.setAdd_time(new Date());
+        orderInfo.setGoods_price((new BigDecimal(specification)));
+        orderInfo.setOrder_price((new BigDecimal(total)));
+        orderInfo.setActual_price((new BigDecimal(total)));
+        // 待付款
+        orderInfo.setOrder_status(0);
+        orderInfo.setShipping_status(0);
+        orderInfo.setPay_status(0);
+        orderInfo.setShipping_id(0);
+        orderInfo.setShipping_fee(new BigDecimal(0));
+        orderInfo.setIntegral(0);
+        orderInfo.setIntegral_money(new BigDecimal(0));
+        //开启事务，插入订单信息和订单商品
+        apiOrderMapper.save(orderInfo);
+        if (null == orderInfo.getId()) {
+            resultObj.put("errno", 1);
+            resultObj.put("errmsg", "订单提交失败");
+            return resultObj;
+        }
+        //统计商品总价
+        List<OrderGoodsVo> orderGoodsData = new ArrayList<>();
+        String listpic = "https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190925/1653468560f147.png";
+        OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+        orderGoodsVo.setOrder_id(orderInfo.getId());
+        orderGoodsVo.setPopulation(population);
+        orderGoodsVo.setFate(fate);
+        orderGoodsVo.setGoods_name("订餐计划");
+        orderGoodsVo.setList_pic_url(listpic);
+        orderGoodsVo.setRetail_price((new BigDecimal(total)));
+        orderGoodsVo.setNumber(1);
+        orderGoodsVo.setGoods_specifition_name_value
+                (specification);
+        orderGoodsData.add(orderGoodsVo);
+        apiOrderGoodsService.save(orderGoodsVo);
+        //清空已购买的商品
+        cartService.deleteByCart(loginUser.getUserId(), 1, 1);
+        resultObj.put("errno", 0);
+        resultObj.put("errmsg", "订单提交成功");
+        //
+        Map<String, OrderVo> orderInfoMap = new HashMap<String, OrderVo>();
+        orderInfoMap.put("orderInfo", orderInfo);
+        //
+        resultObj.put("data", orderInfoMap);
+
+        getGroupbymenuforDept(orderInfo.getId());
+        return resultObj;
+    }
+
+
 private void  getGroupByGoosforDept(Integer orderId){
 
     OrderVo orderVo =apiOrderService.queryObject(orderId);
@@ -530,7 +751,50 @@ private void getGroupBymealforDept(Integer orderId){
 //    orderVo.setSupplier_list(JsonUtil.getJsonByObj(mapSupplier));
 //    apiOrderService.update(orderVo);
     }
+private void getGroupbymenuforDept(Integer orderId){
+    OrderVo orderVo =apiOrderService.queryObject(orderId);
+    if(null==orderVo){
+        return;
+    }
+    Map params = new HashMap();
+    params.put("order_id",orderId);
+    params.put("order", SQLFilter.sqlInject("asc"));
+    List<OrderMenuplanEntity> orderMenuEntityList=orderMenuService.queryList(params);
+//    Map<Integer, List<OrderGoodsVo>> supIdMap = new HashMap<>();
+//    for (OrderGoodsVo orderGoodsVo : orderGoodsVoList) {
+//        List<OrderGoodsVo> tempList = supIdMap.get(orderGoodsVo.getSupplier_id());
+//        /*如果取不到数据,那么直接new一个空的ArrayList**/
+//        if (tempList == null) {
+//            tempList = new ArrayList<>();
+//            tempList.add(orderGoodsVo);
+//            supIdMap.put(orderGoodsVo.getSupplier_id(), tempList);
+//        }
+//        else {
+//            /*某个supplierId之前已经存放过了,则直接追加数据到原来的List里**/
+//            tempList.add(orderGoodsVo);
+//        }
+    //供应商订单总价
+//    BigDecimal  orderTotalPrice ;
+    //商品总价
+    BigDecimal  goodsTotalPrice ;
 
+//    Map mapSupplier=new HashMap();
+//    for(Integer supId : supIdMap.keySet()){
+//        orderTotalPrice = new BigDecimal(0.00);
+    goodsTotalPrice = new BigDecimal(0.00);
+//        List<OrderMenuEntity> voList=supIdMap.get(supId);
+//        OrderSupplierVo orderSupplierVo=new OrderSupplierVo(orderVo);
+//        orderSupplierVo.setDeptId(voList.get(0).getDept_id());
+//        orderSupplierVo.setSupplierId(voList.get(0).getSupplier_id().longValue());
+//        orderSupplierVo.setOrderPrice(orderTotalPrice);
+//        orderSupplierVo.setGoodsPrice(goodsTotalPrice);
+//        orderSupplierVo.setOrderSupSn(CommonUtil.generateOrderNumber());
+//        apiOrderSupplierService.save(orderSupplierVo);
+//        mapSupplier.put(String.valueOf(orderSupplierVo.getSupplierId()),voList.get(0).getSupplierName()+"供应商待发货中..");
+//    }
+//    orderVo.setSupplier_list(JsonUtil.getJsonByObj(mapSupplier));
+//    apiOrderService.update(orderVo);
+}
     /**供应商订单打印*/
     public void printerSupplierOrder(Integer orderId) {
         OrderVo orderVo =apiOrderService.queryObject(orderId);

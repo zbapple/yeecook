@@ -14,9 +14,7 @@
         <result property="isPrinter" column="is_printer"/>
         <result property="remark" column="remark"/>
         <result property="specification" column="specification"/>
-        <result property="
-deliveryTime" column="
-delivery_time"/>
+        <result property="deliverytime" column="delivery_time"/>
         <result property="stroeid" column="stroeid"/>
     </resultMap>
 
@@ -32,8 +30,7 @@ delivery_time"/>
 			`is_printer`,
 			`remark`,
 			`specification`,
-			`
-delivery_time`,
+			`delivery_time`,
 			`stroeid`
 		from order_menuplan
 		where id = #{id}
@@ -51,13 +48,11 @@ delivery_time`,
     		`is_printer`,
     		`remark`,
     		`specification`,
-    		`
-delivery_time`,
     		`stroeid`
 		from order_menuplan
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="userid != null ">
+				and userid=#{userid}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -91,8 +86,6 @@ delivery_time`,
 			`is_printer`,
 			`remark`,
 			`specification`,
-			`
-delivery_time`,
 			`stroeid`)
 		values(
 			#{menuSn},
@@ -104,8 +97,6 @@ delivery_time`,
 			#{isPrinter},
 			#{remark},
 			#{specification},
-			#{
-deliveryTime},
 			#{stroeid})
 	</insert>
 	 
@@ -121,10 +112,6 @@ deliveryTime},
 			<if test="isPrinter != null">`is_printer` = #{isPrinter}, </if>
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="specification != null">`specification` = #{specification}, </if>
-			<if test="
-deliveryTime != null">`
-delivery_time` = #{
-deliveryTime}, </if>
 			<if test="stroeid != null">`stroeid` = #{stroeid}</if>
 		</set>
 		where id = #{id}

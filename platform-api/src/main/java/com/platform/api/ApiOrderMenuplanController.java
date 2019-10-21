@@ -42,7 +42,9 @@ public class ApiOrderMenuplanController extends ApiBaseAction {
         OrderMenuplanEntity ordeplan=new OrderMenuplanEntity();
         if(orderplanlist.size()==0 || orderplanlist==null){
             ordeplan.setStroeid(addjson.getInteger("stroeid"));
-            ordeplan.setDeliveryTime(addjson.getDate("deliverytime"));
+            ordeplan.setUserid(logiuser.getUserId());
+            ordeplan.setOrderType(addjson.getString("ordertype"));
+//            ordeplan.setDeliverytime(addjson.getDate("deliverytime"));
             ordeplan.setPopulation(addjson.getInteger("population"));
             ordeplan.setSpecification(addjson.getString("specification"));
             ordeplan.setRemark(addjson.getString("remark"));

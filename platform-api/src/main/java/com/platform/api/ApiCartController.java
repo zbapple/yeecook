@@ -58,6 +58,7 @@ public class ApiCartController extends ApiBaseAction {
         //查询列表数据
         Map param = new HashMap();
         param.put("user_id", loginUser.getUserId());
+        param.put("stroeid",0);
         List<CartVo> cartList = cartService.queryList(param);
         //获取购物车统计信息
         Integer goodsCount = 0;
@@ -71,6 +72,11 @@ public class ApiCartController extends ApiBaseAction {
                 checkedGoodsCount += cartItem.getNumber();
                 checkedGoodsAmount = checkedGoodsAmount.add(cartItem.getRetail_price().multiply(new BigDecimal(cartItem.getNumber())));
             }
+//            if(cartItem.getStroeid()==null){
+//
+//            }else{
+//                resultObj.put("flag",1);
+//            }
         }
         // 获取优惠信息提示
         Map couponParam = new HashMap();
@@ -127,24 +133,40 @@ public class ApiCartController extends ApiBaseAction {
     @PostMapping("getMealCart")
     public  Object getMealCart(@LoginUser UserVo loginUser,Integer stroeid){
         Map<String, Object> resultObj = new HashMap();
-        JSONObject jsonParam = getJsonRequest();
         //查询列表数据
         Map param = new HashMap();
         param.put("user_id", loginUser.getUserId());
         param.put("stroeid",stroeid);
-//        param.put("mealid",mealid);
         List<CartVo> cartList = cartService.queryList(param);
-        //获取购物车统计信息
+       //获取购物车统计信息
         Integer mealCount = 0;
         BigDecimal mealsAmount = new BigDecimal(0.00);
+        Integer deliveryfee=0;
+        List<Map> cartst=new ArrayList();
         for (CartVo cartItem : cartList) {
             mealCount += cartItem.getNumber();
             mealsAmount = mealsAmount.add(cartItem.getRetail_price().multiply(new BigDecimal(cartItem.getNumber())));
+            deliveryfee=cartItem.getDeliveryfee();
+            Integer nume=cartItem.getStroeid();
+            if(stroeid==nume){
+                Map  cartlt=new HashMap();
+                    cartlt.put("goods_name",cartItem.getGoods_name());
+                    cartlt.put("number",cartItem.getNumber());
+                    cartlt.put("retail_price",cartItem.getRetail_price());
+                    cartlt.put("id",cartItem.getMealid());
+                    cartlt.put("list_pic_url",cartItem.getList_pic_url());
+                cartst.add(cartlt);
+            }else{
+                resultObj.put("flg",1);
+                return resultObj;
+            }
         }
-        resultObj.put("cartList", cartList);
+        resultObj.put("cartst",cartst);
+        resultObj.put("cartList",cartList);
         Map<String, Object> cartTotal1 = new HashMap();
         cartTotal1.put("mealCount", mealCount);
         cartTotal1.put("mealsAmount", mealsAmount);
+        cartTotal1.put("deliveryfee",deliveryfee);
         resultObj.put("cartTotal1",cartTotal1);
         return resultObj;
     }
@@ -220,6 +242,7 @@ public class ApiCartController extends ApiBaseAction {
             cartInfo.setUser_id(loginUser.getUserId());
             cartInfo.setRetail_price(productInfo.getRetail_price());
             cartInfo.setMarket_price(productInfo.getMarket_price());
+            cartInfo.setStroeid(0);
             if (null != goodsSepcifitionValue) {
                 cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
             }
@@ -243,19 +266,19 @@ public class ApiCartController extends ApiBaseAction {
     @PostMapping("addstroe")
     public  Object addstroe(@LoginUser UserVo loginUser){
         JSONObject jsonParam = getJsonRequest();
-        Integer stroeid=jsonParam.getInteger("stroeid");
+        Integer stroeid1=jsonParam.getInteger("stroeid");
         Integer mealid=jsonParam.getInteger("mealid");
         Integer number=jsonParam.getInteger("number");
         MealEntity mealEntity=mealService.queryObject(mealid);
         Map addmap=new HashMap();
-        addmap.put("stroeid",stroeid);
+        addmap.put("stroeid",stroeid1);
         addmap.put("user_id",loginUser.getUserId());
         addmap.put("mealid",mealid);
         List<CartVo> cartVoList=cartService.queryList(addmap);
         CartVo cartVo=null !=cartVoList && cartVoList.size()>0 ? cartVoList.get(0):null;
         if(null == cartVo){
             cartVo=new CartVo();
-            cartVo.setStroeid(stroeid);
+            cartVo.setStroeid(stroeid1);
             cartVo.setGoods_name(mealEntity.getMealName());
             cartVo.setNumber(number);
             cartVo.setList_pic_url(mealEntity.getMealPriue());
@@ -270,7 +293,12 @@ public class ApiCartController extends ApiBaseAction {
             cartVo.setNumber(num + number);
             cartService.update(cartVo);
         }
-        return toResponsSuccess(getMealCart(loginUser,cartVo.getStroeid()));
+        Integer stroeid=0;
+        List<CartVo> cartVoList1=cartService.queryList(addmap);
+        for(CartVo cartVo1:cartVoList1){
+            stroeid=cartVo1.getStroeid();
+        }
+        return toResponsSuccess(getMealCart(loginUser,stroeid));
     }
     /**
      * 减少商品到购物车
@@ -608,7 +636,6 @@ public class ApiCartController extends ApiBaseAction {
         BigDecimal goodsTotalPrice;
         if (type.equals("cart")) {
             Map<String, Object> cartData = (Map<String, Object>) this.getMealCart(loginUser,stroeid);
-
             for (CartVo cartEntity : (List<CartVo>) cartData.get("cartList")) {
                 if (cartEntity.getChecked() == 1) {
                     checkedGoodsList.add(cartEntity);

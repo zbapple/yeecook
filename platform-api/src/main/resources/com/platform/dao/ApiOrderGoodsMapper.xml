@@ -24,6 +24,8 @@
         <result property="attribute_category" column="attribute_category"/>
         <result property="batch_id" column="batch_id"/>
         <result property="yqm" column="yqm"/>
+        <result property="population" column="population"/>
+        <result property="fate" column="fate"/>
 
     </resultMap>
 
@@ -95,8 +97,9 @@
 			`is_real`, 
 			`goods_specifition_ids`,
 			`yqm`,
-			`list_pic_url`
-
+			`list_pic_url`,
+                population,
+                fate
 		)
 		values
 		(
@@ -112,8 +115,9 @@
 			#{is_real},
 			#{goods_specifition_ids},
 			#{yqm},
-			#{list_pic_url}
-
+			#{list_pic_url},
+            #{population},
+			#{fate}
 		)
 	</insert>
 
@@ -134,8 +138,9 @@
             <if test="is_real != null">`is_real` = #{is_real},</if>
             <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{goods_specifition_ids},</if>
             <if test="yqm != null">`yqm` = #{yqm},</if>
-            <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url}</if>
-
+            <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url},</if>
+            <if test="population !=null">population=#{population},</if>
+            <if test="fate !=null">fate=#{fate}</if>
         </set>
         where id = #{id}
     </update>

@@ -176,6 +176,7 @@
 			#{order_type},
 			#{is_printer},
 			#{supplier_list}
+
 		)
 	</insert>
 

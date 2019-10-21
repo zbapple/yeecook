@@ -60,6 +60,10 @@ public class OrderGoodsVo implements Serializable {
     private String supplierName;
 
     private DateTime deliery_time;
+    //人数
+    private  Integer population;
+    //天数
+    private  Integer fate;
 
     public Integer getId() {
         return id;
@@ -188,5 +192,21 @@ public class OrderGoodsVo implements Serializable {
 
     public void setDeliery_time(DateTime deliery_time) {
         this.deliery_time = deliery_time;
+    }
+
+    public Integer getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Integer population) {
+        this.population = population;
+    }
+
+    public Integer getFate() {
+        return fate;
+    }
+
+    public void setFate(Integer fate) {
+        this.fate = fate;
     }
 }

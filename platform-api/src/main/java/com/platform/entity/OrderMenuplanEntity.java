@@ -1,5 +1,8 @@
 package com.platform.entity;
 
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +22,7 @@ public class OrderMenuplanEntity implements Serializable {
     //订单编号
     private String menuSn;
     //用户id
-    private Integer userid;
+    private Long userid;
     //订餐类型(配送、堂吃)
     private String orderType;
     //人数
@@ -35,7 +38,7 @@ public class OrderMenuplanEntity implements Serializable {
     //规格
     private String specification;
     //送达时间
-    private Date deliveryTime;
+    private Date deliverytime;
     //商家id
     private Integer stroeid;
 
@@ -68,16 +71,10 @@ public class OrderMenuplanEntity implements Serializable {
     /**
      * 设置：用户id
      */
-    public void setUserid(Integer userid) {
-        this.userid = userid;
-    }
 
     /**
      * 获取：用户id
      */
-    public Integer getUserid() {
-        return userid;
-    }
     /**
      * 设置：订餐类型(配送、堂吃)
      */
@@ -180,15 +177,27 @@ public class OrderMenuplanEntity implements Serializable {
     /**
      * 获取：商家id
      */
+
     public Integer getStroeid() {
         return stroeid;
     }
 
-    public Date getDeliveryTime() {
-        return deliveryTime;
+
+
+    public Long getUserid() {
+        return userid;
     }
 
-    public void setDeliveryTime(Date deliveryTime) {
-        this.deliveryTime = deliveryTime;
+    public void setUserid(Long userid) {
+        this.userid = userid;
+    }
+
+
+    public Date getDeliverytime() {
+        return deliverytime;
+    }
+
+    public void setDeliverytime(Date deliverytime) {
+        this.deliverytime = deliverytime;
     }
 }

@@ -25,6 +25,10 @@ public class CollectVo implements Serializable {
     //
     private Integer type_id;
     //
+    //门店id
+    private Integer stroeid;
+    private  String stroename;
+    private  String stroepicrue;
     private String name;
     private String list_pic_url;
     private String goods_brief;
@@ -108,5 +112,29 @@ public class CollectVo implements Serializable {
 
     public void setRetail_price(String retail_price) {
         this.retail_price = retail_price;
+    }
+
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
+    }
+
+    public String getStroename() {
+        return stroename;
+    }
+
+    public void setStroename(String stroename) {
+        this.stroename = stroename;
+    }
+
+    public String getStroepicrue() {
+        return stroepicrue;
+    }
+
+    public void setStroepicrue(String stroepicrue) {
+        this.stroepicrue = stroepicrue;
     }
 }

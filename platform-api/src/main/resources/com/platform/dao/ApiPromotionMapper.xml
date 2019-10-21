@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiPromotionMapper">
+
+    <resultMap type="com.platform.entity.PromotionVo" id="promotionMap">
+        <result property="id" column="id"/>
+        <result property="promotionName" column="promotion_name"/>
+        <result property="promotionTelphone" column="promotion_telphone"/>
+        <result property="wxName" column="wx_name"/>
+        <result property="wxListPic" column="wx_list_pic"/>
+        <result property="affiliatedUnit" column="affiliated_unit"/>
+        <result property="promotionYard" column="promotion_yard"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.PromotionVo">
+		select
+			`id`,
+			`promotion_name`,
+			`promotion_telphone`,
+			`wx_name`,
+			`wx_list_pic`,
+			`affiliated_unit`,
+			`promotion_yard`
+		from promotion
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.PromotionVo">
+		select
+    		`id`,
+    		`promotion_name`,
+    		`promotion_telphone`,
+    		`wx_name`,
+    		`wx_list_pic`,
+    		`affiliated_unit`,
+    		`promotion_yard`
+		from promotion
+		WHERE 1=1
+		<if test="promotiontelphone != null">
+			AND promotion_telphone =#{promotiontelphone}
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from promotion
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.PromotionVo">
+		insert into promotion(
+			`id`,
+			`promotion_name`,
+			`promotion_telphone`,
+			`wx_name`,
+			`wx_list_pic`,
+			`affiliated_unit`,
+			`promotion_yard`)
+		values(
+			#{id},
+			#{promotionName},
+			#{promotionTelphone},
+			#{wxName},
+			#{wxListPic},
+			#{affiliatedUnit},
+			#{promotionYard})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.PromotionVo">
+		update promotion 
+		<set>
+			<if test="promotionName != null">`promotion_name` = #{promotionName}, </if>
+			<if test="promotionTelphone != null">`promotion_telphone` = #{promotionTelphone}, </if>
+			<if test="wxName != null">`wx_name` = #{wxName}, </if>
+			<if test="wxListPic != null">`wx_list_pic` = #{wxListPic}, </if>
+			<if test="affiliatedUnit != null">`affiliated_unit` = #{affiliatedUnit}, </if>
+			<if test="promotionYard != null">`promotion_yard` = #{promotionYard}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from promotion where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from promotion where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

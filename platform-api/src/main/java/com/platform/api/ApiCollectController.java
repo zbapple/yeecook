@@ -87,4 +87,41 @@ public class ApiCollectController extends ApiBaseAction {
         }
         return toResponsFail("操作失败");
     }
+    @ApiOperation(value = "添加取消收藏门店")
+    @PostMapping("addordeletestroe")
+    public Object addordeletestroe(@LoginUser UserVo loginUser){
+        JSONObject jsonParam = getJsonRequest();
+        Integer typeId = jsonParam.getInteger("typeId");
+        Integer stroeid=jsonParam.getInteger("stroeid");
+
+        Map param = new HashMap();
+        param.put("user_id", loginUser.getUserId());
+        param.put("type_id", typeId);
+        param.put("stroeid", stroeid);
+        List<CollectVo> collectEntities = collectService.queryList(param);
+        //
+        Integer collectRes = null;
+        String handleType = "add";
+        if (null == collectEntities || collectEntities.size() < 1) {
+            CollectVo collectEntity = new CollectVo();
+            collectEntity.setAdd_time(System.currentTimeMillis() / 1000);
+            collectEntity.setType_id(typeId);
+            collectEntity.setStroeid(stroeid);
+            collectEntity.setIs_attention(0);
+            collectEntity.setUser_id(loginUser.getUserId());
+            //添加收藏
+            collectRes = collectService.save(collectEntity);
+        } else {
+            //取消收藏
+            collectRes = collectService.delete(collectEntities.get(0).getId());
+            handleType = "delete";
+        }
+
+        if (collectRes > 0) {
+            Map data = new HashMap();
+            data.put("type", handleType);
+            return toResponsSuccess(data);
+        }
+        return  toResponsFail("操作失败");
+    }
 }
