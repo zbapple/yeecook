@@ -46,7 +46,7 @@ public class ApiStroeController extends ApiBaseAction {
             double lat=listjson.getDouble("lat");
             double lon=listjson.getDouble("lon");
             Integer storeType=listjson.getInteger("storeType");
-            Map<String,Double> json=MapUtils.getAround(lon,lat,6000.0);
+            Map<String,Double> json=MapUtils.getAround(lon,lat,7000.0);
             Double minLng=json.get("minLng");
             Double maxLng=json.get("maxLng");
             Double minLat=json.get("minLat");
@@ -105,7 +105,7 @@ public class ApiStroeController extends ApiBaseAction {
         try {
             double lat=typestjson.getDouble("lat");
             double lon=typestjson.getDouble("lon");
-            Map<String,Double> json=MapUtils.getAround(lon,lat,5000.0);
+            Map<String,Double> json=MapUtils.getAround(lon,lat,7000.0);
             Double minLng=json.get("minLng");
             Double maxLng=json.get("maxLng");
             Double minLat=json.get("minLat");

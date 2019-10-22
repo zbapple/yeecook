@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.LoginInfo;
+import com.platform.entity.PromotionInfoEntity;
 import com.platform.entity.UserVo;
+import com.platform.service.ApiPromotionInfoService;
 import com.platform.service.ApiUserService;
 import com.platform.service.TokenService;
 import com.platform.util.ApiBaseAction;
@@ -47,6 +49,8 @@ public class    ApiAuthController extends ApiBaseAction {
     private TokenService tokenService;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private ApiPromotionInfoService promotionInfoService;
     /**
      * 登录
      */
@@ -107,6 +111,18 @@ public class    ApiAuthController extends ApiBaseAction {
             userVo.setGender(loginInfo.getGender()); // //性别 0：未知、1：男、2：女
             userVo.setNickname(loginInfo.getNickName());
             userService.save(userVo);
+            if(loginInfo.getSceneid()!=null){
+            PromotionInfoEntity promotionInfoEntity=new PromotionInfoEntity();
+
+            promotionInfoEntity.setUserId(Integer.valueOf(String.valueOf(userVo.getUserId())));
+            long parentid=(long)loginInfo.getSceneid();
+//                promotionInfoEntity.setUserId(78);
+            Long  parentids= new Long(parentid);
+            promotionInfoEntity.setParentId(parentids);
+//                Long num2=new Long((long)3);
+//                promotionInfoEntity.setParentId(num2);
+            promotionInfoService.save(promotionInfoEntity);
+           }
         }
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());
         String token = MapUtils.getString(tokenMap, "token");

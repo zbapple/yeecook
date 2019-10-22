@@ -15,6 +15,7 @@ public class LoginInfo {
 	public String getCode() {
 		return code;
 	}
+	private Integer sceneid;
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -59,5 +60,13 @@ public class LoginInfo {
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public Integer getSceneid() {
+		return sceneid;
+	}
+
+	public void setSceneid(Integer sceneid) {
+		this.sceneid = sceneid;
 	}
 }

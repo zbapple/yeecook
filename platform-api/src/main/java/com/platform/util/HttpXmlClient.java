@@ -69,7 +69,7 @@ public class HttpXmlClient {
         String result = "";
         InputStream inputStream=null;
         //请求数据，自行拼接
-        String param="{ \"scene\":\""+sceneStr+"\" ,\"page\":\"pages/cookbook/cookbook\",\"width\":280}";
+        String param="{ \"scene\":\""+sceneStr+"\" ,\"page\":\"pages/takeoutindex/takeoutindex\",\"width\":280}";
         System.out.print(param);
         try {
             URL realUrl = new URL(url);

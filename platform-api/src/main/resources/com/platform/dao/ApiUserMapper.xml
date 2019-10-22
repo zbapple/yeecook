@@ -19,8 +19,6 @@
         <result property="register_ip" column="register_ip"/>
         <result property="avatar" column="avatar"/>
         <result property="weixin_openid" column="weixin_openid"/>
-        <result property="promoid" column="promo_id"/>
-        <result property="promoinfo" column="promo_info"/>
     </resultMap>
 
     <select id="queryObject" resultMap="userMap">
@@ -77,9 +75,7 @@
 			`mobile`, 
 			`register_ip`, 
 			`avatar`, 
-			`weixin_openid`,
-			promo_id,
-			promo_info
+			`weixin_openid`
 		)
 		values
 		(
@@ -95,9 +91,7 @@
 			#{mobile},
 			#{register_ip},
 			#{avatar},
-			#{weixin_openid},
-			#{promoid},
-			#{promoinfo}
+			#{weixin_openid}
 		)
 	</insert>
 
@@ -116,9 +110,8 @@
             <if test="mobile != null">`mobile` = #{mobile},</if>
             <if test="register_ip != null">`register_ip` = #{register_ip},</if>
             <if test="avatar != null">`avatar` = #{avatar},</if>
-            <if test="weixin_openid != null">`weixin_openid` = #{weixin_openid},</if>
-            <if test="promoid !=null">promo_id=#{promoid},</if>
-            <if test="promoinfo !=null">promo_info=#{promoinfo}</if>
+            <if test="weixin_openid != null">`weixin_openid` = #{weixin_openid}</if>
+
         </set>
         where id = #{userId}
     </update>

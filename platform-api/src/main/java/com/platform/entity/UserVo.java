@@ -40,10 +40,6 @@ public class UserVo implements Serializable {
     private String avatar;
     //微信Id
     private String weixin_openid;
-    //识别是不是推广员（1:是推广人员 0:普通用户）
-    private Integer promoid;
-    //推广人员的id
-    private Integer promoinfo;
 
     public Long getUserId() {
         return userId;
@@ -157,19 +153,4 @@ public class UserVo implements Serializable {
         this.weixin_openid = weixin_openid;
     }
 
-    public Integer getPromoid() {
-        return promoid;
-    }
-
-    public void setPromoid(Integer promoid) {
-        this.promoid = promoid;
-    }
-
-    public Integer getPromoinfo() {
-        return promoinfo;
-    }
-
-    public void setPromoinfo(Integer promoinfo) {
-        this.promoinfo = promoinfo;
-    }
 }
