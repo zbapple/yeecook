@@ -26,7 +26,7 @@ import com.platform.service.OrderSupplierService;
  * @date 2018-09-19 12:23:49
  */
 @Service("orderSupplierService")
-public class OrderSupplierServiceImpl implements OrderSupplierService {
+public class  OrderSupplierServiceImpl implements OrderSupplierService {
     @Autowired
     private OrderSupplierDao orderSupplierDao;
     @Autowired
@@ -39,6 +39,15 @@ public class OrderSupplierServiceImpl implements OrderSupplierService {
     public OrderSupplierEntity queryObject(Integer id) {
         return orderSupplierDao.queryObject(id);
     }
+
+    @Override
+    @DataFilter(deptAlias = "a.dept_id")
+    public OrderSupplierEntity queryInfo(Integer id) {
+        HashMap<String,Object> map=new HashMap();
+        map.put("id",id);
+        return orderSupplierDao.queryInfo(map);
+    }
+
 
     @Override
     @DataFilter(deptAlias = "a.dept_id")

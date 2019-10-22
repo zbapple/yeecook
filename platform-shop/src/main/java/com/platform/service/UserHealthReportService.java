@@ -74,4 +74,8 @@ public interface UserHealthReportService {
      *  查询对象
      **/
     UserHealthReportEntity queryWeight(Integer id);
+    /**
+     * 查询用户最新的身体数据
+     **/
+    UserHealthReportEntity queryUserReport(Integer id);
 }

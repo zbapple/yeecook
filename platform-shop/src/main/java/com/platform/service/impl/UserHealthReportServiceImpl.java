@@ -1,5 +1,6 @@
 package com.platform.service.impl;
 
+import org.jacoco.agent.rt.internal_1f1cc91.core.internal.flow.IFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,9 @@ Service实现类
  */
 @Service("userHealthReportService")
 public class UserHealthReportServiceImpl implements UserHealthReportService {
+
     @Autowired
     private UserHealthReportDao userHealthReportDao;
-
     @Override
     public UserHealthReportEntity queryObject(Integer id) {
         return userHealthReportDao.queryObject(id);
@@ -65,6 +66,15 @@ public class UserHealthReportServiceImpl implements UserHealthReportService {
             return null;
         }
         return userHealthReportDao.queryWeight(id);
+    }
+
+    @Override
+    public UserHealthReportEntity queryUserReport(Integer id) {
+        UserHealthReportEntity userHealthReportEntity=userHealthReportDao.queryUserReport(id);
+        if (userHealthReportEntity == null){
+            return null;
+        }
+        return userHealthReportDao.queryUserReport(id);
     }
 
 }

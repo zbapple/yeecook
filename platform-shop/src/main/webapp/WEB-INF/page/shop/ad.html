@@ -87,7 +87,7 @@
                 <i-input type="textarea" :rows="6" v-model="ad.content" placeholder="内容"  style="width: 300px"/>
             </Form-item>
             <Form-item label="结束时间" prop="endTime">
-                <Date-picker v-model="ad.endTime" placeholder="结束时间"  style="width: 300px"></Date-picker>
+                <Date-picker v-model="ad.endTime" type="datetime"  placeholder="结束时间"  style="width: 300px"></Date-picker>
             </Form-item>
             <Form-item label="状态" prop="enabled">
                 <Radio-group v-model="ad.enabled">

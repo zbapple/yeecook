@@ -4,6 +4,87 @@
     <title>用户膳食计划</title>
     #parse("sys/header.html")
     <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .box {
+            height: 580px;
+            border: 1px solid gainsboro;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding-top: 26px;
+            padding-left: 20px;
+            -moz-box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            -webkit-box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            overflow: hidden;
+        }
+
+        .box1 {
+            border: 1px solid gainsboro;
+            border-radius: 10px;
+            padding-top: 26px;
+            padding-left: 30px;
+            padding-bottom: 20px;
+            -moz-box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            -webkit-box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            box-shadow: rgba(51, 51, 54, 0.1) 0px 0px 10px;
+            overflow: hidden;
+        }
+
+        .ppp {
+            margin-left: 280px;
+            margin-bottom: -300px;
+            font-size: 40px;
+            color: gainsboro;
+            display: inline-block;
+            vertical-align: middle
+        }
+
+        .boxes {
+            border: 1px solid gainsboro;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 25px;
+            margin-left: 50px;
+            border-radius: 10px;
+            background-color: gainsboro;
+            float: left;
+            cursor: pointer;
+            text-align: center;
+            line-height: 30px;
+            overflow: hidden;
+            word-break: break-all;
+            word-wrap: break-word;
+            white-space: pre;
+
+        }
+
+        .pp {
+            font-size: 12px;
+            color: black;
+            margin: 0px 0px 20px 20px;
+            font-family: 微软雅黑;
+            font-weight: bolder;
+            overflow: hidden;
+        }
+
+        .sub {
+            width: 400px;
+            margin-top: 450px;
+            margin-left: 520px;
+        }
+
+        .stitle {
+            color: gray;
+            font-weight: bolder;
+        }
         .upload-list {
             display: inline-block;
             width: 60px;
@@ -59,21 +140,17 @@
 </head>
 <body>
 <div id="rrapp" v-cloak>
-    <a href="menuplan.html" style="font-size: 18px;color: cornflowerblue">用户膳食计划</a>
-    <div v-show="!details&&showList">
+    <a href="menuplan.html" style="font-size: 20px;color: cornflowerblue">用户膳食计划</a>
+    <div v-show="!details&&!saveDetails&&showList">
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
-                    <!--<i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>-->
-                        <!--<i-option v-for="item in CateringServiceOrgNames"-->
-                                  <!--:value="item.name"-->
-                                  <!--:key="item.name">{{item.name}}-->
-                        <!--</i-option>-->
-                        <!--<i-option value="1" selected>-->
-                            <!--{{menumapsysdept.name}}-->
-                        <!--</i-option>-->
-                    <!--</i-select>-->
-                    <span>{{dept.name}}</span>
+                    <i-select v-model="q.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>
+                        <i-option v-for="item in CateringServiceOrgNames"
+                                  :value="item.name"
+                                  :key="item.name">{{item.name}}
+                        </i-option>
+                    </i-select>
                 </i-col>
                 <i-col span="3">
                     <i-select v-model="q.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
@@ -94,7 +171,7 @@
             </div>
             <div class="button-group" style="float: right;margin-right: 25px ">
                 #if($shiro.hasPermission("menuplan:save"))
-                <i-button type="info" @click="add" style="font-size: 13dpx"><i class="fa fa-plus"></i>新增项目
+                <i-button type="info" @click="add" style="font-size: 13px"><i class="fa fa-plus"></i>新增项目
                 </i-button>
                 #end
                 #if($shiro.hasPermission("menuplan:update"))
@@ -109,89 +186,123 @@
         <div id="jqGridPager"></div>
     </div>
 
-    <Card v-show="!showList&&!showfoods&&!details">
+    <Card v-show="!foodsDetails&&!showList&&!addFoods&&!details&&!saveDetails&&!updateInfo&&insert">
         <p slot="title">{{title}}</p>
-        <div style="float:right;padding-left: 20px;">
-            <p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字：<span
-                    v-if="servermenuPlan.menuName">{{servermenuPlan.menuName}}</span><span v-else>待定制</span></p>
-            <p style="height:27px;line-height: 27px ;font-size: 12px;width: 324px;">套餐编号：<span
-                    style="width: 10px;height: 10px"><input v-model="servermenuPlan.menuSn"/></span></p>
-            <p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span
-                    v-if="servermenuPlan.nickName">{{servermenuPlan.nickName}}</span><span v-else>待选择</span></p>
-        </div>
-        <div style="width: 84px; height:81px;float: right;">
-            <div class="upload-list" v-for="item in uploadList" style="width: 84px;height: 81px">
-                <template v-if="item.status === 'finished'">
-                    <img :src="item.menuCoverPic"/>
-                    <div class="upload-list-cover">
-                        <Icon type="ios-eye-outline" @click.native="handleView(item.menuCoverPic)"></Icon>
-                        <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+        <div class="box">
+            <p class="pp">基础信息</p>
+            <!--<div style="float:right;padding-left: 20px;">-->
+            <!--<p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字：<span-->
+            <!--v-if="menuPlan.menuName">{{menuPlan.menuName}}</span><span v-else>待定制</span></p>-->
+            <!--<p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span-->
+            <!--v-if="menuPlan.nickName">{{menuPlan.nickName}}</span><span v-else>待选择</span></p>-->
+            <!--</div>-->
+            <i-form ref="formValidate1" :model="menuPlan" :rules="ruleValidate" :label-width="80">
+                <Form-item label="机构名称" prop="cateringServiceOrgName" style="width: 260px;display: inline-block;">
+                    <i-select v-model="menuPlan.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true>
+                        <i-option style="text-align: center" v-for="item in CateringServiceOrgNames"
+                                  :value="item.name"
+                                  :key="item.name">{{item.name}}
+                        </i-option>
+                    </i-select>
+                </Form-item>
+                <Form-item label="用户名称" prop="nickName" style="width: 260px;display: inline-block">
+                    <i-select v-model="menuPlan.nickName" filterable placeholder="用户名称" @on-change="getUserReport"
+                              clearable=true>
+                        <i-option style="text-align: center" v-for="item in UserNames"
+                                  :value="item.nickname"
+                                  :key="item.nickname">{{item.nickname}}
+                        </i-option>
+                    </i-select>
+                </Form-item>
+                <Form-item label="身体数据" style="width:580px;display: inline-block">
+                    <!--<i-input type="textarea"  :rows="2" placeholder="身体数据">bmi:{{userReport.bmi}}</i-input>-->
+
+                    <div style="width:180px;height:32px;border:1px solid gainsboro;border-radius:5px;text-align: center"
+                         v-if="JSON.stringify(userReport) == '{}'"><span>请选择有效用户名称</span></div>
+                    <div style="width:600px;height:64px;border:1px solid gainsboro;border-radius:5px;text-align: center"
+                         v-else><span v-model="userReport">
+                    <span class="stitle">体重:</span>&nbsp{{userReport.weight}}<span class="stitle">kg</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">bmi:</span>&nbsp{{userReport.bmi}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">体脂率:</span>&nbsp{{userReport.bodyFatRade}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">皮下脂肪率:</span>&nbsp{{userReport.subFatPercentage}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">基础代谢量:</span>&nbsp{{userReport.basicMetabolism}}<span
+                            class="stitle">kcal</span>&nbsp&nbsp<br/>
+                    <span class="stitle">内脏脂肪等级:</span>&nbsp{{userReport.visFatGrade}}<span class="stitle">级</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">体水分率:</span>&nbsp{{userReport.visFatGrade}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">骨量:</span>&nbsp{{userReport.boneMass}}<span class="stitle">kg</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">身体年龄:</span>&nbsp{{userReport.bodyAge}}<span class="stitle">岁</span>&nbsp&nbsp&nbsp&nbsp
+                    <span class="stitle">体型:</span>&nbsp{{userReport.bodyShape}}&nbsp&nbsp
+                </span>
                     </div>
-                </template>
-                <template v-else>
-                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-                </template>
-            </div>
-            <Upload
-                    ref="upload"
-                    :show-upload-list="false"
-                    :default-file-list="uploadList"
-                    :on-success="handleSuccess"
-                    :format="['jpg','jpeg','png']"
-                    :max-size="2048"
-                    :on-format-error="handleFormatError"
-                    :on-exceeded-size="handleMaxSize"
-                    :before-upload="handleBeforeUpload"
-                    multiple
-                    type="drag"
-                    action="../sys/oss/upload"
-                    style="display: inline-block;width: 84px;" v-show="showcamera">
-                <div style="width: 84px;height:81px;line-height: 84px;">
-                    <Icon type="camera" size="20"></Icon>
+                </Form-item>
+                <Form-item label="计划类型" prop="nutritionMenuType" style="width: 260px;display: inline-block;">
+                    <i-select v-model="menuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
+                        <i-option style="text-align: center" v-for="item in nutritionMenuTypelist"
+                                  :value="item"
+                                  :key="item">{{item}}
+                        </i-option>
+                    </i-select>
+                </Form-item>
+                <!--<Form-item label="身体基础数据" prop="" style="width: 500px;display: inline-block;" label-width="20px">-->
+                <!--<i-input type="textarea" />-->
+                <!--</Form-item>-->
+                <Form-item label="套餐名称" prop="menuName" style="width: 260px;display: inline-block ">
+                    <i-input v-model="menuPlan.menuName" placeholder="套餐名称"/>
+                </Form-item>
+                <Form-item label="套餐编号" prop="menuSn" style="width:260px;display: inline-block">
+                    <i-input v-model="menuPlan.menuSn" placeholder="套餐编号" type="number"
+                             style="  -moz-appearance: textfield;"/>
+                </Form-item>
+                <div style="width: 250px; height:120px;display: inline-block;margin-left: 20px">
+                    <label style="width:60px;height:32px;font-size: 12px;font-weight: bolder;display: block">套餐图片</label>
+                    <div style="width: 180px; height:81px;float: right;display: block;margin-top: -40px">
+                        <div class="upload-list" v-for="item in uploadList"
+                             style="width: 84px;height: 81px;float: right; ">
+                            <template v-if="item.status === 'finished'">
+                                <img :src="item.menuCoverPic"/>
+                                <div class="upload-list-cover">
+                                    <Icon type="ios-eye-outline" @click.native="handleView(item.menuCoverPic)"></Icon>
+                                    <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                            </template>
+                        </div>
+                        <Upload
+                                ref="upload"
+                                :show-upload-list="false"
+                                :default-file-list="uploadList"
+                                :on-success="handleSuccess"
+                                :format="['jpg','jpeg','png']"
+                                :max-size="2048"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                :before-upload="handleBeforeUpload"
+                                multiple
+                                type="drag"
+                                action="../sys/oss/upload"
+                                style="display: inline-block;width: 84px;" v-show="showcamera">
+                            <div style="width: 84px;height:81px;line-height: 84px;">
+                                <Icon type="camera" size="20"></Icon>
+                            </div>
+                        </Upload>
+                        <Modal title="查看图片" v-model="visible">
+                            <img :src="imgName" v-if="visible" style="width:100%"/>
+                        </Modal>
+                    </div>
                 </div>
-            </Upload>
-            <Modal title="查看图片" v-model="visible">
-                <img :src="imgName" v-if="visible" style="width:100%" />
-            </Modal>
-        </div>
-        <i-form ref="formValidate" :model="menuPlan" :rules="ruleValidate" :label-width="80">
-            <Form-item label="机构名称" prop="name" style="width: 300px;display: inline-block;">
-                <!--<i-select v-model="servermenuPlan.cateringServiceOrgName"  filterable placeholder="月子机构" clearable=true >-->
-                    <!--<i-option v-for="item in Caterings"-->
-                              <!--:value="item.name"-->
-                              <!--:key="item.name">{{item.name}}-->
-                    <!--</i-option>-->
-                <!--</i-select>-->
-                <i-input v-model="servermenuPlan.cateringServiceOrgName"  readonly="readonly"/>
+                <Form-item label="开始时间" prop="serviceCycleSt" style="width:260px;display: inline-block"
+                >
+                    <Date-picker v-model="menuPlan.serviceCycleSt" placeholder="计划开始时间" type="date" @on-change="getSt"/>
             </Form-item>
-            <Form-item label="计划类型" prop="nutritionMenuType" style="width: 300px;display: inline-block;">
-                <i-select v-model="servermenuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
-                    <!--<i-option value="1">月子餐类型A</i-option>-->
-                    <!--<i-option value="2">月子餐类型B</i-option>-->
-                    <i-option v-for="item in nutritionMenuTypelist"
-                              :value="item"
-                              :key="item">{{item}}
-                    </i-option>
-                </i-select>
+                <Form-item label="结束时间" prop="serviceCycleEt" style="width:260px;display: inline-block"
+                >
+                    <Date-picker v-model="menuPlan.serviceCycleEt" placeholder="计划结束时间" type="date" @on-change="getEt"/>
             </Form-item>
-            <!--<From-item style="margin-left: 110px">-->
-                <!--<i-button type="info"  @click="addfoods"><i class="fa fa-add" style=""></i>添加餐饮计划</i-button>-->
-            <!--</From-item>-->
-            <Form-item label="用户名称" prop="nickname" style="width: 300px;">
-                <i-select v-model="servermenuPlan.nickName" filterable placeholder="用户名称"  clearable=true>
-                    <i-option v-for="item in UserNames"
-                              :value="item.nickname"
-                              :key="item.nickname">{{item.nickname}}
-                    </i-option>
-                </i-select>
-                <!--<i-input v-model="servermenuPlan.nickName"  v-else  readonly="readonly"/>-->
-            </Form-item>
-            <Form-item label="食谱名称" prop="menuName" style="width: 300px">
-                <i-input v-model="servermenuPlan.menuName" placeholder="食谱名称"/>
-            </Form-item>
-            <Form-item label="疗养阶段" prop="serviceStage" style="width: 268px;display: inline-block ">
-                <i-select v-model="servermenuPlan.serviceStage" filterable placeholder="疗养阶段" clearable=true>
-                    <i-option v-for="item in serviceStagelsit"
+                <Form-item label="疗养阶段" prop="serviceStage" style="width: 260px;display: inline-block ">
+                    <i-select v-model="menuPlan.serviceStage" filterable placeholder="疗养阶段" clearable=true>
+                        <i-option style="text-align: center" v-for="item in serviceStagelsit"
                               :value="item"
                               :key="item">{{item}}
                     </i-option>
@@ -201,22 +312,204 @@
                     <!--<i-option value="3">第四周疗养阶段</i-option>-->
                 </i-select>
             </Form-item>
-            <Form-item label="计划开始时间" prop="serviceCycleSt" style="width:268px;display: inline-block;margin-left:30px"
-                       label-width="20px">
-                <Date-picker v-model="servermenuPlan.serviceCycleSt" placeholder="计划开始时间"/>
+                <Form-item label="周期"  prop="inspectionCycle"
+                           style="width: 184px;letter-spacing:20px; padding-left:18px;display: inline-block;">
+                    <i-input v-model="menuPlan.inspectionCycle" placeholder="周期" type="number" style="margin-left: -8px"/>
             </Form-item>
-            <Form-item label="计划结束时间" prop="serviceCycleEt" style="width:268px;display: inline-block;margin-left:10px"
-                       label-width="20px">
-                <Date-picker v-model="servermenuPlan.serviceCycleEt" placeholder="计划结束时间"/>
-            </Form-item>
-            <Form-item label="周期" prop="inspectionCycle" style="width: 268px; display: inline-block">
-                <i-input v-model="servermenuPlan.inspectionCycle" placeholder="周期"/>
-            </Form-item>
-            <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 500px;">
-                <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="4" placeholder="营养原理"/>
-            </Form-item>
+                <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 720px;float: bottom">
+                    <i-input v-model="menuPlan.nutritionPrinciple" type="textarea" :rows="8" placeholder="营养原理"/>
+                </Form-item>
+            </i-form>
+        </div>
+        <div class="box1">
+            <p class="pp">定制单品</p>
+            <span class="ppp"
+                  v-if="menuPlan.serviceCycleSt == ''&& menuPlan.serviceCycleEt == ''">提示：请选择计划开始与结束时间</span>
+            <div class="boxes" @click="addFood(item)" v-for="(item,i) in arr" v-else>
+
+                <p>第{{i+1}}天<br/>{{item}}</p>
+            </div>
+
+            <div class="sub">
+                <i-button type="primary" @click="handleSubmit('formValidate1')"  style="font-size: 13px">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 15px;font-size: 13px"/>
+                取消</i-button>
+            </div>
+        </div>
+    </Card>
+    <Card v-show="!foodsDetails&&!showList&&!updateFoods&&!details&&!saveDetails&&!insert&&updateInfo">
+        <p slot="title">{{title}}</p>
+        <div class="box">
+            <p class="pp">基础信息</p>
+            <!--<div style="float:right;padding-left: 20px;">-->
+            <!--<p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字：<span-->
+            <!--v-if="menuPlan.menuName">{{menuPlan.menuName}}</span><span v-else>待定制</span></p>-->
+            <!--<p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;"> 用户名称：<span-->
+            <!--v-if="menuPlan.nickName">{{menuPlan.nickName}}</span><span v-else>待选择</span></p>-->
+            <!--</div>-->
+            <i-form ref="formValidate2" :model="menuPlan" :rules="ruleValidate" :label-width="80">
+                <Form-item label="机构名称" prop="cateringServiceOrgName" style="width: 260px;display: inline-block;">
+                    <!--<i-select v-model="menuPlan.cateringServiceOrgName" filterable placeholder="月子机构" clearable=true >-->
+                    <!--<i-option style="text-align: center" v-for="item in CateringServiceOrgNames"-->
+                    <!--:value="item.name"-->
+                    <!--:key="item.name">{{item.name}}-->
+                    <!--</i-option>-->
+                    <!--</i-select>-->
+                    <i-input v-model="menuPlan.cateringServiceOrgName" disabled></i-input>
+                </Form-item>
+                <Form-item label="用户名称" prop="nickName" style="width: 260px;display: inline-block">
+                    <!--<i-select v-model="menuPlan.nickName" filterable placeholder="用户名称" @on-change="getUserReport" disabled-->
+                    <!--clearable=true>-->
+                    <!--<i-option style="text-align: center" v-for="item in UserNames"-->
+                    <!--:value="item.nickname"-->
+                    <!--:key="item.nickname">{{item.nickname}}-->
+                    <!--</i-option>-->
+                    <!--</i-select>-->
+                    <i-input v-model="menuPlan.nickName" disabled></i-input>
+                </Form-item>
+                <!--<Form-item label="身体数据" style="width:580px;display: inline-block">-->
+                <!--&lt;!&ndash;<i-input type="textarea"  :rows="2" placeholder="身体数据">bmi:{{userReport.bmi}}</i-input>&ndash;&gt;-->
+
+                <!--<div style="width:180px;height:32px;border:1px solid gainsboro;border-radius:5px;text-align: center"-->
+                <!--v-if="JSON.stringify(userReport) == '{}'"><span>请选择有效用户名称</span></div>-->
+                <!--<div style="width:600px;height:64px;border:1px solid gainsboro;border-radius:5px;text-align: center"-->
+                <!--v-else><span v-model="userReport">-->
+                <!--<span class="stitle">体重:</span>&nbsp{{userReport.weight}}<span class="stitle">kg</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">bmi:</span>&nbsp{{userReport.bmi}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">体脂率:</span>&nbsp{{userReport.bodyFatRade}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">皮下脂肪率:</span>&nbsp{{userReport.subFatPercentage}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">基础代谢量:</span>&nbsp{{userReport.basicMetabolism}}<span-->
+                <!--class="stitle">kcal</span>&nbsp&nbsp<br/>-->
+                <!--<span class="stitle">内脏脂肪等级:</span>&nbsp{{userReport.visFatGrade}}<span class="stitle">级</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">体水分率:</span>&nbsp{{userReport.visFatGrade}}<span class="stitle">%</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">骨量:</span>&nbsp{{userReport.boneMass}}<span class="stitle">kg</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">身体年龄:</span>&nbsp{{userReport.bodyAge}}<span class="stitle">岁</span>&nbsp&nbsp&nbsp&nbsp-->
+                <!--<span class="stitle">体型:</span>&nbsp{{userReport.bodyShape}}&nbsp&nbsp-->
+                <!--</span>-->
+                <!--</div>-->
+                <!--</Form-item>-->
+                <Form-item label="计划类型" prop="nutritionMenuType" style="width: 260px;display: inline-block;">
+                    <i-select v-model="menuPlan.nutritionMenuType" filterable placeholder="食谱类型" clearable=true>
+                        <i-option style="text-align: center" v-for="item in nutritionMenuTypelist"
+                                  :value="item"
+                                  :key="item">{{item}}
+                        </i-option>
+                    </i-select>
+                </Form-item>
+                <!--<Form-item label="身体基础数据" prop="" style="width: 500px;display: inline-block;" label-width="20px">-->
+                <!--<i-input type="textarea" />-->
+                <!--</Form-item>-->
+                <Form-item label="套餐名称" prop="menuName" style="width: 260px;display: inline-block ">
+                    <i-input v-model="menuPlan.menuName" placeholder="套餐名称"/>
+                </Form-item>
+                <Form-item label="套餐编号" prop="menuSn" style="width:260px;display: inline-block">
+                    <i-input v-model="menuPlan.menuSn" placeholder="套餐编号" type="number" disabled
+                             style="  -moz-appearance: textfield;"/>
+                </Form-item>
+                <div style="width: 260px; height:120px;display: inline-block;margin-left: 20px">
+                    <label style="width:60px;height:32px;font-size: 12px;font-weight: bolder;display: block;margin-right: 10px">套餐图片</label>
+                    <div style="width: 186px; height:81px;float: right;display: block;margin-top: -40px;margin-right: 14px">
+                        <div class="upload-list" v-for="item in uploadList"
+                             style="width: 84px;height: 81px;float: right; ">
+                            <template v-if="item.status === 'finished'">
+                                <img :src="item.menuCoverPic"/>
+                                <div class="upload-list-cover">
+                                    <Icon type="ios-eye-outline" @click.native="handleView(item.menuCoverPic)"></Icon>
+                                    <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                            </template>
+                        </div>
+                        <Upload
+                                ref="upload"
+                                :show-upload-list="false"
+                                :default-file-list="uploadList"
+                                :on-success="handleSuccess"
+                                :format="['jpg','jpeg','png']"
+                                :max-size="2048"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                :before-upload="handleBeforeUpload"
+                                multiple
+                                type="drag"
+                                action="../sys/oss/upload"
+                                style="display: inline-block;width: 84px;" v-show="showcamera">
+                            <div style="width: 84px;height:81px;line-height: 81px;">
+                                <Icon type="camera" size="20"></Icon>
+                            </div>
+                        </Upload>
+                        <Modal title="查看图片" v-model="visible">
+                            <img :src="imgName" v-if="visible" style="width:100%"/>
+                        </Modal>
+                    </div>
+                </div>
+                <Form-item label="开始时间" prop="serviceCycleSt" style="width:260px;display: inline-block;margin-left: -20px"
+                >
+                    <Date-picker v-model="menuPlan.serviceCycleSt" placeholder="计划开始时间" type="date" @on-change="getSt"/>
+                </Form-item>
+                <Form-item label="结束时间" prop="serviceCycleEt" style="width:260px;display: inline-block;"
+                >
+                    <Date-picker v-model="menuPlan.serviceCycleEt" placeholder="计划结束时间" type="date" @on-change="getEt"/>
+                </Form-item>
+                <Form-item label="疗养阶段" prop="serviceStage" style="width: 260px;display: inline-block ">
+                    <i-select v-model="menuPlan.serviceStage" filterable placeholder="疗养阶段" clearable=true>
+                        <i-option style="text-align: center" v-for="item in serviceStagelsit"
+                                  :value="item"
+                                  :key="item">{{item}}
+                        </i-option>
+                        <!--<i-option value="0">第一周疗养阶段</i-option>-->
+                        <!--<i-option value="1">第二周疗养阶段</i-option>-->
+                        <!--<i-option value="2">第三周疗养阶段</i-option>-->
+                        <!--<i-option value="3">第四周疗养阶段</i-option>-->
+                    </i-select>
+                </Form-item>
+                <Form-item label="周期"  prop="inspectionCycle"
+                           style="width: 184px;letter-spacing:20px; padding-left:18px;display: inline-block;">
+                    <i-input v-model="menuPlan.inspectionCycle" placeholder="周期" type="number" style="margin-left: -18px;"/>
+                </Form-item>
+                <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 720px;float: bottom">
+                    <i-input v-model="menuPlan.nutritionPrinciple" type="textarea" :rows="8" placeholder="营养原理"/>
+                </Form-item>
+            </i-form>
+        </div>
+        <div class="box1">
+            <p class="pp">定制单品</p>
+            <span class="ppp"
+                  v-if="menuPlan.serviceCycleSt == ''&& menuPlan.serviceCycleEt == ''">提示：请选择计划开始与结束时间</span>
+            <div class="boxes" @click="updateFood(item)" v-for="(item,i) in arr" v-else>
+
+                <p>第{{i+1}}天<br/>{{item}}</p>
+            </div>
+            <div class="sub">
+                <i-button type="primary" @click="handleSubmit('formValidate2')" style="font-size: 13px">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 15px;font-size: 13px"/>
+                取消</i-button>
+            </div>
+        </div>
+    </Card>
+    <Card v-show="saveDetails&&!addFoods">
+        <p slot="title">{{title}}</p>
+        <i-form ref="formValidate" :model="menuPlan" :label-width="80">
+            <div class="box1">
+                <p class="pp">完善套餐</p>
+                <span class="ppp"
+                      v-if="menuPlan.serviceCycleSt == ''&& menuPlan.serviceCycleEt == ''">提示：请选择计划开始与结束时间</span>
+                <div class="boxes" @click="addFood"  v-for="(item,i) in arr" v-else>
+                    <p>第{{i+1}}天<br/>{{item}}</p>
+                </div>
+                <div class="sub">
+                    <i-button type="warning" @click="reload" style="margin-top:50px;font-size: 13px;"/>
+                    返回</i-button>
+                </div>
+            </div>
         </i-form>
-        <div style="padding:0 20px 0;border-bottom:1px solid gainsboro;"> </div>
+    </Card>
+    <Card v-show="addFoods">
+        <p slot="title">{{title}}</p>
+        <i-form ref="formValidate" :model="menuPlan" :label-width="80">
+            <div style="padding:0 20px 0;border-bottom:1px solid gainsboro;border-radius: 200px;"></div>
             <div style="border-bottom: 1px solid #e5e5e6;">
                 <h4 style="height:40px;line-height: 40px;margin-left:20px;">早餐 </h4>
                 <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist">
@@ -225,23 +518,24 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
+                            <i-select v-model="fooditem.dishesName" filterable clearable=true label-in-value=true
+                            @on-change="selectfood($event,i)">
+                            <i-option v-for="(v,index) in dishes" :label="v.dishesName" :value="index">
+                            {{v.dishesName}}
+                            </i-option>
                             </i-select>
                         </Form-item>
                     </div>
-                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                    <Form-item label="卡路里" prop="inspectionCycle" style="width: 268px; display: inline-block">
                         <i-input v-model="fooditem.dishesCalories" disabled/>
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;"
                           @click="deletefood(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;border-radius:10px;cursor:pointer;text-align: center;color:white;cursor:pointer;background: cornflowerblue;"
+
                      @click="addfoodlist">添加
                 </div>
                 <div v-show="showselect">
@@ -256,12 +550,14 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood1($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
-                            </i-select>
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood1($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>
+                            <!--<Cascader  placeholder="请选择" filterable>{{fooditem.dishesName}}</Cascader>-->
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
@@ -269,8 +565,8 @@
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
                           @click="deletefoodadd(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
                      @click="addfoodlistadd">添加
@@ -284,12 +580,13 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood2($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
-                            </i-select>
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood2($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
@@ -297,8 +594,8 @@
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
                           @click="deletefood1(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
                      @click="addfoodlist1">添加
@@ -312,12 +609,13 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood3($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
-                            </i-select>
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood3($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
@@ -325,8 +623,8 @@
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
                           @click="deletefoodadd1(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
                      @click="addfoodlistadd1">添加
@@ -340,12 +638,13 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood4($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
-                            </i-select>
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood4($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <Cascader  :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
@@ -353,8 +652,8 @@
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
                           @click="deletefood2(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
                      @click="addfoodlist2">添加
@@ -368,12 +667,13 @@
                     </div>
                     <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
                         <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
-                            <i-select v-model="fooditem.dishesName" clearable=true label-in-value=true
-                                      @on-change="selectfood5($event,i)">
-                                <i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">
-                                    {{v.dishesName}}
-                                </i-option>
-                            </i-select>
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood5($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>
                         </Form-item>
                     </div>
                     <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
@@ -381,167 +681,377 @@
                     </Form-item>
                     <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
                           @click="deletefoodadd2(i)">
-                        移除
-                    </span>
+        移除
+        </span>
                 </div>
                 <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
                      @click="addfoodlistadd2">添加
                 </div>
+                <div style="margin-top: 80px;margin-left: 530px;margin-bottom: 30px">
+                    <i-button type="primary" @click="handleSubmit('formValidate')" style="font-size: 13px">保存</i-button>
+                    <i-button type="warning" @click="reloadpage" style="margin-left: 15px;font-size: 13px"/>
+                    返回</i-button>
             </div>
-            <Form-item label="营养原理" prop="nutritionPrinciple" style="width: 436px;">
-                <i-input v-model="servermenuPlan.nutritionPrinciple" type="textarea" :rows="6" placeholder="营养原理"/>
-            </Form-item>
+            </div>
         </i-form>
-        <div style="padding-left: 20px; margin-bottom: 30px">
-            <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
-            <i-button type="warning" @click="reload" style="margin-left: 8px"/>
-            取消</i-button>
-        </div>
     </Card>
+    <Card v-show="updateFoods">
+        <p slot="title">{{title}}</p>
+        <i-form ref="formValidate" :model="menuPlan" :label-width="80">
+            <div style="padding:0 20px 0;border-bottom:1px solid gainsboro;border-radius: 200px;"></div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">早餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader placeholder="请选择" filterable>{{fooditem.dishesName}}</Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;"
+                          @click="deletefood(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;border-radius:10px;cursor:pointer;text-align: center;color:white;cursor:pointer;background: cornflowerblue;"
 
-    <Card v-show="details">
+                     @click="addfoodlist">添加
+                </div>
+                <div v-show="showselect">
+
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood1($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader  placeholder="请选择" filterable>{{fooditem.dishesName}}</Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
+                          @click="deletefoodadd(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
+                     @click="addfoodlistadd">添加
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">午餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist1">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood2($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
+                          @click="deletefood1(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
+                     @click="addfoodlist1">添加
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd1">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
+                          @click="deletefoodadd1(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
+                     @click="addfoodlistadd1">添加
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">晚餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlist2">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood4($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader  :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
+                          @click="deletefood2(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
+                     @click="addfoodlist2">添加
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e5e5e6;">
+                <h4 style="height:40px;line-height: 40px;margin-left:20px;">加餐 </h4>
+                <div style="padding-bottom: 10px;" v-for="(fooditem,i) in foodlistadd2">
+                    <div style="width:50px;height: 50px;float:left;margin-left:80px;">
+                        <img alt="" style="width:50px;height:50px;" :src="fooditem.dishesCoverPic"/>
+                    </div>
+                    <div style="float:left;margin-left:100px;line-height: 50px;width:260px;">
+                        <Form-item label="菜品名称" prop="serviceStage" style="width: 268px;display: inline-block ">
+                            <!--<i-select v-model="fooditem.dishesName" clearable=true label-in-value=true-->
+                            <!--@on-change="selectfood5($event,i)">-->
+                            <!--<i-option v-for="(v,index) in targetKeys3" :label="v.dishesName" :value="index">-->
+                            <!--{{v.dishesName}}-->
+                            <!--</i-option>-->
+                            <!--</i-select>-->
+                            <i-select v-model="fooditem.dishesName" filterable placeholder="菜品名称" clearable=true >
+                                <i-option style="text-align: center" v-for="item in dishes"
+                                          :value="item.dishesName"
+                                          :key="item.dishesName">{{item.dishesName}}
+                                </i-option>
+                            </i-select>
+                            <!--<Cascader :data="fooditem.dishesName" placeholder="请选择" filterable></Cascader>-->
+                        </Form-item>
+                    </div>
+                    <Form-item label="" prop="inspectionCycle" style="width: 268px; display: inline-block">
+                        <i-input v-model="fooditem.dishesCalories" disabled/>
+                    </Form-item>
+                    <span style="display: inline-block;margin-left: 200px;line-height:50px;width:50px;cursor:pointer;border-radius:10px;"
+                          @click="deletefoodadd2(i)">
+        移除
+        </span>
+                </div>
+                <div style="margin:0 auto;width:40px;height:30px;line-height: 30px;text-align: center;color:white;background: cornflowerblue;cursor:pointer;border-radius:10px;"
+                     @click="addfoodlistadd2">添加
+                </div>
+                <div style="margin-top: 80px;margin-left: 530px;margin-bottom: 30px">
+                    <i-button type="primary" @click="handleSubmit('formValidate')" style="font-size: 13px">保存</i-button>
+                    <i-button type="warning" @click="reloadpage" style="margin-left: 15px;font-size: 13px"/>
+                    返回</i-button>
+                </div>
+            </div>
+        </i-form>
+    </Card>
+    <Card v-show="!foodsDetails&&details">
         <p slot="title">{{title}}</p>
         <div class="button-group" style="float: right; ">
-            <!--<i-button type="primary" @click="openStatus" style="font-size: 16px" v-if="menumapuser.menuStatus === 0">-->
-                <!--审核-->
-            <!--</i-button>-->
             <i-button type="primary" @click="printDetail(' + row.id + ')" style="font-size: 16px"
                       ><i class="fa fa-print"></i>打印
             </i-button>
         </div>
         <div class="cyp-header">
-            <div>状态：<span v-if="menumapuser.menuStatus==0">未签约</span><span v-else>已签约</span></div>
+            <div>状态：<span v-if="menuInfoMsg.menuStatus==0">未签约</span><span v-else>已签约</span></div>
             <div style="padding-top:20px">
-                <Icon type="checkmark-circled" class="cyp-header-span"></Icon>
-                <span class="cyp-header-span">{{menumapsysdept.name}}</span>
+                <Icon type="checkmark-circled" class="cyp-header-span" style="color: limegreen;"></Icon>
+                <span class="cyp-header-span">{{menuSysdept.name}}</span>
                 <span class="cyp-header-span">创建了月子餐单</span>
                 <span class="cyp-header-span">{{menumaptype.menuDate}}</span>
             </div>
         </div>
         <div style="padding-left:129px;padding-top:24px;font-size: 12px;">
             <div style="height: 81px">
-                <div style="width: 84px; height:81px;float: left" onload="image"><img :src="menumapuser.menuCoverPic"
+                <div style="width: 84px; height:81px;float: left" onload="image"><img :src="menuInfoMsg.menuCoverPic"
                                                                                       style="width: 84px; height:81px;">
                 </div>
                 <div style="float:left;padding-left: 20px;">
-                    <p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字:&nbsp&nbsp <span>{{menumapuser.menuName}}</span>
+                    <p style="height:27px;line-height: 27px;font-size: 12px; width: 324px;">套餐名字:&nbsp&nbsp <span>{{menuInfoMsg.menuName}}</span>
                     </p>
-                    <p style="height:27px;line-height: 27px ;font-size: 12px;width: 324px;">套餐编号：<span>{{menumapuser.menuSn}}</span>
+                    <p style="height:27px;line-height: 27px ;font-size: 12px;width: 324px;">套餐编号：<span>{{menuInfoMsg.menuSn}}</span>
                     </p>
                     <p style="height:27px;line-height: 27px; font-size: 12px; width: 324px;">
-                        用户名称：{{menumapuser.nickName}}</p>
+                        用户名称：{{menuInfoMsg.nickName}}</p>
                 </div>
                 <div style="float: left">
-                    <p style="height:27px;line-height: 27px;font-size: 12px">服务机构：<span>{{menumapuser.cateringServiceOrgName}}</span>
+                    <p style="height:27px;line-height: 27px;font-size: 12px">服务机构：<span>{{menuInfoMsg.cateringServiceOrgName}}</span>
                     </p>
-                    <p style="height:27px;line-height: 27px;font-size: 12px"> 类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：<span>{{menumapuser.nutritionMenuType}}</span>
+                    <p style="height:27px;line-height: 27px;font-size: 12px"> 类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：<span>{{menuInfoMsg.nutritionMenuType}}</span>
                     </p>
                 </div>
             </div>
             <div style="margin-bottom: 30px;margin-top: 30px;">
                 <p><span style="width: 100px; display: inline-block;">体制检查周期：</span> <span
-                        style="width: 139px;display: inline-block;">{{menumapuser.inspectionCycle}}</span> <span
+                        style="width: 139px;display: inline-block;">{{menuInfoMsg.inspectionCycle}}</span> <span
                         style="width: 100px; display: inline-block;">初始体重</span><span>{{menumapweight.weight}}</span>
                 </p>
             </div>
             <div style="font-size:12px">
-                <p><span style="width: 215px;display: inline-block;">{{menumapuser.serviceStage}}</span> <span
+                <p><span style="width: 215px;display: inline-block;">{{menuInfoMsg.serviceStage}}</span> <span
                         style="width:90px;display: inline-block;"> 计划开始时间：</span><span
                         style="width:160px;display: inline-block;">{{menumapst}}</span><span
                         style="width: 90px;display: inline-block;">计划结束时间：</span><span
                         style="width: 230px;display: inline-block;">{{menumapet}}</span><span>周期：</span><span>31天</span>
                 </p>
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">早餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in zaolist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
+            <div style=" padding-top: 26px;padding-bottom: 20px;margin-left:-20px;overflow: hidden;">
+                <p class="pp">按日期查看套餐</p>
+                <div style="width:1000px;float: left">
+                    <span class="ppp" v-if="menumapst == ''&& menumapet == ''">提示：请选择计划开始与结束时间</span>
+                    <div class="boxes" @click="checkFoods(item)" v-for="(item,i) in arr" v-else>
+                        <p>第{{i+1}}天<br/>{{item}}</p>
+                    </div>
                 </div>
             </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in zaoaddlist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">午餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wulist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wuaddlist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">晚餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wanlist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
-                </div>
-            </div>
-            <div style="border-bottom: 1px solid #e5e5e6;">
-                <h4 style="height:40px;line-height: 40px">加餐</h4>
-                <div style="overflow: hidden;padding-bottom: 10px;" v-for="(item,i) in wanaddlist" v-if="i<5">
-                    <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
-                                                                          style="width:50px;height: 50px;"></div>
-                    <div style="float:left;margin-left:200px;line-height: 50px;width:260px;">{{item.dishesName}}</div>
-                    <div style="float: left;line-height: 50px;">{{item.dishesCalories}}</div>
-                </div>
-            </div>
-            <div style="margin-top:40px;overflow: hidden;">
+            <div style="overflow: hidden;">
                 <div style="float: left;width:103px;">营养原理</div>
-                <div style="float:left;width: 470px;">{{menumapuser.nutritionPrinciple}}</div>
+                <div style="float:left;width: 470px;">{{menuInfoMsg.nutritionPrinciple}}</div>
             </div>
-            <div style="margin-left:480px;margin-top: 60px;">
+            <div style="margin-left:440px;margin-top: 60px;">
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>
                 返回</i-button>
             </div>
         </div>
     </Card>
-
-    <Card v-show="showfoods ">
+    <Card v-show="foodsDetails">
         <p slot="title">{{title}}</p>
         <i-form ref="formValidate" :model="menuPlan" :label-width="80">
-            <!--<Form-item label="食谱编号" prop="menuSn">-->
-            <!--<i-input v-model="menuPlan.menuSn"  readonly/>-->
-            <!--</Form-item>-->
-            <Transfer
-                    :data="data3"
-                    :target-keys="targetKeys3"
-                    :list-style="listStyle"
-                    :render-format="render3"
-                    :operations="['放回','加入']"
-                    filterable
-                    @on-change="handleChange3">
-                <div :style="{float: 'right', margin: '5px'}">
-                    <i-button size="small" @click="reloadMockdata">重置</i-button>
+            <div class="box1" style="width: 800px; text-align:center;margin: 0 auto ">
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">早餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlist" v-if="foodlist !=null">
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
                 </div>
-            </Transfer>
-            <div style="width:50px;height:30px;line-height: 30px;border-radius:10px;cursor:pointer;text-align: center;color:white;cursor:pointer;background: cornflowerblue;margin-left: 278px;margin-top: 40px">
-                <span type="warning" @click="cancelsumbit"/>提交</span>
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">加餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlistadd">
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
+                </div>
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">午餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlist1" >
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
+                </div>
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">加餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlistadd1" >
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
+                </div>
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">晚餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlist2" >
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
+                </div>
+                <div style="width:740px;border-bottom: 1px solid #e5e5e6;">
+                    <h4 style="height:40px;line-height: 40px">加餐</h4>
+                    <div style="overflow: hidden;padding-bottom: 20px;"  v-for="(item,i) in foodlistadd2">
+                        <div style="width:50px;height: 50px;float:left;"><img :src="item.dishesCoverPic"
+                                                                              style="width:50px;height: 50px;"></div>
+                        <div style="float:left;margin-left:190px;line-height: 50px;width:260px;">{{item.dishesName}}
+                        </div>
+                        <div style="float: left;margin-left:186px;line-height: 50px;">{{item.dishesCalories}}kcal</div>
+                    </div>
+                </div>
+                <div style="padding-top:20px;padding-right:22px ">
+                    <i-button type="warning" @click="reloadpage" style="font-size: 13px"/>返回</i-button></div>
             </div>
         </i-form>
     </Card>
-
-
 </div>
 
 <script src="${rc.contextPath}/js/shop/menuplan.js?_${date.systemTime}"></script>

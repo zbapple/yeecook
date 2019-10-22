@@ -28,7 +28,7 @@ Controller
  * @date 2019-06-16 14:23:22
  */
 @RestController
-@RequestMapping("menudetails")
+@RequestMapping("menuDetails")
 public class MenuDetailsController {
     @Autowired
     private MenuDetailsService menuDetailsService;
@@ -71,7 +71,6 @@ public class MenuDetailsController {
 
         return R.ok();
     }
-
     /**
      * 修改
      */
@@ -162,7 +161,7 @@ public class MenuDetailsController {
     /**
      *  查看今日菜谱
      **/
-    @RequestMapping("/todayinfo")
+    @RequestMapping("/todayInfo")
     public R todayinfo(@RequestBody MenuDetailsEntity me) {
         Date todays=me.getMenuDate();
         Integer menuId=me.getUserNutritionMenuId();
@@ -284,5 +283,15 @@ public class MenuDetailsController {
         apiMenuDetaileVos.add(apiMenuDetaileVo_3);
 
         return R.ok().put("apiMenuDetaileVos",apiMenuDetaileVos);
+    }
+    /**
+     * 完善保存
+     **/
+    @RequestMapping("/saveDetails")
+    public R saveDetails(@RequestBody MenuDetailsEntity menuDetails){
+        if (menuDetails !=null){
+
+        }
+        return R.ok();
     }
 }

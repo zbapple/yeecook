@@ -16,5 +16,4 @@ import java.util.Map;
  */
 public interface MenuPlanDao extends BaseDao<MenuPlanEntity> {
   MenuPlanEntity queryMenu(Integer id);
-
 }

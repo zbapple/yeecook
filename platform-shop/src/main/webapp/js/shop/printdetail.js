@@ -18,7 +18,6 @@ let vm =new Vue({
             // let judge_b=/<b>(.*?)<\/b>/;
             var printdata='';
             let that=this;
-            console.log($('#content'));
             for(let i=0;i<$('#content')[0].childNodes.length;i++){
                 if($('#content')[0].childNodes[i].nodeName=='#text'){
                     printdata=printdata+$('#content')[0].childNodes[i].textContent;
@@ -96,7 +95,6 @@ let vm =new Vue({
 
             }
             that.textdata=printdata;
-            console.log(printdata);
             if(that.textdata!=''||that.textdata!=null){
                 Ajax.request({
                     type: "POST",

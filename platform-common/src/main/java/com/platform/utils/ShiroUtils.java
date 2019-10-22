@@ -17,7 +17,6 @@ public class ShiroUtils {
     public static Session getSession() {
         return SecurityUtils.getSubject().getSession();
     }
-
     public static Subject getSubject() {
         return SecurityUtils.getSubject();
     }
@@ -34,6 +33,9 @@ public class ShiroUtils {
         getSession().setAttribute(key, value);
     }
 
+    public static void setTimeout(){
+        SecurityUtils.getSubject().getSession().setTimeout(72000000);
+    }
     public static Object getSessionAttribute(Object key) {
         return getSession().getAttribute(key);
     }

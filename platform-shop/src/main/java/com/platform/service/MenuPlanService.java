@@ -49,7 +49,6 @@ public interface MenuPlanService {
      * @return 保存条数
      */
     int save(MenuPlanEntity menuPlan);
-
     /**
      * 根据主键更新实体
      * @return 更新条数

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                #if($shiro.hasPermission("job:save"))
+                <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+                #end
+                #if($shiro.hasPermission("job:update"))
+                <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                #end
+                #if($shiro.hasPermission("job:delete"))
+                <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                #end
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+		<i-form ref="formValidate" :model="job" :rules="ruleValidate" :label-width="80">
+            <Form-item label="职位名称" prop="jobTitle">
+                <i-input v-model="job.jobTitle" placeholder="职位名称"/>
+            </Form-item>
+            <Form-item label="职位描述" prop="jobInfo">
+                <i-input v-model="job.jobInfo" placeholder="职位描述"/>
+            </Form-item>
+            <Form-item label="职位要求" prop="jobRequire">
+                <i-input v-model="job.jobRequire" placeholder="职位要求"/>
+            </Form-item>
+            <Form-item label="职位类别" prop="jobCategory">
+                <i-input v-model="job.jobCategory" placeholder="职位类别"/>
+            </Form-item>
+            <Form-item label="发布时间" prop="releaseTime">
+                <Date-picker v-model="job.releaseTime" placeholder="发布时间" type="datetime"/>
+            </Form-item>
+            <!--&lt;!&ndash;<Form-item label="" prop="deptId">&ndash;&gt;-->
+                <!--&lt;!&ndash;<i-input v-model="job.deptId" placeholder=""/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</Form-item>&ndash;&gt;-->
+            <!--<Form-item label="" prop="deptName">-->
+                <!--<i-input v-model="job.deptName" placeholder=""/>-->
+            <!--</Form-item>-->
+            <Form-item label="发布" prop="isRelease">
+                <i-input v-model="job.isRelease" placeholder="发布"/>
+            </Form-item>
+            <Form-item label="创建人" prop="createUser">
+                <i-input v-model="job.createUser" placeholder="创建人"/>
+            </Form-item>
+            <Form-item label="审核" prop="isStatus">
+                <i-input v-model="job.isStatus" placeholder="审核"/>
+            </Form-item>
+            <Form-item>
+                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+                <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+            </Form-item>
+        </i-form>
+	</Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/job.js?_${date.systemTime}"></script>
+</body>
+</html>

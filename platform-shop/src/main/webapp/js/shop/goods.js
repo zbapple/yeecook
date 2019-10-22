@@ -87,9 +87,9 @@ var vm = new Vue({
             name: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
             ],
-            // supplierId: [
-            //     {required: true, message: '供应商不能为空', trigger: 'blur'}
-            // ]
+            supplierId: [
+                {required: true, message: '供应商不能为空', trigger: 'blur'}
+            ]
         },
         q: {
             name: '',
@@ -138,6 +138,7 @@ var vm = new Vue({
             vm.showList = false;
             vm.title = "修改";
             vm.uploadList = [];
+            console.log(vm.uploadList);
             vm.getInfo(id);
             vm.getBrands();
             vm.getMacro();
@@ -180,7 +181,7 @@ var vm = new Vue({
                 }
             });
         },
-        getUser: function () {
+        C: function () {
             Ajax.request({
                 url: "../sys/user/info",
                 async: true,
@@ -196,6 +197,7 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.uploadList = r.list;
+                    console.log(vm.uploadList);
                 }
             });
         },
@@ -212,7 +214,10 @@ var vm = new Vue({
             var url = vm.goods.id == null ? "../goods/save" : "../goods/update";
             vm.goods.goodsDesc = $('#goodsDesc').editable('getHTML');
             vm.goods.goodsImgList = vm.uploadList;
-
+            if(vm.goods.supplierId == null){
+                vm.goods.supplierId=vm.user.deptId;
+                console.log(vm.goods);
+            }
             Ajax.request({
                 type: "POST",
                 url: url,
@@ -315,7 +320,7 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.goods = r.goods;
-                    console.log(r);
+                    console.log(vm.goods);
                     $('#goodsDesc').editable('setHTML', vm.goods.goodsDesc);
                     vm.getCategory();
                 }
@@ -327,7 +332,6 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.user = r.supplier;
-                    console.log(vm.user);
                 }
             });
         },
@@ -402,7 +406,9 @@ var vm = new Vue({
             return check;
         },
         handleSubmit: function (name) {
+            console.log(17);
             handleSubmitValidate(this, name, function () {
+                console.log(18);
                 vm.saveOrUpdate()
             });
         },

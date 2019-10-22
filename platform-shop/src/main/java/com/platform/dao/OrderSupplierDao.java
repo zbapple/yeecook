@@ -2,6 +2,8 @@ package com.platform.dao;
 
 import com.platform.entity.OrderSupplierEntity;
 
+import java.util.Map;
+
 /**
  * Dao
  *
@@ -11,4 +13,5 @@ import com.platform.entity.OrderSupplierEntity;
  */
 public interface OrderSupplierDao extends BaseDao<OrderSupplierEntity> {
 
+    OrderSupplierEntity queryInfo(Map<String,Object> map);
 }

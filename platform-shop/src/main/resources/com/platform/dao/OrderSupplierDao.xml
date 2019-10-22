@@ -91,6 +91,68 @@
 		where a.id = #{id}
 	</select>
 
+
+	<select id="queryInfo" resultType="com.platform.entity.OrderSupplierEntity">
+		select
+		a.`id`,
+		a.`supplier_id`,
+		c.`company_name` as `supplier_name`,
+		c.`address` as `supplier_address`,
+		c.`telephone` as `supplier_telephone`,
+		c.`mobile` as `supplier_mobile`,
+		a.`order_sup_sn`,
+		a.`order_sn`,
+		a.`user_id`,
+		b.`order_status`,
+		b.`pay_status`,
+		a.`shipping_status`,
+		a.`consignee`,
+		a.`country`,
+		a.`province`,
+		a.`city`,
+		a.`district`,
+		a.`address`,
+		a.`mobile`,
+		a.`postscript`,
+		a.`shipping_id`,
+		a.`shipping_name`,
+		a.`shipping_fee`,
+		b.`actual_price`,
+		a.`order_price`,
+		a.`goods_price`,
+		a.`add_time`,
+		b.`confirm_time`,
+		b.`pay_time`,
+		a.`freight_price`,
+		b.`coupon_id`,
+		b.`coupon_price`,
+		a.`shipping_no`,
+		b.`full_cut_price`,
+		b.`order_type`,
+		a.`is_printer`,
+		a.`dept_id`,
+		u.`nickname` as `username`
+		from nideshop_order_supplier a
+		LEFT JOIN nideshop_order b ON a.order_sn=b.order_sn
+		LEFT JOIN nideshop_supplier c ON c.id=a.supplier_id
+		LEFT JOIN nideshop_user u on a.user_id = u.id
+		where 1=1
+		<!--  数据过滤  -->
+		${filterSql}
+		<if test="id != null and id.trim() != ''">
+		AND a.id = #{id}
+     	</if>
+		<if test="payStatus != null and payStatus.trim() != ''">
+			AND b.pay_status = #{payStatus}
+		</if>
+		<if test="orderStatus != null and orderStatus.trim() != ''">
+			AND b.order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null and orderType.trim() != ''">
+			AND b.order_type = #{orderType}
+		</if>
+	</select>
+
 	<select id="queryList" resultType="com.platform.entity.OrderSupplierEntity">
 		select
 		a.`id`,

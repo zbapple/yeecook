@@ -43,6 +43,7 @@
         `nutrition_principle`,
         `service_stage`,
         `nutrition_principle`,
+        `catering_service_org_id`,
         `catering_service_org_name`,
         `menu_name`,
         `menu_sn`,
@@ -67,6 +68,7 @@
     		 n.nickname as nickname,
     		 nutrition_menu_type,
     		`service_cycle_st`,
+    		`catering_service_org_id`,
     	    `catering_service_org_name`,
     	    `menu_cover_pic`,
     		`menu_name`,
@@ -91,12 +93,13 @@
         n.avatar as avatar,
         nutrition_menu_type,
         `service_cycle_st`,
+        `catering_service_org_id`,
         `catering_service_org_name`,
         `menu_name`,
         `menu_sn`,
         `service_cycle_et`,
         `menu_status`,
-         `dept_id`
+         u.dept_id
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
         where 1=1
@@ -143,6 +146,7 @@
 			`nutrition_principle`,
 			`nutrition_menu_type`,
 			`catering_service_org_name`,
+			`catering_service_org_id`,
 			`service_cycle_st`,
 			`service_cycle_et`,
 			`service_stage`,
@@ -158,6 +162,7 @@
 			#{nutritionPrinciple},
 			#{nutritionMenuType},
 			#{cateringServiceOrgName},
+			#{cateringServiceOrgId},
 			#{serviceCycleSt},
 			#{serviceCycleEt},
 			#{serviceStage},
@@ -174,9 +179,11 @@
             <if test="menuStatus != null">`menu_status` = #{menuStatus},</if>
             <if test="serviceStage != null">`service_stage`=#{serviceStage},</if>
             <if test="menuCoverPic != null">`menu_cover_pic` = #{menuCoverPic},</if>
+            <if test="cateringServiceOrgName !=null">`catering_service_org_name`=#{cateringServiceOrgName},</if>
+            <if test="cateringServiceOrgId !=null">`catering_service_org_id`=#{cateringServiceOrgId},</if>
             <if test="nutritionPrinciple != null">`nutrition_principle`=#{nutritionPrinciple},</if>
             <if test="serviceCycleSt != null">`service_cycle_st`=#{serviceCycleSt},</if>
-            <if test="menuName != null">`menu_name`=#{menuName},</if>
+            <if test="menuName != nulld">`menu_name`=#{menuName},</if>
             <if test="nutritionMenuType != null">`nutrition_menu_type`=#{nutritionMenuType},</if>
             <if test="serviceCycleEt != null">`service_cycle_et`=#{serviceCycleEt}</if>
         </set>

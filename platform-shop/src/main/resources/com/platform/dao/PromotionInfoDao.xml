@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.PromotionInfoDao">
+
+    <resultMap type="com.platform.entity.PromotionInfoEntity" id="promotionInfoMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="userId" column="user_id"/>
+		<result property="nickname" column="nickname"/>
+		<result property="promotionName" column="promotion_name"/>
+		<result property="avatar" column="avatar"/>
+		<result property="payTime" column="pay_time"/>
+		<result property="goodsName" column="goods_name"/>
+		<result property="number" column="number"/>
+		<result property="orderPrice" column="order_price"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.PromotionInfoEntity">
+		select
+			 pi.id,
+			pi.parent_id,
+			pi.user_id,
+			n.nickname nickname,
+			n.avatar avatar,
+		    p.promotion_name promotion_name,
+		    nid.pay_time pay_time,
+		    nid.order_price order_price,
+		    nidg.goods_name goods_name,
+		    nidg.number number
+		from promotion_info pi
+		LEFT join promotion p on p.id=pi.parent_id
+		LEFT join nideshop_user n on n.id=pi.user_id
+		LEFT join nideshop_order nid on nid.user_id=pi.user_id
+		LEFT join nideshop_order_goods nidg on nidg.order_id=nid.id
+		where pi.id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.PromotionInfoEntity">
+		select
+		pi.id,
+		pi.parent_id,
+		pi.user_id,
+		n.nickname nickname,
+		n.avatar avatar,
+		p.promotion_name promotion_name,
+		nid.pay_time pay_time,
+		nid.order_price order_price,
+		nidg.goods_name goods_name,
+		nidg.number number
+		from promotion_info pi
+		LEFT join promotion p on p.id=pi.parent_id
+		LEFT join nideshop_user n on n.id=pi.user_id
+		LEFT join nideshop_order nid on nid.user_id=pi.user_id
+		LEFT join nideshop_order_goods nidg on nidg.order_id=nid.id
+		where 1=1 and nid.pay_status=2
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="parentId != null">
+			AND pi.parent_id = #{parentId}
+		</if>
+		<if test="userId != null">
+			AND pi.user_id = #{userId}
+		</if>
+		<if test="nickname != null and nickname.trim() != ''">
+			AND n.nickname LIKE concat('%',#{nickname},'%')
+		</if>
+		<if test="promotionName != null and promotionName.trim() != ''">
+			AND p.promotion_name LIKE concat('%',#{promotionName},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from promotion_info pi
+		LEFT join promotion p on p.id=pi.parent_id
+		LEFT join nideshop_user n on n.id=pi.user_id
+		where 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+		<if test="parentId != null">
+			AND pi.parent_id = #{parentId}
+		</if>
+		<if test="userId != null">
+			AND pi.user_id = #{userId}
+		</if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.PromotionInfoEntity">
+		insert into promotion_info(
+			`id`,
+			`parent_id`,
+			`user_id`)
+		values(
+			#{id},
+			#{parentId},
+			#{userId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.PromotionInfoEntity">
+		update promotion_info 
+		<set>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="userId != null">`user_id` = #{userId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from promotion_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from promotion_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

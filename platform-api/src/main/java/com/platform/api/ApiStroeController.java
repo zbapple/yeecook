@@ -130,7 +130,7 @@ public class ApiStroeController extends ApiBaseAction {
                     lat2=stroeEntity.getLatitude();
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
-                    Double  distance1=Math.round(distance*10)/1.0;
+                    Double  distance1=Math.round(distance*10)/10.0;
                     if(distance1>1000){
                         Double dstance3=distance1/1000;
                         Double distance2=(new Double(df.format(dstance3)));

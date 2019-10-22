@@ -30,7 +30,6 @@ var vm =new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.sysPrinterUser = r.sysPrinterUser;
-                    console.log(r);
                     vm.sysPrinterUser.printName=vm.sysPrinterUser.printName.substring(3,5);
                 }
             });
@@ -44,7 +43,6 @@ var vm =new Vue({
                 type: "POST",
                 successCallback: function (r) {
                     that.state=r.state;
-                    console.log(r);
                 }
             });
         }

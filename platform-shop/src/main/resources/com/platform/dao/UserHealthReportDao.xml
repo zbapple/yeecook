@@ -70,8 +70,8 @@
 		FROM user_health_report a
 		LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND b.nickname LIKE concat('%',#{name},'%')
+		<if test="nickname != null and nickname.trim() != ''">
+			AND b.nickname LIKE concat('%',#{nickname},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -103,6 +103,31 @@
 		order by update_time desc
 		limit 0,1
 	</select>
+
+	<select id="queryUserReport" resultType="com.platform.entity.UserHealthReportEntity">
+	SELECT
+	a.id,
+	b.nickname,
+	a.detection_time,
+	a.update_time,
+	a.weight,
+	a.BMI,
+	a.body_fat_rade,
+	a.sub_fat_percentage,
+	a.basic_metabolism,
+	a.vis_fat_grade,
+	a.body_water_rate,
+	a.protein,
+	a.bone_mass,
+	a.skeletal_muscle,
+	a.body_Shape,
+	a.body_Age,
+	a.sclscore
+	FROM user_health_report a
+	LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id
+	WHERE a.id=(select max(a.id) from user_health_report a LEFT JOIN nideshop_user b on b.id=a.nideshop_user_id where a.nideshop_user_id=#{value})
+	</select>
+
 	<insert id="save" parameterType="com.platform.entity.UserHealthReportEntity">
 		insert into user_health_report(
 			`id`,

@@ -1,6 +1,7 @@
 package com.platform.controller;
 
 
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -33,13 +34,9 @@ public class MenuPlanController {
     @Autowired
     private MenuPlanService menuPlanService;
     @Autowired
-    private  UserService userService;
-    @Autowired
     private  MenuDetailsService menuDetailsService;
     @Autowired
     private  UserHealthReportService userHealthReportService;
-    @Autowired
-    private  SysUserService sysUserService;
     @Autowired
     private SysDeptService sysDeptService;
     /**
@@ -63,32 +60,30 @@ public class MenuPlanController {
      *  查看餐单详情
      *
      **/
-    @RequestMapping("/menuinfo/{id}")
-    public R menuinfo(@PathVariable("id") Integer id){
+    @RequestMapping("/menuInfo/{id}")
+    public R menuInfo(@PathVariable("id") Integer id){
         MenuPlanEntity menuPlanEntity = menuPlanService.queryObject(id);
         Integer uid=menuPlanEntity.getNideshopUserId();
         Integer mid=menuPlanEntity.getId();
         Date scs=menuPlanEntity.getServiceCycleSt();
         Date sce=menuPlanEntity.getServiceCycleEt();
-        Date mt=menuPlanEntity.getMealTime();
-        HashMap menumap=new HashMap();
+        HashMap menuMap=new HashMap();
         //从session获取当前管理员账户
         SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
         Long udeptId=user.getDeptId();
         SysDeptEntity dept=sysDeptService.queryObject(udeptId);
-        menumap.put("sysdept",dept);
-        menumap.put("sysuser",user);
-        menumap.put("weight",userHealthReportService.queryWeight(uid));
-        menumap.put("infomsg",menuPlanService.queryMenu(uid));
-        menumap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
-        menumap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
+        menuMap.put("sysDept",dept);
+        menuMap.put("weight",userHealthReportService.queryWeight(uid));
+        menuMap.put("infoMsg",menuPlanService.queryMenu(uid));
+        menuMap.put("serviceCycleSt",DateUtils.format(scs, DateUtils.DATE_PATTERN));
+        menuMap.put("serviceCycleEt",DateUtils.format(sce, DateUtils.DATE_PATTERN));
         HashMap map=new HashMap();
-        //Date todays=menuPlan.getMenuDate();
-        //map.put("menuDate",todays);
+        Date todays=menuPlanEntity.getMenuDate();
+        map.put("menuDate",todays);
         map.put("userNutritionMenuId",mid);
-        menumap.put("menutype",menuDetailsService.queryListvo(map));
+        menuMap.put("menuType",menuDetailsService.queryListvo(map));
 
-        return R.ok().put("menumap",menumap);
+        return R.ok().put("menuMap",menuMap);
     }
 
     /**
@@ -98,84 +93,97 @@ public class MenuPlanController {
     @RequiresPermissions("menuPlan:info")
     public R info(@PathVariable("id") Integer id) {
        MenuPlanEntity menuPlan=menuPlanService.queryObject(id);
-       Integer mid=menuPlan.getId();
-//       Date todays=menuPlan.getMenuDate();
-       Map map=new HashMap();
-       map.put("userNutritionMenuId",mid);
-//       map.put("menuDate",todays);
-       List<MenuDetailsEntity> me=menuDetailsService.queryListvo(map);
-       List<MenuDetailsEntity> foodlist=new ArrayList<>();
-       List<MenuDetailsEntity> foodlist1=new ArrayList<>();
-       List<MenuDetailsEntity> foodlist2=new ArrayList<>();
-       List<MenuDetailsEntity> foodlistadd=new ArrayList<>();
-       List<MenuDetailsEntity> foodlistadd1=new ArrayList<>();
-       List<MenuDetailsEntity> foodlistadd2=new ArrayList<>();
-        for (MenuDetailsEntity menuDetailsEntity:me){
-           switch (menuDetailsEntity.getMenuType()) {
-               case "0":
-                   MenuDetailsEntity menuDetailsEntity1=new MenuDetailsEntity();
-                   menuDetailsEntity1.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity1.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity1.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity1.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity1.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                  foodlist.add(menuDetailsEntity1);
-                   break;
-               case "1":
-                   MenuDetailsEntity menuDetailsEntity2=new MenuDetailsEntity();
-                   menuDetailsEntity2.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity2.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity2.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity2.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity2.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                   foodlist1.add(menuDetailsEntity2);
-                   break;
-               case "2":
-                   MenuDetailsEntity menuDetailsEntity3=new MenuDetailsEntity();
-                   menuDetailsEntity3.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity3.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity3.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity3.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity3.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                   foodlist2.add(menuDetailsEntity3);
-                   break;
-               case "3":
-                   MenuDetailsEntity menuDetailsEntity4=new MenuDetailsEntity();
-                   menuDetailsEntity4.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity4.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity4.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity4.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity4.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                   foodlistadd.add(menuDetailsEntity4);
-                   break;
-               case "4":
-                   MenuDetailsEntity menuDetailsEntity5=new MenuDetailsEntity();
-                   menuDetailsEntity5.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity5.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity5.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity5.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity5.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                   foodlistadd1.add(menuDetailsEntity5);
-                   break;
-               case "5":
-                   MenuDetailsEntity menuDetailsEntity6=new MenuDetailsEntity();
-                   menuDetailsEntity6.setDishesId(menuDetailsEntity.getDishesId());
-                   menuDetailsEntity6.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
-                   menuDetailsEntity6.setMenuDate(menuDetailsEntity.getMenuDate());
-                   menuDetailsEntity6.setDishesName(menuDetailsEntity.getDishesName());
-                   menuDetailsEntity6.setDishesCalories(menuDetailsEntity.getDishesCalories());
-                   foodlistadd2.add(menuDetailsEntity6);
-                   break;
-
-           }
-       }
-        menuPlan.setFoodlist(foodlist);
-        menuPlan.setFoodlist1(foodlist1);
-        menuPlan.setFoodlist2(foodlist2);
-        menuPlan.setFoodlistadd(foodlistadd);
-        menuPlan.setFoodlistadd1(foodlistadd1);
-        menuPlan.setFoodlistadd2(foodlistadd2);
         return R.ok().put("menuPlan", menuPlan);
+    }
+    /**
+     *
+     * 根据日期查找餐品
+     **/
+    @RequestMapping("/todayInfo")
+    public R  todayInfo(@RequestBody String obj){
+        MenuPlanEntity menuPlan=new MenuPlanEntity();
+        if (obj != null){
+            String obj1=obj.replace("\"","");
+            String str[]=obj1.split(",");
+            int mid=Integer.parseInt(str[0]);
+            String todays=str[1];
+            HashMap map=new HashMap();
+            map.put("userNutritionMenuId",mid);
+            map.put("todays",todays);
+            List<MenuDetailsEntity> me=menuDetailsService.queryListvo(map);
+            List<MenuDetailsEntity> foodlist=new ArrayList<>();
+            List<MenuDetailsEntity> foodlist1=new ArrayList<>();
+            List<MenuDetailsEntity> foodlist2=new ArrayList<>();
+            List<MenuDetailsEntity> foodlistadd=new ArrayList<>();
+            List<MenuDetailsEntity> foodlistadd1=new ArrayList<>();
+            List<MenuDetailsEntity> foodlistadd2=new ArrayList<>();
+            for (MenuDetailsEntity menuDetailsEntity:me){
+                switch (menuDetailsEntity.getMenuType()) {
+                    case "0":
+                        MenuDetailsEntity menuDetailsEntity1=new MenuDetailsEntity();
+                        menuDetailsEntity1.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity1.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity1.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity1.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity1.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlist.add(menuDetailsEntity1);
+                        break;
+                    case "1":
+                        MenuDetailsEntity menuDetailsEntity2=new MenuDetailsEntity();
+                        menuDetailsEntity2.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity2.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity2.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity2.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity2.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlist1.add(menuDetailsEntity2);
+                        break;
+                    case "2":
+                        MenuDetailsEntity menuDetailsEntity3=new MenuDetailsEntity();
+                        menuDetailsEntity3.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity3.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity3.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity3.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity3.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlist2.add(menuDetailsEntity3);
+                        break;
+                    case "3":
+                        MenuDetailsEntity menuDetailsEntity4=new MenuDetailsEntity();
+                        menuDetailsEntity4.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity4.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity4.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity4.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity4.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlistadd.add(menuDetailsEntity4);
+                        break;
+                    case "4":
+                        MenuDetailsEntity menuDetailsEntity5=new MenuDetailsEntity();
+                        menuDetailsEntity5.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity5.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity5.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity5.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity5.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlistadd1.add(menuDetailsEntity5);
+                        break;
+                    case "5":
+                        MenuDetailsEntity menuDetailsEntity6=new MenuDetailsEntity();
+                        menuDetailsEntity6.setDishesId(menuDetailsEntity.getDishesId());
+                        menuDetailsEntity6.setDishesCoverPic(menuDetailsEntity.getDishesCoverPic());
+                        menuDetailsEntity6.setMenuDate(menuDetailsEntity.getMenuDate());
+                        menuDetailsEntity6.setDishesName(menuDetailsEntity.getDishesName());
+                        menuDetailsEntity6.setDishesCalories(menuDetailsEntity.getDishesCalories());
+                        foodlistadd2.add(menuDetailsEntity6);
+                        break;
+
+                }
+            }
+            menuPlan.setFoodlist(foodlist);
+            menuPlan.setFoodlist1(foodlist1);
+            menuPlan.setFoodlist2(foodlist2);
+            menuPlan.setFoodlistadd(foodlistadd);
+            menuPlan.setFoodlistadd1(foodlistadd1);
+            menuPlan.setFoodlistadd2(foodlistadd2);
+        }
+        return R.ok().put("menuPlan",menuPlan);
     }
 
     /**
@@ -187,7 +195,6 @@ public class MenuPlanController {
         menuPlanService.save(menuPlan);
         return R.ok();
     }
-
 
     /**
      * 修改

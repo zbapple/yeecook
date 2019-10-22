@@ -21,7 +21,21 @@ $(function () {
 			{label: '蛋白质', name: 'protein', index: 'protein', width: 80},
 			{label: '骨量', name: 'boneMass', index: 'bone_mass', width: 80},
 			{label: '骨骼肌率', name: 'skeletalMuscle', index: 'skeletal_muscle', width: 80},
-            {label: '身体体型', name: 'bodyShape', index: 'body_shape', width: 80},
+            {
+                label: '身体体型', name: 'bodyShape', index: 'body_shape', width: 80,
+                formatter: function (value) {
+                    if (value == '0') {
+                        return  '轻体重';
+                    } else if (value == '1') {
+                        return  '健康体重';
+                    } else if (value == '2') {
+                        return  '超重';
+                    } else if (value == '3') {
+                        return  '肥胖';
+                    }
+                    return ''
+                }
+            },
             {label: '身体年龄', name: 'bodyAge', index: 'body_age', width: 80},
             {label: '健康评分', name: 'sclscore', index: 'sclscore', width: 80}
 		]

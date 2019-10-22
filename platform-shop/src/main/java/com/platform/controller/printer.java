@@ -57,7 +57,7 @@ public class printer {
         if( null != obj) {
             String[] str = obj.split("&");
             String[] str2 = str[0].split("count=");
-                int count = Integer.parseInt(str2[1].trim());
+                int count = Integer.parseInt(str2[1]);
                 String[] str3 = str[1].split("content=");
                 String content = null;
                 try {

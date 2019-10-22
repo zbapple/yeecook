@@ -8,10 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.rmi.MarshalledObject;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户膳食计划实体
@@ -87,7 +84,7 @@ public class MenuPlanEntity implements Serializable {
     private List<MenuDetailsEntity> foodlistadd1;
     private List<MenuDetailsEntity> foodlist2;
     private List<MenuDetailsEntity> foodlistadd2;
-    private List<MenuPlanEntity> menuCoverPics;
+    List<MenuPlanEntity> menuCoverPics=new ArrayList<>();
 
 
     public void setServiceCycleSt(Date serviceCycleSt) {

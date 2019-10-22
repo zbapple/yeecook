@@ -123,4 +123,18 @@ public class UserHealthReportController {
 
         return R.ok().put("list", list);
     }
+
+    /**
+     *  查看用户最新的身体数据
+     **/
+    @RequestMapping("/queryUserReport/{id}")
+    public R queryUserReport(@PathVariable("id") Integer id){
+        if (id !=null){
+       UserHealthReportEntity userReport=userHealthReportService.queryUserReport(id);
+        return R.ok().put("userReport",userReport);
+        }else {
+            String msg="请重新选择用户";
+        return R.error().put("msg",msg);
+        }
+    }
 }

@@ -36,6 +36,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 
     @Override
     public MenuPlanEntity queryMenu(Integer id) {
+        Object menu=menuPlanDao.queryMenu(id);
         return menuPlanDao.queryMenu(id);
     }
 
@@ -48,7 +49,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
 
 
     @Override
-    @DataFilter(deptAlias = "dept_id")
+    @DataFilter(deptAlias = "u.dept_id")
     public List<MenuPlanEntity> queryList(Map<String, Object> map) {
 
         return menuPlanDao.queryList(map);
@@ -254,8 +255,23 @@ public class MenuPlanServiceImpl implements MenuPlanService {
                     }
                 }
             }
-
+            //修改日期组件时区问题
+            Calendar cl1=Calendar.getInstance();
+            Date startime=menuPlan.getServiceCycleSt();
+            cl1.setTime(startime);
+            cl1.add(cl1.DATE,1);
+            String days1=DateUtils.format(cl1.getTime(),DateUtils.DATE_PATTERN);
+            Date d=DateUtils.strToDate(days1);
+            menuPlan.setServiceCycleSt(d);
+            Calendar cl2=Calendar.getInstance();
+            Date startime2=menuPlan.getServiceCycleEt();
+            cl2.setTime(startime2);
+            cl2.add(cl2.DATE,1);
+            String days2=DateUtils.format(cl2.getTime(),DateUtils.DATE_PATTERN);
+            Date dd=DateUtils.strToDate(days2);
+            menuPlan.setServiceCycleEt(dd);
         }
+
         return menuPlanDao.update(menuPlan);
     }
 

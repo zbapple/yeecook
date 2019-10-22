@@ -1,6 +1,7 @@
 package com.platform.dao;
 
 import com.platform.entity.UserHealthReportEntity;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户健康报告表
@@ -12,5 +13,5 @@ Dao
  */
 public interface UserHealthReportDao extends BaseDao<UserHealthReportEntity> {
     UserHealthReportEntity queryWeight(Integer id);
-
+    UserHealthReportEntity queryUserReport(Integer id);
 }

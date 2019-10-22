@@ -22,6 +22,7 @@ public interface OrderSupplierService {
      */
     OrderSupplierEntity queryObject(Integer id);
 
+    OrderSupplierEntity queryInfo(Integer id);
     /**
      * 分页查询
      *

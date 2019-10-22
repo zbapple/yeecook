@@ -5,6 +5,13 @@
     <title>Title</title>
     #parse("sys/header.html")
     <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+        input[type="number"]{
+            -moz-appearance: textfield;
+        }
         #print{
             padding-top:30px;
             padding-bottom: 30px;
@@ -90,7 +97,7 @@
                   <p style="width: 180px"><span class="box-font-left">终端号：</span><span class="box-font-right" style="font-weight:bold">{{sysPrinterUser.machineCode}}</span></p>
                   <p style="width: 180px"><span class="box-font-left">型号：</span><span class="box-font-right" style="font-weight:bold">{{sysPrinterUser.printName}}</span></p>
                   <p style="width: 180px"><span class="box-font-left">状态：</span><span class="box-font-right" style="color: red;font-weight:bold" v-if="state==0">离线</span><span class="box-font-right" style="color: green;font-weight:bold" v-if="state==1">在线</span><span class="box-font-right" style="color:yellow;font-weight:bold" v-if="state==2">缺纸</span></p>
-                  <p style="width: 180px"><span class="box-font-left">打印份数：</span><i-input class="box-input" maxlength="3"  v-model="num"   onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"   /></p>
+                      <p style="width: 180px"><span class="box-font-left">打印份数：</span><i-input class="box-input" maxlength="3"  v-model="num"  type="number" /></p>
               </div>
           </div>
            <div class="box-btn">

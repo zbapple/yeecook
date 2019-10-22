@@ -15,5 +15,4 @@ Dao
  */
 public interface MenuDetailsDao extends BaseDao<MenuDetailsEntity> {
     List<MenuDetailsEntity> queryListvo(Map<String,Object> params);
-    List<MenuDetailsEntity> queryList(Map<String, Object> map);
 }
