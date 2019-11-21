@@ -51,7 +51,8 @@ public class ApiUserController extends ApiBaseAction {
             return toResponsFail("短信已发送");
         }
         //生成验证码
-        String sms_code = CharUtil.getRandomNum(4);
+        String sms_codes = CharUtil.getRandomNum(4);
+        String sms_code="'"+sms_codes+"'";
 
         // 发送短信
         String result = "";
@@ -107,7 +108,8 @@ public class ApiUserController extends ApiBaseAction {
         JSONObject jsonParams = getJsonRequest();
         SmsLogVo smsLogVo = userService.querySmsCodeByUserId(loginUser.getUserId());
 
-        String mobile_code = jsonParams.getString("mobile_code");
+        String mobile_codes = jsonParams.getString("mobile_code");
+        String mobile_code="'"+mobile_codes+"'";
         String mobile = jsonParams.getString("mobile");
 
         if (!mobile_code.equals(smsLogVo.getSms_code())) {

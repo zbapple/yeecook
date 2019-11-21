@@ -3,7 +3,7 @@
 
 <mapper namespace="com.platform.dao.ApiOrderMenuMapper">
 
-    <resultMap type="com.platform.entity.OrderMenuEntity" id="orderMenuMap">
+    <resultMap type="com.platform.entity.OrderMenuVo" id="orderMenuMap">
         <result property="id" column="id"/>
         <result property="orderId" column="order_id"/>
         <result property="mealId" column="meal_id"/>
@@ -23,7 +23,7 @@
         <result property="orderType" column="order_type"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.OrderMenuEntity">
+	<select id="queryObject" resultType="com.platform.entity.OrderMenuVo">
 		select
 			`id`,
 			`order_id`,
@@ -46,7 +46,7 @@
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.OrderMenuEntity">
+	<select id="queryList" resultType="com.platform.entity.OrderMenuVo">
 		select
     		`id`,
     		`order_id`,
@@ -91,7 +91,7 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.OrderMenuEntity" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.platform.entity.OrderMenuVo" useGeneratedKeys="true" keyProperty="id">
 		insert into nideshop_order_menu(
 			`order_id`,
 			`meal_id`,
@@ -128,7 +128,7 @@
 			#{orderType})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.OrderMenuEntity">
+	<update id="update" parameterType="com.platform.entity.OrderMenuVo">
 		update nideshop_order_menu 
 		<set>
 			<if test="orderId != null">`order_id` = #{orderId}, </if>

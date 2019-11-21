@@ -81,6 +81,11 @@ public class GoodsVo implements Serializable {
     // 产品Id
     private Integer product_id;
 
+    //供应商ID
+    private Long supplierId;
+    //供应商名称
+    private  String suppliername;
+
     public Integer getId() {
         return id;
     }
@@ -343,5 +348,21 @@ public class GoodsVo implements Serializable {
 
     public void setMarket_price(BigDecimal market_price) {
         this.market_price = market_price;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getSuppliername() {
+        return suppliername;
+    }
+
+    public void setSuppliername(String suppliername) {
+        this.suppliername = suppliername;
     }
 }

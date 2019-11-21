@@ -3,7 +3,7 @@
 
 <mapper namespace="com.platform.dao.ApiMealMapper">
 
-    <resultMap type="com.platform.entity.MealEntity" id="mealMap">
+    <resultMap type="com.platform.entity.MealVo" id="mealMap">
         <result property="id" column="id"/>
         <result property="mealName" column="meal_name"/>
         <result property="mealPriue" column="meal_priue"/>
@@ -13,20 +13,14 @@
         <result property="mealPice" column="meal_pice"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.MealEntity">
+	<select id="queryObject" resultType="com.platform.entity.MealVo">
 		select
-			`id`,
-			`meal_name`,
-			`meal_priue`,
-			`nutrition_explain`,
-			`stroeid`,
-			`meal_type`,
-			`meal_pice`
+			*
 		from meal
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.MealEntity">
+	<select id="queryList" resultType="com.platform.entity.MealVo">
 		select
     		`id`,
     		`meal_name`,
@@ -64,7 +58,7 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.MealEntity" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.platform.entity.MealVo" useGeneratedKeys="true" keyProperty="id">
 		insert into meal(
 			`meal_name`,
 			`meal_priue`,
@@ -81,7 +75,7 @@
 			#{mealPice})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.MealEntity">
+	<update id="update" parameterType="com.platform.entity.MealVo">
 		update meal 
 		<set>
 			<if test="mealName != null">`meal_name` = #{mealName}, </if>

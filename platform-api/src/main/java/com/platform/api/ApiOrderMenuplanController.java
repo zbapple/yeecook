@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.LoginUser;
-import com.platform.entity.OrderMenuplanEntity;
+import com.platform.entity.OrderMenuplanVo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiOrderMenuplanService;
 import com.platform.util.ApiBaseAction;
@@ -38,8 +38,8 @@ public class ApiOrderMenuplanController extends ApiBaseAction {
         JSONObject addjson=this.getJsonRequest();
         Map addmap=new HashMap();
         addmap.put("userid",logiuser.getUserId());
-        List<OrderMenuplanEntity> orderplanlist=orderMenuplanService.queryList(addmap);
-        OrderMenuplanEntity ordeplan=new OrderMenuplanEntity();
+        List<OrderMenuplanVo> orderplanlist=orderMenuplanService.queryList(addmap);
+        OrderMenuplanVo ordeplan=new OrderMenuplanVo();
         if(orderplanlist.size()==0 || orderplanlist==null){
             ordeplan.setStroeid(addjson.getInteger("stroeid"));
             ordeplan.setUserid(logiuser.getUserId());

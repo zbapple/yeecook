@@ -194,12 +194,12 @@ public class ApiPayController extends ApiBaseAction {
             // 商品描述
             parame.put("body", "宜厨小程序-支付");
             //订单的商品
-            List<OrderMenuEntity> orderMenuEntities =orderMenuService .queryList(orderGoodsParam);
+            List<OrderMenuVo> orderMenuEntities =orderMenuService .queryList(orderGoodsParam);
 
             if (null != orderMenuEntities) {
                 List<HashMap> list = new ArrayList<>();
 
-                for (OrderMenuEntity orderMenuVo : orderMenuEntities) {
+                for (OrderMenuVo orderMenuVo : orderMenuEntities) {
                     HashMap hashMap = new HashMap();
                     hashMap.put("goods_id", String.valueOf(orderMenuVo.getOrderId()));
                     hashMap.put("quantity", orderMenuVo.getNumber());

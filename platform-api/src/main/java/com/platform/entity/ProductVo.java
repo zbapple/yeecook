@@ -33,6 +33,11 @@ public class ProductVo implements Serializable {
     private String goods_name;
     //商品图片
     private String list_pic_url;
+    //供应商id
+    private Long supplierid;
+    private  Long supplier_id;
+    //供应商名称
+    private String suppliername;
 
     public String getGoods_name() {
         return goods_name;
@@ -112,5 +117,30 @@ public class ProductVo implements Serializable {
 
     public void setMarket_price(BigDecimal market_price) {
         this.market_price = market_price;
+    }
+
+
+    public Long getSupplierid() {
+        return supplierid;
+    }
+
+    public void setSupplierid(Long supplierid) {
+        this.supplierid = supplierid;
+    }
+
+    public String getSuppliername() {
+        return suppliername;
+    }
+
+    public void setSuppliername(String suppliername) {
+        this.suppliername = suppliername;
+    }
+
+    public Long getSupplier_id() {
+        return supplier_id;
+    }
+
+    public void setSupplier_id(Long supplier_id) {
+        this.supplier_id = supplier_id;
     }
 }

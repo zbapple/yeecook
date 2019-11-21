@@ -3,13 +3,13 @@
 
 <mapper namespace="com.platform.dao.ApiPromotionInfoMapper">
 
-    <resultMap type="com.platform.entity.PromotionInfoEntity" id="promotionInfoMap">
+    <resultMap type="com.platform.entity.PromotionInfoVo" id="promotionInfoMap">
         <result property="id" column="id"/>
         <result property="parentId" column="parent_id"/>
         <result property="userId" column="user_id"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.PromotionInfoEntity">
+	<select id="queryObject" resultType="com.platform.entity.PromotionInfoVo">
 		select
 			`id`,
 			`parent_id`,
@@ -18,7 +18,7 @@
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.PromotionInfoEntity">
+	<select id="queryList" resultType="com.platform.entity.PromotionInfoVo">
 		select
     		`id`,
     		`parent_id`,
@@ -49,7 +49,7 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.PromotionInfoEntity">
+	<insert id="save" parameterType="com.platform.entity.PromotionInfoVo">
 		insert into promotion_info(
 			`id`,
 			`parent_id`,
@@ -60,7 +60,7 @@
 			#{userId})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.PromotionInfoEntity">
+	<update id="update" parameterType="com.platform.entity.PromotionInfoVo">
 		update promotion_info 
 		<set>
 			<if test="parentId != null">`parent_id` = #{parentId}, </if>

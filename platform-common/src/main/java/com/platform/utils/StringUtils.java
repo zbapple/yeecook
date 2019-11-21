@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
     public static final String EMPTY = "";
+    private static final Object EMPTY_REGEX =null ;
     private static Pattern linePattern = Pattern.compile("_(\\w)");
 
     /**
@@ -152,5 +153,10 @@ public class StringUtils {
             return defaultValue;
         }
         return Integer.parseInt(s);
+    }
+
+    public static boolean isEmpty(String input) {
+
+        return input == null || input.equals("") || input.matches((String) EMPTY_REGEX);
     }
 }

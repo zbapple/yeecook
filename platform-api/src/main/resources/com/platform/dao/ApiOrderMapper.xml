@@ -44,18 +44,27 @@
         <result property="goods_name" column="goods_name"/>
         <result property="list_pic_url" column="list_pic_url"/>
         <result property="goods_id" column="goods_id"/>
+        <result property="shoptype" column="shop_type"/>
+        <result property="stroeid" column="stroeid"/>
+        <result property="stroename" column="store_name"/>
+        <result property="supplierid" column="supplierid"/>
+        <result property="suppliername" column="company_name"/>
     </resultMap>
 
     <select id="queryObject" resultMap="orderMap">
-		select a.*,b.code as  shipping_code
+		select a.*,b.code as  shipping_code,e.store_name,f.company_name
 		from nideshop_order a
 		left join nideshop_shipping b on a.shipping_id = b.id
+		left join nideshop_stroe e on a.stroeid=e.id
+		left join nideshop_supplier f on a.supplierid=f.id
 		where a.id = #{value}
 	</select>
 
     <select id="queryList" resultMap="orderMap">
-        SELECT o.*, g.goods_name, g.list_pic_url, g.goods_id FROM nideshop_order o
+        SELECT distinct o.*, g.goods_name, g.list_pic_url, g.goods_id,e.store_name,f.company_name  FROM nideshop_order o
         LEFT JOIN nideshop_order_goods g ON o.id = g.order_id
+        left join nideshop_stroe e on o.stroeid=e.id
+        left join nideshop_supplier f on o.supplierid=f.id
         <where>
             <if test="user_id != null">
                 and o.user_id = #{user_id}
@@ -78,8 +87,8 @@
             <if test="pay_status != null">
                 and o.pay_status = #{pay_status}
             </if>
-            <if test="user_id != null">
-                and o.user_id = #{user_id}
+            <if test="shoptype !=null">
+                and o.shop_type=#{shoptype}
             </if>
         </where>
 
@@ -137,7 +146,10 @@
 			`full_cut_price`,
 			`order_type`,
 			`is_printer`,
-			`supplier_list`
+			`supplier_list`,
+			shop_type,
+			stroeid,
+			supplierid
 		)
 		values
 		(
@@ -175,8 +187,10 @@
 			#{full_cut_price},
 			#{order_type},
 			#{is_printer},
-			#{supplier_list}
-
+			#{supplier_list},
+			#{shoptype},
+			#{stroeid},
+			#{supplierid}
 		)
 	</insert>
 
@@ -216,8 +230,9 @@
             <if test="callback_status != null">`callback_status` = #{callback_status},</if>
             <if test="full_cut_price != null">`full_cut_price` = #{full_cut_price},</if>
             <if test="is_printer != null">`is_printer` = #{is_printer},</if>
-            <if test="supplier_list != null">`supplier_list` = #{supplier_list}</if>
-
+            <if test="supplier_list != null">`supplier_list` = #{supplier_list},</if>
+            <if test="shoptype !=null" >shop_type=#{shoptype},</if>
+            <if test="stroeid !=null">stroeid=#{stroeid}</if>
         </set>
         where id = #{id}
     </update>

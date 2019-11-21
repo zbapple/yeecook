@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
-import com.platform.entity.MenutypeEntity;
+import com.platform.entity.MenutypeVo;
 
 /**
  * Service实现类
@@ -19,11 +19,11 @@ public class ApiMenutypeService  {
     @Autowired
     private ApiMenutypeMapper menutypeDao;
 
-    public MenutypeEntity queryObject(Integer id) {
+    public MenutypeVo queryObject(Integer id) {
         return menutypeDao.queryObject(id);
     }
 
-    public List<MenutypeEntity> queryList(Map<String, Object> map) {
+    public List<MenutypeVo> queryList(Map<String, Object> map) {
         return menutypeDao.queryList(map);
     }
 
@@ -31,11 +31,11 @@ public class ApiMenutypeService  {
         return menutypeDao.queryTotal(map);
     }
 
-    public int save(MenutypeEntity menutype) {
+    public int save(MenutypeVo menutype) {
         return menutypeDao.save(menutype);
     }
 
-    public int update(MenutypeEntity menutype) {
+    public int update(MenutypeVo menutype) {
         return menutypeDao.update(menutype);
     }
 

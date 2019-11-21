@@ -1,6 +1,6 @@
 package com.platform.dao;
 
-import com.platform.entity.MealDisheEntity;
+import com.platform.entity.MealDisheVo;
 
 /**
  * Dao
@@ -9,6 +9,6 @@ import com.platform.entity.MealDisheEntity;
  * @email 9379248@qq.com
  * @date 2019-09-27 16:50:29
  */
-public interface ApiMealDisheMapper extends BaseDao<MealDisheEntity> {
+public interface ApiMealDisheMapper extends BaseDao<MealDisheVo> {
 
 }

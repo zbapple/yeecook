@@ -56,7 +56,7 @@ public class ApiOrderController extends ApiBaseAction {
      */
     @ApiOperation(value = "获取订单列表")
     @PostMapping("list")
-    public Object list(@LoginUser UserVo loginUser, Integer order_status,
+    public Object list(@LoginUser UserVo loginUser, Integer order_status,Integer type,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         //
@@ -66,6 +66,7 @@ public class ApiOrderController extends ApiBaseAction {
         params.put("limit", size);
         params.put("sidx", "id");
         params.put("order", "desc");
+        params.put("shoptype",type);
         params.put("order_status", order_status);
         //查询列表数据
         Query query = new Query(params);
@@ -153,10 +154,10 @@ public class ApiOrderController extends ApiBaseAction {
      */
     @ApiOperation(value = "订单提交")
     @PostMapping("submit")
-    public Object submit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId) {
+    public Object submit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId,Long supplierid,String reamarks) {
         Map resultObj = null;
         try {
-            resultObj = orderService.submit(getJsonRequest(), loginUser,couponId,type,postscript,addressId);
+            resultObj = orderService.submit(getJsonRequest(), loginUser,couponId,type,postscript,addressId,supplierid,reamarks);
             if (null != resultObj) {
                 return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
             }
@@ -167,10 +168,10 @@ public class ApiOrderController extends ApiBaseAction {
     }
     @ApiOperation(value = "餐单订单提交")
     @PostMapping("Mealsubmit")
-    public Object Mealsubmit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId,Integer num,Integer stroeid) {
+    public Object Mealsubmit(@LoginUser UserVo loginUser,Integer couponId, String type, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId,Integer num,String delierytime,String reamarks,Integer stroeid) {
         Map resultObj = null;
         try {
-            resultObj = orderService.mealsubmit(getJsonRequest(), loginUser,couponId,type,postscript,addressId,num,stroeid);
+            resultObj = orderService.mealsubmit(getJsonRequest(), loginUser,couponId,type,postscript,addressId,num,delierytime,reamarks,stroeid);
             if (null != resultObj) {
                 return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
             }
@@ -181,10 +182,10 @@ public class ApiOrderController extends ApiBaseAction {
     }
     @ApiOperation(value = "团餐餐单订单提交")
     @PostMapping("Meanusubmit")
-    public Object Meanusubmit(@LoginUser UserVo loginUser,Integer couponId, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId,Integer num,Integer population,String specification,Integer fate,Integer chacke,Integer stroeid) {
+    public Object Meanusubmit(@LoginUser UserVo loginUser,Integer couponId, @RequestParam(value = "postscript", defaultValue = "") String postscript,Integer addressId,Integer num,Integer population,String specification,Integer fate,Integer chacke,String delierytime,String remarks,Integer stroeid) {
         Map resultObj = null;
         try {
-            resultObj = orderService.meanusubmit(getJsonRequest(), loginUser,couponId,postscript,addressId,num,population,specification,fate,chacke,stroeid);
+            resultObj = orderService.meanusubmit(getJsonRequest(), loginUser,couponId,postscript,addressId,num,population,specification,fate,chacke,delierytime,remarks,stroeid);
             if (null != resultObj) {
                 return toResponsObject(MapUtils.getInteger(resultObj, "errno"), MapUtils.getString(resultObj, "errmsg"), resultObj.get("data"));
             }

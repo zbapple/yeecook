@@ -6,19 +6,14 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
-import com.platform.service.ApiDishesService;
 import com.platform.service.ApiMealDisheService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.entity.MealDisheEntity;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import com.platform.entity.MealDisheVo;
 
 /**
  * Controller
@@ -42,8 +37,8 @@ public class ApiMealDisheController extends ApiBaseAction {
         try {
             Map dishesmap=new HashMap();
             dishesmap.put("mealid",dishesjson.getInteger("mealid"));
-            List<MealDisheEntity> mealDisheEntityList=mealDisheService.queryList(dishesmap);
-            result.put("mealDisheEntityList",mealDisheEntityList);
+            List<MealDisheVo> mealDisheVoList =mealDisheService.queryList(dishesmap);
+            result.put("mealDisheEntityList", mealDisheVoList);
         }catch (Exception e){
             return toResponsMsgSuccess("请联系管理员");
         }

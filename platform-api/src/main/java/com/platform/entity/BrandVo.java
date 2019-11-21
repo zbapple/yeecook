@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import io.swagger.models.auth.In;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,6 +39,8 @@ public class BrandVo implements Serializable {
     private String new_pic_url;
     //排序
     private Integer new_sort_order;
+    //类型
+    private Integer type;
 
     public Integer getId() {
         return id;
@@ -132,5 +136,13 @@ public class BrandVo implements Serializable {
 
     public void setNew_sort_order(Integer new_sort_order) {
         this.new_sort_order = new_sort_order;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

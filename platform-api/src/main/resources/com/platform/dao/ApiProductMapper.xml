@@ -14,6 +14,8 @@
         <result property="market_price" column="market_price"/>
         <result property="goods_name" column="goods_name"/>
         <result property="list_pic_url" column="list_pic_url"/>
+        <result property="supplierid" column="supplierid"/>
+
     </resultMap>
 
     <select id="queryObject" resultMap="productMap">

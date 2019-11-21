@@ -1,5 +1,6 @@
 package com.platform.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.platform.annotation.IgnoreAuth;
@@ -113,6 +114,7 @@ public class    ApiGoodsController extends ApiBaseAction {
     @ApiOperation(value = " 商品详情页数据")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "商品id", paramType = "path", required = true),
             @ApiImplicitParam(name = "referrer", value = "商品referrer", paramType = "path", required = false)})
+    @IgnoreAuth
     @PostMapping(value = "detail")
     public Object detail(Integer id, Long referrer) {
         Map<String, Object> resultObj = new HashMap();
@@ -138,7 +140,7 @@ public class    ApiGoodsController extends ApiBaseAction {
             List<GoodsSpecificationVo> tempList = null;
             for (int j = 0; j < specificationList.size(); j++) {
                 if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
-                    tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
+//                    tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
                     break;
                 }
             }
@@ -154,7 +156,7 @@ public class    ApiGoodsController extends ApiBaseAction {
             } else {
                 for (int j = 0; j < specificationList.size(); j++) {
                     if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
-                        tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
+//                        tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
                         tempList.add(specItem);
                         break;
                     }
@@ -330,7 +332,7 @@ public class    ApiGoodsController extends ApiBaseAction {
         //添加到搜索历史
         if (!StringUtils.isNullOrEmpty(keyword)) {
             SearchHistoryVo searchHistoryVo = new SearchHistoryVo();
-            searchHistoryVo.setAdd_time(System.currentTimeMillis() / 1000);
+            searchHistoryVo.setAdd_time(String.valueOf(System.currentTimeMillis() / 1000));
             searchHistoryVo.setKeyword(keyword);
             searchHistoryVo.setUser_id(null != loginUser ? loginUser.getUserId().toString() : "");
             searchHistoryVo.setFrom("");
@@ -399,7 +401,7 @@ public class    ApiGoodsController extends ApiBaseAction {
         for (CategoryVo categoryEntity : filterCategory) {
         	if (null != categoryId && (categoryEntity.getId() == 0 || categoryId.equals(categoryEntity.getId()))
         	   ||null == categoryId&&null == categoryEntity.getId()) {
-                categoryEntity.setChecked(true);
+                categoryEntity.setChecked(false);
             } else {
                 categoryEntity.setChecked(false);
             }
@@ -508,7 +510,7 @@ public class    ApiGoodsController extends ApiBaseAction {
         Map param = new HashMap();
         param.put("goods_id", id);
         param.put("is_show", "1");
-        param.put("fields", "related_goods_id");
+//        param.put("fields", "related_goods_id");
         List<RelatedGoodsVo> relatedGoodsEntityList = relatedGoodsService.queryList(param);
 
         List<Integer> relatedGoodsIds = new ArrayList();
@@ -522,14 +524,14 @@ public class    ApiGoodsController extends ApiBaseAction {
             //查找同分类下的商品
             GoodsVo goodsCategory = goodsService.queryObject(id);
             Map paramRelated = new HashMap();
-            paramRelated.put("fields", "id, name, list_pic_url, retail_price,is_delete");
+            paramRelated.put("fields", "id, name, list_pic_url, retail_price,is_delete,market_price,supplier_id");
             paramRelated.put("category_id", goodsCategory.getCategory_id());
             paramRelated.put("is_delete","0");
             relatedGoods = goodsService.queryList(paramRelated);
         } else {
             Map paramRelated = new HashMap();
             paramRelated.put("goods_ids", relatedGoodsIds);
-            paramRelated.put("fields", "id, name, list_pic_url, retail_price");
+            paramRelated.put("fields", "id, name, list_pic_url, retail_price,market_price,supplier_id");
             relatedGoods = goodsService.queryList(paramRelated);
         }
         resultObj.put("goodsList", relatedGoods);
@@ -623,5 +625,27 @@ public class    ApiGoodsController extends ApiBaseAction {
         ApiPageUtils goodsData = new ApiPageUtils(goodsList, total, query.getLimit(), query.getPage());
         goodsData.setGoodsList(goodsData.getData());
         return toResponsSuccess(goodsData);
+    }
+    @ApiOperation(value = "商品描述")
+    @IgnoreAuth
+    @PostMapping(value = "productconnet")
+    public Object productconnet(){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject jsonparam=this.getJsonRequest();
+        Integer value=jsonparam.getInteger("id");
+        GoodsVo goodsVo=goodsService.queryObject(value);
+        Map map=new HashMap();
+        if(goodsVo!=null){
+            String connet=goodsVo.getGoods_brief();
+            String listpic=goodsVo.getPrimary_pic_url();
+            map.put("connet",connet);
+            map.put("listpic",listpic);
+            result.put("map",map);
+            result.put("flag",1);
+        }else{
+            result.put("flag",0);
+         return result;
+        }
+        return result;
     }
 }

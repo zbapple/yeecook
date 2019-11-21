@@ -29,6 +29,9 @@ public class ApiCommentService {
         return commentDao.queryTotal(map);
     }
 
+    //计算平均值
+    public Double avgGrade(Map<String, Object> map){return commentDao.avgGrade(map);}
+
     public int queryhasPicTotal(Map<String, Object> map) {
         return commentDao.queryhasPicTotal(map);
     }

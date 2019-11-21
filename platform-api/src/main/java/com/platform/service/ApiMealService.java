@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
-import com.platform.entity.MealEntity;
+import com.platform.entity.MealVo;
 
 /**
  * Service实现类
@@ -19,11 +19,11 @@ public class ApiMealService {
     @Autowired
     private ApiMealMapper mealDao;
 
-    public MealEntity queryObject(Integer id) {
+    public MealVo queryObject(Integer id) {
         return mealDao.queryObject(id);
     }
 
-    public List<MealEntity> queryList(Map<String, Object> map) {
+    public List<MealVo> queryList(Map<String, Object> map) {
         return mealDao.queryList(map);
     }
 
@@ -31,11 +31,11 @@ public class ApiMealService {
         return mealDao.queryTotal(map);
     }
 
-    public int save(MealEntity meal) {
+    public int save(MealVo meal) {
         return mealDao.save(meal);
     }
 
-    public int update(MealEntity meal) {
+    public int update(MealVo meal) {
         return mealDao.update(meal);
     }
 

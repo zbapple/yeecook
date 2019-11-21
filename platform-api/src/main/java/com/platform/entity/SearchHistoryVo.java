@@ -19,9 +19,11 @@ public class SearchHistoryVo implements Serializable {
     //搜索来源，如PC、小程序、APP等
     private String from;
     //搜索时间
-    private Long add_time;
+    private String add_time;
     //会员Id
     private String user_id;
+    //类型
+    private  Integer searchtype;
 
     public Integer getId() {
         return id;
@@ -47,13 +49,6 @@ public class SearchHistoryVo implements Serializable {
         this.from = from;
     }
 
-    public Long getAdd_time() {
-        return add_time;
-    }
-
-    public void setAdd_time(Long add_time) {
-        this.add_time = add_time;
-    }
 
     public String getUser_id() {
         return user_id;
@@ -61,5 +56,22 @@ public class SearchHistoryVo implements Serializable {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public Integer getSearchtype() {
+        return searchtype;
+    }
+
+    public void setSearchtype(Integer searchtype) {
+        this.searchtype = searchtype;
+    }
+
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
     }
 }

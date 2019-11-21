@@ -26,6 +26,8 @@
         <result property="yqm" column="yqm"/>
         <result property="population" column="population"/>
         <result property="fate" column="fate"/>
+        <result property="deliery_time" column="deliery_time"/>
+        <result property="reamarks" column="reamarks"/>
 
     </resultMap>
 
@@ -99,7 +101,9 @@
 			`yqm`,
 			`list_pic_url`,
                 population,
-                fate
+                fate,
+                deliery_time,
+                reamarks
 		)
 		values
 		(
@@ -117,7 +121,9 @@
 			#{yqm},
 			#{list_pic_url},
             #{population},
-			#{fate}
+			#{fate},
+			#{deliery_time},
+			#{reamarks}
 		)
 	</insert>
 
@@ -140,7 +146,9 @@
             <if test="yqm != null">`yqm` = #{yqm},</if>
             <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url},</if>
             <if test="population !=null">population=#{population},</if>
-            <if test="fate !=null">fate=#{fate}</if>
+            <if test="fate !=null">fate=#{fate},</if>
+            <if test="deliery_time !=null">deliery_time=#{deliery_time},</if>
+            <if test="remarks !=null">reamarks=#{reamarks}</if>
         </set>
         where id = #{id}
     </update>

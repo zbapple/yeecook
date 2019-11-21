@@ -1,23 +1,26 @@
 package com.platform.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
-import com.platform.entity.KeywordsVo;
-import com.platform.entity.SearchHistoryVo;
-import com.platform.entity.UserVo;
-import com.platform.service.ApiKeywordsService;
-import com.platform.service.ApiSearchHistoryService;
+import com.platform.entity.*;
+import com.platform.service.*;
 import com.platform.util.ApiBaseAction;
+import com.platform.util.MapUtils;
 import com.platform.utils.Query;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +40,12 @@ public class ApiSearchController extends ApiBaseAction {
     private ApiKeywordsService keywordsService;
     @Autowired
     private ApiSearchHistoryService searchHistoryService;
-
+    @Autowired
+    private ApiStroeService stroeService;
+    @Autowired
+    private ApiGoodsService goodsService;
+    @Autowired
+    private ApiStroeTypeService stroeTypeService;
     /**
      * 　　index
      */
@@ -92,14 +100,18 @@ public class ApiSearchController extends ApiBaseAction {
      */
     @ApiOperation(value = "搜索商品")
     @ApiImplicitParams({@ApiImplicitParam(name = "keyword", value = "关键字", paramType = "path", required = true)})
-    @IgnoreAuth
     @PostMapping("helper")
-    public Object helper(@LoginUser UserVo loginUser, String keyword) {
+    public Object helper(@LoginUser UserVo loginUser) {
+        JSONObject jsonhelper=this.getJsonRequest();
+        String keyword=jsonhelper.getString("keyword");
+        Map<String,Object> result=new HashMap<>();
         Map param = new HashMap();
         param.put("fields", "distinct keyword");
         param.put("keyword", keyword);
         param.put("limit", 10);
         param.put("offset", 0);
+        Map prm=new HashMap();
+        prm.put("name",keyword);
         List<KeywordsVo> keywords = keywordsService.queryList(param);
         String[] keys = new String[keywords.size()];
         if (null != keywords) {
@@ -109,17 +121,144 @@ public class ApiSearchController extends ApiBaseAction {
                 i++;
             }
         }
+//        prm.put("is_on_sale",1);
+        List<GoodsVo> goodsVos=goodsService.querylistgood(prm);
+        if(goodsVos!=null){
+            Integer sale=0;
+            for(GoodsVo goodsVo:goodsVos){
+                sale=goodsVo.getIs_on_sale();
+            }
+            if(sale==1){
+                SearchHistoryVo region=new SearchHistoryVo();
+                Date date=new Date();
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+                region.setAdd_time(simpleDateFormat.format(date));
+                region.setKeyword(keyword);
+                region.setFrom("小程序");
+                region.setUser_id(String.valueOf(loginUser.getUserId()));
+                searchHistoryService.save(region);
+                result.put("goodsVos",goodsVos);
+                result.put("flag",1);
+                return result;
+            }else{
+                result.put("flag",0);
+                return result;
+            }
+        }
         //
-        return toResponsSuccess(keys);
+        return toResponsSuccess("成功");
     }
 
     /**
      * 　　clearhistory
      */
-    @PostMapping("clearhistory")
+        @PostMapping("clearhistory")
     public Object clearhistory(@LoginUser UserVo loginUser) {
         searchHistoryService.deleteByUserId(loginUser.getUserId());
         //
         return toResponsSuccess("");
+    }
+
+
+    @ApiOperation(value = "搜索门店")
+    @PostMapping("seachstroe")
+    public  Object seachestroe(@LoginUser UserVo loginUser){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject jsonseach=this.getJsonRequest();
+        String keyword=jsonseach.getString("keyword");
+        Map pram=new HashMap();
+        pram.put("name",keyword);
+        List<StroeVo> stroeList=stroeService.queryList(pram);
+        List<StroeTypeVo> stroeTypeVos=stroeTypeService.queryList(pram);
+        if(stroeList.size()>0||stroeTypeVos.size()>0){
+        try {
+            double lat=jsonseach.getDouble("lat");
+            double lon=jsonseach.getDouble("lon");
+            Integer stroeType=0;
+
+            if(stroeTypeVos.size()>0){
+                for(StroeTypeVo stroeTypeVo:stroeTypeVos){
+                    stroeType=stroeTypeVo.getId();
+                }
+            }
+            Integer stroetype=0;
+            if(stroeList.size()>0){
+                for(StroeVo stroeVo:stroeList){
+                    stroetype=stroeVo.getStoreType();
+                }
+            }
+            Map<String,Double> json= MapUtils.getAround(lon,lat,7000.0);
+            Double minLng=json.get("minLng");
+            Double maxLng=json.get("maxLng");
+            Double minLat=json.get("minLat");
+            Double maxLat=json.get("maxLat");
+            Map listmap=new HashMap();
+            listmap.put("minLng",minLng);
+            listmap.put("minLat",minLat);
+            listmap.put("maxLng",maxLng);
+            listmap.put("maxLat",maxLat);
+            if (stroeTypeVos.size()!=0){
+//                if(stroetype==stroeType){
+                    listmap.put("stroeType",stroeType);
+//                }
+            }
+            if(stroeList.size()!=0){
+                listmap.put("name",keyword);
+            }
+            SearchHistoryVo region=new SearchHistoryVo();
+            Date date=new Date();
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+            region.setAdd_time(simpleDateFormat.format(date));
+            region.setKeyword(keyword);
+            region.setFrom("小程序");
+            region.setUser_id(String.valueOf(loginUser.getUserId()));
+            searchHistoryService.save(region);
+            List<StroeVo> stroeVoList =stroeService.queryList(listmap);
+            Double lon2=0.0;
+            Double lat2=0.0;
+            Double s=0.0;
+            Map stroemap=new HashMap();
+            if(stroeVoList.size()==0){
+                result.put("flg",0);
+                return result;
+            }else{
+                DecimalFormat df = new DecimalFormat( "0.00");
+                for(StroeVo stroeVo : stroeVoList){
+                    lon2= stroeVo.getLongitude();
+                    lat2= stroeVo.getLatitude();
+                    s=MapUtils.Distance(lon,lat,lon2,lat2);
+                    Double  distance=s;
+                    Double  distance1=Math.round(distance*10)/10.0;
+                    if(distance1>1000){
+                        Map str=new HashMap();
+                        Double dstance3=distance1/1000;
+                        Double distance2=(new Double(df.format(dstance3)));
+                        String km="km";
+                        String dstance4=distance2+km;
+                        stroeVo.setJuli(dstance4);
+//                        str.put("",);
+                        result.put("flg",1);
+                        result.put("stroeEntityList", stroeVoList);
+                        return result;
+                    }else if(distance1<1000){
+                        Double dstance2=(new Double(df.format(distance1)));
+                        String m="m";
+                        String dstance4=dstance2+m;
+                        stroeVo.setJuli(dstance4);
+                        result.put("flg",1);
+                        result.put("stroeEntityList", stroeVoList);
+                        return result;
+                    }
+                }
+            }
+        }catch (Exception e) {
+                return toResponsMsgSuccess("请联系管理员");
+        }
+        }else{
+            result.put("flg",0);
+            return result;
+        }
+
+        return result;
     }
 }

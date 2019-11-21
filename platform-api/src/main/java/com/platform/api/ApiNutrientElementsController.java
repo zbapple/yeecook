@@ -44,6 +44,7 @@ public class ApiNutrientElementsController extends ApiBaseAction {
     private ApiFoodIngredientsService foodIngredientsService;
 
     @ApiOperation(value = "获取菜品中的营养元素")
+    @IgnoreAuth
     @PostMapping("nutrieninfo")
     public Object nutrieninfo(){
         JSONObject dishesinfojson=this.getJsonRequest();

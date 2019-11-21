@@ -3,7 +3,7 @@
 
 <mapper namespace="com.platform.dao.ApiOrderMenuplanMapper">
 
-    <resultMap type="com.platform.entity.OrderMenuplanEntity" id="orderMenuplanMap">
+    <resultMap type="com.platform.entity.OrderMenuplanVo" id="orderMenuplanMap">
         <result property="id" column="id"/>
         <result property="menuSn" column="menu_sn"/>
         <result property="userid" column="userid"/>
@@ -18,7 +18,7 @@
         <result property="stroeid" column="stroeid"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.OrderMenuplanEntity">
+	<select id="queryObject" resultType="com.platform.entity.OrderMenuplanVo">
 		select
 			`id`,
 			`menu_sn`,
@@ -36,7 +36,7 @@
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.OrderMenuplanEntity">
+	<select id="queryList" resultType="com.platform.entity.OrderMenuplanVo">
 		select
     		`id`,
     		`menu_sn`,
@@ -75,7 +75,7 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.OrderMenuplanEntity" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.platform.entity.OrderMenuplanVo" useGeneratedKeys="true" keyProperty="id">
 		insert into order_menuplan(
 			`menu_sn`,
 			`userid`,
@@ -100,7 +100,7 @@
 			#{stroeid})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.OrderMenuplanEntity">
+	<update id="update" parameterType="com.platform.entity.OrderMenuplanVo">
 		update order_menuplan 
 		<set>
 			<if test="menuSn != null">`menu_sn` = #{menuSn}, </if>

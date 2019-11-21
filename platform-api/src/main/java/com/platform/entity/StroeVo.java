@@ -9,16 +9,16 @@ import java.util.Date;
  *
  * @author zoubin
  * @email 9379248@qq.com
- * @date 2019-09-19 10:11:30
+ * @date 2019-10-31 09:41:07
  */
-public class StroeEntity implements Serializable {
+public class StroeVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
     private Integer id;
     //门店名称
     private String storeName;
-    //门店类型
+    //门店类型(1.营养餐 2.月子餐3.长者餐)
     private Integer storeType;
     //门店logo
     private String storePicrue;
@@ -36,24 +36,31 @@ public class StroeEntity implements Serializable {
     private Integer departmentid;
     //供应商id
     private Integer supplierid;
-    //门店评分
-    private Double  grade ;
-    //月销售
-    private  Integer coutsale;
-    //门店优惠券
-    private String coupon;
     //经度
     private Double longitude;
     //纬度
     private Double latitude;
-    //商家电话
-    private String stroephone;
-    //距离
-    private String juli;
+    //门店电话
+    private String storePhone;
     //起送费
     private Double sendingfee;
     //配送费
     private Double deliveryfee;
+    //门店实景图片
+    private String realisticPicture;
+    //门店的食品执照
+    private String licensePic;
+    //门店营业时间
+    private  String storetime;
+    //距离
+    private String juli;
+    //评分
+    private  Double stroeGrade;;
+    //销售量
+    private Integer salesVolume;;
+    //食品营业范围
+    private String businesslicense;
+
     /**
      * 设置：
      */
@@ -80,7 +87,19 @@ public class StroeEntity implements Serializable {
     public String getStoreName() {
         return storeName;
     }
+    /**
+     * 设置：门店类型(1.营养餐 2.月子餐3.长者餐)
+     */
+    public void setStoreType(Integer storeType) {
+        this.storeType = storeType;
+    }
 
+    /**
+     * 获取：门店类型(1.营养餐 2.月子餐3.长者餐)
+     */
+    public Integer getStoreType() {
+        return storeType;
+    }
     /**
      * 设置：门店logo
      */
@@ -185,80 +204,84 @@ public class StroeEntity implements Serializable {
     public Integer getSupplierid() {
         return supplierid;
     }
-
-    public Double getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Double grade) {
-        this.grade = grade;
-    }
-
-    public String getCoupon() {
-        return coupon;
-    }
-
-    public void setCoupon(String coupon) {
-        this.coupon = coupon;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
+    /**
+     * 设置：经度
+     */
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public Double getLatitude() {
-        return latitude;
+    /**
+     * 获取：经度
+     */
+    public Double getLongitude() {
+        return longitude;
     }
-
+    /**
+     * 设置：纬度
+     */
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getStroephone() {
-        return stroephone;
+    /**
+     * 获取：纬度
+     */
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setStroephone(String stroephone) {
-        this.stroephone = stroephone;
-    }
-
-
-
-    public Integer getStoreType() {
-        return storeType;
-    }
-
-    public void setStoreType(Integer storeType) {
-        this.storeType = storeType;
-    }
-
-    public Integer getCoutsale() {
-        return coutsale;
-    }
-
-    public void setCoutsale(Integer coutsale) {
-        this.coutsale = coutsale;
-    }
-
-
-    public Double getSendingfee() {
-        return sendingfee;
-    }
-
+    /**
+     * 设置：起送费
+     */
     public void setSendingfee(Double sendingfee) {
         this.sendingfee = sendingfee;
     }
 
+    /**
+     * 获取：起送费
+     */
+    public Double getSendingfee() {
+        return sendingfee;
+    }
+    /**
+     * 设置：配送费
+     */
+    public void setDeliveryfee(Double deliveryfee) {
+        this.deliveryfee = deliveryfee;
+    }
+
+    /**
+     * 获取：配送费
+     */
     public Double getDeliveryfee() {
         return deliveryfee;
     }
+    /**
+     * 设置：门店实景图片
+     */
+    public void setRealisticPicture(String realisticPicture) {
+        this.realisticPicture = realisticPicture;
+    }
 
-    public void setDeliveryfee(Double deliveryfee) {
-        this.deliveryfee = deliveryfee;
+    /**
+     * 获取：门店实景图片
+     */
+    public String getRealisticPicture() {
+        return realisticPicture;
+    }
+    /**
+     * 设置：门店的食品执照
+     */
+    public void setLicensePic(String licensePic) {
+        this.licensePic = licensePic;
+    }
+
+    /**
+     * 获取：门店的食品执照
+     */
+    public String getLicensePic() {
+        return licensePic;
     }
 
     public String getJuli() {
@@ -267,5 +290,44 @@ public class StroeEntity implements Serializable {
 
     public void setJuli(String juli) {
         this.juli = juli;
+    }
+    public String getStoretime() {
+        return storetime;
+    }
+
+    public void setStoretime(String storetime) {
+        this.storetime = storetime;
+    }
+
+    public String getBusinesslicense() {
+        return businesslicense;
+    }
+
+    public void setBusinesslicense(String businesslicense) {
+        this.businesslicense = businesslicense;
+    }
+
+    public String getStorePhone() {
+        return storePhone;
+    }
+
+    public void setStorePhone(String storePhone) {
+        this.storePhone = storePhone;
+    }
+
+    public Double getStroeGrade() {
+        return stroeGrade;
+    }
+
+    public void setStroeGrade(Double stroeGrade) {
+        this.stroeGrade = stroeGrade;
+    }
+
+    public Integer getSalesVolume() {
+        return salesVolume;
+    }
+
+    public void setSalesVolume(Integer salesVolume) {
+        this.salesVolume = salesVolume;
     }
 }

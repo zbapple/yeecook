@@ -28,6 +28,8 @@ public class PromotionVo implements Serializable {
     private String affiliatedUnit;
     //推广码
     private String promotionYard;
+    //存储base64
+    private String promotionbase64;
 
     /**
      * 设置：
@@ -119,5 +121,13 @@ public class PromotionVo implements Serializable {
      */
     public String getPromotionYard() {
         return promotionYard;
+    }
+
+    public String getPromotionbase64() {
+        return promotionbase64;
+    }
+
+    public void setPromotionbase64(String promotionbase64) {
+        this.promotionbase64 = promotionbase64;
     }
 }

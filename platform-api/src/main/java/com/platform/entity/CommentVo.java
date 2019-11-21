@@ -2,6 +2,7 @@ package com.platform.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.platform.utils.JsonDateSerializer;
+import io.swagger.models.auth.In;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,6 +34,22 @@ public class CommentVo implements Serializable {
     //会员Id
     private UserVo user_info;
     private List<CommentPictureVo> pic_list;
+    //门店id
+    private  Integer stroeid;
+    //评分
+    private  Double grade;
+    //订单id
+    private Integer orderid;
+    //评论类型名称
+    private String name;
+    //图片
+    private String pic_url;
+    //商品名称
+    private  String goodsnamm;
+    //评论类型
+    private Integer type;
+    //品论回复id
+    private Integer replyid;
 
     public Integer getId() {
         return id;
@@ -105,5 +122,53 @@ public class CommentVo implements Serializable {
 
     public void setPic_list(List<CommentPictureVo> pic_list) {
         this.pic_list = pic_list;
+    }
+
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
+    }
+
+    public Double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Double grade) {
+        this.grade = grade;
+    }
+
+    public Integer getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(Integer orderid) {
+        this.orderid = orderid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPic_url() {
+        return pic_url;
+    }
+
+    public void setPic_url(String pic_url) {
+        this.pic_url = pic_url;
+    }
+
+    public String getGoodsnamm() {
+        return goodsnamm;
+    }
+
+    public void setGoodsnamm(String goodsnamm) {
+        this.goodsnamm = goodsnamm;
     }
 }

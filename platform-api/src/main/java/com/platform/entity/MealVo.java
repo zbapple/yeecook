@@ -14,7 +14,7 @@ import java.util.Map;
  * @email 9379248@qq.com
  * @date 2019-09-27 16:50:29
  */
-public class MealEntity implements Serializable {
+public class MealVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
@@ -33,6 +33,9 @@ public class MealEntity implements Serializable {
     private BigDecimal mealPice;
     //菜品名称集合
     private List  dishesname;
+    //门店名称
+    private  String stroename;
+    private  Integer stroe_id;
     /**
      * 设置：
      */
@@ -127,5 +130,21 @@ public class MealEntity implements Serializable {
 
     public void setMealPice(BigDecimal mealPice) {
         this.mealPice = mealPice;
+    }
+
+    public String getStroename() {
+        return stroename;
+    }
+
+    public void setStroename(String stroename) {
+        this.stroename = stroename;
+    }
+
+    public Integer getStroe_id() {
+        return stroe_id;
+    }
+
+    public void setStroe_id(Integer stroe_id) {
+        this.stroe_id = stroe_id;
     }
 }

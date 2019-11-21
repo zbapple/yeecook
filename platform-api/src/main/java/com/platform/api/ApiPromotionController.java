@@ -62,11 +62,12 @@ public class ApiPromotionController extends ApiBaseAction {
                 String url=HttpXmlClient.sendPost3(requeststr2,id);
                 codelist.add(url);
                 codelist.add(id);
-//                PromotionVo prom=new PromotionVo();
-//                prom.setId(promotionVo.getId());
-//                prom.setPromotionYard(url);
-//                promotionService.update(prom);
-            }
+                if (promotionVo.getPromotionbase64() == null) {
+                    PromotionVo prom = new PromotionVo();
+                    prom.setPromotionbase64(url);
+                    prom.setId(promotionVo.getId());
+                    promotionService.update(prom);
+                }            }
             result.put("codelist",codelist);
             result.put("flag",0);
         }else{

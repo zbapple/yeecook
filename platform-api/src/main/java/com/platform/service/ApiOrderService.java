@@ -103,7 +103,7 @@ public class ApiOrderService {
 
 
     @Transactional
-    public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId) {
+    public Map<String, Object> submit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId,Long supplierid,String reamarks) {
         Map<String, Object> resultObj = new HashMap<String, Object>();
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
         AddressVo addressVo = apiAddressMapper.queryObject(addressId);
@@ -202,7 +202,9 @@ public class ApiOrderService {
         orderInfo.setShipping_id(0);
         orderInfo.setShipping_fee(new BigDecimal(0));
         orderInfo.setIntegral(0);
+        orderInfo.setShoptype(1);
         orderInfo.setIntegral_money(new BigDecimal(0));
+        orderInfo.setSupplierid(supplierid);
         if (type.equals("cart")) {
             orderInfo.setOrder_type("1");
         } else {
@@ -232,6 +234,7 @@ public class ApiOrderService {
             orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
             orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
             orderGoodsData.add(orderGoodsVo);
+            orderGoodsVo.setReamarks(reamarks);
             apiOrderGoodsMapper.save(orderGoodsVo);
         }
 
@@ -253,7 +256,7 @@ public class ApiOrderService {
         return resultObj;
     }
     @Transactional
-    public Map<String,Object>  mealsubmit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId,Integer num,Integer stroeid){
+    public Map<String,Object>  mealsubmit(JSONObject jsonParam, UserVo loginUser,Integer couponId, String type,String postscript,Integer addressId,Integer num,String delierytime,String reamarks,Integer stroeid){
         Map<String, Object> resultObj = new HashMap<String, Object>();
 //        AddressVo addressVo = jsonParam.getObject("checkedAddress",AddressVo.class);
         AddressVo addressVo = apiAddressMapper.queryObject(addressId);
@@ -368,7 +371,9 @@ public class ApiOrderService {
             orderInfo.setShipping_id(0);
             orderInfo.setShipping_fee(new BigDecimal(0));
             orderInfo.setIntegral(0);
+            orderInfo.setShoptype(0);
             orderInfo.setIntegral_money(new BigDecimal(0));
+            orderInfo.setStroeid(stroeid);
             if (type.equals("cart")) {
                 orderInfo.setOrder_type("1");
             } else {
@@ -408,7 +413,8 @@ public class ApiOrderService {
                 orderGoodsVo.setNumber(goodsItem.getNumber());
                 orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
                 orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
-                orderGoodsVo.setDeliery_time(goodsItem.getDeliverytime());
+                orderGoodsVo.setDeliery_time(delierytime);
+                orderGoodsVo.setReamarks(reamarks);
 //            orderMenuEntities.add(orderMenuVo);
 //            orderMenuService.save(orderMenuVo);
                 orderGoodsData.add(orderGoodsVo);
@@ -450,7 +456,9 @@ public class ApiOrderService {
         orderInfo.setShipping_id(0);
         orderInfo.setShipping_fee(new BigDecimal(0));
         orderInfo.setIntegral(0);
+        orderInfo.setShoptype(0);
         orderInfo.setIntegral_money(new BigDecimal(0));
+        orderInfo.setStroeid(stroeid);
         if (type.equals("cart")) {
             orderInfo.setOrder_type("1");
         } else {
@@ -490,7 +498,8 @@ public class ApiOrderService {
             orderGoodsVo.setNumber(goodsItem.getNumber());
             orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
             orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
-            orderGoodsVo.setDeliery_time(goodsItem.getDeliverytime());
+            orderGoodsVo.setDeliery_time(delierytime);
+            orderGoodsVo.setReamarks(reamarks);
 //            orderMenuEntities.add(orderMenuVo);
 //            orderMenuService.save(orderMenuVo);
         orderGoodsData.add(orderGoodsVo);
@@ -516,7 +525,7 @@ public class ApiOrderService {
 
     }
     @Transactional
-    public Map<String,Object> meanusubmit(JSONObject jsonParam,UserVo loginUser,Integer couponId,String postscript,Integer addressId,Integer num,Integer population,String specification,Integer fate,Integer chacke,Integer stroeid) {
+    public Map<String,Object> meanusubmit(JSONObject jsonParam,UserVo loginUser,Integer couponId,String postscript,Integer addressId,Integer num,Integer population,String specification,Integer fate,Integer chacke,String delierytime,String reamarks,Integer stroeid) {
         Map<String, Object> resultObj = new HashMap<>();
         AddressVo addressVo = apiAddressMapper.queryObject(addressId);
         //        String[] specife=specification.split(new char[1]{'/'});
@@ -558,7 +567,9 @@ public class ApiOrderService {
             orderInfo.setShipping_id(0);
             orderInfo.setShipping_fee(new BigDecimal(0));
             orderInfo.setIntegral(0);
+            orderInfo.setShoptype(0);
             orderInfo.setIntegral_money(new BigDecimal(0));
+            orderInfo.setStroeid(stroeid);
             //开启事务，插入订单信息和订单商品
             apiOrderMapper.save(orderInfo);
             if (null == orderInfo.getId()) {
@@ -577,6 +588,7 @@ public class ApiOrderService {
             orderGoodsVo.setList_pic_url(listpic);
             orderGoodsVo.setRetail_price((new BigDecimal(total)));
             orderGoodsVo.setNumber(1);
+            orderGoodsVo.setReamarks(reamarks);
             orderGoodsVo.setGoods_specifition_name_value
                     (specification);
             orderGoodsData.add(orderGoodsVo);
@@ -611,7 +623,9 @@ public class ApiOrderService {
         orderInfo.setShipping_id(0);
         orderInfo.setShipping_fee(new BigDecimal(0));
         orderInfo.setIntegral(0);
+        orderInfo.setShoptype(0);
         orderInfo.setIntegral_money(new BigDecimal(0));
+        orderInfo.setStroeid(stroeid);
         //开启事务，插入订单信息和订单商品
         apiOrderMapper.save(orderInfo);
         if (null == orderInfo.getId()) {
@@ -630,6 +644,8 @@ public class ApiOrderService {
         orderGoodsVo.setList_pic_url(listpic);
         orderGoodsVo.setRetail_price((new BigDecimal(total)));
         orderGoodsVo.setNumber(1);
+        orderGoodsVo.setDeliery_time(delierytime);
+        orderGoodsVo.setReamarks(reamarks);
         orderGoodsVo.setGoods_specifition_name_value
                 (specification);
         orderGoodsData.add(orderGoodsVo);
@@ -711,7 +727,7 @@ private void getGroupBymealforDept(Integer orderId){
     Map params = new HashMap();
     params.put("order_id",orderId);
     params.put("order", SQLFilter.sqlInject("asc"));
-    List<OrderMenuEntity> orderMenuEntityList=orderMenuService.queryList(params);
+    List<OrderMenuVo> orderMenuEntityList=orderMenuService.queryList(params);
 //    Map<Integer, List<OrderGoodsVo>> supIdMap = new HashMap<>();
 //    for (OrderGoodsVo orderGoodsVo : orderGoodsVoList) {
 //        List<OrderGoodsVo> tempList = supIdMap.get(orderGoodsVo.getSupplier_id());
@@ -736,7 +752,7 @@ private void getGroupBymealforDept(Integer orderId){
         goodsTotalPrice = new BigDecimal(0.00);
 //        List<OrderMenuEntity> voList=supIdMap.get(supId);
 //        OrderSupplierVo orderSupplierVo=new OrderSupplierVo(orderVo);
-    for (OrderMenuEntity vo : orderMenuEntityList){
+    for (OrderMenuVo vo : orderMenuEntityList){
 //        orderTotalPrice= orderTotalPrice.add(vo.getRetailPrice().multiply(new BigDecimal(vo.getNumber())));
         goodsTotalPrice= goodsTotalPrice.add(vo.getRetailPrice().multiply(new BigDecimal(vo.getNumber())));
     }
@@ -759,7 +775,7 @@ private void getGroupbymenuforDept(Integer orderId){
     Map params = new HashMap();
     params.put("order_id",orderId);
     params.put("order", SQLFilter.sqlInject("asc"));
-    List<OrderMenuplanEntity> orderMenuEntityList=orderMenuService.queryList(params);
+    List<OrderMenuplanVo> orderMenuEntityList=orderMenuService.queryList(params);
 //    Map<Integer, List<OrderGoodsVo>> supIdMap = new HashMap<>();
 //    for (OrderGoodsVo orderGoodsVo : orderGoodsVoList) {
 //        List<OrderGoodsVo> tempList = supIdMap.get(orderGoodsVo.getSupplier_id());

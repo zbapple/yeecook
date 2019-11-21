@@ -1,10 +1,7 @@
 package com.platform.api;
 
 import java.text.DecimalFormat;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
@@ -13,14 +10,11 @@ import com.platform.util.ApiBaseAction;
 import com.platform.util.MapUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.entity.StroeEntity;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import com.platform.entity.StroeVo;
 
 /**
  * Controller
@@ -57,18 +51,19 @@ public class ApiStroeController extends ApiBaseAction {
             listmap.put("maxLng",maxLng);
             listmap.put("maxLat",maxLat);
             listmap.put("storeType",storeType);
-            List<StroeEntity> stroeEntityList=stroeService.queryList(listmap);
+//            listmap.put("",);
+            List<StroeVo> stroeVoList =stroeService.queryList(listmap);
             Double lon2=0.0;
             Double lat2=0.0;
             Double s=0.0;
-            if(stroeEntityList.size()==0){
+            if(stroeVoList.size()==0){
                 result.put("flg",0);
                 return result;
             }else{
                 DecimalFormat df = new DecimalFormat( "0.00");
-                for(StroeEntity stroeEntity:stroeEntityList){
-                    lon2=stroeEntity.getLongitude();
-                    lat2=stroeEntity.getLatitude();
+                for(StroeVo stroeVo : stroeVoList){
+                    lon2= stroeVo.getLongitude();
+                    lat2= stroeVo.getLatitude();
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
@@ -77,16 +72,16 @@ public class ApiStroeController extends ApiBaseAction {
                         Double distance2=(new Double(df.format(dstance3)));
                         String km="km";
                         String dstance4=distance2+km;
-                        stroeEntity.setJuli(dstance4);
+                        stroeVo.setJuli(dstance4);
                         result.put("flg",1);
-                        result.put("stroeEntityList",stroeEntityList);
+                        result.put("stroeEntityList", stroeVoList);
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
-                        stroeEntity.setJuli(dstance4);
+                        stroeVo.setJuli(dstance4);
                         result.put("flg",1);
-                        result.put("stroeEntityList",stroeEntityList);
+                        result.put("stroeEntityList", stroeVoList);
                     }
                 }
             }
@@ -116,7 +111,7 @@ public class ApiStroeController extends ApiBaseAction {
             typest.put("maxLng",maxLng);
             typest.put("maxLat",maxLat);
             typest.put("stroeid",typestjson.getInteger("stroeid"));
-            List<StroeEntity> stroeentityList=stroeService.queryList(typest);
+            List<StroeVo> stroeentityList=stroeService.queryList(typest);
             Double lon2=0.0;
             Double lat2=0.0;
             Double s=0.0;
@@ -125,9 +120,9 @@ public class ApiStroeController extends ApiBaseAction {
                 return result;
             }else{
                 DecimalFormat df = new DecimalFormat( "0.00");
-                for(StroeEntity stroeEntity:stroeentityList){
-                    lon2=stroeEntity.getLongitude();
-                    lat2=stroeEntity.getLatitude();
+                for(StroeVo stroeVo :stroeentityList){
+                    lon2= stroeVo.getLongitude();
+                    lat2= stroeVo.getLatitude();
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
@@ -136,14 +131,14 @@ public class ApiStroeController extends ApiBaseAction {
                         Double distance2=(new Double(df.format(dstance3)));
                         String km="km";
                         String dstance4=distance2+km;
-                        stroeEntity.setJuli(dstance4);
+                        stroeVo.setJuli(dstance4);
                         result.put("flg",1);
                         result.put("stroeentityList",stroeentityList);
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
-                        stroeEntity.setJuli(dstance4);
+                        stroeVo.setJuli(dstance4);
                         result.put("flg",1);
                         result.put("stroeentityList",stroeentityList);
                     }
@@ -155,11 +150,141 @@ public class ApiStroeController extends ApiBaseAction {
         return result;
     }
     @ApiOperation(value = "门店地址")
+    @IgnoreAuth
     @PostMapping("stroeaddress")
     public Object stroeaddress(){
         JSONObject addressjson=this.getJsonRequest();
         Integer stroid=addressjson.getInteger("id");
-        StroeEntity stroeinfo=stroeService.queryObject(stroid);
+        StroeVo stroeinfo=stroeService.queryObject(stroid);
         return stroeinfo;
+    }
+
+    @ApiOperation(value = "商家详情")
+    @IgnoreAuth
+    @PostMapping("stroeinfo")
+    public Object stroeinfo(){
+    Map<String,Object> result=new HashMap<>();
+    JSONObject infojson=this.getJsonRequest();
+    Map info=new HashMap();
+    info.put("stroeid",infojson.getInteger("stroeid"));
+    List<StroeVo> stroeList=stroeService.queryList(info);
+    Map  stroe=new HashMap();
+    if(stroeList.size()>0){
+        for(StroeVo stroeVoItem :stroeList){
+            Integer id= stroeVoItem.getId();
+            String  name= stroeVoItem.getStoreName();
+            String address1= stroeVoItem.getDistrct();
+            String address2= stroeVoItem.getAddress();
+            String address=address1+address2;
+            String phone= stroeVoItem.getStorePhone();
+            String stroetime= stroeVoItem.getStoretime();
+            String realisticPicture=stroeVoItem.getRealisticPicture();
+            String[] realistp=realisticPicture.split(";");
+            List list=new ArrayList();
+            for(int i=0;i<realistp.length;i++){
+                Map relismap=new HashMap();
+                String re=realistp[i];
+                relismap.put("realistp",re);
+                list.add(relismap);
+            }
+            Map listpic=new HashMap();
+            stroe.put("name",name);
+            stroe.put("address",address);
+            stroe.put("phone",phone);
+            stroe.put("stroetime",stroetime);
+            listpic.put("listcensepic",stroeVoItem.getLicensePic());
+            listpic.put("businesslicense",stroeVoItem.getBusinesslicense());
+            stroe.put("list",list);
+            stroe.put("listpic",listpic);
+            result.put("flag",1);
+            result.put("stroe",stroe);
+        }
+        result.put("flag",1);
+    }else{
+        result.put("flag",0);
+        return result;
+    }
+    return result;
+    }
+    @ApiOperation(value = "综合排序")
+    @IgnoreAuth
+    @PostMapping("sortinfo")
+    public Object sortinfo(){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject listjson=this.getJsonRequest();
+
+            double lat=listjson.getDouble("lat");
+            double lon=listjson.getDouble("lon");
+            Integer storeType=listjson.getInteger("storeType");
+            Map<String,Double> json=MapUtils.getAround(lon,lat,7000.0);
+            Double minLng=json.get("minLng");
+            Double maxLng=json.get("maxLng");
+            Double minLat=json.get("minLat");
+            Double maxLat=json.get("maxLat");
+            Map listmap=new HashMap();
+            listmap.put("minLng",minLng);
+            listmap.put("minLat",minLat);
+            listmap.put("maxLng",maxLng);
+            listmap.put("maxLat",maxLat);
+            listmap.put("storeType",storeType);
+            Integer sendingfee=listjson.getInteger("sendingfee");
+            Integer deliveryfee=listjson.getInteger("deliveryfee");
+            Integer grade=listjson.getInteger("grade");
+            Integer number=listjson.getInteger("number");
+            if(sendingfee!=null){
+                listmap.put("sidx","sendingfee");
+                listmap.put("order","asc");
+            }else if(deliveryfee!=null){
+                listmap.put("sidx","deliveryfee");
+                listmap.put("order","asc");
+            }else  if(grade!=null){
+                listmap.put("sidx","stroe_grade");
+                listmap.put("order","desc");
+            }else  if(number!=null){
+                listmap.put("sidx","sales_volume");
+                listmap.put("order","desc");
+            }
+            List<StroeVo> stroeVoList =stroeService.querysort(listmap);
+            Double lon2=0.0;
+            Double lat2=0.0;
+            Double s=0.0;
+            if(stroeVoList.size()==0){
+                result.put("flg",0);
+                return result;
+            }else{
+                DecimalFormat df = new DecimalFormat( "0.00");
+                List listst=new ArrayList();
+                for(StroeVo stroeVo : stroeVoList){
+                    lon2= stroeVo.getLongitude();
+                    lat2= stroeVo.getLatitude();
+                    s=MapUtils.Distance(lon,lat,lon2,lat2);
+                    Double  distance=s;
+                    Double  distance1=Math.round(distance*10)/10.0;
+//                    listst.add(distance1);
+                    Map dista=new HashMap();
+                    if(distance1>1000){
+                        Double dstance3=distance1/1000;
+                        Double distance2=(new Double(df.format(dstance3)));
+                        String km="km";
+                        String dstance4=distance2+km;
+                        stroeVo.setJuli(dstance4);
+                        result.put("flg",1);
+//                        listst.add(dista);
+                        result.put("stroeEntityList", stroeVoList);
+//                        result.put("listst",listst);
+                    }else if(distance1<1000){
+                        Double dstance2=(new Double(df.format(distance1)));
+                        String m="m";
+                        String dstance4=dstance2+m;
+                        stroeVo.setJuli(dstance4);
+                        result.put("flg",1);
+//                        listst.add(dista);
+                        result.put("stroeEntityList", stroeVoList);
+//                        result.put("listst",listst);
+                    }
+                }
+
+            }
+        return result;
     }
 }

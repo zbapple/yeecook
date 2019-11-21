@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
-import com.platform.entity.OrderMenuEntity;
+import com.platform.entity.OrderMenuVo;
 /**
  * Service实现类
  *
@@ -18,11 +18,11 @@ public class ApiOrderMenuService  {
     @Autowired
     private ApiOrderMenuMapper orderMenuDao;
 
-    public OrderMenuEntity queryObject(Integer id) {
+    public OrderMenuVo queryObject(Integer id) {
         return orderMenuDao.queryObject(id);
     }
 
-    public List<OrderMenuEntity> queryList(Map<String, Object> map) {
+    public List<OrderMenuVo> queryList(Map<String, Object> map) {
         return orderMenuDao.queryList(map);
     }
 
@@ -30,11 +30,11 @@ public class ApiOrderMenuService  {
         return orderMenuDao.queryTotal(map);
     }
 
-    public int save(OrderMenuEntity orderMenu) {
+    public int save(OrderMenuVo orderMenu) {
         return orderMenuDao.save(orderMenu);
     }
 
-    public int update(OrderMenuEntity orderMenu) {
+    public int update(OrderMenuVo orderMenu) {
         return orderMenuDao.update(orderMenu);
     }
 

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.platform.dao.ApiStroeMapper">
 
-    <resultMap type="com.platform.entity.StroeEntity" id="stroeMap">
+    <resultMap type="com.platform.entity.StroeVo" id="stroeMap">
         <result property="id" column="id"/>
         <result property="storeName" column="store_name"/>
         <result property="storeType" column="store_type"/>
@@ -15,14 +15,20 @@
         <result property="address" column="address"/>
         <result property="departmentid" column="departmentid"/>
         <result property="supplierid" column="supplierid"/>
-		<result property="stroephone" column="stroe_phone"/>
+		<result property="storePhone" column="store_phone"/>
 		<result property="longitude" column="Longitude"/>
 		<result property="latitude" column="Latitude"/>
 		<result property="sendingfee" column="sendingfee"/>
 		<result property="deliveryfee" column="deliveryfee"/>
+        <result property="realisticPicture" column="realistic_Picture"/>
+        <result property="licensePic" column="license_Pic"/>
+        <result property="storetime" column="store_time"/>
+        <result property="stroeGrade" column="stroe_grade"/>
+        <result property="salesVolume;" column="sales_volume"/>
+        <result property="businesslicense" column="business_license"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.StroeEntity">
+	<select id="queryObject" resultType="com.platform.entity.StroeVo">
 		select
 			`id`,
 			`store_name`,
@@ -35,17 +41,23 @@
 			`address`,
 			`departmentid`,
 			`supplierid`,
-			stroe_phone,
+			store_phone,
 			deliveryfee,
-			sendingfee
-		from stroe
+			sendingfee,
+			stroe_grade,
+			business_license,
+			sales_volume,
+			license_Pic,
+			realistic_Picture,
+			store_time
+		from nideshop_stroe
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.StroeEntity">
+	<select id="queryList" resultType="com.platform.entity.StroeVo">
 		select
     		*
-		from stroe
+		from nideshop_stroe
 		WHERE 1=1
 		<if test="minLng != null ">
 			AND Longitude &gt; #{minLng}
@@ -59,12 +71,21 @@
 		<if test="maxLat != null ">
 			AND Latitude &lt; #{maxLat}
 		</if>
-		<if test="storeType != null ">
+		<if test="storeType != null  ">
 			AND store_type=#{storeType}
 		</if>
-		<if test="stroeid !=null">
+            <if test="stroeid !=null  ">
 			AND id=#{stroeid}
 		</if>
+		<if test="name !=null">
+		    AND store_name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="deliveryfee !=null">
+            AND deliveryfee=#{deliveryfee} order by deliveryfee asc
+        </if>
+        <if test="sendingfee !=null ">
+            AND sendingfee=#{sendingfee} order by sendingfee asc
+        </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -77,6 +98,40 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+    <select id="querysort" resultType="com.platform.entity.StroeVo">
+        select
+        *
+        from nideshop_stroe
+        WHERE 1=1
+        <if test="minLng != null ">
+            AND Longitude &gt; #{minLng}
+        </if>
+        <if test="maxLng != null ">
+            AND Longitude &lt;  #{maxLng}
+        </if>
+        <if test="minLat != null ">
+            AND Latitude &gt; #{minLat}
+        </if>
+        <if test="maxLat != null ">
+            AND Latitude &lt; #{maxLat}
+        </if>
+        <if test="storeType != null  ">
+            AND store_type=#{storeType}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from stroe
@@ -86,8 +141,8 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.StroeEntity" useGeneratedKeys="true" keyProperty="id">
-		insert into stroe(
+	<insert id="save" parameterType="com.platform.entity.StroeVo" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_stroe(
 			`store_name`,
 			`store_type`,
 			`store_picrue`,
@@ -98,7 +153,7 @@
 			`address`,
 			`departmentid`,
 			`supplierid`,
-			stroe_phone,
+			store_phone,
 			deliveryfee,
 			sendingfee
 			)
@@ -115,11 +170,11 @@
 			#{supplierid}),
 			#{stroephone}
 			#{deliveryfee},
-			#{sendingfee}
+			#{sendingfee})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.StroeEntity">
-		update stroe 
+	<update id="update" parameterType="com.platform.entity.StroeVo">
+		update nideshop_stroe
 		<set>
 			<if test="storeName != null">`store_name` = #{storeName}, </if>
 			<if test="storeType != null">`store_type` = #{storeType}, </if>
@@ -131,17 +186,19 @@
 			<if test="address != null">`address` = #{address}, </if>
 			<if test="departmentid != null">`departmentid` = #{departmentid}, </if>
 			<if test="supplierid != null">`supplierid` = #{supplierid},</if>
-			<if test="stroephone !=null">'stroe_phone'=#{stroephone}</if>
+			<if test="storePhone !=null">stroe_phone=#{storePhone},</if>
+			<if test="stroeGrade !=null"> stroe_grade=#{stroeGrade},</if>
+			<if test="number !=null"> sales_volume=#{number}</if>
 		</set>
 		where id = #{id}
 	</update>
 	
 	<delete id="delete">
-		delete from stroe where id = #{value}
+		delete from nideshop_stroe where id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">
-		delete from stroe where id in 
+		delete from nideshop_stroe where id in
 		<foreach item="id" collection="array" open="(" separator="," close=")">
 			#{id}
 		</foreach>

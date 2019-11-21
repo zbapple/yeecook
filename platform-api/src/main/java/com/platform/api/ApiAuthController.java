@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.entity.LoginInfo;
-import com.platform.entity.PromotionInfoEntity;
+import com.platform.entity.PromotionInfoVo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiPromotionInfoService;
 import com.platform.service.ApiUserService;
@@ -112,16 +112,16 @@ public class    ApiAuthController extends ApiBaseAction {
             userVo.setNickname(loginInfo.getNickName());
             userService.save(userVo);
             if(loginInfo.getSceneid()!=null){
-            PromotionInfoEntity promotionInfoEntity=new PromotionInfoEntity();
+            PromotionInfoVo promotionInfoVo =new PromotionInfoVo();
 
-            promotionInfoEntity.setUserId(Integer.valueOf(String.valueOf(userVo.getUserId())));
+            promotionInfoVo.setUserId(Integer.valueOf(String.valueOf(userVo.getUserId())));
             long parentid=(long)loginInfo.getSceneid();
 //                promotionInfoEntity.setUserId(78);
             Long  parentids= new Long(parentid);
-            promotionInfoEntity.setParentId(parentids);
+            promotionInfoVo.setParentId(parentids);
 //                Long num2=new Long((long)3);
 //                promotionInfoEntity.setParentId(num2);
-            promotionInfoService.save(promotionInfoEntity);
+            promotionInfoService.save(promotionInfoVo);
            }
         }
         Map<String, Object> tokenMap = tokenService.createToken(userVo.getUserId());

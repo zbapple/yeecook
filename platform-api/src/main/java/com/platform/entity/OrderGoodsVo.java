@@ -55,16 +55,17 @@ public class OrderGoodsVo implements Serializable {
     @Getter
     private Integer attribute_category;
     //供应商名称
-    @Setter
-    @Getter
-    private String supplierName;
 
-    private DateTime deliery_time;
+    private String supplierName;
+    //送达时间
+
+    private String deliery_time;
     //人数
     private  Integer population;
     //天数
     private  Integer fate;
-
+    //备注
+    private  String reamarks;
     public Integer getId() {
         return id;
     }
@@ -186,13 +187,6 @@ public class OrderGoodsVo implements Serializable {
     }
 
 
-    public DateTime getDeliery_time() {
-        return deliery_time;
-    }
-
-    public void setDeliery_time(DateTime deliery_time) {
-        this.deliery_time = deliery_time;
-    }
 
     public Integer getPopulation() {
         return population;
@@ -208,5 +202,29 @@ public class OrderGoodsVo implements Serializable {
 
     public void setFate(Integer fate) {
         this.fate = fate;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getDeliery_time() {
+        return deliery_time;
+    }
+
+    public void setDeliery_time(String deliery_time) {
+        this.deliery_time = deliery_time;
+    }
+
+    public String getReamarks() {
+        return reamarks;
+    }
+
+    public void setReamarks(String reamarks) {
+        this.reamarks = reamarks;
     }
 }

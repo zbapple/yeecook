@@ -12,6 +12,11 @@
         <result property="add_time" column="add_time"/>
         <result property="status" column="status"/>
         <result property="user_id" column="user_id"/>
+        <result property="stroeid" column="stroe_id"/>
+        <result property="grade" column="grade"/>
+        <result property="orderid" column="order_id"/>
+        <result property="pic_url" column="pic_url"/>
+        <result property="goodsnamm" column="goods_name"/>
     </resultMap>
 
     <select id="queryObject" resultMap="commentMap">
@@ -19,10 +24,12 @@
 	</select>
 
     <select id="queryList" resultMap="commentMap">
-        select distinct c.* from nideshop_comment c
+        select distinct c.*,a.goods_name from nideshop_comment c
         <if test="hasPic != null and hasPic == 1">
             left join nideshop_comment_picture cp on cp.comment_id = c.id
         </if>
+        left join nideshop_order_goods  a on a.order_id=c.order_id
+        LEFT join nideshop_stroe b on b.id=c.stroe_id
         where 1 = 1
         <if test="type_id != null and type_id != ''">
             and c.type_id = #{type_id}
@@ -64,8 +71,17 @@
         <if test="goods_id != null and goods_id != ''">
             and c.value_id = #{goods_id}
         </if>
+        <if test="stroeid !=null">
+            and stroe_id=#{stroeid}
+        </if>
     </select>
-
+    <select id="avgGrade" resultType="double">
+        select AVG(grade) from nideshop_comment
+        where 1=1
+        <if test="stroeid !=null">
+            and stroe_id=#{stroeid}
+        </if>
+    </select>
     <select id="queryhasPicTotal" resultType="int">
         select count(distinct c.id) from nideshop_comment c
         left join nideshop_comment_picture cp on cp.comment_id = c.id
@@ -86,7 +102,10 @@
 			`content`, 
 			`add_time`, 
 			`status`, 
-			`user_id`
+			`user_id`,
+			stroe_id,
+			grade,
+			order_id
 		)
 		values
 		(
@@ -95,7 +114,10 @@
 			#{content},
 			#{add_time},
 			#{status},
-			#{user_id}
+			#{user_id},
+			#{stroeid},
+			#{grade},
+			#{orderid}
 		)
 	</insert>
 
@@ -107,7 +129,10 @@
             <if test="content != null">`content` = #{content},</if>
             <if test="add_time != null">`add_time` = #{add_time},</if>
             <if test="status != null">`status` = #{status},</if>
-            <if test="user_id != null">`user_id` = #{user_id}</if>
+            <if test="user_id != null">`user_id` = #{user_id},</if>
+            <if test="stroeid !=null">stroe_id=#{stroeid},</if>
+            <if test="grade !=null">grade=#{grade},</if>
+            <if test="orderid !=null ">order_id=#{orderid}</if>
         </set>
         where id = #{id}
     </update>

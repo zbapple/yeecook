@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiStroeComplaintMapper">
+
+    <resultMap type="com.platform.entity.StroeComplaintVo" id="stroeComplaintMap">
+        <result property="id" column="id"/>
+        <result property="complaintType" column="complaints_type"/>
+        <result property="connet" column="complai_text"/>
+        <result property="complaintPic" column="complaints_pic"/>
+        <result property="stroeId" column="stroe_id"/>
+        <result property="userid" column="userid"/>
+        <result property="addtime" column="addtime"/>
+        <result property="complaintypes" column="complaintype"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.StroeComplaintVo">
+		select
+			`id`,
+			`complaints_type`,
+			`complai_text`,
+			`complaints_pic`,
+			`stroe_id`
+		from nideshop_stroe_complaint
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.StroeComplaintVo">
+		select
+    		`id`,
+    		`complaints_type`,
+    		`complai_text`,
+    		`complaints_pic`,
+    		`stroe_id`,
+            userid,
+            addtime,
+            complaintype
+		from nideshop_stroe_complaint
+		WHERE 1=1
+		<if test="userid !=null ">
+            and userid=#{userid}
+		</if>
+		<if test="complaitypes !=null">
+            and complaintype=#{complaitypes}
+        </if>
+        <if test="stroeid !=null">
+            and stroe_id=#{stroeid}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from nideshop_stroe_complaint
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.StroeComplaintVo" useGeneratedKeys="true" keyProperty="id">
+		insert into nideshop_stroe_complaint(
+			`complaints_type`,
+			`complai_text`,
+			`complaints_pic`,
+			`stroe_id`,
+			userid,
+            complaintype,
+            addtime)
+		values(
+			#{complaintType},
+			#{connet},
+			#{complaintPic},
+			#{stroeId},
+			#{userid},
+			#{complaintypes},
+			#{addtime}
+			)
+
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.StroeComplaintVo">
+		update nideshop_stroe_complaint 
+		<set>
+			<if test="complaintType != null">`complaints_type` = #{complaintType}, </if>
+			<if test="connet != null">`complai_text` = #{connet}, </if>
+			<if test="complaintPic != null">`complaints_pic` = #{complaintPic}, </if>
+			<if test="stroeId != null">`stroe_id` = #{stroeId},</if>
+            <if test="addtime != null">`addtime` = #{addtime},</if>
+            <if test="complaintypes != null">`complaintype` = #{complaintypes}</if>
+        </set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from nideshop_stroe_complaint where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from nideshop_stroe_complaint where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

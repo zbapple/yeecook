@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import com.platform.entity.StroeEntity;
+import com.platform.entity.StroeVo;
 /**
  * Service实现类
  *
@@ -20,24 +20,26 @@ public class ApiStroeService  {
     @Autowired
     private ApiStroeMapper stroeDao;
 
-    public StroeEntity queryObject(Integer id) {
+    public StroeVo queryObject(Integer id) {
         return stroeDao.queryObject(id);
     }
 
-    public List<StroeEntity> queryList(Map<String, Object> map) {
+    public List<StroeVo> queryList(Map<String, Object> map) {
         return stroeDao.queryList(map);
     }
+
+    public List<StroeVo> querysort(Map<String,Object> map){return  stroeDao.querysort(map);}
 
     public int queryTotal(Map<String, Object> map) {
         return stroeDao.queryTotal(map);
     }
 
-    public int save(StroeEntity stroe) {
+    public int save(StroeVo stroe) {
         return stroeDao.save(stroe);
     }
 
 
-    public int update(StroeEntity stroe) {
+    public int update(StroeVo stroe) {
         return stroeDao.update(stroe);
     }
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import com.platform.entity.PromotionInfoEntity;
+import com.platform.entity.PromotionInfoVo;
 
 
 /**
@@ -22,11 +22,11 @@ public class ApiPromotionInfoService{
     @Autowired
     private ApiPromotionInfoMapper promotionInfoDao;
 
-    public PromotionInfoEntity queryObject(Integer id) {
+    public PromotionInfoVo queryObject(Integer id) {
         return promotionInfoDao.queryObject(id);
     }
 
-    public List<PromotionInfoEntity> queryList(Map<String, Object> map) {
+    public List<PromotionInfoVo> queryList(Map<String, Object> map) {
         return promotionInfoDao.queryList(map);
     }
 
@@ -34,11 +34,11 @@ public class ApiPromotionInfoService{
         return promotionInfoDao.queryTotal(map);
     }
 
-    public int save(PromotionInfoEntity promotionInfo) {
+    public int save(PromotionInfoVo promotionInfo) {
         return promotionInfoDao.save(promotionInfo);
     }
 
-    public int update(PromotionInfoEntity promotionInfo) {
+    public int update(PromotionInfoVo promotionInfo) {
         return promotionInfoDao.update(promotionInfo);
     }
 

@@ -102,7 +102,7 @@ public class UrlUtil {
             String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken;
             Map<String, Object> param = new HashMap<>();
             param.put("scene", sceneStr);
-            param.put("page", "pages/cookbook/cookbook");
+            param.put("page", "pages/takeoutindex/takeoutindex");
             param.put("width", 280);
             param.put("auto_color", false);
             URL realUrl = new URL(url);

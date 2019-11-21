@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
 import com.platform.entity.*;
+import com.platform.oss.OSSFactory;
 import com.platform.service.*;
 import com.platform.util.ApiBaseAction;
 import com.platform.util.ApiPageUtils;
@@ -16,7 +17,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -38,7 +41,10 @@ public class ApiCommentController extends ApiBaseAction {
     private ApiCouponService apiCouponService;
     @Autowired
     private ApiUserCouponService apiUserCouponService;
-
+    @Autowired
+    private ApiOrderGoodsService goodsService;
+    @Autowired
+    private ApiStroeService stroeService;
     /**
      * 发表评论
      */
@@ -49,67 +55,142 @@ public class ApiCommentController extends ApiBaseAction {
         //
         JSONObject jsonParam = getJsonRequest();
         Integer typeId = jsonParam.getInteger("typeId");
-        Integer valueId = jsonParam.getInteger("valueId");
+//        Integer valueId = jsonParam.getInteger("valueId");
+        //内容
+        Integer stroeid=jsonParam.getInteger("stroeid");
         String content = jsonParam.getString("content");
-        JSONArray imagesList = jsonParam.getJSONArray("imagesList");
-        CommentVo commentEntity = new CommentVo();
-        commentEntity.setType_id(typeId);
-        commentEntity.setValue_id(valueId);
-        commentEntity.setContent(content);
-        commentEntity.setStatus(0);
+        String orderid=jsonParam.getString("orderid");
+//        JSONArray imagesList = jsonParam.getJSONArray("imagesList");
+//        Map pram=new HashMap();
+//        pram.put("order_id",orderid);
+//        List<OrderGoodsVo> goodsVoList=goodsService.queryList(pram);
+//        Integer insertId=0;
+//        if(goodsVoList.size()>0){
+            CommentVo commentEntity = new CommentVo();
+            commentEntity.setType_id(typeId);
+//            commentEntity.setValue_id(valueId);
+            commentEntity.setContent(content);
+            commentEntity.setStatus(0);
+            //
+            commentEntity.setAdd_time(System.currentTimeMillis() / 1000);
+            commentEntity.setUser_id(loginUser.getUserId());
+            commentEntity.setGrade(jsonParam.getDouble("grade"));
+            commentEntity.setOrderid(new Integer(orderid));
+            commentEntity.setStroeid(stroeid);
+            Integer  insertId= commentService.save(commentEntity);
+            Map totalmap=new HashMap();
+            totalmap.put("stroeid",stroeid);
+            Double avg=commentService.avgGrade(totalmap);
+            BigDecimal avgnum=new BigDecimal(avg);
+            avg=avgnum.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+            StroeVo stroeVo=new StroeVo();
+                stroeVo.setStroeGrade(avg);
+                stroeVo.setId(stroeid);
+                stroeService.update(stroeVo);
+            resultObj.put("insertId",insertId);
+//        }
+
         //
-        commentEntity.setAdd_time(System.currentTimeMillis() / 1000);
-        commentEntity.setUser_id(loginUser.getUserId());
-        commentEntity.setContent(Base64.encode(commentEntity.getContent()));
-        Integer insertId = commentService.save(commentEntity);
-        //
-        if (insertId > 0 && null != imagesList && imagesList.size() > 0) {
-            int i = 0;
-            for (Object imgLink : imagesList) {
-                i++;
-                CommentPictureVo pictureVo = new CommentPictureVo();
-                pictureVo.setComment_id(insertId);
-                pictureVo.setPic_url(imgLink.toString());
-                pictureVo.setSort_order(i);
-                commentPictureService.save(pictureVo);
-            }
-        }
-        // 是否领取优惠券
-        if (insertId > 0 && typeId == 0) {
-            // 当前评价的次数
-            Map param = new HashMap();
-            param.put("value_id", valueId);
-            List<CommentVo> commentVos = commentService.queryList(param);
-            boolean hasComment = false;
-            for (CommentVo commentVo : commentVos) {
-                if (commentVo.getUser_id().equals(loginUser.getUserId())
-                        && !commentVo.getId().equals(insertId)) {
-                    hasComment = true;
-                }
-            }
-            if (!hasComment) {
-                Map couponParam = new HashMap();
-                couponParam.put("send_type", 6);
-                CouponVo newCouponConfig = apiCouponService.queryMaxUserEnableCoupon(couponParam);
-                if (null != newCouponConfig
-                        && newCouponConfig.getMin_transmit_num() >= commentVos.size()) {
-                    UserCouponVo userCouponVo = new UserCouponVo();
-                    userCouponVo.setAdd_time(new Date());
-                    userCouponVo.setCoupon_id(newCouponConfig.getId());
-                    userCouponVo.setCoupon_number(CharUtil.getRandomString(12));
-                    userCouponVo.setUser_id(loginUser.getUserId());
-                    apiUserCouponService.save(userCouponVo);
-                    resultObj.put("coupon", newCouponConfig);
-                }
-            }
-        }
+//        if (insertId > 0 && null != imagesList && imagesList.size() > 0) {
+//            int i = 0;
+//            for (Object imgLink : imagesList) {
+//                i++;
+//                CommentPictureVo pictureVo = new CommentPictureVo();
+//                pictureVo.setComment_id(insertId);
+//                pictureVo.setPic_url(imgLink.toString());
+//                pictureVo.setSort_order(i);
+//                commentPictureService.save(pictureVo);
+//            }
+//        }
+//        // 是否领取优惠券
+//        if (insertId > 0 && typeId == 0) {
+//            // 当前评价的次数
+//            Map param = new HashMap();
+//            param.put("value_id", valueId);
+//            List<CommentVo> commentVos = commentService.queryList(param);
+//            boolean hasComment = false;
+//            for (CommentVo commentVo : commentVos) {
+//                if (commentVo.getUser_id().equals(loginUser.getUserId())
+//                        && !commentVo.getId().equals(insertId)) {
+//                    hasComment = true;
+//                }
+//            }
+//            if (!hasComment) {
+//                Map couponParam = new HashMap();
+//                couponParam.put("send_type", 6);
+//                CouponVo newCouponConfig = apiCouponService.queryMaxUserEnableCoupon(couponParam);
+//                if (null != newCouponConfig
+//                        && newCouponConfig.getMin_transmit_num() >= commentVos.size()) {
+//                    UserCouponVo userCouponVo = new UserCouponVo();
+//                    userCouponVo.setAdd_time(new Date());
+//                    userCouponVo.setCoupon_id(newCouponConfig.getId());
+//                    userCouponVo.setCoupon_number(CharUtil.getRandomString(12));
+//                    userCouponVo.setUser_id(loginUser.getUserId());
+//                    apiUserCouponService.save(userCouponVo);
+//                    resultObj.put("coupon", newCouponConfig);
+//                }
+//            }
+//        }
         if (insertId > 0) {
             return toResponsObject(0, "评论添加成功", resultObj);
         } else {
             return toResponsFail("评论保存失败");
         }
     }
+    @ApiOperation(value = "上传图片")
+    @PostMapping("fliepic")
+    public Object filepic(@LoginUser UserVo loginUser, MultipartFile images, Integer stroeid,Integer insertId){
+        Map<String,Object> result=new HashMap<>();
+        Map parmap=new HashMap();
+        parmap.put("stroeid",stroeid);
+        parmap.put("insertId",insertId);
+        parmap.put("userid",loginUser.getUserId());
+        List<CommentVo> commentVlist=commentService.queryList(parmap);
+        if(commentVlist.size()!=0){
+            String url=null;
+            try {
+                url= OSSFactory.build().upload(images);
+            }catch (Exception e){
+                result.put("e",e);
+                return result;
+            }
+            CommentVo commentVo=new CommentVo();
+            commentVo.setId(insertId);
+            commentVo.setPic_url(url);
+            commentService.update(commentVo);
+            result.put("flag",1);
+        }else{
+            result.put("flag",0);
+            return result;
+        }
+        return result;
+    }
 
+    @ApiOperation(value = "评论回复")
+    @PostMapping("reply")
+    public Object reply(@LoginUser UserVo loginUser){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject jsonreply = getJsonRequest();
+        Integer insertId=jsonreply.getInteger("insertId");
+        Integer typeId = jsonreply.getInteger("typeId");
+        String content = jsonreply.getString("content");
+        String orderid=jsonreply.getString("orderid");
+        CommentVo commentEntity = new CommentVo();
+        commentEntity.setType_id(typeId);
+//      commentEntity.setValue_id(valueId);
+        commentEntity.setContent(content);
+        commentEntity.setStatus(0);
+        commentEntity.setAdd_time(System.currentTimeMillis() / 1000);
+        commentEntity.setUser_id(loginUser.getUserId());
+        commentEntity.setOrderid(new Integer(orderid));
+        Integer  serttId= commentService.save(commentEntity);
+        result.put("insertId",insertId);
+        if(serttId!=null){
+            return toResponsObject(0, "评论添加成功", result);
+        }else {
+            return toResponsFail("评论保存失败");
+        }
+    }
     /**
      */
     @ApiOperation(value = "评论数量")

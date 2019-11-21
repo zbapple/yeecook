@@ -36,7 +36,7 @@ public class ApiBrandController extends ApiBaseAction {
     @ApiOperation(value = "分页获取品牌")
     @IgnoreAuth
     @PostMapping("list")
-    public Object list(@RequestParam(value = "page", defaultValue = "1") Integer page,
+    public Object list(@RequestParam(value = "page", defaultValue = "1") Integer page,Integer num,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         //查询列表数据
         Map params = new HashMap();
@@ -45,6 +45,7 @@ public class ApiBrandController extends ApiBaseAction {
         params.put("limit", size);
         params.put("sidx", "id");
         params.put("order", "asc");
+//        params.put("type",num);
 
         Query query = new Query(params);
         List<BrandVo> brandEntityList = brandService.queryList(query);

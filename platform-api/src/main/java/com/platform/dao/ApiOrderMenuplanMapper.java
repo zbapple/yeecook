@@ -1,6 +1,6 @@
 package com.platform.dao;
 
-import com.platform.entity.OrderMenuplanEntity;
+import com.platform.entity.OrderMenuplanVo;
 
 /**
  * Dao
@@ -9,6 +9,6 @@ import com.platform.entity.OrderMenuplanEntity;
  * @email 9379248@qq.com
  * @date 2019-09-25 15:35:28
  */
-public interface ApiOrderMenuplanMapper extends BaseDao<OrderMenuplanEntity> {
+public interface ApiOrderMenuplanMapper extends BaseDao<OrderMenuplanVo> {
 
 }

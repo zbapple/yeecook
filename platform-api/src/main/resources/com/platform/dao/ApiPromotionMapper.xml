@@ -11,6 +11,7 @@
         <result property="wxListPic" column="wx_list_pic"/>
         <result property="affiliatedUnit" column="affiliated_unit"/>
         <result property="promotionYard" column="promotion_yard"/>
+        <result property="promotionbase64" column="promotion_base64"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.PromotionVo">
@@ -69,7 +70,8 @@
 			`wx_name`,
 			`wx_list_pic`,
 			`affiliated_unit`,
-			`promotion_yard`)
+			`promotion_yard`,
+			promotion_base64)
 		values(
 			#{id},
 			#{promotionName},
@@ -77,7 +79,8 @@
 			#{wxName},
 			#{wxListPic},
 			#{affiliatedUnit},
-			#{promotionYard})
+			#{promotionYard},
+			#{promotionbase64})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.PromotionVo">
@@ -88,7 +91,8 @@
 			<if test="wxName != null">`wx_name` = #{wxName}, </if>
 			<if test="wxListPic != null">`wx_list_pic` = #{wxListPic}, </if>
 			<if test="affiliatedUnit != null">`affiliated_unit` = #{affiliatedUnit}, </if>
-			<if test="promotionYard != null">`promotion_yard` = #{promotionYard}</if>
+			<if test="promotionYard != null">`promotion_yard` = #{promotionYard},</if>
+			<if test="promotionbase64 !=null">promotion_base64=#{promotionbase64}</if>
 		</set>
 		where id = #{id}
 	</update>

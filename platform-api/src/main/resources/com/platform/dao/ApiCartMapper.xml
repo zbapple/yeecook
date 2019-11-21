@@ -37,7 +37,7 @@
         from nideshop_cart a
         left join nideshop_goods b on a.goods_id = b.id
         left join nideshop_product c on c.goods_id = a.goods_id and c.id = a.product_id
-        left JOIN stroe  d   on d.id=a.stroe_id
+        left JOIN nideshop_stroe  d   on d.id=a.stroe_id
         where 1 = 1
         <if test="user_id != null">
             AND a.user_id = #{user_id}

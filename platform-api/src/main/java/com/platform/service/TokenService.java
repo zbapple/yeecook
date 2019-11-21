@@ -15,7 +15,7 @@ import java.util.Map;
 public class TokenService {
     @Autowired
     private ApiTokenMapper tokenDao;
-    //12小时后过期
+    //24小时后过期
     private final static int EXPIRE = 3600 *24 *350;
 
     public TokenEntity queryByUserId(Long userId) {
@@ -41,7 +41,7 @@ public class TokenService {
         Date now = new Date();
 
         //过期时间
-        Date expireTime = new Date(now.getTime() + EXPIRE * 1000);
+        Date expireTime = new Date(now.getTime() + EXPIRE * 10000);
 
         //判断是否生成过token
         TokenEntity tokenEntity = queryByUserId(userId);

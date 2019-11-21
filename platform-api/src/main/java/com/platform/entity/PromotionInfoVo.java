@@ -11,7 +11,7 @@ import java.util.Date;
  * @email 9379248@qq.com
  * @date 2019-10-22 17:55:52
  */
-public class PromotionInfoEntity implements Serializable {
+public class PromotionInfoVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //

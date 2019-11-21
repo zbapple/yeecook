@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import com.platform.entity.MealDisheEntity;
+import com.platform.entity.MealDisheVo;
 
 
 /**
@@ -22,11 +22,11 @@ public class ApiMealDisheService  {
     @Autowired
     private ApiMealDisheMapper mealDisheDao;
 
-    public MealDisheEntity queryObject(Integer id) {
+    public MealDisheVo queryObject(Integer id) {
         return mealDisheDao.queryObject(id);
     }
 
-    public List<MealDisheEntity> queryList(Map<String, Object> map) {
+    public List<MealDisheVo> queryList(Map<String, Object> map) {
         return mealDisheDao.queryList(map);
     }
 
@@ -34,11 +34,11 @@ public class ApiMealDisheService  {
         return mealDisheDao.queryTotal(map);
     }
 
-    public int save(MealDisheEntity mealDishe) {
+    public int save(MealDisheVo mealDishe) {
         return mealDisheDao.save(mealDishe);
     }
 
-    public int update(MealDisheEntity mealDishe) {
+    public int update(MealDisheVo mealDishe) {
         return mealDisheDao.update(mealDishe);
     }
 

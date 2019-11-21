@@ -111,10 +111,15 @@ public class OrderVo implements Serializable {
     @Getter
     @Setter
     private String goods_id;//商品ID
-    @Getter
-    @Setter
     private String supplier_list;
-
+    private Integer shoptype;
+    private Integer stroeid;
+    //门店名称
+    private String stroename;
+    //供应商id
+    private Long supplierid;
+    //供应商名称
+    private String suppliername;
     public String getFull_region() {
     //    return full_region;
         if (StringUtils.isNotEmpty(this.full_region)){
@@ -539,5 +544,53 @@ public class OrderVo implements Serializable {
 
     public void setIs_printer(int is_printer) {
         this.is_printer = is_printer;
+    }
+
+    public String getSupplier_list() {
+        return supplier_list;
+    }
+
+    public void setSupplier_list(String supplier_list) {
+        this.supplier_list = supplier_list;
+    }
+
+    public Integer getShoptype() {
+        return shoptype;
+    }
+
+    public void setShoptype(Integer shoptype) {
+        this.shoptype = shoptype;
+    }
+
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
+    }
+
+    public String getStroename() {
+        return stroename;
+    }
+
+    public void setStroename(String stroename) {
+        this.stroename = stroename;
+    }
+
+    public Long getSupplierid() {
+        return supplierid;
+    }
+
+    public void setSupplierid(Long supplierid) {
+        this.supplierid = supplierid;
+    }
+
+    public String getSuppliername() {
+        return suppliername;
+    }
+
+    public void setSuppliername(String suppliername) {
+        this.suppliername = suppliername;
     }
 }

@@ -11,4 +11,5 @@ import java.util.Map;
  */
 public interface ApiCommentMapper extends BaseDao<CommentVo> {
     int queryhasPicTotal(Map<String, Object> map);
+    Double avgGrade(Map<String,Object> map);
 }

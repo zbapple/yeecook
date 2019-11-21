@@ -1,11 +1,8 @@
 package com.platform.util;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
@@ -65,6 +62,7 @@ public class HttpXmlClient {
      * */
     //
     public static String sendPost3(String url,String sceneStr) {
+        Map result1=new HashMap();
         PrintWriter out = null;
         String result = "";
         InputStream inputStream=null;
@@ -130,6 +128,7 @@ public class HttpXmlClient {
                 ex.printStackTrace();
             }
         }
+
         return result;
     }
 

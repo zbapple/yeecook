@@ -1,7 +1,6 @@
 package com.platform.api;
 
 import com.alibaba.fastjson.JSONObject;
-import com.platform.annotation.IgnoreAuth;
 import com.platform.annotation.LoginUser;
 import com.platform.cache.J2CacheUtils;
 import com.platform.dao.ApiCouponMapper;
@@ -9,7 +8,6 @@ import com.platform.entity.*;
 import com.platform.service.*;
 import com.platform.util.ApiBaseAction;
 import com.qiniu.util.StringUtils;
-import com.sun.corba.se.spi.ior.ObjectKey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -269,7 +267,7 @@ public class ApiCartController extends ApiBaseAction {
         Integer stroeid1=jsonParam.getInteger("stroeid");
         Integer mealid=jsonParam.getInteger("mealid");
         Integer number=jsonParam.getInteger("number");
-        MealEntity mealEntity=mealService.queryObject(mealid);
+        MealVo mealEntity=mealService.queryObject(mealid);
         Map addmap=new HashMap();
         addmap.put("stroeid",stroeid1);
         addmap.put("user_id",loginUser.getUserId());
@@ -543,6 +541,10 @@ public class ApiCartController extends ApiBaseAction {
 
             for (CartVo cartEntity : (List<CartVo>) cartData.get("cartList")) {
                 if (cartEntity.getChecked() == 1) {
+                     Integer value=cartEntity.getGoods_id();
+                    GoodsVo goodsVolist=goodsService.queryObject(value);
+                    String companyname=goodsVolist.getSuppliername();
+                    resultObj.put("companyname",companyname);
                     checkedGoodsList.add(cartEntity);
                 }
             }
@@ -550,6 +552,10 @@ public class ApiCartController extends ApiBaseAction {
         } else { // 是直接购买的
             BuyGoodsVo goodsVO = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId() + "");
             ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
+            Integer value=productInfo.getGoods_id();
+            GoodsVo goodsVolist=goodsService.queryObject(value);
+            String companyname=goodsVolist.getSuppliername();
+            resultObj.put("companyname",companyname);
             //计算订单的费用
             //商品总价
             goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
@@ -645,7 +651,7 @@ public class ApiCartController extends ApiBaseAction {
             goodsTotalPrice = (BigDecimal) ((HashMap) cartData.get("cartTotal1")).get("mealsAmount");
         } else { // 是直接购买的
             BuMealVo buMealVo = (BuMealVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "mealname" + loginUser.getUserId() + "");
-            MealEntity mealinfo = mealService.queryObject(buMealVo.getMealid());
+            MealVo mealinfo = mealService.queryObject(buMealVo.getMealid());
             //计算订单的费用
             //商品总价
             goodsTotalPrice = mealinfo.getMealPice().multiply(new BigDecimal(buMealVo.getNumber()));
@@ -688,9 +694,11 @@ public class ApiCartController extends ApiBaseAction {
 //
 //        //
 //        BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
-        StroeEntity stroelist=stroeService.queryObject(stroeid);
+        StroeVo stroelist=stroeService.queryObject(stroeid);
          Double deliveryfee=stroelist.getDeliveryfee();
+         String name=stroelist.getStoreName();
         resultObj.put("freightPrice", deliveryfee);
+        resultObj.put("stroename",name);
 
 //        resultObj.put("couponPrice", couponPrice);
         resultObj.put("checkedGoodsList", checkedGoodsList);

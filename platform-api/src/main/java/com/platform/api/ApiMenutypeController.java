@@ -7,24 +7,18 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
-import com.platform.dao.ApiMealMapper;
-import com.platform.entity.MealDisheEntity;
-import com.platform.entity.MealEntity;
-import com.platform.entity.StroeEntity;
+import com.platform.entity.MealDisheVo;
+import com.platform.entity.MealVo;
 import com.platform.service.ApiMealDisheService;
 import com.platform.service.ApiMealService;
 import com.platform.service.ApiMenutypeService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.entity.MenutypeEntity;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import com.platform.entity.MenutypeVo;
 
 /**
  * Controller
@@ -53,14 +47,14 @@ public class ApiMenutypeController extends ApiBaseAction {
             Integer stroeid=menujosn.getInteger("stroeid");
             Map menutypemap=new HashMap();
             menutypemap.put("stroeid",stroeid);
-            List<MenutypeEntity> menutypeEntityList=menutypeService.queryList(menutypemap);
+            List<MenutypeVo> menutypeVoList =menutypeService.queryList(menutypemap);
 //            result.put("menutypeEntityList",menutypeEntityList);
-            Integer typeid=menutypeEntityList.get(0).getId();
+            Integer typeid= menutypeVoList.get(0).getId();
             List typeinfo=new ArrayList();
-            for(MenutypeEntity menutypeEntity:menutypeEntityList){
+            for(MenutypeVo menutypeVo : menutypeVoList){
                 Map typemap=new HashMap();
-                String typename=menutypeEntity.getMenuTypename();
-                Integer mealtype=menutypeEntity.getId();
+                String typename= menutypeVo.getMenuTypename();
+                Integer mealtype= menutypeVo.getId();
                 typemap.put("typename",typename);
                 typemap.put("mealtype",mealtype);
                 typeinfo.add(typemap);
@@ -68,18 +62,18 @@ public class ApiMenutypeController extends ApiBaseAction {
             Map typemap=new HashMap();
             typemap.put("mealid",typeid);
             typemap.put("stroeid",stroeid);
-            List<MealEntity> mealEntityList=mealService.queryList(typemap);
+            List<MealVo> mealEntityList=mealService.queryList(typemap);
 
                 Integer  id=0;
-                for(MealEntity mealEntity:mealEntityList){
+                for(MealVo mealEntity:mealEntityList){
                     id=mealEntity.getId();
                     Map meal=new HashMap();
                     meal.put("mealid",id);
                     String dishesname=null;
-                    List<MealDisheEntity> mealDisheEntityList=mealDisheService.queryList(meal);
+                    List<MealDisheVo> mealDisheVoList =mealDisheService.queryList(meal);
                     List mealinfo=new ArrayList();
-                    for(MealDisheEntity mealDisheEntity:mealDisheEntityList){
-                        dishesname=mealDisheEntity.getDishesname();
+                    for(MealDisheVo mealDisheVo : mealDisheVoList){
+                        dishesname= mealDisheVo.getDishesname();
                         mealinfo.add(dishesname);
                     }
                     mealEntity.setDishesname(mealinfo);

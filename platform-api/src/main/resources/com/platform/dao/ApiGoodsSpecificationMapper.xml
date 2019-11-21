@@ -11,6 +11,10 @@
         <result property="value" column="value"/>
         <result property="pic_url" column="pic_url"/>
         <result property="name" column="name"/>
+        <result property="specificationnumber" column="specification_number"/>
+        <result property="specificationPrice" column="specification_price"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="isSale" column="is_sale"/>
     </resultMap>
 
     <select id="queryObject" resultMap="goodsSpecificationMap">

@@ -3,13 +3,13 @@
 
 <mapper namespace="com.platform.dao.ApiMenutypeMapper">
 
-    <resultMap type="com.platform.entity.MenutypeEntity" id="menutypeMap">
+    <resultMap type="com.platform.entity.MenutypeVo" id="menutypeMap">
         <result property="id" column="id"/>
         <result property="menuTypename" column="menu_typename"/>
         <result property="stroeid" column="stroeid"/>
     </resultMap>
 
-	<select id="queryObject" resultType="com.platform.entity.MenutypeEntity">
+	<select id="queryObject" resultType="com.platform.entity.MenutypeVo">
 		select
 			`id`,
 			`menu_typename`,
@@ -18,7 +18,7 @@
 		where id = #{id}
 	</select>
 
-	<select id="queryList" resultType="com.platform.entity.MenutypeEntity">
+	<select id="queryList" resultType="com.platform.entity.MenutypeVo">
 		select
     		`id`,
     		`menu_typename`,
@@ -49,7 +49,7 @@
         </if>
 	</select>
 	 
-	<insert id="save" parameterType="com.platform.entity.MenutypeEntity">
+	<insert id="save" parameterType="com.platform.entity.MenutypeVo">
 		insert into menutype(
 			`id`,
 			`menu_typename`,
@@ -60,7 +60,7 @@
 			#{stroeid})
 	</insert>
 	 
-	<update id="update" parameterType="com.platform.entity.MenutypeEntity">
+	<update id="update" parameterType="com.platform.entity.MenutypeVo">
 		update menutype 
 		<set>
 			<if test="menuTypename != null">`menu_typename` = #{menuTypename}, </if>
