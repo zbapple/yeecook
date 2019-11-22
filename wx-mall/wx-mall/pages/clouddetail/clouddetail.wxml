@@ -1,0 +1,49 @@
+<view class="header">
+  <video controls="{{true}}" enable-play-gesture="{{true}}" show-center-play-btn="{{false}}" object-fit="cover" bindpause= 'pause' bindplay='videoplay' poster="{{videoCoverPic}}" class="video"  id="yeecook-video" src="{{videoAdress}}"></video>
+  <view class="header-t" wx:if="{{!showplay}}">收藏</view> 
+  <view class="header-play" bindtap='play' wx:if="{{!showplay}}"><image src="../../static/images/playiocn.png"></image></view>
+</view>
+<view class="content-title">
+  <view class="content-title-left">
+    <view class="content-txt content-txt-title">{{videoTitle}}</view>
+    <view class="content-txt content-txt-subheading">{{videoSubtitle}}</view>
+  </view>
+  <view class="content-share">
+    <button class="content-share-btn" open-type="share">分享</button> 
+  </view>
+</view>
+<view class="shop">
+  <view class="content-shop" bindtap='Toshopdetail' data-id='{{goodsId}}'>
+    <view class="content-shop-image"> 
+      <image src="{{listpicurl}}"></image>
+    </view>
+    <view class="content-shop-title">
+      <view class="shop-title-txt">{{name}}</view>
+      <view class="shop-price"><text class="price-nowtxt">￥{{counterprice}}</text><text class="price-oldtxt">¥{{retailprice}}</text></view>
+    </view>
+  </view>
+  <view class="buy-btn" bindtap='buyshop'>购买</view>
+</view>
+<view class="bg"></view>
+<view class="video-detail">
+  <view class="video-detail-title">描述</view>
+  <view class="video-detail-content">{{videoDescribe}}</view>
+</view>
+<view class="bg"></view>
+<view class="comment"> 
+  <view class="comment-header">
+    <view class="comment-title">评价（{{total}}）</view>
+    <image src="../../static/images/go.png" class="comtent-title-image" bindtap='tomutrition'></image>
+    <text class="comtent-title-alltxt" bindtap='tomutrition'>查看全部</text>
+  </view>
+  <view class="comment-list" wx:for="{{list}}" wx:key="{{index}}">
+    <view class="comment-user">
+      <view class="comment-portait">
+        <image src="{{item.avatar}}"></image>
+      </view>
+      <view class="comment-username">{{item.username}}</view>
+    </view>
+    <view class="comment-content">{{item.userComment}}</view>
+  </view>
+</view>
+ 

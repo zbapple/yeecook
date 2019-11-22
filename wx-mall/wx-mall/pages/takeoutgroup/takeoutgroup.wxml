@@ -1,0 +1,112 @@
+<view class="title">
+  <view class="title_item {{titlenum==0?'title_item_active':''}}" data-num="0" bindtap="selectmenu">外卖配送</view>
+  <view class="title_item {{titlenum==1?'title_item_active':''}}" data-num="1" bindtap="selectmenu">堂吃</view>
+</view>
+<view class="takeoutsubmit_border"></view>
+<view class="content"> 
+    <view class="content_item_address">
+      <view class="item_address" wx:if="{{titlenum==0}}">
+        <view class="select_icon"></view> 
+        <view class="item_address_select" wx:if="{{checkedAddress.id==null}}">请选择地址</view>
+        <view wx:else>
+          <view class="item_address_name">{{checkedAddress.full_region}}</view>
+          <view class="item_address_people">{{checkedAddress.userName}}</view>
+          <view class="item_address_phone">{{checkedAddress.telNumber}}</view>
+        </view>
+      </view> 
+      <view class="item_address" wx:if="{{titlenum==1}}">
+        <view class="item_address_name">{{addressname}}</view>
+          <view class="item_address_people">预留电话</view>
+          <view class="item_address_phone">{{mobile}}</view>
+      </view>
+      <view class="content_border"></view>
+      <view class="item_address">
+       <view class="select_icon" bindtap="selectTime"></view>
+        <view class="item_address_name">
+          <block wx:if="{{titlenum==0}}">请选择送达时间</block>
+          <block wx:else>请选择到店时间</block>
+        </view>
+        <view class="item_address_people">
+          <block wx:if="{{titlenum==0}}">尽快送达</block>
+          <block wx:else>现在出发</block>
+        </view>
+        <view class="item_address_phone">{{selecttime}}</view>
+      </view>
+    </view>
+    <view class="content_item_shop">
+      <view class="content_item_title">
+        <view class="item_title_name">用餐人数</view>
+        <input class="item_input" type='number' confirm-type='done' maxlength='3'  bindblur="bindf" value="{{usefood}}" placeholder="请输入人数"></input>
+      </view>
+      <view class="content_border"></view>
+      <view class="content_item_title">
+        <view class="item_title_name">预定天数</view>
+        <input class="item_input" type='number' confirm-type='done' maxlength='3'  bindblur="bindbookday" value="{{bookday}}" placeholder="请输入天数"></input>
+      </view>
+      <view class="content_border"></view>
+      <view class="content_item_title">
+        <view class="item_title_name">套餐类型</view>
+        <checkbox-group bindchange="checkboxChange" class="checkbox_group">
+          <label class="checkbox_item" wx:for="{{items}}" wx:key="{{index}}">
+            {{item.value}}
+            <checkbox value="{{item.name}}" checked="{{item.checked}}" class="ceckbox"/>
+          </label>
+        </checkbox-group>
+      </view>
+      <view class="content_border"></view>
+      <view class="content_item_title">
+        <view class="item_title_name item_title_type">选择套餐规格</view>
+        <view class="title_type_name">￥{{booktype}}/份</view>
+        <view class="select_icon" bindtap="selecttpeshow"></view>
+      </view>
+    </view>
+    <view class="content_item_select">
+      <view class="item_select_name">
+        <view class="item_select_title">套餐选择</view>
+        <view class="item_select_content">商家随机配送同价位套餐</view>
+      </view>
+      <view class="content_border"></view>
+      <view class="item_select_tip">尊敬的用户您好，如需要自己选择套餐，请提前电话联系商家</view>
+      <view class="item_shop_phone">商家电话：{{stroephone}}</view>
+    </view>
+    <view class="content_item_remark">
+      <view class="item_remark_title">
+        <view class="remark_title_name">支付方式</view>
+        <view class="remark_title_type">在线支付</view>
+      </view>
+      <view class="content_border"></view>
+      <view class="item_remark_name">
+        <view class="item_remark_type" wx:if="{{remark==''}}">备注</view>
+        <view wx:else>
+          <view class="item_remark_txt">备注</view>
+          <view class="item_remark_content">{{remark}}</view>
+        </view>
+        <view class="select_icon" bindtap="toremark"></view>
+      </view>
+    </view>
+</view>
+<view class="pay">
+  <view class="pay_name">
+    <text class="pay_name_txt1">合计</text>
+    <text class="pay_name_txt2">¥{{usefood*booktype*bookday*lisechecked.length}}</text>
+  </view>
+  <view class="pay_set" bindtap="group_pay">立即支付</view>
+</view>
+<!-- 遮罩层 -->
+<view class="shodw" wx:if="{{shodw}}" bindtap="clone"></view>
+<!-- 选择时间 -->
+<view class="select_time" wx:if="{{shodw}}">
+  <view class="select_time_title">请选择预计送达时间</view>
+  <scroll-view  scroll-y class="select_time_scroll">
+    <view class="scroll_item {{item==selecttime?'scroll_item_active':''}}" wx:for="{{listtime}}" wx:key="{{index}}" bindtap="selectitem" data-time="{{item}}">{{item}}</view>
+  </scroll-view>
+</view>
+<view class="shodw" wx:if="{{istype}}" bindtap="selecttpeclone"></view>
+<view class="select_time" wx:if="{{istype}}">
+  <view class="select_time_title">请选择套餐规格</view>
+  <scroll-view  scroll-y class="select_time_scroll">
+    <view class="scroll_item {{item==booktype?'scroll_item_active':''}}" wx:for="{{listtype}}" wx:key="{{index}}" bindtap="selecttype" data-num="{{item}}">￥{{item}}/份</view>
+  </scroll-view>
+</view>
+
+

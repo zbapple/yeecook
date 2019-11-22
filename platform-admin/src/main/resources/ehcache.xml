@@ -57,11 +57,11 @@
     </cache>
 
     <cache name="shopCache"
-           maxElementsInMemory="50000"
-           eternal="false"
-           timeToIdleSeconds="36000000"
-           timeToLiveSeconds="36000000"
-           overflowToDisk="false">
+           maxElementsInMemory="0"
+           eternal="true"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="true">
     </cache>
 
 </ehcache>

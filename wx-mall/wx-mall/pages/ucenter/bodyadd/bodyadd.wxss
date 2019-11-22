@@ -1,0 +1,70 @@
+.header{
+  padding-top:99rpx;
+  text-align: center;
+  font-size:32rpx;
+  font-family:PingFang-SC-Bold;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+  opacity: 0.8;
+  padding-bottom:100rpx;
+}
+.section{
+  width:100%;
+  height:100rpx;
+  overflow: hidden;
+  padding-left:75rpx;  
+}
+.section__title{
+  float:left;
+  width:20%;
+  height:66rpx;
+  line-height:66rpx;
+  text-align: center;
+  font-size:24rpx;
+  font-family:PingFang-SC-Medium;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+}
+.btn{
+  width:60%;
+  height:66rpx;
+  line-height: 66rpx;
+  border:2rpx solid rgba(223, 224, 229, 1);
+  border-radius:12rpx;
+  padding-left:25rpx;
+}
+.btn1{
+  float:left;
+  width:60%;
+  height:66rpx;
+  line-height: 66rpx;
+  border:2rpx solid rgba(223, 224, 229, 0.4);
+  border-radius:12rpx;
+  padding-left:25rpx;
+}
+.btn-txt{
+  font-size:22rpx;
+  font-family:PingFang-SC-Medium;
+  font-weight:500;
+  color:rgba(51,57,79,0.4);
+}
+.section-image{
+  float:left;
+  height:66rpx;
+  width:66rpx;
+}
+.btn-sure{
+  margin:0 auto;
+  text-align: center;
+  margin-top:80rpx;
+  width:600rpx;
+  height:80rpx;
+  line-height: 80rpx;
+  background:rgba(106,184,182,1);
+  border-radius:40rpx;
+  font-size:32rpx;
+  font-family:PingFang-SC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,0.8);
+}

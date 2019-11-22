@@ -55,7 +55,7 @@
         from user_nutrition_menu u
         left join nideshop_user n on u.nideshop_user_id = n.id
         left join user_detection_cycle udc on u.nideshop_user_id= udc.nideshop_user_id
-        where u.id = #{id}
+        where u.id = #{value}
 
 	</select>
 
@@ -183,7 +183,7 @@
             <if test="cateringServiceOrgId !=null">`catering_service_org_id`=#{cateringServiceOrgId},</if>
             <if test="nutritionPrinciple != null">`nutrition_principle`=#{nutritionPrinciple},</if>
             <if test="serviceCycleSt != null">`service_cycle_st`=#{serviceCycleSt},</if>
-            <if test="menuName != nulld">`menu_name`=#{menuName},</if>
+            <if test="menuName != null">`menu_name`=#{menuName},</if>
             <if test="nutritionMenuType != null">`nutrition_menu_type`=#{nutritionMenuType},</if>
             <if test="serviceCycleEt != null">`service_cycle_et`=#{serviceCycleEt}</if>
         </set>

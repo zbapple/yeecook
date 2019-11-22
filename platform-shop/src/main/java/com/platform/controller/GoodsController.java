@@ -1,12 +1,7 @@
 package com.platform.controller;
 
-import com.platform.entity.GoodsEntity;
-import com.platform.entity.SupplierEntity;
-import com.platform.entity.SysDeptEntity;
-import com.platform.entity.SysUserEntity;
-import com.platform.service.GoodsService;
-import com.platform.service.SupplierService;
-import com.platform.service.SysDeptService;
+import com.platform.entity.*;
+import com.platform.service.*;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
@@ -15,6 +10,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +30,10 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private SupplierService supplierService;
+    @Autowired
+    private GoodsGalleryService goodsGalleryService;
+    @Autowired
+    private GoodsSpecificationService goodsSpecificationService;
     /**
      * 查看列表
      */
@@ -59,7 +60,12 @@ public class GoodsController {
     public R info(@PathVariable("id") Integer id) {
 
         GoodsEntity goods = goodsService.queryObject(id);
-
+        Map map=new HashMap();
+        map.put("goodsId",id);
+        List<GoodsGalleryEntity> goodsImgList=goodsGalleryService.queryList(map);
+        goods.setGoodsImgList(goodsImgList);
+        List<GoodsSpecificationEntity> goodsSpecificationEntityList=goodsSpecificationService.queryList(map);
+        goods.setGoodsSpecificationEntityList(goodsSpecificationEntityList);
         return R.ok().put("goods", goods);
     }
 
@@ -122,6 +128,15 @@ public class GoodsController {
 
         query.put("isDelete", 1);
         List<GoodsEntity> goodsList = goodsService.queryList(query);
+        if(goodsList !=null && goodsList.size()>0){
+            for (GoodsEntity goodsEntity:goodsList) {
+                //获得删除时间
+                Date date=new Date();
+                SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String nowdate=dateFormat.format(date);
+                goodsEntity.setDeleteTime(nowdate);
+            }
+        }
         int total = goodsService.queryTotal(query);
 
         PageUtils pageUtil = new PageUtils(goodsList, total, query.getLimit(), query.getPage());
@@ -168,6 +183,14 @@ public class GoodsController {
     public R unSale(@RequestBody Integer id) {
         goodsService.unSale(id);
 
+        return R.ok();
+    }
+    /**
+     *  实际删除
+     **/
+    @RequestMapping("/deleteAll")
+    public R deleteAll(@RequestBody Integer[] ids){
+        goodsService.deleteAll(ids);
         return R.ok();
     }
 }

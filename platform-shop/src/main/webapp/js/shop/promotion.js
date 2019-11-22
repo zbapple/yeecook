@@ -21,6 +21,7 @@ $(function () {
 
 let vm = new Vue({
 	el: '#rrapp',
+    avatar:'',
 	data: {
         showList: true,
         title: null,
@@ -62,6 +63,18 @@ let vm = new Vue({
                content: '../shop/promotioninfo.html?parentId=' + rowId
            })
 	   },
+        getAvatar:function(val){
+		    if (val!=null){
+            for (let i = 0; i < this.UserNames.length; i++) {
+                if (this.UserNames[i].nickname == val) {
+                    this.promotion.wxListPic = this.UserNames[i].avatar;
+                }
+            }
+            }else {
+		        this.promotion.wxListPic=null
+            }
+
+        },
 		saveOrUpdate: function (event) {
             let url = vm.promotion.id == null ? "../promotion/save" : "../promotion/update";
             Ajax.request({

@@ -1,0 +1,44 @@
+<view class="header"> 
+    <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="rgba(102,207,204,0.48)"
+  indicator-active-color="rgba(102,207,204,1)">
+      <swiper-item wx:for="{{banner}}" wx:key="{{index}}">
+        <navigator url="{{item.link}}">
+          <image src="{{item.image_url}}" ></image>
+        </navigator>
+      </swiper-item> 
+  </swiper>
+ </view>
+<view class="cook"> 
+    <view class="con_one">
+      <view class="con_one_left" bindtap='Towidom'>
+          <view>
+            <image src="../../static/images/icon_edesign.png" class="icon_bg"></image>
+            <view class="icon_txt">智慧食谱</view> 
+          </view> 
+      </view>
+      <view class="con_one_right">
+        <view bindtap='Tolow'>
+          <image src="../../static/images/icon_lowcalorie.png" class="icon_bg"></image>
+          <view class="icon_txt">低卡套餐</view> 
+          </view>
+      </view>
+    </view>  
+</view>
+<view class="cook_border"></view>
+<view class="shop">
+  <view class="shop_item" wx:for="{{GoodsList}}" wx:key="{{index}}" data-id="{{item.id}}" bindtap='ToshopDetail' wx:if="{{index==0}}">
+    <view class="shop_image">
+      <image src='{{item.list_pic_url}}'></image>
+    </view>
+    <view class="shop_txt">{{item.name}}</view>
+    <view class="shop_foot">
+      <view class="foot_txt1">￥{{item.retail_price}}</view>
+      <view class="foot_txt2">￥{{item.market_price}}</view>
+      <view class="foot_txt4">82</view>
+      <view class="foot_txt3"></view>
+    </view>  
+  </view>
+</view>
+<view class="float_cart" bindtap='tocart'>
+  <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190702/10361765329b95.png"></image> 
+</view> 

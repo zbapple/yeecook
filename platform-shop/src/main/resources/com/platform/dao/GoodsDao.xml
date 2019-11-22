@@ -40,12 +40,57 @@
         <result property="createUserDeptId" column="create_user_dept_id"/>
         <result property="updateUserId" column="update_user_id"/>
         <result property="companyName" column="company_name"/>
+        <result property="companyLogo" column="company_logo" />
         <result property="supplierId" column="supplier_id"/>
         <result property="batchId" column="batch_id"/>
+        <result property="brandName" column="brand_name"/>
     </resultMap>
 
     <select id="queryObject" resultType="com.platform.entity.GoodsEntity">
-		select * from nideshop_goods where id = #{value}
+		select
+		nideshop_goods.id,
+        nideshop_goods.category_id,
+        nideshop_goods.goods_sn,
+        nideshop_goods.name,
+        nideshop_goods.brand_id,
+        nideshop_goods.goods_number,
+        nideshop_goods.keywords,
+        nideshop_goods.goods_brief,
+        nideshop_goods.goods_desc,
+        nideshop_goods.is_on_sale,
+        nideshop_goods.add_time,
+        nideshop_goods.update_time,
+        nideshop_goods.sort_order,
+        nideshop_goods.is_delete,
+        nideshop_goods.attribute_category,
+        nideshop_goods.counter_price,
+        nideshop_goods.extra_price,
+        nideshop_goods.is_new,
+        nideshop_goods.goods_unit,
+        nideshop_goods.primary_pic_url,
+        nideshop_goods.list_pic_url,
+        nideshop_goods.retail_price,
+        nideshop_goods.sell_volume,
+        nideshop_goods.primary_product_id,
+        nideshop_goods.unit_price,
+        nideshop_goods.promotion_desc,
+        nideshop_goods.promotion_tag,
+        nideshop_goods.app_exclusive_price,
+        nideshop_goods.is_app_exclusive,
+        nideshop_goods.is_limited,
+        nideshop_goods.is_hot,
+        nideshop_goods.market_price,
+        nideshop_goods.create_user_id,
+        nideshop_goods.create_user_dept_id,
+        nideshop_goods.update_user_id,
+        nideshop_goods.supplier_id,
+        nideshop_goods.batch_id,
+        nideshop_brand.name brand_name,
+        nideshop_supplier.company_name company_name
+		from nideshop_goods
+		LEFT JOIN nideshop_brand ON nideshop_brand.id = nideshop_goods.brand_id
+		LEFT JOIN nideshop_supplier ON nideshop_supplier.id =nideshop_goods.supplier_id
+		where nideshop_goods.id = #{value}
 	</select>
 
     <select id="queryList" resultType="com.platform.entity.GoodsEntity">
@@ -90,7 +135,8 @@
         nideshop_category.name category_name,
         nideshop_attribute_category.name attribute_category_name,
         nideshop_brand.name brand_name,
-        nideshop_supplier.company_name company_name
+        nideshop_supplier.company_name company_name,
+        nideshop_supplier.company_logo company_logo
         from nideshop_goods
         LEFT JOIN nideshop_category
         ON nideshop_goods.category_id = nideshop_category.id

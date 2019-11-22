@@ -38,15 +38,27 @@
                     <i-option v-for="goods in goodss" :value="goods.id" :key="goods.id">{{goods.name}}</i-option>
                 </i-select>
             </Form-item>
-            <Form-item label="规格" prop="specificationId" style="width: 368px;">
-                <i-select v-model="goodsSpecification.specificationId" filterable label-in-value>
-                    <i-option v-for="specification in specifications" :value="specification.id"
-                              :key="specification.id">{{specification.name}}
-                    </i-option>
-                </i-select>
+            <!--<Form-item label="规格" prop="specificationId" style="width: 368px;">-->
+                <!--&lt;!&ndash;<i-select v-model="goodsSpecification.specificationId" filterable label-in-value>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i-option v-for="specification in specifications" :value="specification.id"&ndash;&gt;-->
+                              <!--&lt;!&ndash;:key="specification.id">{{specification.name}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i-option>&ndash;&gt;-->
+                <!--&lt;!&ndash;</i-select>&ndash;&gt;-->
+                <!--<i-input  v-model="goodsSpecification.specificationName" placeholder="规格"/>-->
+            <!--</Form-item>-->
+            <!--<Form-item label="规格说明" prop="value">-->
+                <!--<i-input type="textarea" v-model="goodsSpecification.value" placeholder="规格说明"/>-->
+            <!--</Form-item>-->
+            <Form-item label="规格" prop="value" style="width: 368px">
+                <i-input v-model="goodsSpecification.value" placeholder="规格"/>
             </Form-item>
-            <Form-item label="规格说明" prop="value">
-                <i-input type="textarea" v-model="goodsSpecification.value" placeholder="规格说明"/>
+            <Form-item label="规格库存" prop="specificationNumber">
+            <Input-number :min="0" :step="1" v-model="goodsSpecification.specificationNumber" placeholder="规格库存"
+            style="width: 300px"/>
+            </Form-item>
+            <Form-item label="规格价格" prop="specificationPrice">
+                <Input-number :min="0" :step="1" v-model="goodsSpecification.specificationPrice" placeholder="规格价格"
+                              style="width: 300px"/>
             </Form-item>
             <Row>
                 <i-col span="16">

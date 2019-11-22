@@ -37,8 +37,7 @@ public class GoodsServiceImpl implements GoodsService {
     private SupplierDao supplierDao;
 
     @Override
-    public GoodsEntity queryObject(Integer id) {
-        return goodsDao.queryObject(id);
+    public GoodsEntity queryObject(Integer id) { return goodsDao.queryObject(id);
     }
 
     @Override
@@ -140,10 +139,10 @@ public class GoodsServiceImpl implements GoodsService {
         Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("goodsId", goods.getId());
         goodsGalleryDao.deleteByGoodsId(map);
-
         if (null != galleryEntityList && galleryEntityList.size() > 0) {
             for (GoodsGalleryEntity galleryEntity : galleryEntityList) {
                 galleryEntity.setGoodsId(goods.getId());
+
                 goodsGalleryDao.save(galleryEntity);
             }
         }
@@ -213,5 +212,14 @@ public class GoodsServiceImpl implements GoodsService {
         goodsEntity.setUpdateTime(new Date());
         return goodsDao.update(goodsEntity);
     }
+    @Override
+    public int deleteIs(Integer id) {
+        return goodsDao.delete(id);
+    }
 
+    @Override
+    public int deleteAll(Integer[] ids) {
+
+        return goodsDao.deleteBatch(ids);
+    }
 }

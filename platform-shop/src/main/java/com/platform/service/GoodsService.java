@@ -93,4 +93,13 @@ public interface GoodsService {
      * @return
      */
     int unSale(Integer id);
+    /**
+     * 实际删除条数
+     **/
+    int deleteIs(Integer id);
+    /**
+     *
+     * 实际批量删除
+     **/
+    int deleteAll(Integer[] ids);
 }

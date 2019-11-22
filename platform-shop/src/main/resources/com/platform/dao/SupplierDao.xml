@@ -6,6 +6,9 @@
     <resultMap type="com.platform.entity.SupplierEntity" id="supplierMap">
         <result property="id" column="id"/>
         <result property="companyName" column="company_name"/>
+		<result property="companyLogo" column="company_logo"/>
+		<result property="companyType" column="company_type"/>
+		<result property="companyStatus" column="company_status"/>
         <result property="openingBank" column="opening_bank"/>
         <result property="bankAccount" column="bank_account"/>
         <result property="beneficiaryName" column="beneficiary_name"/>
@@ -14,12 +17,16 @@
         <result property="deptId" column="dept_id"/>
 		<result property="deptName" column="dept_name"/>
         <result property="address" column="address"/>
+		<result property="isDelete" column="is_delete"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.SupplierEntity">
 		select
 			`id`,
 			`company_name`,
+			`company_logo`,
+			`company_type`,
+			`company_status`,
 			`opening_bank`,
 			`bank_account`,
 			`beneficiary_name`,
@@ -27,7 +34,8 @@
 			`mobile`,
 			`dept_id`,
 			`dept_name`,
-			`address`
+			`address`,
+			`is_delete`
 		from nideshop_supplier
 		where id = #{id}
 
@@ -37,6 +45,9 @@
 		select
 			`id`,
 			`company_name`,
+			`company_logo`,
+			`company_type`,
+			`company_status`,
 			`opening_bank`,
 			`bank_account`,
 			`beneficiary_name`,
@@ -44,7 +55,8 @@
 			`mobile`,
 			`dept_id`,
 			`dept_name`,
-			`address`
+			`address`,
+			`is_delete`
 		from nideshop_supplier
 		where dept_id = #{deptId}
 
@@ -54,6 +66,9 @@
 		select
     		`id`,
     		`company_name`,
+		    `company_logo`,
+		    `company_type`,
+		    `company_status`,
     		`opening_bank`,
     		`bank_account`,
     		`beneficiary_name`,
@@ -61,7 +76,8 @@
     		`mobile`,
     		`dept_id`,
 			`dept_name`,
-    		`address`
+    		`address`,
+		    `is_delete`
 		from nideshop_supplier
 		WHERE 1=1
 		<!--  数据过滤  -->
@@ -75,6 +91,7 @@
 		<if test="deptId != null">
 			AND `dept_id` =#{deptId}
 		</if>
+		AND nideshop_supplier.is_delete = #{isDelete}
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -94,12 +111,16 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		AND nideshop_supplier.is_delete = #{isDelete}
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.SupplierEntity">
 		insert into nideshop_supplier(
 			`id`,
 			`company_name`,
+			`company_logo`,
+			`company_type`,
+			`company_status`,
 			`opening_bank`,
 			`bank_account`,
 			`beneficiary_name`,
@@ -107,10 +128,14 @@
 			`mobile`,
 			`dept_id`,
 			`dept_name`,
-			`address`)
+			`address`,
+			`is_delete`)
 		values(
 			#{id},
 			#{companyName},
+			#{companyLogo},
+			#{companyType},
+			#{companyStatus},
 			#{openingBank},
 			#{bankAccount},
 			#{beneficiaryName},
@@ -118,21 +143,26 @@
 			#{mobile},
 			#{deptId},
 			#{deptName},
-			#{address})
+			#{address},
+			#{isDelete})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.SupplierEntity">
 		update nideshop_supplier 
 		<set>
 			<if test="companyName != null">`company_name` = #{companyName}, </if>
+			<if test="companyLogo != null">`company_logo`=#{companyLogo},</if>
+			<if test="companyType != null">`company_type`=#{companyType},</if>
+			<if test="companyStatus != null">`company_status`=#{companyStatus},</if>
 			<if test="openingBank != null">`opening_bank` = #{openingBank}, </if>
 			<if test="bankAccount != null">`bank_account` = #{bankAccount}, </if>
 			<if test="beneficiaryName != null">`beneficiary_name` = #{beneficiaryName}, </if>
-			<if test="telephone != null">`telephone` = #{telephone}, </if>
+			<if test="telephone != null">`telephone` = #{telephone},</if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="deptId != null">`dept_id` = #{deptId}, </if>
 			<if test="deptName != null">`dept_name` = #{deptName}, </if>
-			<if test="address != null">`address` = #{address}</if>
+			<if test="address != null">`address` = #{address},</if>
+			<if test="isDelete != null">`is_delete` = #{isDelete}</if>
 		</set>
 		where id = #{id}
 	</update>

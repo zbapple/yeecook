@@ -3,18 +3,41 @@
 <head>
     <title></title>
     #parse("sys/header.html")
+    <style>
+        .content{
+            width: 1500px;
+            padding: 15px;
+            line-height: 50px;
+        }
+        label{
+            display: inline-block;
+            float: left;
+            clear: left;
+            width: 100px;
+            text-align: right;
+        }
+        .ids{
+            display: inline-block;
+            float: left;
+        }
+        .ivu-card-body{
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <div id="rrapp" v-cloak>
-    <div v-show="showList">
+    <div v-show="showList&&!details">
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
                     <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                 </i-col>
                 <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
+                <i-button type="error" @click="deleteAll"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
                 #if($shiro.hasPermission("goods:back"))
                 <i-button type="warning" @click="back"><i class="fa fa-pencil-square-o"></i>&nbsp;恢复</i-button>
                 #end
@@ -23,7 +46,63 @@
         <table id="jqGrid"></table>
         <div id="jqGridPager"></div>
     </div>
-
+    <Card v-show="details">
+        <p slot="title" style="font-size: 18px">{{title}}</p>
+        <div class="content">
+            <p style="color: black;font-size: 14px;font-weight: 700">基础信息</p>
+            <div class="box"><label style="">商品序列号：</label>
+                <span v-if="goods.goodsSn == null || goods.goodsSn == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsSn}}</span></div>
+            <div class="box"><label style="">商品类型：</label>
+                <span v-if="goods.categoryName == null || goods.categoryName == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.categoryName}}</span></div>
+            <div class="box"><label style="">供应商：</label>
+                <span v-if="goods.companyName == null || goods.companyName == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.companyName}}</span></div>
+            <div class="box"><label style="">品牌：</label>
+                <span v-if="goods.brandName == null || goods.brandName == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.brandName}}</span></div>
+            <div class="box"><label style="">商品名称：</label>
+                <span v-if="goods.name == null || goods.name == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.name}}</span></div>
+            <div class="box"><label style="">简单描述：</label>
+                <span v-if="goods.goodsBrief == null || goods.goodsBrief == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsBrief}}</span></div>
+            <div class="box" style="line-height: 85px"><label style="">商品主图：</label>
+                <div v-if="goods.primaryPicUrl == null || goods.primaryPicUrl == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: left;display: inline-block;text-align: center" v-else>暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block" onload="image"><img :src="goods.primaryPicUrl" style="width: 84px; height:81px;"></div>
+            </div>
+            <div class="box" style="line-height: 85px"><label style="">商品列表图：</label>
+                <div v-if="goods.listPicUrl == null || goods.listPicUrl == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: left;;text-align: center;display: inline-block" v-else>暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block" onload="image"><img :src="goods.listPicUrl" style="width: 84px; height:81px;"></div>
+            </div>
+            <!--<div class="box"><label style="">商品规格：</label>-->
+            <!--<span v-if="goods.goodsBrief == null || goods.goodsBrief == ''">暂无数据</span>-->
+            <!--<span v-else class="ids">{{goods.goodsBrief}}</span></div>-->
+            <div class="box"><label style="">商品库存：</label>
+                <span v-if="goods.goodsNumber == null || goods.goodsNumber == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsNumber}}</span></div>
+            <div class="box"><label style="">商品价格：</label>
+                <span v-if="goods.retailPrice == null || goods.retailPrice == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.retailPrice}}元</span></div>
+            <div class="box"><label style="">划线价格：</label>
+                <span v-if="goods.counterPrice == null || goods.counterPrice == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.counterPrice}}元</span></div><br/>
+            <div class="box"><label style="">详情描述：</label>
+                <span v-if="goods.goodsDesc == null || goods.goodsDesc == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsDesc}}</span></div>
+            <div class="box" style="line-height: 85px"><label style="">详情图片：</label>
+                <div v-if="uploadList.length == 0" style="border: 1px solid gainsboro;width: 84px; height:81px;text-align: center;float: left;display: inline-block">暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block;margin-left:10px" onload="image" v-for="item in uploadList">
+                    <img :src="item.imgUrl" style="width: 84px; height:81px;">
+                </div>
+            </div>
+        </div>
+        <div style="margin-left:570px;position:fixed;bottom: 5px;">
+            <i-button type="warning" @click="reload" style="margin-left: 8px"/>
+            返回</i-button>
+        </div>
+    </Card>
 </div>
 
 <script src="${rc.contextPath}/js/shop/goodshistory.js?_${date.systemTime}"></script>

@@ -1,0 +1,184 @@
+<!--pages/cookbookcontent/cookbookcontent.wxml-->
+<view class="content_header">
+  <view class="header_title">
+    <text hidden="{{!nlevel}}">标月{{nlevel}}：</text>
+    <text hidden="{{!deliveryWay}}">{{deliveryWay}}+</text>
+    <text hidden="{{!feedingWay}}">{{feedingWay}}+</text>
+    <text>{{liliLength}}天</text>
+  </view>
+  <view class="header_img" bindtap='showpop'>
+    <image src="../../static/images/ic_cookcontent_rili.png"></image>
+  </view>
+</view>
+<view class="content">
+  <view class="content_title">
+    <view bindtap='minus' class="add_right">
+      <image src="../../static/images/ic_cookcontent_left.png" ></image>
+    </view>
+    <view>产后第{{day}}天</view>
+    <view bindtap='add' class="add_right">
+      <image src="../../static/images/ic_cookcontent_right.png"></image>
+    </view>
+  </view>
+  <!-- 早餐 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">早餐</text><text class=" title_time">(7:00 - 8:00)</text></view>
+        <view class="con_title_right title_time">{{zcsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listzc}}"  wx:key="{{index}}">
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==zc_length-1?'con_one_hh':'con_active'}}" url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view>
+  <!-- 早点 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">早点</text><text class=" title_time">(9:30 - 10:30)</text></view>
+        <view class="con_title_right title_time">{{zdsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listzd}}"  wx:key="{{index}}">
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==zd_length-1?'con_one_hh':'con_active'}}" url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view>
+  <!-- 午餐 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">午餐</text><text class=" title_time">(12:00 - 13:00)</text></view>
+        <view class="con_title_right title_time">{{wcsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listwc}}"  wx:key="{{index}}" >
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==wc_length-1?'con_one_hh':'con_active'}}"  url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view>
+  <!-- 午点 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">午点</text><text class=" title_time">(15:00 - 16:00)</text></view>
+        <view class="con_title_right title_time">{{wdsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listwd}}"  wx:key="{{index}}">
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==wd_length-1?'con_one_hh':'con_active'}}" url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view>
+  <!-- 晚餐 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">晚餐</text><text class=" title_time">(18:00 - 19:00)</text></view>
+        <view class="con_title_right title_time">{{wancsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listwanc}}"  wx:key="{{index}}">
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==wanc_length-1?'con_one_hh':'con_active'}}" url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view>
+  <!-- 晚点 -->
+  <view class="content_con">
+    <view>
+      <view class="con_public title_border_left">
+        <view class="con_title_left"><text class="titel_font">晚点</text><text class=" title_time">(21:00 - 22:00)</text></view>
+        <view class="con_title_right title_time">{{wandsum}}kcal</view>
+      </view>
+      <view class="con_one " wx:for="{{listwand}}"  wx:key="{{index}}">
+        <view class="con_public con_one_dd">
+          <navigator class="{{index==wand_length-1?'con_one_hh':'con_active'}}" id="wand" url="/pages/cookbookdetail/cookbookdetail?name={{item.mfood}}" hover-class="none">
+            <view class="con_one_left">
+              <image src="../../static/images/ic_cookcontent_ju.png"></image>
+            </view>
+            <view class="con_one_con">
+              {{item.mfood}}
+            </view>
+            <view class="con_one_right">
+              <view class="cont_one_text">{{item.calories}}kcal</view>
+              <view class="con_one_ic"><image src="../../static/images/address_right.png"></image></view>
+            </view>
+          </navigator>
+        </view>
+      </view >
+    </view>
+  </view> 
+</view>
+<!-- 弹出窗口选择 -->
+<view class="content_day" wx:if="{{show}}" bindtap='hidepop'>
+</view>
+<view class="content_day_select" wx:if="{{show}}">
+    <view class="select_title">产后第{{day}}天</view>
+    <view wx:for="{{daylist}}" wx:key="{{item}}">
+      <view class="title_con" bindtap='Popselectday' data-day="{{item}}">
+        <view class="{{day== item ? 'title_item_selsect':'title_item'}}">{{item}}</view>
+        </view>
+    </view>
+</view>

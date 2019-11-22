@@ -1,0 +1,17 @@
+<view class="count">
+  <view class="count-food">膳食均衡</view>
+  <view class="count-hot">热量控制</view>
+  <view class="count-mutrition"><text class="count-txt">营养食谱\n个性化定制</text></view>
+  <view class="count-ten"><text class="ten-txt">十大身体健康指标\n精准检测</text></view>
+  <view class="count-low"><text class="count-txt">低卡套餐\n便捷即食</text></view>
+  <view class="count-bottom">量身定制 30日饮食计划</view>
+  <view class="count-bottom count-position">30天聪明吃 一个月健康瘦</view>
+  <view class="shop-bottom">
+    <view class="shop-bottom-client" bindtap='Toclient'>
+      <view class="client-icon"></view>
+      <view class="client-txt">客服</view>
+    </view>
+    <view class="shop-bottom-cart shop-server-price" bindtap='Addcart'>暂无商品</view>
+    <view class="shop-bottom-buy shop-btn-txt" bindtap='Buyshop'>立即购买</view>
+  </view>
+</view> 

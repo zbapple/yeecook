@@ -1,0 +1,407 @@
+page{
+  background:rgba(51,57,79,0.05);
+} 
+.title{
+  width:100%;
+  height:98rpx;
+  padding-left:30rpx;
+  padding-right:30rpx;
+  background:rgba(255,255,255,1);
+}
+.title_item{
+  float:left;
+  width:50%;
+  height:98rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  color:rgba(51,57,79,1);
+  text-align: center;
+  line-height: 98rpx;
+  opacity:0.8;
+  position: relative;
+}
+.title_item_active{ 
+  font-weight:bold;
+  opacity: 1;
+}
+.title_item_active:after
+{ 
+  content:"";
+  width:120rpx;
+  height:6rpx;
+  background:rgba(106,184,182,1);
+  border-radius:3rpx;
+  position: absolute;
+  display: inline-block;
+  bottom:0rpx;
+  left: 50%;
+  margin-left:-60rpx;
+}
+.takeoutsubmit_border{
+  width:100%;
+  height:1rpx;
+  background:rgba(0,0,0,1);
+  opacity:0.1;
+}
+.content{
+  width:100%;
+  padding:20rpx 30rpx 0rpx 30rpx;
+}
+.content_border{
+  width:100%;
+  height:1rpx;
+  background:rgba(0,0,0,1);
+  opacity:0.1;
+}
+.content_item_address{
+  width:100%;
+  height: 265rpx;
+  padding-right:20rpx;
+  padding-left:20rpx;
+  background:rgba(255,255,255,1);
+  border-radius:16rpx;
+}
+.content_item_shop{
+  margin-top:20rpx;
+  padding-right:20rpx;
+  padding-left:20rpx;
+  width:100%;
+  background:rgba(255,255,255,1);
+  border-radius:16rpx;
+}
+.content_item_remark{
+  margin-top:20rpx;
+  margin-bottom: 108rpx;
+  width:100%;
+  height: 213rpx;
+  padding-right:20rpx;
+  padding-left:20rpx;
+  background:rgba(255,255,255,1);
+  border-radius:16rpx;
+}
+.item_address{
+  width:100%;
+  height:132rpx;
+  position: relative;
+}
+.item_address_select{
+  display: inline-block;
+  width:calc(100% - 50rpx);
+  height:132rpx;
+  line-height: 132rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.item_address_name{
+  width:cacl(100% - 50rpx);
+  padding-top:25rpx;
+  padding-bottom: 15rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.item_address_people{
+  display: inline-block;
+  width:110rpx;
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.item_address_phone{
+  display: inline-block;
+  width:calc(100% - 160rpx);
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.item_shop_title{
+  width:100%;
+  height:72rpx;
+  line-height: 72rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.content_item_detail{
+  /* height:305rpx; */
+  width:100%;
+  padding-bottom: 20rpx;
+}
+.item_detail{
+  padding-top:10rpx;
+  padding-bottom:10rpx;
+  overflow: hidden;
+}
+.item_detail_image{
+  float:left;
+  width:88rpx;
+  height:88rpx;
+  background:rgba(51,57,79,1);
+  border-radius:8rpx;
+}
+.item_detail_image>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+.item_detail_foodname{
+  float:left;
+  height:88rpx;
+  width:328rpx;
+  line-height: 88rpx;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  padding-left:20rpx;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.item_detail_foondnum{
+  float:left;
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  height:88rpx;
+  line-height: 88rpx;
+  padding-left:20rpx;
+}
+.item_detail_price{
+  float:right;
+  height:88rpx;
+  line-height: 88rpx;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.content_delivery{
+  width:100%;
+  height:72rpx;
+  overflow: hidden;
+}
+.item_delivery{
+  float:left;
+  height:72rpx;
+  line-height: 72rpx;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  padding-right:46rpx;
+}
+.delivery_b{
+  font-size:32rpx;
+  font-weight:bold;
+}
+.item_delivery_price{
+  float:right;
+  height:72rpx;
+  line-height: 72rpx;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.content_item_count{
+  width:100%;
+  height:80rpx;
+  position: relative;
+}
+.item_count_price{
+  float:right;
+  line-height: 80rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(255,85,76,1);
+}
+.item_count_txt{
+  float:right;
+  line-height: 80rpx;
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.item_count_icon{
+  position: absolute;
+  width:44rpx;
+  height:44rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/1059152188901a.png') 0 0 no-repeat;
+  background-size: 100%;
+  left:50%;
+  top:50%;
+  margin-left:-22rpx;
+  margin-top:-22rpx;
+}
+.item_count_icon1{
+  position: absolute;
+  width:44rpx;
+  height:44rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/110010650e79ff.png') 0 0 no-repeat;
+  background-size: 100%;
+  left:50%;
+  top:50%;
+  margin-left:-22rpx;
+  margin-top:-22rpx;
+}
+.item_remark_title{
+  width:100%;
+  height:80rpx;
+  overflow: hidden;
+}
+.remark_title_name{
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+  float:left;
+  line-height: 80rpx;
+}
+.remark_title_type{
+  float:right;
+  line-height: 80rpx;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.item_remark_name{
+  width:100%;
+  height:132rpx;
+  position: relative;
+}
+.item_remark_type{
+  line-height: 132rpx;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.item_remark_txt{
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+  padding-top:20rpx;
+  padding-bottom: 15rpx;
+}
+.item_remark_content{
+  width:575rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.select_icon{
+  position: absolute;
+  right:0;
+  top:50%;
+  margin-top:-22rpx;
+  width:44rpx; 
+  height:44rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/105646560aa5fa.png') 0 0 no-repeat;
+  background-size: 100%;
+}
+.pay{
+  position: fixed;
+  bottom:0;
+  width:100%;
+  height:98rpx;
+  overflow: hidden;
+}
+.pay_name{
+  float:left;
+  height:98rpx;
+  padding-left:65rpx;
+  width:calc(100% - 250rpx);
+  background:rgba(255,255,255,1);
+}
+.pay_set{
+  float:left;
+  width:250rpx;
+  height:98rpx;
+  text-align: center;
+  line-height: 98rpx;
+  background:linear-gradient(270deg,rgba(255,85,76,1),rgba(255,112,76,1));
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(254,254,254,1);
+}
+.pay_name>text{
+  line-height: 98rpx;
+  vertical-align: middle;
+}
+.pay_name_txt1{
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(255,85,76,1);
+}
+.pay_name_txt2{
+  font-size:36rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(255,85,76,1);
+  padding-left:4rpx;
+  text-align: center;
+}
+/* 遮罩层 */
+.shodw{
+  background:rgba(0,0,0,1);
+  opacity: 0.5;
+  top:0;
+  position: fixed;
+  width:100%;
+  height:100%;
+  z-index: 10;
+}
+/* 时间选择 */
+.select_time{
+  position: fixed;
+  z-index: 12;
+  bottom:0;
+  width:100%;
+  height:576rpx;
+  background:rgba(255,255,255,1);
+}
+.select_time_title{
+  width:100%;
+  height:88rpx;
+  line-height:88rpx;
+  background:rgba(242,242,245,1);
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity: 0.8;
+  text-align: center;
+}
+.select_time_scroll{
+  width:100%;
+  height:488rpx;
+}
+.scroll_item{
+  width:100%;
+  height:88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.scroll_item_active{
+  background:rgba(106,184,182,0.2);
+}

@@ -18,54 +18,102 @@
     <script src="statics/libs/html5shiv.min.js"></script>
     <script src="statics/libs/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .ivu-input{
+            border: none;
+            box-shadow: none;
+            border-bottom: 1px solid gainsboro;
+            background-color: white;
+            border-radius:0px;
+            height: 42px;
+            font-size: 15px;
+        }
+        .ivu-input:active:focus{
+            outline:0;
+            border-color: white;
+        }
+        .ivu-card{
+            border-radius:0px;
+        }
+        .ivu-card-body{
+            height: 512px;
+            width: 386px;
+            overflow:hidden;
+            line-height: 10px;
 
+        }
+        .ivu-btn{
+            width: 279px;
+            height: 42px;
+            border-radius:0px;
+        }
+        .ivu-btn.ivu-btn-primary{
+            background-color:#3CBCC7 ;
+            border-color:#3CBCC7 ;
+        }
+        h3{
+            font-size: 18px;
+            font-family: MicrosoftYaHei;
+            font-weight: 400;
+            color:rgba(51,51,51,1);
+        }
+        .row {
+            width: 900px;
+            height: 600px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top:-300px;
+            margin-left:-450px;
+            border-top: none;
+        }
+    </style>
 </head>
 <body class="signin hold-transition login-page">
 <div class="loginscreen animated fadeInDown signinpanel" id="loginBox" v-cloak>
-    <div class="text-center">
-        <div >
-            <img style="width: 220px;height: 200px " src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/012659185d35d9.png">
-        </div>
-        <div class="m-b"></div>
-        <h4 style=" color:#575757 ">C2B母婴营养膳食管理平台</h4>
-        <div class="m-b"></div>
-    </div>
     <div class="row">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="width: 418px;height: 535px; float: right;position: relative">
             <Card class="m-t text-center" style="background: #ffffff;border: 0px solid #dddee1;">
-                <p style="padding: 0 20px 20px 20px;color: #f88b50;">欢迎登入</p>
+                <!--<p style="padding: 0 20px 20px 20px;color: #f88b50;">欢迎登入</p>-->
+                <div style="padding-top: 34px">
+                    <img style="width: 128px;height: 54px " src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191023/163750897d3511.png">
+                </div>
+                <h3 style=" color:#575757;padding-top: 19px;padding-bottom: 52px;color: #333333;">营养配餐与膳食管理服务平台</h3>
                 <div class="form-group has-feedback">
-                    <i-input v-model="username" @on-enter="login" placeholder="账号" style="width: 200px;" autofocus/>
+                    <i-input v-model="username" @on-enter="login" placeholder="账号" style="width: 279px;" autofocus/>
                 </div>
                 <div class="form-group has-feedback">
-                    <i-input type="password" v-model="password" @on-enter="login" style="width: 200px;"
+                    <i-input type="password" v-model="password" @on-enter="login" style="width: 279px;"
                              placeholder="密码"/>
                 </div>
                 <div class="form-group has-feedback">
-                    <div style="display: inline-block;width: 100px;">
+                    <div style="display: inline-block;width: 157px;">
                         <i-input v-model="captcha" @on-enter="login"
-                                 placeholder="验证码"/>
+                                 placeholder="验证码" style="width: 157px;"/>
                     </div>
-                    <div style="display: inline-block;width: 100px;">
-                        <img style="height: 32px;width: 96px;border-radius: 4px;" alt="如果看不清楚，请单击图片刷新！" title="点击刷新"
+                    <div style="display: inline-block;width: 122px;">
+                        <img style="height: 42px;width: 122px;" alt="如果看不清楚，请单击图片刷新！" title="点击刷新"
                              class="pointer" :src="src" @click="refreshCode">
                     </div>
                 </div>
-                <div>
-                    <i-button type="primary" @click="login" style="width: 200px;">登录</i-button>
+                <div style="margin-top:32px">
+                    <i-button type="primary" @click="login" style="width: 279px;font-size: 18px">登录</i-button>
+                </div>
+                <div class="text-center" style="color:#707070;font-size: 12px;margin-top: 60px;padding-bottom: 21px;color: #333333;font-weight: 400">
+                    2017~2019 &copy; <a href="http://www.yeecook.com" target="_blank">宜厨科技</a> 粤ICP备18046518号-1
                 </div>
             </Card>
+            <div class="col-md-4" style="padding:0px 0 16px 13px;width:514px;height:537px;position: absolute;top:6px;left: -495px">
+                <img style="width:514px;height:538px"  src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191024/1229244032b941.png">
+            </div>
         </div>
-        <div class="col-md-4"></div>
+
     </div>
-    <div class="signup-footer">
-        <div class="text-center" style="color:#707070 ">
-            2017~2019 &copy; <a href="http://www.yeecook.com" target="_blank">宜厨科技</a> 粤ICP备18046518号-1
-        </div>
-    </div>
+    <!--<div class="signup-footer">-->
+        <!--&lt;!&ndash;<div class="text-center" style="color:#707070 ">&ndash;&gt;-->
+            <!--&lt;!&ndash;2017~2019 &copy; <a href="http://www.yeecook.com" target="_blank">宜厨科技</a> 粤ICP备18046518号-1&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
 </div>
 <!-- /.login-box -->
 <script src="statics/libs/jquery.min.js"></script>

@@ -1,12 +1,14 @@
 package com.platform.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.platform.annotation.SysLog;
-import com.platform.entity.SysDeptEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.service.SysDeptService;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class SupplierController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        query.put("isDelete", 0);
         List<SupplierEntity> supplierList = supplierService.queryList(query);
         int total = supplierService.queryTotal(query);
 
@@ -100,13 +102,20 @@ public class SupplierController {
 
         return R.ok();
     }
-
+    /**
+     *  删除
+     **/
+    @RequestMapping("/deleteAll")
+    public R deleteAll(@RequestBody Integer[] ids){
+        supplierService.deleteAll(ids);
+        return R.ok();
+    }
     /**
      * 查看所有列表
      */
     @RequestMapping("/queryAll")
     public R queryAll(@RequestParam Map<String, Object> params) {
-
+        params.put("isDelete", 0);
         List<SupplierEntity> list = supplierService.queryList(params);
 
         return R.ok().put("list", list);
@@ -127,5 +136,59 @@ public class SupplierController {
         }
         SupplierEntity supplier = supplierService.queryName(deptId);
         return R.ok().put("supplier",supplier);
+    }
+
+
+    /**
+     * 修改状态
+     **/
+
+    @RequestMapping("/updateStatus")
+    public R updateStatus(@Param("id") @RequestBody Integer id){
+        supplierService.updateStatus(id);
+        return  R.ok();
+    }
+
+    /**
+     * 门店回收站
+     **/
+    @RequestMapping("/historyList")
+    public R historyList(@RequestParam Map<String, Object> params) {
+        Query query = new Query(params);
+        query.put("isDelete", 1);
+        List<SupplierEntity> supplierList = supplierService.queryList(query);
+        if (supplierList !=null && supplierList.size()>0){
+            for (SupplierEntity supplierEntity: supplierList) {
+                //获得删除时间
+                Date date=new Date();
+                SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String nowdate=dateFormat.format(date);
+                supplierEntity.setDeleteTime(nowdate);
+            }
+        }
+        int total = supplierService.queryTotal(query);
+
+        PageUtils pageUtil = new PageUtils(supplierList, total, query.getLimit(), query.getPage());
+
+        return R.ok().put("page", pageUtil);
+    }
+    /**
+     * 门店从回收站恢复
+     */
+    @RequestMapping("/back")
+    public R back(@RequestBody Long[] ids) {
+        supplierService.back(ids);
+
+        return R.ok();
+    }
+    /**
+     * 总计
+     */
+    @RequestMapping("/queryTotal")
+    public R queryTotal(@RequestParam Map<String, Object> params) {
+
+        params.put("isDelete", 1);
+        int sum = supplierService.queryTotal(params);
+        return R.ok().put("sum", sum);
     }
 }

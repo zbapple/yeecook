@@ -101,4 +101,23 @@ public class GoodsSpecificationController {
 
         return R.ok().put("list", list);
     }
+    /**
+     * 启用
+     */
+    @RequestMapping("/enSale")
+    public R enSale(@RequestBody Integer id) {
+        goodsSpecificationService.enSale(id);
+
+        return R.ok();
+    }
+
+    /**
+     * 关闭
+     */
+    @RequestMapping("/unSale")
+    public R unSale(@RequestBody Integer id) {
+        goodsSpecificationService.unSale(id);
+
+        return R.ok();
+    }
 }

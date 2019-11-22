@@ -3,32 +3,49 @@ $(function () {
         url: '../goods/list',
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '商品类型', name: 'categoryName', index: 'category_id', width: 80},
-            {label: '名称', name: 'name', index: 'name', width: 160},
-            {label: '供应商', name: 'companyName', index: 'supplier_id', width: 160},
-            {label: '品牌', name: 'brandName', index: 'brand_id', width: 120},
+            {label: '供应商', name: 'companyName', index: 'supplier_id', width:80},
+            // {label: '供应商logo',name:'companyLogo',index:'supplier_id',width:100,
+            //     formatter: function (value) {
+            //         return transImg(value);}
+            // },
+            {label: '商品类型', name: 'categoryName', index: 'category_id', width: 60},
+            {label: '商品名称', name: 'name', index: 'name', width: 160},
+            {label: '商品图片', name: 'primaryPicUrl', index: 'primary_pic_url', width: 80,
+                formatter: function (value) {
+                            return transImg(value);}},
+            {label: '品牌', name: 'brandName', index: 'brand_id', width: 60},
+
             {
-                label: '上架', name: 'isOnSale', index: 'is_on_sale', width: 50,
+                label: '录入日期', name: 'addTime', index: 'add_time', width: 110, formatter: function (value) {
+                    return transDate(value, 'yyyy-MM-dd hh:mm:ss');
+                }
+            },
+            // {label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},
+            // {label: '激活码批次', name: 'batchId', index: 'batch_id', width: 80},
+            {label: '零售价格', name: 'retailPrice', index: 'retail_price', width: 60},
+            {label: '商品库存', name: 'goodsNumber', index: 'goods_number', width: 60},
+            // {label: '销售量', name: 'sellVolume', index: 'sell_volume', width: 80},
+            // {label: '市场价', name: 'marketPrice', index: 'market_price', width: 80},
+            // {
+            //     label: '热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function (value) {
+            //         return transIsNot(value);
+            //     }
+            // },
+            {
+                label: '是否上架', name: 'isOnSale', index: 'is_on_sale', width: 50,
                 formatter: function (value) {
                     return transIsNot(value);
                 }
             },
-            {
-                label: '录入日期', name: 'addTime', index: 'add_time', width: 80, formatter: function (value) {
-                    return transDate(value, 'yyyy-MM-dd');
+            {  label:'操作',name:'checking', width: 170,index:'checking',sortable:false, formatter: function(value,col,row){
+                    return  '<button  style="width: 62px;line-height: 30px;border: none;outline:none;background-color: #f90;color: white;border-radius: 4px" onclick="vm.isSale('+  row.id  +')">上架/下架</button>'+
+                        '<button style="border: none;outline:none;width: 60px;line-height: 30px;margin-left: 10px;background-color: #f90;color: white;border-radius: 4px" onclick="vm.setSpecification('+  row.id  +')">设置规格</button>'
+                        +'<button style="border: none;outline:none;width: 60px;line-height: 30px;margin-left: 10px;background-color: #2db7f5;color: white;border-radius: 4px" onclick="vm.lookDetail('+  row.id  +')">查看商品</button>';
+
                 }
             },
-            {label: '属性类别', name: 'attributeCategoryName', index: 'attribute_category', width: 80},
-            {label: '激活码批次', name: 'batchId', index: 'batch_id', width: 80},
-            {label: '零售价格', name: 'retailPrice', index: 'retail_price', width: 80},
-            {label: '商品库存', name: 'goodsNumber', index: 'goods_number', width: 80},
-            {label: '销售量', name: 'sellVolume', index: 'sell_volume', width: 80},
-            {label: '市场价', name: 'marketPrice', index: 'market_price', width: 80},
-            {
-                label: '热销', name: 'isHot', index: 'is_hot', width: 80, formatter: function (value) {
-                    return transIsNot(value);
-                }
-            }]
+        ]
+
     });
     vm.getSuppliers();
     $('#goodsDesc').editable({
@@ -46,6 +63,7 @@ $(function () {
         imageUploadParams: {id: "edit"},
         imagesLoadURL: '../sys/oss/queryAll'
     });
+    $('#jqGrid').css("textAlign","center");
 });
 
 var ztree;
@@ -67,6 +85,7 @@ var vm = new Vue({
     el: '#rrapp',
     data: {
         showList: true,
+        details:false,
         title: null,
         uploadList: [],
         imgName: '',
@@ -81,7 +100,7 @@ var vm = new Vue({
             isAppExclusive: 0,
             isLimited: 0,
             isHot: 0,
-            categoryName: ''
+            categoryName: '',
         },
         ruleValidate: {
             name: [
@@ -95,6 +114,7 @@ var vm = new Vue({
             name: '',
             supplierId:''
         },
+        goodsSpecificationEntityList:{},
         suppliers:[],//供应商名称
         brands: [],//品牌
         macros: [],//商品单位
@@ -106,6 +126,7 @@ var vm = new Vue({
         },
         add: function () {
             vm.showList = false;
+            vm.details = false;
             vm.title = "新增";
             vm.uploadList = [];
             vm.goods = {
@@ -136,14 +157,24 @@ var vm = new Vue({
                 return;
             }
             vm.showList = false;
+            vm.details = false;
             vm.title = "修改";
             vm.uploadList = [];
-            console.log(vm.uploadList);
             vm.getInfo(id);
             vm.getBrands();
             vm.getMacro();
             vm.getAttributeCategories();
             vm.getGoodsGallery(id);
+
+        },
+        /**
+         * 查看详情
+         */
+        lookDetail:function(rowId){
+            vm.details=true;
+            vm.title = "商品详情";
+            vm.getInfo(rowId);
+            vm.uploadList=[];
         },
         /**
          * 获取供应商
@@ -187,7 +218,6 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.user = r.user;
-                    console.log(vm.user);
                 }
             });
         },
@@ -196,8 +226,7 @@ var vm = new Vue({
                 url: "../goodsgallery/queryAll?goodsId=" + id,
                 async: true,
                 successCallback: function (r) {
-                    vm.uploadList = r.list;
-                    console.log(vm.uploadList);
+                    vm.handleSuccessPicUrluploadList = r.list;
                 }
             });
         },
@@ -216,7 +245,6 @@ var vm = new Vue({
             vm.goods.goodsImgList = vm.uploadList;
             if(vm.goods.supplierId == null){
                 vm.goods.supplierId=vm.user.deptId;
-                console.log(vm.goods);
             }
             Ajax.request({
                 type: "POST",
@@ -230,68 +258,110 @@ var vm = new Vue({
                 }
             });
         },
-        enSale: function () {
-            var id = getSelectedRow("#jqGrid");
-            if (id == null) {
-                return;
-            }
-            confirm('确定要上架选中的商品？', function () {
-                Ajax.request({
-                    type: "POST",
-                    url: "../goods/enSale",
-                    params: JSON.stringify(id),
-                    contentType: "application/json",
-                    type: 'POST',
-                    successCallback: function () {
-                        alert('提交成功', function (index) {
-                            vm.reload();
-                        });
-                    }
-                });
-            });
-        },
-        openSpe: function () {
-            var id = getSelectedRow("#jqGrid");
-            if (id == null) {
-                return;
-            }
+        setSpecification: function (rowId) {
             openWindow({
                 type: 2,
                 title: '商品规格',
-                content: '../shop/goodsspecification.html?goodsId=' + id
+                content: '../shop/goodsspecification.html?goodsId=' + rowId
             })
         },
-        openPro: function () {
-            var id = getSelectedRow("#jqGrid");
-            if (id == null) {
-                return;
-            }
-            openWindow({
-                type: 2,
-                title: '产品设置',
-                content: '../shop/product.html?goodsId=' + id
-            });
-        },
-        unSale: function () {
-            var id = getSelectedRow("#jqGrid");
-            if (id == null) {
-                return;
-            }
-            confirm('确定要下架选中的商品？', function () {
-
+        // openPro: function () {
+        //     var id = getSelectedRow("#jqGrid");
+        //     if (id == null) {
+        //         return;
+        //     }
+        //     openWindow({
+        //         type: 2,
+        //         title: '产品设置',
+        //         content: '../shop/product.html?goodsId=' + id
+        //     });
+        // },
+        // unSale: function () {
+        //     var id = getSelectedRow("#jqGrid");
+        //     if (id == null) {
+        //         return;
+        //     }
+        //     confirm('确定要下架选中的商品？', function () {
+        //
+        //         Ajax.request({
+        //             type: "POST",
+        //             url: "../goods/unSale",
+        //             contentType: "application/json",
+        //             params: JSON.stringify(id),
+        //             successCallback: function (r) {
+        //                 alert('操作成功', function (index) {
+        //                     vm.reload();;
+        //                 });
+        //             }
+        //         });
+        //
+        //     });
+        // },
+        // enSale: function () {
+        //     var id = getSelectedRow("#jqGrid");
+        //     if (id == null) {
+        //         return;
+        //     }
+        //     confirm('确定要上架选中的商品？', function () {
+        //         Ajax.request({
+        //             type: "POST",
+        //             url: "../goods/enSale",
+        //             params: JSON.stringify(id),
+        //             contentType: "application/json",
+        //             type: 'POST',
+        //             successCallback: function () {
+        //                 alert('提交成功', function (index) {
+        //                     vm.reload();
+        //                 });
+        //             }
+        //         });
+        //     });
+        // },
+        /**
+         *  上下架状态修改
+         */
+        isSale:function(rowId){
+            if (rowId !=null) {
                 Ajax.request({
-                    type: "POST",
-                    url: "../goods/unSale",
-                    contentType: "application/json",
-                    params: JSON.stringify(id),
+                    url: "../goods/info/" + rowId,
+                    async: true,
                     successCallback: function (r) {
-                        alert('操作成功', function (index) {
-                            vm.reload();;
-                        });
+                           vm.goods=r.goods;
+                           vm.goods.isOnSale=r.goods.isOnSale;
+                            if (vm.goods.isOnSale == 0) {
+                                confirm('确定上架该商品吗', function () {
+                                    Ajax.request({
+                                        type: "POST",
+                                        url: "../goods/enSale",
+                                        params: JSON.stringify(rowId),
+                                        contentType: "application/json",
+                                        type: 'POST',
+                                        successCallback: function () {
+                                            alert('提交成功', function (index) {
+                                                vm.reload();
+                                            });
+                                        }
+                                    });
+                                });
+                            } else if (vm.goods.isOnSale == 1) {
+                                confirm('确定下架该商品吗', function () {
+                                    Ajax.request({
+                                        type: "POST",
+                                        url: "../goods/unSale",
+                                        params: JSON.stringify(rowId),
+                                        contentType: "application/json",
+                                        type: 'POST',
+                                        successCallback: function () {
+                                            alert('提交成功', function (index) {
+                                                vm.reload();
+                                            });
+                                        }
+                                    });
+                                });
+                            }
                     }
                 });
-
-            });
+            }
         },
         del: function (event) {
             var ids = getSelectedRows("#jqGrid");
@@ -299,7 +369,7 @@ var vm = new Vue({
                 return;
             }
 
-            confirm('确定要删除选中的记录？', function () {
+            confirm('确定要删除选中的记录(将会进入回收箱)？', function () {
                 Ajax.request({
                     type: "POST",
                     url: "../goods/delete",
@@ -320,9 +390,10 @@ var vm = new Vue({
                 async: true,
                 successCallback: function (r) {
                     vm.goods = r.goods;
-                    console.log(vm.goods);
                     $('#goodsDesc').editable('setHTML', vm.goods.goodsDesc);
                     vm.getCategory();
+                    vm.uploadList=vm.goods.goodsImgList;
+                    vm.goodsSpecificationEntityList=vm.goods.goodsSpecificationEntityList;
                 }
             });
         },
@@ -337,6 +408,7 @@ var vm = new Vue({
         },
         reload: function (event) {
             vm.showList = true;
+            vm.details = false;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
                 postData: {'name': vm.q.name,
@@ -345,6 +417,13 @@ var vm = new Vue({
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
+        },
+        reloadSearch: function() {
+            vm.q = {
+                name:'',
+                supplierId:''
+            }
+            vm.reload();
         },
         getCategory: function () {
             //加载分类树
@@ -381,6 +460,16 @@ var vm = new Vue({
                 }
             });
         },
+        /**
+         * 跳转回收站
+         */
+       goodsHistory :function(){
+            openWindow({
+                type: 2,
+                title: '商品回收站',
+                content: '../shop/goodshistory.html'
+            })
+        },
         handleView(name) {
             this.imgName = name;
             this.visible = true;
@@ -406,9 +495,7 @@ var vm = new Vue({
             return check;
         },
         handleSubmit: function (name) {
-            console.log(17);
             handleSubmitValidate(this, name, function () {
-                console.log(18);
                 vm.saveOrUpdate()
             });
         },

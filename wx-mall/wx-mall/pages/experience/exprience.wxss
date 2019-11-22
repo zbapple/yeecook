@@ -1,0 +1,66 @@
+/* pages/experience/exprience.wxss */
+.exprience{
+  background: #f5f5f5;
+}
+.header{
+  background:white;
+  padding-right:23rpx;
+  padding-left:23rpx;
+  height:80rpx;
+  line-height: 80rpx;
+}
+.con{
+  padding-right:23rpx;
+  padding-left:23rpx;
+  padding-top:20rpx;
+  padding-bottom:20rpx;
+}
+.item{
+  margin-top:10rpx;
+  margin-bottom:10rpx;
+  height:80rpx;
+  line-height: 80rpx;
+  background:white;
+  border:1px solid #68c79d;
+  overflow: hidden;
+  padding-left:15rpx;
+}
+.item_left{
+  float:left;
+}
+.itme_right{
+  float:right;
+  height:80rpx;
+  line-height: 80rpx;
+}
+.item_style{
+  margin-top:10rpx;
+  margin-bottom:10rpx;
+  background:white;
+  border:1px solid #68c79d;
+  overflow: hidden;
+  padding-left:15rpx;
+}
+.item_style_one{
+  padding-top:20rpx;
+  padding-bottom:20rpx;
+}
+radio-group{
+  margin-bottom:20rpx;
+}
+.radio-group>label {
+  font-size:30rpx;
+  padding-left:20rpx;
+}
+radio .wx-radio-input{
+  height: 30rpx;
+  width: 30rpx;
+}
+.item_btn{
+  text-align: center;
+  color:white;
+  background:#68c79d;
+  height:80rpx;
+  line-height: 80rpx;
+  margin-top:30rpx;
+}

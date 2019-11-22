@@ -69,4 +69,29 @@ public interface SupplierService {
      * @return 删除条数
      */
     int deleteBatch(Long[] ids);
+    /**
+     *
+     * @Param id
+     **/
+    int updateStatus(Integer id);
+    /**
+     * 门店恢复
+     * @Param
+     **/
+    /**
+     * 商品从回收站恢复
+     *
+     * @param ids
+     * @return
+     */
+    int back(Long[] ids);
+    /**
+     * 实际删除条数
+     **/
+    int deleteIs(Integer id);
+    /**
+     *
+     * 实际批量删除
+     **/
+    int deleteAll(Integer[] ids);
 }

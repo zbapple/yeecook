@@ -10,6 +10,7 @@ import com.platform.annotation.DataFilter;
 import com.platform.entity.*;
 import com.platform.service.*;
 import com.platform.utils.*;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
@@ -235,7 +236,7 @@ public class MenuPlanController {
     * 更新详情信息
     **/
    @RequestMapping("/updateInfo")
-   public R updateInfo(@RequestBody Integer id){
+   public R updateInfo(@Param("id") @RequestBody Integer id){
        menuPlanService.updateInfo(id);
        return  R.ok();
    }

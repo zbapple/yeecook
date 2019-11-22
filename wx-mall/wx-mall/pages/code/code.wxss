@@ -1,0 +1,27 @@
+/* pages/code/code.wxss */ 
+page{
+  width:1005;
+  height:100%;
+  background:linear-gradient(0deg,rgba(102,196,205,1),rgba(149,239,223,1));
+  padding:0;
+  margin: 0; 
+  overflow: hidden;
+}
+.code{
+  width:363px;
+  height:818px;
+  margin: 0 auto;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191021/211245706a2a9b.png') 0 0 no-repeat;
+  /* background-size: 100% 100%; */
+  /* background:red; */
+  position: relative;
+}
+.code>image{
+  width:140px;
+  height:140px;
+  object-fit: cover;
+  position: absolute;
+  left: 142px;
+  top: 316px;
+  transform:rotate(-30deg);
+}

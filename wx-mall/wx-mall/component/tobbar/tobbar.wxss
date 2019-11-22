@@ -1,0 +1,39 @@
+.tabbar_box{
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  height: 96rpx;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #a9abac;
+  box-sizing: border-box;
+  padding-top: 12rpx;
+}
+.tabbar_box text{
+  font-size: 30rpx;
+  line-height: 96rpx;
+}
+.tabbar_box .icon{
+  font-size: 45rpx;
+}
+.tabbar_box .tabbar_nav{
+  float:left;
+  width:25%;
+  text-align: center;
+  line-height:90rpx;
+}
+.tabbar_ic{
+  background:#a0abb6;
+  width:100rpx;
+  height:100rpx;
+  color:white;
+  line-height: 80rpx;
+  text-align: center;
+  border-radius: 50%;
+  border:10rpx solid white;
+  position: absolute;
+  top:-50rpx;
+  left:50%;
+  margin-left:-50rpx;
+}

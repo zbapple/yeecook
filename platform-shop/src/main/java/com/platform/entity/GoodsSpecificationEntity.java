@@ -1,6 +1,9 @@
 package com.platform.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -12,6 +15,7 @@ import java.util.Date;
  * @email 939961241@qq.com
  * @date 2017-08-31 11:15:55
  */
+@Data
 public class GoodsSpecificationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -23,8 +27,16 @@ public class GoodsSpecificationEntity implements Serializable {
     private Integer specificationId;
     //规范说明
     private String value;
+    //规格库存
+    private Integer specificationNumber;
+    //规格价格
+    private BigDecimal specificationPrice;
     //规范图片
     private String picUrl;
+    //默认
+    private Integer isDefault;
+    //是否售卖
+    private  Integer isSale;
 
     /**
      * 翻译用字段

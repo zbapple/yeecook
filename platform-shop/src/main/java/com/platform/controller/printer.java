@@ -54,7 +54,7 @@ public class printer {
     }
     @RequestMapping("/prt")
     public  R prt(@RequestBody String obj){
-        if( null != obj) {
+        if( null != obj && obj.length()>0) {
             String[] str = obj.split("&");
             String[] str2 = str[0].split("count=");
                 int count = Integer.parseInt(str2[1]);

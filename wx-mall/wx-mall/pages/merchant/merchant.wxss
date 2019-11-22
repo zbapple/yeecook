@@ -1,0 +1,27 @@
+/* pages/merchant/merchant.wxss */
+page{
+  position: relative;
+} 
+.merchat{
+  position: absolute;
+  top:50%;
+  left:50%;
+  margin-top:-249rpx;
+  margin-left:-201rpx;
+}
+.merchat_bg{
+  width:402rpx;
+  height:397rpx;
+  background:url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191014/110127825482bf.png') 0 0 no-repeat;
+  background-size: 100% 100%;
+}
+.merchat_txt{
+  height:100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size:28rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+}

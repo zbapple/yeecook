@@ -1,0 +1,50 @@
+ <view class="title">
+  <view class="title_input" bindtap="search">
+    <text class="title_input_icon"></text> 
+    <text class="title_input_txt">请输入关键词</text>
+  </view>
+</view> 
+<view class="content">
+  <scroll-view class="scroll_left" scroll-y style="padding-bottom:{{paddingheight}}">
+      <view class="{{sidebarnum==index?'left_item_active':'left_item'}}" wx:for="{{sidebar}}" wx:key="{{index}}" data-num="{{index}}" data-name="{{item}}" data-id="{{item.id}}" bindtap="onsidebar">
+        {{item.name}}
+        </view>
+  </scroll-view>
+  <view class="content_right">
+    <view class="slideshow">
+      <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000" indicator-color="rgba(102,207,204,0.48)"
+    indicator-active-color="rgba(102,207,204,1)">
+        <swiper-item wx:for="{{banner}}" wx:key="{{index}}">
+            <image src="{{item.image_url}}" data-id="{{item.id}}" class="banner_image"></image>
+        </swiper-item> 
+      </swiper> 
+    </view>
+    <scroll-view class="scroll_right" scroll-y  upper-threshold='80rpx' scroll-top="{{scrolltop}}" style="padding-bottom:{{paddingheight}}">
+      <view class="right_item" wx:for="{{GoodsList}}" wx:key="{index}" bindtap="mealdetail" data-obj="{{item}}" bindtap="ToshopDetail" data-id="{{item.id}}">
+        <view class="right_item_image"> 
+          <image src="{{item.list_pic_url}}"></image>
+        </view >
+        <view class="right_item_height">
+          <text class="item_mealname">{{item.name}}</text>
+        </view>
+        <view class="right_item_height right_grade">
+          <text class="txt_shop_content">评分</text>
+          <text class="txt_shop_content">4.6</text>
+          <text class="txt_shop_gap"></text>
+          <text class="txt_shop_content">月销售</text>
+          <text class="txt_shop_content">9999单</text>  
+        </view>
+        <view class="right_item_height price_txt">
+          <text class="item_price">￥{{item.market_price}}</text>
+          <text class="item_price_old">￥{{item.retail_price}}</text>
+          <view class="clear"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+<!-- 购物车 -->
+<view class="float_cart" bindtap='tocart'>
+  <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/1039434067f758.png"></image>
+  <view class="float_cart_num" wx:if="{{cartnum>0}}">{{cartnum}}</view>
+</view>

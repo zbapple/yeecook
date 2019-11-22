@@ -1,0 +1,58 @@
+<view class="header" wx:if="{{Dishesdishesinfo}}"> 
+  <view class="header-image">
+    <image src='{{Dishesdishesinfo.dishesCoverPic}}'></image> 
+    <view class="header-title ">
+      <text class="header-txt txt-one">{{Dishesdishesinfo.dishesName}}</text><text class="header-txt txt-two">{{Dishesdishesinfo.dishesCalories}}kcal</text>
+    </view>
+  </view> 
+</view>
+<view class="mutrition" wx:if="{{show}}"> 
+  <view class="mutrition-title">
+    <view class="mutrition-title-left">营养元素</view>
+    <image src="../../static/images/go.png" class="mutrition-title-icon" bindtap='tomutrition' data-id="{{id}}"></image>
+    <view class="mutrition-title-right" bindtap='tomutrition' data-id="{{id}}" >更多营养元素</view>
+  </view>
+  <view class="mutrition-content">
+    <view class="mutrition-content-left">
+      <circle circle="{{circle}}"></circle>
+    </view>
+    <view class="mutrition-content-right">
+      <view class="mutrition-content-list">
+        <image src='https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190705/1013324c258d.png'></image>
+        <view class="mutrition-content-name">蛋白质</view>
+      </view>
+      <view class="mutrition-content-list">
+        <image src='https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190705/10191147579ac6.png'></image>
+        <view class="mutrition-content-name">脂肪</view>
+      </view>
+      <view class="mutrition-content-list">
+        <image src='https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190705/10202428934ba9.png'></image>
+        <view class="mutrition-content-name">碳水化合物</view>
+      </view>
+    </view>
+  </view>
+</view> 
+<view class="bottom"></view> 
+<view class="food" wx:if="{{foodingredients.length>0}}">
+  <view class="mutrition-title">
+    <view class="mutrition-title-left">食材</view>
+  </view>
+  <view class="food-list" wx:for="{{foodingredients}}" wx:key="{{index}}">
+    <view class="food-list-name">{{item.foodMaterialName}}</view>
+    <view class="food-list-number">{{item.foodMaterialNum+item.foodunit}}</view>
+  </view>
+</view>
+<view class="bottom"></view>
+<view class="methods" wx:if="{{dishesStepsVos.length>0}}">
+  <view class="mutrition-title">
+    <view class="mutrition-title-left">制作方法</view>
+  </view>
+  <view class="methods-list" wx:for="{{dishesStepsVos}}" wx:key="{{index}}">
+    <view class="methods-list-name">步骤{{item.stepsNum}}</view>
+    <view class="methods-list-image">
+      <image src="{{item.stepsPic}}"></image>
+    </view>
+    <view class="methods-list-content">{{item.stepsDescribe}}</view>
+  </view>
+</view>
+ 

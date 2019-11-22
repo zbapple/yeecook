@@ -1,0 +1,26 @@
+<view wx:if="{{start}}" class="start">
+  <view class="start-title" wx:if="{{start_show}}">请上称</view>
+  <view class="bluetooth-title measure" wx:if="{{measure}}">正在测量体重中，请勿移开。</view>
+  <view wx:if="{{bluetooth}}">
+    <view class="bluetooth-title">很抱歉，未检测到您的体脂秤设备，请确保：</view>
+    <view class="bluetooth-step bluetooth-step1">1.已打开蓝牙(首次连接，请手动选择设备“XXX”)</view>
+    <view class="bluetooth-step bluetooth-step2">2.手机与体脂秤已连接至相同WI-FI网络</view>
+    <view class="again-btn" bindtap='againscal'>再试一次</view>
+  </view>
+  <view wx:if="{{scla_error}}">
+    <view class="error-title">啊哦，您的体脂秤设备偷了个小懒～</view>
+    <view class="error-tip">请重新上秤，并点击下方“再试一次”</view>
+    <view class="again-btn" bindtap='againscal'>再试一次</view>
+  </view>
+  <view class="scal-img">
+    <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190627/1625259005d940.png"></image>
+  </view>
+</view>
+<view wx:if="{{count}}" class="count">
+  <view class="count-food">膳食均衡</view>
+  <view class="count-hot">热量控制</view>
+  <view class="count-mutrition"><text class="count-txt">营养食谱\n个性化定制</text></view>
+  <view class="count-ten"><text class="ten-txt">十大身体健康指标\n精准检测</text></view>
+  <view class="count-low"><text class="count-txt">低卡套餐\n便捷即食</text></view>
+  <view class="count-bottom">正在生成智能健康报告...</view>
+</view> 

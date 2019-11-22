@@ -44,11 +44,30 @@
             cursor: pointer;
             margin: 0 2px;
         }
+        .content{
+            width: 1500px;
+            padding: 15px;
+            line-height: 50px;
+        }
+        label{
+            display: inline-block;
+            float: left;
+            clear: left;
+            width: 100px;
+            text-align: right;
+        }
+        .ids{
+            display: inline-block;
+            float: left;
+        }
+        .ivu-card-body{
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
 <div id="rrapp" v-cloak>
-    <div v-show="showList">
+    <div v-show="showList&&!details">
         <Row :gutter="16">
             <div class="search-group">
                 <i-col span="4">
@@ -62,30 +81,31 @@
                     </i-select>
                 </i-col>
                 <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
                 #if($shiro.hasPermission("goods:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
                 #end
+                <i-button type="info" @click="goodsHistory"><i class="fa fa-trash-o"></i>&nbsp;已删除管理</i-button>
                 #if($shiro.hasPermission("goods:update"))
                 <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
                 #end
                 #if($shiro.hasPermission("goods:delete"))
                 <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
                 #end
-                <i-button type="primary" @click="enSale"><i class="fa fa-hand-o-up"></i>&nbsp;上架</i-button>
-                <i-button type="dashed" @click="unSale"><i class="fa fa-hand-o-down"></i>&nbsp;下架</i-button>
-                <i-button type="warning" @click="openPro"><i class="fa fa-pencil-square-o"></i>&nbsp;产品</i-button>
-                <i-button type="warning" @click="openSpe"><i class="fa fa-pencil-square-o"></i>&nbsp;规格</i-button>
+                <!--<i-button type="primary" @click="enSale"><i class="fa fa-hand-o-up"></i>&nbsp;上架</i-button>-->
+                <!--<i-button type="dashed" @click="unSale"><i class="fa fa-hand-o-down"></i>&nbsp;下架</i-button>-->
+                <!--<i-button type="warning" @click="openPro"><i class="fa fa-pencil-square-o"></i>&nbsp;产品</i-button>-->
+                <!--<i-button type="warning" @click="openSpe"><i class="fa fa-pencil-square-o"></i>&nbsp;规格</i-button>-->
             </div>
         </Row>
         <table id="jqGrid"></table>
         <div id="jqGridPager"></div>
     </div>
 
-    <Card v-show="!showList">
+    <Card v-show="!showList&&!details">
         <p slot="title">{{title}}</p>
-
         <Tabs value="name1">
             <Tab-Pane label="通用信息" name="name1">
                 <i-form ref="formValidate" :model="goods" :rules="ruleValidate" :label-width="100">
@@ -99,7 +119,7 @@
                     <Form-item label="供应商" prop="supplierId"    style="width: 300px">
                     <i-select v-model="goods.supplierId" filterable  placeholder="供应商"  clearable=true v-if="user.deptId==10">
                         <i-option v-for="supplier in suppliers" :value="supplier.id"
-                                  :key="supplier.id" > {{supplier.companyName}}
+                                  :key="supplier.id" >{{supplier.companyName}}
                         </i-option>
                     </i-select>
                         <!--<i-select v-model="goods.supplierId" filterable v-for="supplier in suppliers"  :placeholder="supplier.companyName"  clearable=true v-else>-->
@@ -109,25 +129,28 @@
                     <!--</i-select>-->
                       <i-input  v-else   readonly="readonly" v-for="supplier in suppliers" :value="supplier.companyName" :key="supplier.id"/>
                     </Form-item>
-                    <Form-item label="名称" prop="name" >
-                        <i-input v-model="goods.name" placeholder="名称"  style="width: 300px"/>
-                    </Form-item>
                     <Form-item label="品牌" prop="brandId"  style="width: 300px">
                         <i-select v-model="goods.brandId" filterable>
                             <i-option v-for="brand in brands" :value="brand.id" :key="brand.id">{{brand.name}}
                             </i-option>
                         </i-select>
                     </Form-item>
-                    <Form-item label="类别" prop="attributeCategory"  style="width: 300px">
-                        <i-select v-model="goods.attributeCategory" filterable label-in-value>
-                            <i-option v-for="attributeCategory in attributeCategories" :value="attributeCategory.id"
-                                      :key="attributeCategory.id">{{attributeCategory.name}}
-                            </i-option>
-                        </i-select>
+                    <Form-item label="商品名称" prop="name" >
+                        <i-input v-model="goods.name" placeholder="商品名称"  style="width: 300px"/>
                     </Form-item>
-                    <Form-item label="激活码批次" prop="batchId" >
-                        <i-input v-model="goods.batchId" placeholder="激活码批次"  style="width: 300px"/>
+                    <Form-item label="简单描述" prop="goodsBrief">
+                        <i-input v-model="goods.goodsBrief"  placeholder="简单描述" style="width: 300px" />
                     </Form-item>
+                    <!--<Form-item label="类别" prop="attributeCategory"  style="width: 300px">-->
+                        <!--<i-select v-model="goods.attributeCategory" filterable label-in-value>-->
+                            <!--<i-option v-for="attributeCategory in attributeCategories" :value="attributeCategory.id"-->
+                                      <!--:key="attributeCategory.id">{{attributeCategory.name}}-->
+                            <!--</i-option>-->
+                        <!--</i-select>-->
+                    <!--</Form-item>-->
+                    <!--<Form-item label="激活码批次" prop="batchId" >-->
+                        <!--<i-input v-model="goods.batchId" placeholder="激活码批次"  style="width: 300px"/>-->
+                    <!--</Form-item>-->
                     <Form-item label="商品库存" prop="goodsNumber">
                         <Input-number :min="0" :step="1" v-model="goods.goodsNumber" placeholder="商品库存"
                                       style="width: 300px"/>
@@ -146,14 +169,14 @@
                         <Input-number :min="0" :step="1" v-model="goods.retailPrice" placeholder="零售价格"
                                       style="width: 300px"/>
                     </Form-item>
-                    <Form-item label="供应商价格" prop="marketPrice">
-                        <Input-number :min="0" :step="1" v-model="goods.marketPrice" placeholder="市场价"
-                                      style="width: 300px"/>
-                    </Form-item>
-                    <!--<Form-item label="专柜价格" prop="counterPrice">-->
-                    <!--<Input-number :min="0" :step="1" v-model="goods.counterPrice" placeholder="专柜价格"-->
-                    <!--style="width: 188px;"/>-->
+                    <!--<Form-item label="供应商价格" prop="marketPrice">-->
+                        <!--<Input-number :min="0" :step="1" v-model="goods.marketPrice" placeholder="市场价"-->
+                                      <!--style="width: 300px"/>-->
                     <!--</Form-item>-->
+                    <Form-item label="划线价格" prop="counterPrice">
+                    <Input-number :min="0" :step="1" v-model="goods.counterPrice" placeholder="划线价格"
+                    style="width: 188px;"/>
+                    </Form-item>
                     <!--<Form-item label="附加价格" prop="extraPrice">-->
                     <!--<Input-number :min="0" :step="1" v-model="goods.extraPrice" placeholder="附加价格"-->
                     <!--style="width: 188px;"/>-->
@@ -247,10 +270,10 @@
             </Tab-Pane>
             <Tab-Pane label="其他信息" name="name3">
                 <i-form ref="formValidate" :model="goods" :rules="ruleValidate" :label-width="80">
-                    <Form-item label="排序" prop="sortOrder">
-                        <Input-number :min="0" :step="1" v-model="goods.sortOrder" placeholder="排序"
-                                      style="width: 300px" />
-                    </Form-item>
+                    <!--<Form-item label="排序" prop="sortOrder">-->
+                        <!--<Input-number :min="0" :step="1" v-model="goods.sortOrder" placeholder="排序"-->
+                                      <!--style="width: 300px" />-->
+                    <!--</Form-item>-->
                     <Form-item label="上架" prop="isOnSale">
                         <Radio-group v-model="goods.isOnSale">
                             <Radio label="1">
@@ -287,9 +310,6 @@
                     <Form-item label="关键字" prop="keywords">
                         <i-input v-model="goods.keywords" placeholder="关键字" style="width: 300px" />
                     </Form-item>
-                    <Form-item label="简明介绍" prop="goodsBrief">
-                        <i-input v-model="goods.goodsBrief" type="textarea" :rows="6" placeholder="简明介绍" style="width: 300px" />
-                    </Form-item>
                 </i-form>
             </Tab-Pane>
         </Tabs>
@@ -298,6 +318,60 @@
             <i-button type="warning" @click="reload" style="margin-left: 8px"/>
             返回</i-button>
             <i-button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+        </div>
+    </Card>
+    <Card v-show="details">
+        <p slot="title" style="font-size: 18px">{{title}}</p>
+        <div class="content">
+            <p style="color: black;font-size: 14px;font-weight: 700">基础信息</p>
+            <div class="box"><label style="">商品序列号：</label>
+                <span v-if="goods.goodsSn == null || goods.goodsSn == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsSn}}</span></div>
+            <div class="box"><label style="">商品类型：</label>
+            <span v-if="goods.categoryName == null || goods.categoryName == ''" class="ids">暂无数据</span>
+            <span v-else class="ids">{{goods.categoryName}}</span></div>
+            <div class="box"><label style="">供应商：</label>
+                <span v-if="goods.companyName == null || goods.companyName == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.companyName}}</span></div>
+            <div class="box"><label style="">品牌：</label>
+                <span v-if="goods.brandName == null || goods.brandName == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.brandName}}</span></div>
+            <div class="box"><label style="">商品名称：</label>
+                <span v-if="goods.name == null || goods.name == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.name}}</span></div>
+            <div class="box"><label style="">简单描述：</label>
+                <span v-if="goods.goodsBrief == null || goods.goodsBrief == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsBrief}}</span></div>
+            <div class="box" style="line-height: 85px"><label style="">商品主图：</label>
+                <div v-if="goods.primaryPicUrl == null || goods.primaryPicUrl == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: left;display: inline-block;text-align: center" v-else>暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block" onload="image"><img :src="goods.primaryPicUrl" style="width: 84px; height:81px;"></div>
+            </div>
+            <div class="box" style="line-height: 85px"><label style="">商品列表图：</label>
+                <div v-if="goods.listPicUrl == null || goods.listPicUrl == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: left;;text-align: center;display: inline-block" v-else>暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block" onload="image"><img :src="goods.listPicUrl" style="width: 84px; height:81px;"></div>
+            </div>
+            <div class="box"><label style="">商品库存：</label>
+                <span v-if="goods.goodsNumber == null || goods.goodsNumber == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.goodsNumber}}</span></div>
+            <div class="box"><label style="">商品价格：</label>
+                <span v-if="goods.retailPrice == null || goods.retailPrice == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.retailPrice}}元</span></div>
+            <div class="box"><label style="">划线价格：</label>
+                <span v-if="goods.counterPrice == null || goods.counterPrice == ''" class="ids">暂无数据</span>
+                <span v-else class="ids">{{goods.counterPrice}}元</span></div><br/>
+                <div class="box"><label style="">详情描述：</label>
+                    <span v-if="goods.goodsDesc == null || goods.goodsDesc == ''" class="ids">暂无数据</span>
+                    <span v-else class="ids">{{goods.goodsDesc}}</span></div>
+            <div class="box" style="line-height: 85px"><label style="">详情图片：</label>
+                <div v-if="uploadList.length == 0" style="border: 1px solid gainsboro;width: 84px; height:81px;text-align: center;float: left;display: inline-block">暂无图片</div>
+                <div v-else style="width: 84px; height:81px;float: left;display: inline-block;margin-left:10px" onload="image" v-for="item in uploadList">
+                    <img :src="item.imgUrl" style="width: 84px; height:81px;">
+                </div>
+            </div>
+        </div>
+        <div style="margin-left:570px;position:fixed;bottom: 5px;">
+            <i-button type="warning" @click="reload" style="margin-left: 8px"/>
+            返回</i-button>
         </div>
     </Card>
 </div>

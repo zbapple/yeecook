@@ -1,0 +1,59 @@
+<view class="title">
+  <view class="title_address" bindtap="getLocation"></view>
+  <view class="title_input" bindtap="search">
+    <text class="title_input_icon"></text>
+    <text class="title_input_txt">请输入关键词</text>
+  </view>
+</view>
+<view class="merchant_title">
+  <text class="merchant_title_txt">推荐商家</text>
+  <view class="merchant_title_select">
+    <view class="select_item_composite">
+        <text class="item_composite_txt item_composite_active">综合排序</text>
+        <view class="item_composite_icon"></view>
+    </view>
+    <view class="select_item_composite" > 
+      <text class="item_composite_txt">销量</text>
+    </view>
+     <view class="select_item_composite ">
+        <text class="item_composite_txt ">距离</text>
+    </view> 
+     <view class="select_title_right ">
+        <text class="item_composite_txt ">筛选</text>
+        <view class="item_select_icon"></view>
+    </view>
+  </view>  
+</view>
+<view class="merchant_content">
+  <view class="merchant_item" bindtap="tomerchant" data-name="{{item.storeName}}" data-id="{{item.id}}" wx:for="{{storelist}}" wx:key="{{item.id}}">
+    <image class="merchant_item_image" src="{{item.storePicrue}}"></image>
+    <view class="merchant_item_content">
+      <view class="content_item_one">
+        <view class="txt_shop_name">{{item.storeName}}</view>
+        <view class="item_content_icon" catchtap="showdetail"></view>
+      </view>
+      <view class="content_item_two">  
+        <view class="txt_shop_content">评分4.6</view>
+        <view class="txt_shop_gap"></view>
+        <view class="txt_shop_content">月销售9999单</view>
+      </view>
+      <view class="content_item_three" >
+        <view class="txt_shop_content">起送价格￥{{item.sendingfee}}</view>
+        <view class="txt_shop_gap"></view>
+        <view class="txt_shop_content">配送费￥{{item.deliveryfee}}</view>
+        <view class="item_content_time">
+          <text class="txt_shop_content">
+            <block >{{item.juli}}</block> 
+          </text>
+          <text class="txt_shop_gap"></text>
+          <text class="txt_shop_content">30分钟</text>
+        </view>
+      </view>
+    </view>
+  </view> 
+</view>
+<!-- 购物车 -->
+<!-- <view class="float_cart" bindtap='tocart'>
+  <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190918/100909249d44eb.png"></image>
+  <view class="float_cart_num">99</view>
+</view> -->

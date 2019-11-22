@@ -1,0 +1,4 @@
+<view class="merchat">
+  <view class="merchat_bg"></view>
+  <view class="merchat_txt">这里空空如也~</view>
+</view>

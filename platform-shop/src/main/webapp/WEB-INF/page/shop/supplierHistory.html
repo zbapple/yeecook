@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+    <style>
+        .content{
+            width: 1500px;
+            padding: 25px;
+            line-height: 70px;
+        }
+        .box{
+            width: 350px;
+            height: 50px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList&&!details">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.companyName" @on-enter="query" placeholder="供应商名称"/>
+                </i-col>
+                <i-col span="4">
+
+                    <i-select v-model="q.deptName" filterable  placeholder="部门名称"  clearable=true >
+                        <i-option style="text-align: center"
+                                  v-for="dept in depts" :value="dept.name"
+                                  :key="dept.deptId">{{dept.name}}
+                        </i-option>
+                    </i-select>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                <i-button type="error" @click="deleteAll"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                <i-button type="warning" @click="back"><i class="fa fa-pencil-square-o"></i>&nbsp;恢复</i-button>
+            </div>
+        </Row>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+    <Card v-show="details">
+        <p slot="title">{{title}}</p>
+        <div class="content">
+            <div>
+                <div style="width: 170px;height: 100px;display: inline-block">
+
+                    <span >供应商logo：</span>
+                    <div v-if="supplier.companyLogo == null"  style="width: 84px; height:81px;border:1px solid gainsboro;float: right;text-align: center">暂无图片</div>
+                    <div v-else style="width: 84px; height:81px;float: right" onload="image"><img :src="supplier.companyLogo" style="width: 84px; height:81px;"></div>
+                </div><br/>
+                <div class="box"><span style="">供应商名称：</span>
+                    <span v-if="supplier.companyName == null || supplier.companyName == ''">暂无数据</span>
+                    <span v-else>{{supplier.companyName}}</span></div>
+                <div class="box" style="width: 240px"><span >供应商类型：</span>
+                    <span v-if="supplier.companyType == null || supplier.companyType == ''">暂无数据</span>
+                    <span v-else>{{supplier.companyType}}</span></div>
+                <div class="box" style="margin-left: 20px;width: 200px"><span style="" >电话：</span>
+                    <span v-if="supplier.telephone == null || supplier.telephone == ''">暂无数据</span>
+                    <span v-else>{{supplier.telephone}}</span></div>
+                <div class="box" style="width: 200px"><span style="" >手机号码：</span>
+                    <span v-if="supplier.mobile == null || supplier.mobile == ''">暂无数据</span>
+                    <span v-else>{{supplier.mobile}}</span></div><br/>
+                <div class="box"><span style="">地址：</span>
+                    <span v-if="supplier.address == null || supplier.address == ''">暂无数据</span>
+                    <span v-else>{{supplier.address}}</span></div>
+                <div class="box" style="width: 260px"><span style="">开户银行：</span>
+                    <span v-if="supplier.openingBank == null || supplier.openingBank == ''">暂无数据</span>
+                    <span v-else>{{supplier.openingBank}}</span></div>
+                <div class="box" style="width: 200px"><span style="">收款户名：</span>
+                    <span v-if="supplier.beneficiaryName == null || supplier.beneficiaryName == ''">暂无数据</span>
+                    <span v-else>{{supplier.beneficiaryName}}</span></div>
+                <div class="box" style="width: 350px"><span style="">银行账号：</span>
+                    <span v-if="supplier.bankAccount == null || supplier.bankAccount == ''">暂无数据</span>
+                    <span v-else>{{supplier.bankAccount}}</span></div>
+            </div>
+            <div style="margin-left:570px;margin-top: 20px;">
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>
+                返回</i-button>
+            </div>
+        </div>
+    </Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/supplierHistory.js?_${date.systemTime}"></script>
+</body>
+</html>

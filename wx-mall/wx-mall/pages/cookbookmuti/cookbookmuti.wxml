@@ -1,0 +1,6 @@
+<view class="muti"> 
+  <view wx:for="{{list}}" wx:key="{{index}}" class="detail">
+    <view class="detail_left">{{item.name}}</view>
+    <view class="detail_right">{{item.number}}</view>
+ </view>
+</view>

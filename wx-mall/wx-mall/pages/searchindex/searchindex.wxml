@@ -1,0 +1,13 @@
+<view class="header">
+ <view class="header_input_type">
+   <view class="title_input_icon"></view>
+   <input type='txt' focus='true' confirm-type='search' placeholder='请输入关键词' class="input" bindconfirm="confirm"></input>
+ </view>
+</view>
+<view class="history">
+  <view class="history_title font-size">历史记录</view> 
+  <view class="history_title_icon" bindtap="detele"></view>
+</view>
+<view class="item">
+  <view class="item_name font-size" wx:for="{{list}}" bindtap="search" data-name="{{item}}" wx:key="{{index}}">{{item}}</view>
+</view>

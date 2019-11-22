@@ -53,8 +53,7 @@ public class OrderSupplierController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("ordersupplier:info")
     public R info(@PathVariable("id") Integer id) {
-        OrderSupplierEntity orderSupplier = orderSupplierService.queryObject(id);
-
+        OrderSupplierEntity orderSupplier = orderSupplierService.queryInfo(id);
         return R.ok().put("orderSupplier", orderSupplier);
     }
 

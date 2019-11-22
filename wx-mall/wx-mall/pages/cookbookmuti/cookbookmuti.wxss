@@ -1,0 +1,15 @@
+.muti{
+  padding-left:23rpx;
+  padding-right:23rpx;
+}
+.detail{
+  height:60rpx;
+  line-height:60rpx;
+  overflow: hidden;
+}
+.detail_left{
+  float:left;
+}
+.detail_right{
+  float:right;
+}

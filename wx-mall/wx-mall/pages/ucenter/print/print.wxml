@@ -1,0 +1,21 @@
+<view class="container">
+  <view class='ts-mes'><text class='ca'>长按可进行二维码打印!</text></view>
+  <view class="print">
+    <view class="day-item" wx:for="{{printList}}" wx:key="{{index}}">
+      <view class="day-hd">{{item.batchName}}</view>
+      <view class="day-list">
+        <view class="item" data-print="{{item}}" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtap="printItem" >
+          <image class="img" src="{{item.list_pic_url}}"></image>
+          <view class="info">
+            <view class="name">批次号:{{item.batchId}}</view>
+            <view class="subtitle">总数量:{{item.countCd}}个</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+   <view class="empty-view" wx:if="{{ printList.length <= 0 }}">
+      <image class="icon" src="../../../static/images/allorder.png"></image>
+      <text class="text">没有邀请码信息</text>
+    </view>
+</view>

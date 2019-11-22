@@ -1,0 +1,22 @@
+ <view class="header">
+ </view>
+<view class="section">
+    <image src="../../../static/images/weight.png" class="section-image"></image>
+    <view class="section__title">身高</view>
+    <input type='number' name="input1" value="{{height}}" bindinput='chageheight' class="btn btn-txt" placeholder='请填写/cm' />
+  </view> 
+ <view class="section"> 
+    <image src="../../../static/images/body.png" class="section-image"></image>
+    <view class="section__title">生日</view>
+     <picker mode="date" value="{{date}}" start="{{date}}" bindchange="bindDateChange" class=" ">
+       <view>
+        <text class="btn1 btn-txt">{{date}} </text>
+     </view>
+    </picker>
+  </view>
+  <view class="section">
+    <image src="../../../static/images/height.png" class="section-image"></image>
+    <view class="section__title">目标体重</view> 
+    <input type='number' name="input3" value="{{weight}}" bindinput='chageweight' class="btn btn-txt" placeholder='请填写/kg'/> 
+  </view>
+  <view  class="btn-sure" bindtap='update'>确认修改</view>

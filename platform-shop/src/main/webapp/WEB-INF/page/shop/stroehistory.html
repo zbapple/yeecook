@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+    <style>
+        .content{
+            width: 1500px;
+            padding: 25px;
+            line-height: 70px;
+        }
+        .box{
+            width: 350px;
+            height: 50px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList&&!details">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.storeName" @on-enter="query" placeholder="名称"/>
+                </i-col>
+                <i-col span="4">
+                    <i-select v-model="q.storeType" filterable placeholder="门店类型" clearable=true >
+                        <i-option style="text-align: center"
+                                  v-for="item in storeTypeList"
+                                  :value="item"
+                                  :key="item">{{item}}
+                        </i-option>
+                    </i-select>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+                <i-button type="error" @click="deleteAll"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                <i-button type="warning" @click="back"><i class="fa fa-pencil-square-o"></i>&nbsp;恢复</i-button>
+            </div>
+        </Row>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+    <Card v-show="details">
+        <p slot="title">{{title}}</p>
+        <div class="content">
+            <div>
+                <div class="box"><span style="">门店名称：</span>
+                    <span v-if="stroe.storeName == null || stroe.storeName == ''">暂无数据</span>
+                    <span v-else>{{stroe.storeName}}</span></div>
+                <div class="box" style="margin-left: 20px;width: 200px"><span style="">门店类型：</span>
+                    <span v-if="stroe.storeType == null || stroe.storeType == ''">暂无数据</span>
+                    <span v-else>{{stroe.storeType}}</span></div>
+                <div class="box" style="margin-left: 10px;width: 350px"><span style="">开户银行：</span>
+                    <span v-if="stroe.openingBank == null || stroe.openingBank == ''">暂无数据</span>
+                    <span v-else>{{stroe.openingBank}}</span></div>
+                <div class="box"><span style="">收款户名：</span>
+                    <span v-if="stroe.beneficiaryName == null || stroe.beneficiaryName == ''">暂无数据</span>
+                    <span v-else>{{stroe.beneficiaryName}}</span></div><br/>
+                <div class="box"><span style="">地址：</span>
+                    <span v-if="stroe.address == null || stroe.address == ''">暂无数据</span>
+                    <span v-else>{{stroe.province}}{{stroe.city}}{{stroe.distrct}}{{stroe.address}}</span></div>
+                <div class="box" style="margin-left: 20px;width: 200px"><span style="" >联系电话：</span>
+                    <span v-if="stroe.storePhone == null || stroe.storePhone == ''">暂无数据</span>
+                    <span v-else>{{stroe.storePhone}}</span></div>
+                <div class="box" style="margin-left: 10px;width: 350px"><span style="">银行账号：</span>
+                    <span v-if="stroe.bankAccount == null || stroe.bankAccount == ''">暂无数据</span>
+                    <span v-else>{{stroe.bankAccount}}</span></div><br/>
+                <div style="width: 200px;height: 100px;display: inline-block">
+
+                    <span >门店logo：</span>
+                    <div v-if="stroe.storePicrue == null || stroe.storePicrue == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: right;text-align: center" v-else>暂无图片</div>
+                    <div style="width: 84px; height:81px;float: right" onload="image"><img :src="stroe.storePicrue" style="width: 84px; height:81px;"></div>
+                </div>
+                <div style="width: 200px;height: 100px;display: inline-block;margin-left: 50px">
+                    <span>营业执照：</span>
+                    <div v-if="stroe.businessLicense == null || stroe.businessLicense == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: right;text-align: center" v-else>暂无图片</div>
+                    <div v-else style="width: 84px; height:81px;float: right" onload="image"><img :src="stroe.businessLicense" style="width: 84px; height:81px;"></div>
+                </div>
+                <div style="width: 240px;height: 100px;display: inline-block;margin-left: 50px">
+                    <span>食品经营许可证：</span>
+                    <div v-if="stroe.licensePic == null || stroe.licensePic == ''" style="border: 1px solid gainsboro;width: 84px; height:81px;float: right;text-align: center">暂无图片</div>
+                    <div v-else style="width: 84px; height:81px;float: right" onload="image"><img :src="stroe.licensePic" style="width: 84px; height:81px;"></div>
+                </div>
+                <div style="width: 621px;height: 150px;padding-top: 30px">
+                    <div style="display: inline-block">
+                        <span >店内实景：</span>
+                        <div  v-if="stroe.realisticPicture == null || stroe.realisticPicture == ''" style="width: 84px; height:81px;display:inline-block;margin-left:42px;border: 1px solid gainsboro;text-align: center" onload="image">
+                            暂无图片
+                        </div>
+                        <div v-else style="width: 84px; height:81px;display:inline-block;margin-left:42px " onload="image" v-for="item in uploadList">
+                            <img :src="item.name" style="width: 84px; height:81px;">
+                        </div>
+                    </div>
+                    <div v-if="stroe.stroeGrade==null || stroe.stroeGrade == ''">
+                        <span>门店评分：暂无评分</span>
+                    </div>
+                    <div v-else>
+                        <span>门店评分：{{stroe.stroeGrade}}分</span>
+                    </div>
+                </div>
+                <p style="font-weight: bold;font-size: 14px;color:#1c2438">门店设置信息：</p>
+                <span>起送价格：</span>
+                <span v-if="stroe.sendingfee == null || stroe.sendingfee == ''">暂无数据</span>
+                <span v-else>{{stroe.sendingfee}}元</span><br/>
+                <span>配送费：</span>
+                <span v-if="stroe.deliveryfee == null || stroe.deliveryfee == ''">暂无数据</span>
+                <span v-else>{{stroe.deliveryfee}}元</span><br/>
+                <span>营业时间：</span>
+                <span v-if="stroe.storeTime == null || stroe.storeTime == ''">暂无数据</span>
+                <span v-else>{{stroe.storeTime}}</span>
+            </div>
+        </div>
+        <div style="margin-left:570px;margin-top: 20px;">
+            <i-button type="warning" @click="reload" style="margin-left: 8px"/>
+            返回</i-button>
+        </div>
+    </Card>
+</div>
+
+<script src="${rc.contextPath}/js/shop/stroehistory.js?_${date.systemTime}"></script>
+</body>
+</html>

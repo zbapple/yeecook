@@ -1,0 +1,125 @@
+<view class="c-minheight wx-view_JbWxfk" data-c_e_id="wx_view57f85b2a" id="view_kp">
+  <view class="c-minheight carditem01" data-c_e_id="wx_view5553573d">
+    <navigator class="wx-navigator_PNd8QQ" data-c_e_id="wx_navigator1d2bbef2" hover-class="navigator-hover">
+      <image class="wx-image_BEjy38" data-c_e_id="wx_image81f7e206" id="img_kp" mode="aspectFill" src="{{imgUrl}}" style="background-size:   cover; background-position:   center center; background-repeat:   no-repeat;  "
+      />
+    </navigator>
+    <view class="wx-view_adF7Mw" data-c_e_id="wx_view40709747">
+      <icon class="wx-icon_L4VlOM" data-c_e_id="wx_icon_acfb9aa7" size="23" type="success" />
+  
+        <text class="c-block wx-text_9Wn0Di" data-c_e_id="wx_texta25c5e4a" id="tx_jhzt">{{activatedState?'已激活':'未激活'}}</text>
+
+  
+    </view>
+
+  </view>
+</view>
+<view wx:if="{{activatedState}}">
+  <view class="c-minheight wx-view_JbWxfk">
+    <view class="c-minheight wx-view_s18gFV carditem01">
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">【</text>
+        <text class="c-block c wx-text_9Wn0Di">已激活服务信息</text>
+        <text class="c-block c wx-text_9Wn0Di">】</text>
+      </view>
+
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block wx-text_9Wn0Di">{{desc}}</text>
+      </view>
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">服务持续时间：</text>
+        <text class="c-block wx-text_9Wn0Di">{{cardVo.servevalidtime}}</text>
+      </view>
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">上次服务时间：</text>
+        <text class="c-block wx-text_9Wn0Di">{{cardVo.serveLastTime}}</text>
+      </view>
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">下次服务时间：</text>
+        <text class="c-block wx-text_9Wn0Di">{{cardVo.serveNextTime}}</text>
+      </view>
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">剩余配送次数：</text>
+        <text class="c-block wx-text_9Wn0Di">{{cardVo.serveCount-cardVo.haveServeCount}}次</text>
+      </view>
+      <view class="c-minheight wx-view_20Jvxf">
+        <text class="c-block c wx-text_9Wn0Di">已配送的次数：</text>
+        <text class="c-block wx-text_9Wn0Di">{{cardVo.haveServeCount}}次</text>
+      </view>
+
+
+    </view>
+  </view>
+</view>
+<view class="c-minheight wx-view_JbWxfk" data-c_e_id="wx_view_8e5b2c4c">
+  <view class="c-minheight wx-view_s18gFV carditem01" data-c_e_id="wx_view_3ab264e2">
+    <view class="wx-view_adF7Mw1" data-c_e_id="wx_view7e83ec90">
+      <view catchtap="tap_43265a36" class="c-minheight wx-view_y8cwKA {{wx_viewfeefa29d.class}}" data-c_act_id="M_87e2f4679ccb08d7" data-c_e_id="wx_viewfeefa29d" id="view_jk">
+        季卡
+      </view>
+      <view catchtap="tap_7a6ea42a" class="c-minheight bnk wx-view_y8cwKA {{wx_view70005605.class}}" data-c_act_id="M_0e1dd9bdfdd05812" data-c_e_id="wx_view70005605" id="view_bnk">
+        半年卡
+      </view>
+      <view catchtap="tap_0d185810" class="nk wx-view_y8cwKA {{wx_view4baa45f1.class}}" data-c_act_id="M_1da2519e8fd1b141" data-c_e_id="wx_view4baa45f1" id="view_nk">
+        年卡
+      </view>
+    </view>
+    <view class="wx-view_adF7Mw" data-c_e_id="wx_viewaf8c9ff4">
+      <view class="c-minheight wx-view_20Jvxf" data-c_e_id="wx_view_5be7bdbf">
+        <text class="c-block c wx-text_9Wn0Di" data-c_e_id="wx_text898a231e" id="tx_jgbt">价格：</text>
+        <text class="c-block wx-text_9Wn0Di" data-c_e_id="wx_text1b8c9d3a" id="tx_jged">{{price}}元</text>
+      </view>
+
+    </view>
+    <view class="c-minheight wx-view_IM23o3 {{wx_view_36bf3d3c.class}}" data-c_e_id="wx_view_36bf3d3c">
+      <view class="wx-view_adF7Mw {{wx_viewe87714bd.class}}" data-c_e_id="wx_viewe87714bd">
+        <text class="c-block wx-text_9Wn0Di" data-c_e_id="wx_textfc08316c" id="tx_cpms">{{gzDesc}}</text>
+      </view>
+    </view>
+    <text class="c-block wx-text_RwiMPz {{wx_text_8ddb6b6f.class}}" data-c_e_id="wx_text_8ddb6b6f">配送规则 ></text>
+    <view class="c-minheight wx-view_6x02zU {{wx_view_b8e6ff08.class}}" data-c_e_id="wx_view_b8e6ff08">
+      <view class="c-minheight wx-view_V649JA {{wx_view_e0c51b80.class}}" data-c_e_id="wx_view_e0c51b80">
+        <text catchtap="tap_e99413d7" class="c-block gz1 wx-text_tLExMX {{wx_text_0315e102.class}}" data-c_act_id="M_9172bcf53c2e21e3" data-c_e_id="wx_text_0315e102" id="tx_bt_psgz1">每月1号</text>
+        <text catchtap="tap_d5e62053" class="c-block gz2 wx-text_tLExMX {{wx_textb555b58a.class}}" data-c_act_id="M_0b0f0ca5f0e108ca" data-c_e_id="wx_textb555b58a" id="tx_bt_psgz2">每月中旬</text>
+        <text catchtap="tap_04d8e2f8" class="c-block gz3 wx-text_tLExMX {{wx_textbe4c8c02.class}}" data-c_act_id="M_90ba4a46cbd3ab45" data-c_e_id="wx_textbe4c8c02" id="tx_bt_psgz3">每月月底</text>
+      </view>
+    </view>
+    <view class="c-minheight wx-view_u6kxET {{wx_view_de2f3fdb.class}}" data-c_e_id="wx_view_de2f3fdb">
+      <view class="wx-view_adF7Mw {{wx_view829af0c1.class}}" data-c_e_id="wx_view829af0c1">
+        <text class="c-block wx-text_9Wn0Di {{wx_text4dbedd83.class}}" data-c_e_id="wx_text4dbedd83" id="tx_qrgz">每月1号为您配送五常米5kg，持续3个月，到2019年1月结束。</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="c-minheight wx-view_EBgXUx" data-c_e_id="wx_view_3c231f34" id="vw_cpxx">
+  【产品信息】
+</view>
+<view class="detail">
+  <import src="../../lib/wxParse/wxParse.wxml" />
+  <template is="wxParse" data="{{wxParseData:goodsDetail.nodes}}" />
+</view>
+
+<view class="c-minheight wx-view_qrbt sfs" data-c_e_id="wx_viewa0295312" id="view_bts">
+  <text catchtap="tap_ae3cc534" class="c-block wx-text_9Wn0Di wx-text_bt wx-text_cent" data-c_act_id="M_93447f74a1f9dad1" data-c_e_id="wx_text_323003b3" id="tx_bt_jhm">激活码激活</text>
+  <text catchtap="tap_04c5bbcd" class="c-block wx-text_9Wn0Di wx-text_bt wx-text_cent" data-c_act_id="M_2e26306d52356e10" data-c_e_id="wx_text_03a6c68f" id="tx_bt_zjgm">直接购买激活</text>
+</view>
+ <view catchtap="tap_9f584986" class="weui-msg__extra-area carditem01 {{wx_view26d69817.class}}" data-c_e_id="wx_view26d69817" id="view_wind">
+    <view class="weui-footer" data-c_e_id="wx_viewa1042578" />
+    <form class="c-minheight wx-form_KBD2b3" data-c_e_id="wx_form_dd7639c2" bindsubmit="formSubmit">
+      <view class="c-minheight wx-view_AIbT9T" data-c_e_id="wx_view_93488665">
+        <text class="c-block wx-text_W2HRHv" data-c_e_id="wx_text_6d093cb1" />
+        <input class="c-block c-fullwidth wx-input_fudTPx" data-c_e_id="wx_input_f5acc919" id="tx_jhm" maxlength="40" name="activationCode" placeholder=" 请输入激活码！" type="text" />
+
+      </view>
+      <view class="c-minheight wx-view_tPNcVE" data-c_e_id="wx_view_7182fccf">
+        <button catchtap="tap_3dff2b80" class="wx-text_9Wn0Di wx-text_cent wx-text_bt" data-c_act_id="M_de28c03b7df570e8" data-c_e_id="wx_button_6e5e12a6" form-type="submit" formType="submit" hover-class="button-hover" id="tx_bt_jh" size="default" type="default">
+          激活
+        </button>
+        <button catchtap="tap_7984292f" class="wx-text_9Wn0Di wx-text_cent wx-text_bt" data-c_act_id="M_dc9fd7be4de4388b" data-c_e_id="wx_button_053e826f"  hover-class="button-hover" id="tx_bt_fh" size="default" type="default">
+          返回
+        </button>
+      </view>
+    </form>
+   
+  </view>

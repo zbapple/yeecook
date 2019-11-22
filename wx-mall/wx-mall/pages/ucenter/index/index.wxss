@@ -1,0 +1,431 @@
+page{
+    height: 100%;
+    width: 100%;
+    background: white;
+}
+.container{
+    background:white;
+    height: auto;
+    overflow: hidden;
+    width: 100%;
+}
+.userinfo {
+	display: flex;
+	flex-direction: row; 
+	/* padding: 20rpx 0;  */
+	align-items: center;
+	background: #6AB8B6;
+  width: 750rpx; 
+
+}
+.userbutton{
+  background: #6AB8B6;
+  height:280rpx;
+  padding-top:80rpx;
+  padding-bottom:80rpx;
+}
+
+.userinfo-avatar {
+	width: 116rpx;
+	height: 116rpx;
+	/* margin: 20rpx 0; */
+	border-radius: 50%;
+}
+
+.userinfo-nickname {
+  display: block;
+  font-size:18px;
+  /* margin-top: 38rpx; */
+   /* height: 50rpx; */
+  line-height: 50rpx;
+  /* text-align:left;
+  margin-left:10rpx; */
+  /* padding-left:40rpx; */
+  font-family:PingFangSC-Semibold;
+  font-weight:600;
+  color:rgba(255,255,255,1);
+
+}
+
+.userinfo-mobile { 
+  height:50rpx;
+  margin-top: 20rpx;
+
+}
+.userinfo-mobile .a{
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center;
+}
+.userinfo-mobile .txt{  
+  height: 50rpx; 
+  line-height: 40rpx;
+  font-size: 30rpx;
+  color:#b4282d;
+  border: 1px solid #b4282d;
+  border-radius: 25rpx;
+  padding: 5rpx 20rpx;
+  margin-top:5rpx;
+}
+/* 我的订单 */
+.my_order{
+  width: 100%;
+  background: #ffffff;
+  height: 50px;
+  line-height: 50px;
+  border-bottom:1px solid #f4f4f4;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  padding-left:30rpx;
+  padding-right:30rpx;
+  padding-top:15rpx;
+}
+.cont_title_btn{
+  margin-top:20rpx;
+  float:left;
+  width:8rpx;
+  height:50rpx;
+  background:rgba(102,207,204,1);
+  border-radius:4rpx;
+  opacity:0.6;
+
+}
+.ordergo{
+  display: inline-block;
+  height: 26rpx;
+  width: 16rpx;
+  padding-top:3rpx; 
+}
+.l{
+  float: left; 
+}
+.r{
+  float: right; 
+}
+.order_detai{
+  clear: both;
+  width: 100%;
+}
+.order_detai .li{
+  float: left;
+  width: 25%;
+  height: 160rpx;
+  text-align: center;
+}
+
+.order_detai .li .a{
+  clear: both;
+  display:flex;
+  width:100%;
+  height:100%;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background: #ffffff;
+
+}
+.order_detai .icon{
+  margin: 0 auto;
+  display: block;
+  height: 60rpx;
+  width: 60rpx;
+  margin-bottom: 5rpx;
+}
+/* .order_detai .icon.dpay{
+    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -437.5rpx no-repeat;
+    background-size: 52.803rpx;
+} */
+.order_detai .txt{
+  display: block;
+  height: 50rpx;
+  width: 100%;
+  font-size:28rpx;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,57,79,1);
+  line-height:40px;
+  opacity: 0.8;
+}
+
+.profile-info{
+    width: 100%;
+    height: 280rpx;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 30.25rpx;
+    background: #333;
+}
+
+.profile-info .avatar{
+    height: 148rpx;
+    width: 148rpx;
+    border-radius: 50%;
+}
+
+.profile-info .info{
+    flex: 1;
+    height: 85rpx;
+    padding-left: 31.25rpx;
+}
+
+.profile-info .name{
+    display: block;
+    height: 45rpx;
+    line-height: 45rpx;
+    color: #fff;
+    font-size: 37.5rpx;
+    margin-bottom: 10rpx;
+}
+
+.profile-info .level{
+    display: block;
+    height: 30rpx;
+    line-height: 30rpx;
+    margin-bottom: 10rpx;
+    color: #7f7f7f;
+    font-size: 30rpx;
+}
+
+.user-menu{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background: #fff;
+    padding-left:30rpx;
+    padding-right:30rpx;
+    padding-top:15rpx;
+}
+.user-menu .menu_tit{
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  border: 1rpx solid #f4f4f4;
+  
+}
+.user-menu .menu_top{
+  text-align: left;
+  margin-left: 20rpx;
+}
+
+.user-menu .item{
+    float: left;
+    width: 25%;
+    height: 187.5rpx;
+    text-align: center;
+}
+
+.user-menu .item .a{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-menu .item.no-border {
+    border-right: 0;
+}
+
+.user-menu .item.item-bottom {
+    border-bottom: none;
+}
+
+.user-menu .icon,.userinfo-mobile .icon{
+    margin: 0 auto;
+    display: block;
+    height: 60rpx;
+    width: 60rpx;
+    margin-bottom: 16rpx;
+}
+
+/* .user-menu .icon.order{
+    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -437.5rpx no-repeat;
+    background-size: 52.803rpx;
+} */
+
+.user-menu .icon.coupon{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/12391440092bec.png) 0 0 no-repeat;
+    background-size: 100%;
+}
+
+.user-menu .icon.sc{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/123938676db69e.png) 0 0 no-repeat;
+    background-size: 100%;
+}
+
+.user-menu .icon.address{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/124002690c1ff0.png) 0 0 no-repeat;
+    background-size: 100%;
+}
+
+.user-menu .icon.security{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/1240219012719c.png) 0 0 no-repeat;
+    background-size: 100%;
+}
+
+.user-menu .icon.kefu{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/16460636405d39.png) 0 0 no-repeat;
+    background-size: 52.803rpx;
+}
+
+.user-menu .icon.help{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1644394341b3c1.png) 0 0 no-repeat;
+    background-size: 52.803rpx;
+}
+.user-menu .icon.scale{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190521/154857288a3f66.png) 0 0 no-repeat;
+    background-size: 52.803rpx;
+}
+.user-menu .icon.feedback{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/1643557559c2d7.png) 0 0 no-repeat;
+    background-size: 52.803rpx;
+}
+.user-menu .icon.phone{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/164312733c1bac.png) no-repeat;
+    background-size: 52.803rpx;
+}
+.userinfo-mobile .icon.phone{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20181029/164226816a6cbf.png) no-repeat;
+    background-size: 52.803rpx;
+}
+
+.order_detai .icon.dfk{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/12195825123cc6.png) no-repeat;
+    background-size: 100%;
+}
+.order_detai .icon.dfh{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/1221166514e278.png) no-repeat;
+    background-size: 100%;
+}
+.order_detai .icon.dsh{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/12213454045074.png) no-repeat;
+    background-size: 100%;
+}
+.order_detai .icon.tk{
+    background: url(https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190614/12220217980833.png) no-repeat;
+    background-size: 100%;
+}
+.phonet{
+  font-size:24rpx;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  opacity: 0.68;
+}
+.wig{
+  padding-left:30rpx;
+  padding-right:30rpx;
+  background:white;
+  padding-top:20rpx;
+  
+}
+.wig_title{
+  width:100%;
+  height:80rpx;
+  line-height: 80rpx;
+  padding-top:15rpx;
+  padding-bottom:15rpx;
+  overflow: hidden;
+}
+.wig_title_btn{
+  width:8rpx;
+  height:50rpx;
+  background:rgba(102,207,204,1);
+  border-radius:4rpx;
+  opacity:0.6;
+  float:left;
+}
+.wig_title_con{
+  font-size:32rpx;
+  font-family:PingFangSC-Semibold;
+  font-weight:600;
+  color:rgba(51,57,79,0.8);
+  line-height:50rpx;
+  padding-left:30rpx;
+  float:left;
+}
+.wig_title_right{
+  float:right;
+  line-height: 50rpx;
+  font-size:24rpx;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,57,79,1);
+  opacity: 0.5;
+}
+.wig_con{
+  width:100%;
+  overflow: hidden;
+}
+.wig_con_item{
+  width:33.3%;
+  float:left;
+  padding-bottom:50rpx;
+}
+.item_txt1{
+  height:67rpx;
+  font-size:48rpx;
+  font-family:PingFangSC-Semibold;
+  font-weight:600;
+  color:rgba(51,57,79,1);
+  line-height:67rpx;
+  opacity: 0.8;
+  text-align: center;
+}
+.item_txt2{
+  margin-top:20rpx;
+  height:33rpx;
+  font-size:24rpx;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,57,79,1);
+  line-height:33rpx;
+  opacity: 0.8;
+  text-align: center;
+}
+.user-menu .txt{
+  display: block;
+  height: 50rpx;
+  width: 100%;
+  font-size:28rpx;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,57,79,1);
+  line-height:40px;
+  opacity: 0.8;
+}
+
+.logout{
+    margin-top: 20rpx;
+    height: 101rpx;
+    width: 100%;
+    line-height: 101rpx;
+    text-align: center;
+    background: #fff;
+    color: #333;
+    font-size: 30rpx;
+}
+
+.service {
+  position: static;
+  background-color: transparent;
+  color: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-align: left;
+  line-height: normal;
+  display: inline;
+}
+
+.company {
+  font-family: STXingkai;
+  font-size:20rpx;
+  text-align:center;
+  margin-top:50px;
+}

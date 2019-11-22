@@ -1,0 +1,20 @@
+<view class="c-minheight wx-view_1mKvcn" data-c_e_id="wx_view_a58814f3">
+    <view class="weui-msg__icon-area" data-c_e_id="wx_view_a47ca3b4">
+        <icon class="weui-icon_msg" data-c_e_id="wx_icon_59a6d8fb" size="94" type="success"/>
+    </view>
+    <view class="weui-msg__text-area" data-c_e_id="wx_view_8ba08e07">
+        <text class="c-block weui-msg__title" data-c_e_id="wx_text6a645d46">操作成功</text>
+        <text class="c-block weui-msg__desc" data-c_e_id="wx_text_45e0b3a1">开卡成功，将为您持续提供服务。</text>
+    </view>
+    <view class="weui-msg__opr-area" data-c_e_id="M_6ec395773462d001">
+        <button catchtap="tap_6f32a9fe" class="weui-msg__opr-area" data-c_act_id="M_6ec395773462d001" data-c_e_id="wx_button_52764db0" hover-class="button-hover" size="default" type="default">
+            确认返回
+        </button>
+    </view>
+    <view class="weui-msg__extra-area" data-c_e_id="wx_view_80cabb14">
+        <view class="weui-footer" data-c_e_id="wx_view_5eb0c2da">
+            <text class="c-block weui-footer__links" data-c_e_id="wx_text_9d838170">宜厨优选</text>
+            <text class="c-block weui-footer__text" data-c_e_id="wx_text_a6af931a">Copyright © 20018 www.yeecook.com</text>
+        </view>
+    </view>
+</view>

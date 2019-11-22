@@ -23,11 +23,12 @@
 			a.inspection_num,
 			a.inspection_time,
 			a.inspection_cycle,
+			a.nideshop_user_id,
 			b.nickname,
 			a.next_time
 		from user_detection_cycle a
 		LEFT join nideshop_user b on b.id=a.nideshop_user_id
-		where a.id = #{id}
+		where a.id = #{id} or a.nideshop_user_id=#{nid}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.UserDetectionCycleEntity">

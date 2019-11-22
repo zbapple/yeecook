@@ -28,6 +28,7 @@ public class GoodsGalleryServiceImpl implements GoodsGalleryService {
 
     @Override
     public List<GoodsGalleryEntity> queryList(Map<String, Object> map) {
+
         return goodsGalleryDao.queryList(map);
     }
 

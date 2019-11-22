@@ -45,13 +45,7 @@
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="promotion" :rules="ruleValidate" :label-width="80">
             <Form-item label="推广人员姓名"  prop="promotionName"  style="width: 300px;" label-width="104">
-                <i-select v-model="promotion.promotionName" filterable placeholder="用户名称"
-                          clearable=true>
-                    <i-option style="text-align: center" v-for="item in UserNames"
-                              :value="item.nickname"
-                              :key="item.nickname">{{item.nickname}}
-                    </i-option>
-                </i-select>
+                <i-input v-model="promotion.promotionName" placeholder="真实姓名"/>
             </Form-item>
             <Form-item label="推广人员的手机号码" prop="promotionTelphone" style="width: 300px;" label-width="140">
                 <i-input v-model="promotion.promotionTelphone" placeholder="推广人员的手机号码" type="number"
@@ -59,7 +53,7 @@
             </Form-item>
             <Form-item label="微信名称" prop="wxName" style="width: 300px;">
                 <i-select v-model="promotion.wxName" filterable placeholder="用户名称"
-                          clearable=true>
+                          clearable=true @on-change="getAvatar">
                     <i-option style="text-align: center" v-for="item in UserNames"
                               :value="item.nickname"
                               :key="item.nickname">{{item.nickname}}
@@ -67,7 +61,11 @@
                 </i-select>
             </Form-item>
             <Form-item label="微信头像" prop="wxListPic">
-                <i-input v-model="promotion.wxListPic" placeholder="微信头像"/>
+                <!--<i-input v-model="promotion.wxListPic" placeholder="请选择用户名" />-->
+                <!--<div v-model="promotion.wxListPic" style="width: 80px;height: 80px">-->
+                <!--</div>-->
+                <!--<i-input style="width: 220px" placeholder="请选择用户名" disabled v-if="promotion.wxName == ''"/>-->
+                <img :src="promotion.wxListPic" style="width: 60px;height: 60px"/>
             </Form-item>
             <Form-item label="所在单位" prop="affiliatedUnit">
                 <i-input v-model="promotion.affiliatedUnit" placeholder="所在单位"/>

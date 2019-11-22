@@ -1,5 +1,6 @@
 package com.platform.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @email 939961241@qq.com
  * @date 2017-08-13 10:41:08
  */
+@Data
 public class GoodsEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +30,7 @@ public class GoodsEntity implements Serializable {
     private String name;
     //品牌Id
     private Integer brandId;
-    //商品序列号
+    //商品库存
     private Integer goodsNumber;
     //关键字
     private String keywords;
@@ -82,6 +84,8 @@ public class GoodsEntity implements Serializable {
     private Integer isHot;
     //市场价
     private BigDecimal marketPrice;
+    //删除时间
+    private String deleteTime;
     @Getter@Setter
     private String batchId;
     /**
@@ -106,9 +110,16 @@ public class GoodsEntity implements Serializable {
      */
     private String companyName;
 
+    /**
+     * 供应商logo
+     **/
+    private String companyLogo;
+
     List<GoodsAttributeEntity> attributeEntityList = new ArrayList<>();
 
     List<GoodsGalleryEntity> goodsImgList = new ArrayList<>();
+
+    List<GoodsSpecificationEntity> goodsSpecificationEntityList=new ArrayList<>();
     /**
      * 翻译用字段
      */

@@ -21,6 +21,14 @@ public class SupplierEntity implements Serializable {
     private Long id;
     //供应商公司名称
     private String companyName;
+    //供应商logo
+    private String companyLogo;
+    //供应商类型
+    private Integer companyType;
+    //供应商状态
+    private Integer companyStatus;
+    //供应商回收
+    private Integer isDelete;
     //开户银行
     private String openingBank;
     //银行账号
@@ -37,6 +45,8 @@ public class SupplierEntity implements Serializable {
     private String deptName;
     //地址id
     private String address;
+    //删除时间
+    private String deleteTime;
 
 
 }

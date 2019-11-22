@@ -1,0 +1,6 @@
+<view class="remark">
+  <view class="remark_content">
+    <textarea class="textarea" auto-focus style="line-height:35rpx" maxlength="60" bindinput="onbind" value="{{remark}}"/>
+    <view class="btn" bindtap="btnf">确认</view>
+  </view>
+</view>

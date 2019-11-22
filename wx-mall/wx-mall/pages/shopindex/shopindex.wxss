@@ -1,0 +1,223 @@
+.title{
+  width:100%;
+  padding-left:30rpx;
+  padding-right:30rpx;
+  padding-top:13rpx;
+  padding-bottom: 20rpx;
+  overflow: hidden;
+}
+.title_input{
+  height: 72rpx;
+  /* line-height: 72rpx; */
+  float: left;
+  width:100%;
+  background:rgba(247,247,250,1);
+  border-radius:36px;
+  padding-left: 30rpx;
+  text-align: center;
+}
+.title_input_icon{
+  display: inline-block;
+  width:30rpx;
+  height:30rpx;
+  margin-right:11rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191008/174538356eab87.png') 0 0 no-repeat;
+  background-size:100% 100%;
+  padding:0;
+  vertical-align: middle;
+  margin-top:-4rpx;
+}
+.title_input_txt{
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size:26rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.5;
+}
+.content{
+  /* float:left; */
+  overflow: hidden;
+}
+.scroll_left{
+  width:160rpx;
+  height:calc(100vh - 105rpx );
+  float: left;
+  background: rgba(242,242,245,1);
+}
+.left_item{
+  width:100%;
+  background:rgba(242,242,245,1);
+  font-size:24rpx;
+  line-height: 24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  opacity:0.8;
+  padding:28rpx 20rpx 28rpx;
+  color:rgba(51,57,79,1);
+  text-align: center;
+}
+.left_item_active{
+  background:rgba(255,255,255,1);
+  width:100%;
+  font-weight:bold;
+  font-size:24rpx;
+  line-height: 24rpx;
+  padding:28rpx 20rpx 28rpx; 
+  font-family:PingFang SC;
+  color:rgba(51,57,79,1);
+  text-align: center;
+}
+.content_right{
+  width:calc(100% - 160rpx);
+  float:left;
+  padding-left:20rpx;
+  padding-right:30rpx; 
+}
+.slideshow{
+  width:100%;
+  height:219rpx;
+  overflow: hidden;
+  margin-bottom: 40rpx;
+}
+.banner {
+  width: 540rpx;
+  height: 219rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.banner_image{
+  width: 540rpx;
+  height: 219rpx;
+  object-fit: cover;
+}
+.scroll_right{ 
+  float: left;
+  width:100%;
+  height:calc(100vh - 364rpx );
+  background:rgba(255,255,255,1);
+  overflow: hidden;
+}
+.right_item{
+  width:100%;
+  padding:0 30rpx 40rpx 20rpx;
+  overflow: hidden;
+}
+.right_item_image{
+  float:left;
+  width:140rpx;
+  height:140rpx;
+  /* background: red; */
+  overflow: hidden;
+  border-radius: 8rpx;
+}
+.right_item_image>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+.right_item_height{
+  /* float:left; */
+  width:calc(100% - 140rpx);
+  padding-left:20rpx;
+  overflow: hidden;
+}
+.item_mealname{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+  overflow: hidden;
+  padding-right:5rpx;
+}
+.item_foodanme{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width:calc(100% - 140rpx);
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+  line-height:20rpx;
+  margin-top:9rpx;
+  margin-bottom: 19rpx;
+  padding-right:16rpx;
+}
+.item_foodanme>text{
+  font-size:20rpx;
+  padding-right:10rpx;
+}
+.txt_shop_content{
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+}
+.txt_shop_gap{
+  display: inline-block;
+  height:18rpx;
+  width:2rpx;
+  background:rgba(106,184,182,1);
+  border-radius:1rpx;
+  margin-left:10rpx;
+  margin-right:10rpx;
+  /* line-height: 24rpx; */
+}
+.right_grade{
+  padding-top:18rpx;
+  padding-bottom: 15rpx;
+}
+.item_price{
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(255,85,76,1);
+}
+.price_txt{
+  vertical-align: middle;
+}
+.item_price_old{
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  padding-left:25rpx;
+  color:rgba(51,57,79,1);
+  text-decoration:line-through;
+  opacity: 0.5;
+}
+/* 浮动购物车 */
+.float_cart{
+  position: fixed;
+  bottom:30rpx;
+  width:120rpx;
+  height:120rpx;
+  z-index: 100;
+  right:30rpx;
+}
+.float_cart>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  position: relative;
+}
+.float_cart_num{
+  position: absolute;
+  top:4rpx;
+  right:10rpx;
+  width:30rpx;
+  height:30rpx;
+  background: red;
+  color:white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30rpx;
+  font-size: 18rpx;
+}

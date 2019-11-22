@@ -1,8 +1,8 @@
 html{height: 100%;}
 body.signin {
     background: #18c8f6;
-    height: auto;
-    background:url("https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190515/16434533de89c.jpg") no-repeat center fixed;
+    height: 100%;
+    background:url("https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191023/16364286894e9e.png") no-repeat center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -12,12 +12,13 @@ body.signin {
 .logo {
     width: 243px;
     height: 243px;
-    background-image: url("https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190523/012659185d35d9.png");
+    background-image: url("https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191023/163750897d3511.png");
 }
 .signinpanel {
     color: white;
-    width: 850px;
+    width: 940px;
     margin: 1% auto 0 auto;
+
 }
 
 .signinpanel .logopanel {
@@ -38,13 +39,13 @@ body.signin {
     margin-top: 15px;
 }
 
-.signinpanel .uname {
-    background: #fff url(../img/user.png) no-repeat 95% center;color:#f88b50;
-}
+/*.signinpanel .uname {*/
+    /*background: #fff url(../img/user.png) no-repeat 95% center;color:#f88b50;*/
+/*}*/
 
-.signinpanel .pword {
-    background: #fff url(../img/locked.png) no-repeat 95% center;color:#f88b50;
-}
+/*.signinpanel .pword {*/
+    /*background: #fff url(../img/locked.png) no-repeat 95% center;color:#f88b50;*/
+/*}*/
 
 .signinpanel .btn {
     margin-top: 15px;
@@ -62,7 +63,7 @@ body.signin {
     padding: 30px;
 }
 
-.signup-footer{border-top: solid 1px rgba(255,255,255,.3);margin:20px 0;padding-top: 15px;}
+.signup-footer{margin:20px 0;}
 
 @media screen and (max-width: 768px) {
     .signinpanel,

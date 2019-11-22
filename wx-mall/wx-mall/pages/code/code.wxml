@@ -1,0 +1,3 @@
+<view class="code">
+  <image src="{{codesrc}}"></image>
+</view> 

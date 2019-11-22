@@ -3,18 +3,25 @@ package com.platform.service.impl;
 import com.platform.annotation.DataFilter;
 import com.platform.dao.MenuDetailsDao;
 import com.platform.dao.MenuPlanDao;
-import com.platform.dao.SysDeptDao;
 import com.platform.dao.UserDao;
-import com.platform.entity.*;
+import com.platform.dao.UserDetectionCycleDao;
+import com.platform.entity.MenuDetailsEntity;
+import com.platform.entity.MenuPlanEntity;
+import com.platform.entity.UserDetectionCycleEntity;
+import com.platform.entity.UserEntity;
 import com.platform.service.MenuPlanService;
 import com.platform.utils.DateUtils;
 import com.platform.utils.RRException;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户膳食计划Service实现类
@@ -32,6 +39,8 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     private UserDao userDao;
     @Autowired
     private MenuDetailsDao menuDetailsDao;
+    @Autowired
+    private UserDetectionCycleDao userDetectionCycleDao;
 
 
     @Override
@@ -90,22 +99,15 @@ public class MenuPlanServiceImpl implements MenuPlanService {
         String type=menuPlan.getNutritionMenuType();
         menuPlan.setServiceStage(stages);
         menuPlan.setNutritionMenuType(type);
-//        if (stages != null && stages.equals("0")){
-//            menuPlan.setServiceStage("第一周疗养阶段");
-//        }else if (stages.equals("1")){
-//            menuPlan.setServiceStage("第二周疗养阶段");
-//        }else if (stages.equals("2")){
-//            menuPlan.setServiceStage("第三周疗养阶段");
-//        }else{
-//            menuPlan.setServiceStage("第四周疗养阶段");
-//        }
-
-//        if (type != null && type.equals("1")){
-//            menuPlan.setNutritionMenuType("月子餐类型A");
-//        }else{
-//            menuPlan.setNutritionMenuType("月子餐类型B");
-//        }
-
+        //插入周期次数
+        String inum = menuPlan.getInspectionCycle();
+        Integer nid = menuPlan.getNideshopUserId();
+        UserDetectionCycleEntity userDetectionCycleEntity = new UserDetectionCycleEntity();
+        if (nid != null) {
+            userDetectionCycleEntity.setInspectionCycle(inum);
+            userDetectionCycleEntity.setNideshopUserId(nid);
+            userDetectionCycleDao.save(userDetectionCycleEntity);
+        }
         //餐单封面图
         List<MenuPlanEntity> llist=menuPlan.getMenuCoverPics();
         if (llist !=null &&llist.size()>0){
@@ -113,12 +115,7 @@ public class MenuPlanServiceImpl implements MenuPlanService {
                 menuPlan.setMenuCoverPic(menuPlanEntity.getMenuCoverPic());
             }
         }
-
-
-
-                   menuPlanDao.save(menuPlan);
-
-
+        menuPlanDao.save(menuPlan);
                //保存餐品详情
                Integer id = menuPlan.getId();
                //当前时间
@@ -270,6 +267,21 @@ public class MenuPlanServiceImpl implements MenuPlanService {
             String days2=DateUtils.format(cl2.getTime(),DateUtils.DATE_PATTERN);
             Date dd=DateUtils.strToDate(days2);
             menuPlan.setServiceCycleEt(dd);
+            //插入周期次数
+            String inum = menuPlan.getInspectionCycle();
+            Integer nid = menuPlan.getNideshopUserId();
+            UserDetectionCycleEntity userDetectionCycleEntity = userDetectionCycleDao.queryObject(nid);
+            if (userDetectionCycleEntity != null) {
+                userDetectionCycleEntity.setInspectionCycle(inum);
+                userDetectionCycleDao.update(userDetectionCycleEntity);
+            }
+            //更换封面图
+            List<MenuPlanEntity> pics = menuPlan.getMenuCoverPics();
+            if (pics != null && pics.size() > 0) {
+                for (MenuPlanEntity menuPlanEntity1 : pics) {
+                    menuPlan.setMenuCoverPic(menuPlanEntity1.getMenuCoverPic());
+                }
+            }
         }
 
         return menuPlanDao.update(menuPlan);
@@ -286,10 +298,10 @@ public class MenuPlanServiceImpl implements MenuPlanService {
     }
 
     @Override
-    public int updateInfo(Integer id) {
+    public int updateInfo(@Param(value = "id") Integer id) {
         MenuPlanEntity menuPlan = menuPlanDao.queryObject(id);
         Integer menustatus = menuPlan.getMenuStatus();
-        if (1 == menustatus) {
+        if (0 == menustatus) {
             throw new RRException("当前状态已审核");
         }
         menuPlan.setMenuStatus(1);

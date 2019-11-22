@@ -1,0 +1,264 @@
+.title{
+  width:100%;
+  padding-left:30rpx;
+  padding-right:30rpx; 
+  padding-top:13rpx;
+  padding-bottom: 20rpx;
+  overflow: hidden;
+}
+.title_address{
+  padding:0; 
+  width:50rpx;
+  height:60rpx;
+  margin-top:6rpx;
+  margin-bottom: 6rpx;
+  background:url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/102323664dcc95.png') 0 0 no-repeat;
+  background-size: 100% 100%;
+  float:left;
+}
+.title_input{
+  height: 72rpx;
+  /* line-height: 72rpx; */
+  float: left;
+  width:610rpx;
+  background:rgba(247,247,250,1);
+  border-radius:36px;
+  padding-left: 30rpx;
+  margin-left:30rpx;
+  text-align: center;
+}
+.title_input_icon{
+  display: inline-block;
+  width:30rpx;
+  height:30rpx;
+  margin-right:11rpx;
+  vertical-align: middle;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191008/174538356eab87.png') 0 0 no-repeat;
+  background-size: 100% 100%;
+  box-sizing: border-box;
+}
+.title_input_txt{
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size:26rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.5;
+  vertical-align: middle;
+}
+.slideshow{
+  width:100%;
+  height:280rpx; 
+  padding-left:30rpx;
+  padding-right:30rpx;
+  /* overflow: hidden; */
+}
+.banner {
+  width: 100%; 
+  height: 280rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.banner_image{}
+.banner image{
+  width: 100%;
+  height: 280rpx;
+  object-fit: cover;
+}
+.takeout_type{
+  padding:40rpx 30rpx 30rpx 40rpx;
+  width:100%;
+  /* height:200rpx; */
+  overflow: hidden;
+}
+.takeout_type_item{
+  width:33.3%; 
+  float:left;
+  text-align: center; 
+}
+.type_item_icon{
+  width:100rpx;
+  height: 100rpx;
+  margin: 0 auto;
+  margin-bottom:13rpx;
+}
+.item_icon_one{
+    background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191008/17592810055f1d.png') 0 0 no-repeat;
+    background-size: 100% 100%;
+}
+.item_icon_two{
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191008/18020413842bbe.png') 0 0 no-repeat;
+  background-size: 100% 100%;
+}
+.item_icon_three{
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191008/1802306993b91e.png') 0 0 no-repeat;
+  background-size: 100% 100%;
+}
+.type_item_txt{
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+}
+.merchant_title{
+  width:100%;
+  padding-top:20rpx;
+  padding-left:30rpx;
+  padding-right:30rpx;
+}
+.merchant_title_txt{
+  font-size:38rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.merchant_title_select{
+  width:100%;
+  overflow: hidden;
+  padding-top:30rpx;
+  padding-bottom:15rpx;
+}
+.select_item_composite{
+  float:left;
+  padding-right: 80rpx;
+}
+.item_composite_txt{
+  font-size:28rpx;
+  font-family:PingFang SC;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+}
+.item_composite_active{
+  font-weight:bold;
+  opacity:1;
+}
+.item_composite_icon{
+  width:14rpx;
+  height:8rpx;
+  vertical-align: middle;
+  margin-left:10rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20190917/18004328e8c58.png') 0 0 no-repeat;
+  background-size: 100%;
+  display: inline-block;
+}
+.select_title_right{
+  float: right;
+}
+.item_select_icon{
+  width:27rpx;
+  height:28rpx;
+  vertical-align: middle;
+  margin-left:1rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/10265112313fa7.png') 0 0 no-repeat;
+  background-size: 100%;
+  display: inline-block;
+}
+.merchant_content{
+  width:100%;
+  padding-left:30rpx;
+  padding-right: 30rpx;
+}
+.merchant_item{
+  width:100%;
+  padding-top:15rpx;
+  padding-bottom: 15rpx;
+  overflow: hidden;
+} 
+.merchant_item_image{
+  float:left;
+  width:140rpx;
+  height:140rpx;
+  background:rgba(93,93,136,1);
+  overflow: hidden;
+  border-radius: 8rpx;
+} 
+.merchant_item_content{
+  width:calc(100% - 140rpx);
+  float: left;
+  height:140rpx;
+  padding-left:20rpx;
+  overflow: hidden;
+  padding-top:5rpx;
+}
+.content_item_two{
+  padding-top:18rpx;
+  padding-bottom:18rpx;
+}
+.content_item_three{
+  line-height: 24rpx;
+}
+.txt_shop_name{
+  font-size:32rpx;
+  font-family:PingFang SC;
+  font-weight:bold;
+  color:rgba(51,57,79,1);
+}
+.clear{
+  clear: both;
+}
+.txt_shop_content{
+  display: inline-block;
+  font-size:24rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(51,57,79,1);
+  opacity:0.8;
+}
+.txt_shop_gap{
+  display: inline-block;
+  height:18rpx;
+  width:2rpx;
+  background:rgba(106,184,182,1);
+  border-radius:1rpx;
+  margin-left:10rpx;
+  margin-right:10rpx;
+}
+.item_content_time{
+  float:right;
+}
+.content_item_one{
+  overflow: hidden;
+  position: relative;
+  margin-top:-10rpx;
+}
+.item_content_icon{
+  position: absolute;
+  right:0;
+  top:0;
+  width:44rpx;
+  height:44rpx;
+  background: url('https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/1028031001a386.png') 0 0 no-repeat;
+  background-size: 100%;
+  opacity: 0.8;
+}
+/* 浮动购物车 */
+.float_cart{
+  position: fixed;
+  bottom:30rpx;
+  width:120rpx;
+  height:120rpx;
+  z-index: 100;
+  right:30rpx;
+}
+.float_cart>image{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  position: relative;
+}
+.float_cart_num{
+  position: absolute;
+  top:4rpx;
+  right:10rpx;
+  width:30rpx;
+  height:30rpx;
+  background: red;
+  color:white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30rpx;
+  font-size: 18rpx;
+}

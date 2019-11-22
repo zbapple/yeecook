@@ -1,0 +1,38 @@
+<view class="ps">
+ <view class="one">
+  <view class="pie">
+    <view class="circle"></view>
+      <view class="left">
+          <view class="left-deg" style="transform: rotate({{circle.left_one}})"></view>
+        </view>
+        <view class="right">
+          <view class="right-deg" style="transform: rotate({{circle.right_one}})"></view>
+      </view>
+  </view>
+  </view> 
+  <view class="two">
+    <view class="pie-tow">
+      <view class="circle"></view>
+      <view class="left-two">
+          <view class="left-two-deg" style="transform: rotate({{circle.left_two}})"></view>
+      </view>
+      <view class="right-two">
+        <view class="right-two-deg" style="transform: rotate({{circle.right_two}})"></view>
+      </view>
+    </view>
+  </view>
+  <view class="three"> 
+    <view class="pie-two">
+      <view class="circle"></view>
+      <view class="left-three">
+          <view class="left-three-deg" style="transform: rotate({{circle.left_three}})"></view>
+      </view>
+      <view class="right-three">
+        <view class="right-three-deg" style="transform: rotate({{circle.right_three}})"></view>
+      </view>
+    </view>
+  </view>
+  <view class="right-deg-number">{{circle.one}}%</view>
+  <view class="right-two-deg-number">{{circle.two}}%</view>
+  <view class="right-three-deg-number">{{circle.three}}%</view>
+</view>

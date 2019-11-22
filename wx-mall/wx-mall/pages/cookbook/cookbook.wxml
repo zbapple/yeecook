@@ -1,0 +1,111 @@
+ <view class="cook">
+    <view class="header">
+      <view class="header_left">
+        <view class="header_txt">
+        <block wx:if="{{sorce!=0}}">{{sorce}}</block>
+        <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">目标/KG</view>
+      </view> 
+      <view class="header_con">
+        <view class="header_txt con_txt">
+        <block wx:if="{{weight!=0}}">{{weight}}</block>
+        <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">当前/KG</view>
+      </view>
+      <view class="header_right">
+        <view class="header_txt">
+          <block wx:if="{{bmi!=0}}">{{bmi}}</block>
+          <block wx:else>--</block>
+        </view>
+        <view class="header_bottom">BMI</view>
+      </view>
+    </view>
+  </view>
+  <view class="cook">
+    <view class="con_one">
+      <view class="con_one_left">
+          <view bindtap='toreport'>
+            <image src="../../static/images/icon_report.png" class="icon_bg"></image>
+            <view class="icon_txt"> 健康报告</view>
+          </view>  
+      </view>
+      <view class="con_one_right">
+        <view bindtap='todetail'> 
+          <image src="../../static/images/icon_diet.png" class="icon_bg"></image>
+          <view class="icon_txt">膳食计划</view>
+          </view>
+        <image src='../../static/images/icon_new.png' class="con_one_top"></image>
+      </view>
+    </view>
+  </view>
+  <view class="con_tt"></view>
+  <view class="cook" hidden="{{showfood}}">
+    <view class="con_two">
+      <image src='../../static/images/icon_dailyplan.png' class="icon_two"></image>
+      <text class="con_two_txt1">今日食谱</text>
+      <text class="con_two_txt2">{{pwnum}}kcal</text>
+        <image src="../../static/images/go.png" class="icon_two_flat " bindtap='todetail'></image> 
+        <text class="con_two_txt2 flat" bindtap='todetail'>完整食谱</text>
+    </view>
+    <view class="con_two" wx:if="{{zclist.length>0}}"> 
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">早餐</view>
+        <view class="con_two_txt2 cont_text_num">{{zcpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{zclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.namegood}}<block wx:if="{{index<zclist.length-1}}">、</block>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="con_two" wx:if="{{wclist.length>0}}">
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">午餐</view>
+        <view class="con_two_txt2 cont_text_num">{{wcpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{wclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.nameluch}}<block wx:if="{{index<wclist.length-1}}">、</block>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="con_two" wx:if="{{wanclist.length>0}}">
+      <view class="con_text">
+        <view class="cont_text_border"></view>
+        <view class="cont_text_title">晚餐</view>
+        <view class="con_two_txt2 cont_text_num">{{wancpwnum}}kcal</view>
+        <view class="cont_text_con">
+          <block wx:for="{{wanclist}}" wx:key="{{index}}" wx:if="{{item!=null}}">
+            {{item.nameev}}<block wx:if="{{index<wanclist.length-1}}">、</block>
+          </block>
+        </view> 
+      </view>
+    </view>
+  </view>
+  <view class="cook" hidden="{{showscal}}"> 
+    <view class="foot_1">
+      <view class="foot_1_txt">请先上秤完成第{{number}}次体脂检测</view>
+      <view class="foot_1_txt2">针对您的健康报告，将会生成定制化的膳食计划哦</view> 
+    </view>
+    <view class="foot-btn" bindtap='toscal' data-number="{{number}}">立即上秤</view>
+  </view>
+  <view class="compute" hidden="{{showcompute}}">
+    <view class="compute-txt txt1">膳食计划正在定制中</view> 
+    <view class="compute-txt txt2">请耐心等待…</view>
+  </view> 
+
+
+
+
+
+
+
+
+
+
+
+  

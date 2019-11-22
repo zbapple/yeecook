@@ -1,0 +1,157 @@
+<view class="{{istrue?'pageheight':''}}" style="height:{{is_float_menubar?'100%':''}}">
+  <view class="takeout_header">
+    <view class="takeout_header_image">
+      <image src="{{storelist.storePicrue}}"></image>
+    </view>
+    <view class="takemou_header_one">
+      <view class="header_evalution_left">
+        <text class="evalution__text">评分4.6</text>
+        <text class="txt_shop_gap"></text>
+        <text  class="evalution__text">月销售9999</text> 
+      </view>
+    <view class="header_evalution_right"> 
+        <text  class="evalution__text">30分钟</text> 
+        <text class="txt_shop_gap"></text>
+        <text  class="evalution__text">
+          <block>{{storelist.juli}}</block> 
+        </text> 
+    </view>
+    </view>
+    <view class="takemou_header_one">
+      <text  class="evalution__text">起送价￥{{storelist.sendingfee}}</text>
+      <text class="txt_shop_gap"></text>
+      <text  class="evalution__text">配送价￥{{storelist.deliveryfee}}</text>
+    </view>
+    <button class="takeout_share" open-type="share"></button>
+    <view class="takeout_collect" bindtap="closeAttrOrCollect"></view>
+  </view>
+    <view class="takeout_menubar">
+    <view class="{{menubarnum==0?'menubar_item_active':'menubar_item'}}" data-num="0" bindtap="menubar_select">点餐</view>
+    <view class="{{menubarnum==1?'menubar_item_active':'menubar_item'}}" data-num="1" bindtap="menubar_select">评价</view>
+    <view class="{{menubarnum==2?'menubar_item_active':'menubar_item'}}" data-num="2" bindtap="menubar_select">商家</view>
+    <view class="munubar_plan" bindtap="togroup" data-id="{{id}}">点餐计划</view> 
+  </view> 
+  <view class="takeout_border"></view> 
+  <view class="takeout_content" wx:if="{{menubarnum==0}}">
+    <scroll-view class="scroll_left" scroll-y style="padding-bottom:{{paddingheight}}">
+      <view class="{{sidebarnum==index?'left_item_active':'left_item'}}" wx:for="{{sidebar}}" wx:key="{{index}}" data-num="{{index}}" data-name="{{item.typename}}" data-id="{{item.mealtype}}" bindtap="onsidebar">
+      {{item.typename}}
+      </view> 
+    </scroll-view>
+    <scroll-view class="scroll_right" scroll-y  upper-threshold='80rpx' scroll-top="{{scrolltop}}" style="padding-bottom:{{paddingheight}}"> 
+      <view class="scrolltop_tilte">{{sidebarname}}</view>
+      <view class="right_item" wx:for="{{list}}" wx:key="{index}" bindtap="mealdetail" data-obj="{{item}}">
+        <view class="right_item_image"> 
+          <image src="{{item.mealPriue}}"></image>
+        </view >
+        <view class="right_item_height">
+          <text class="item_mealname">{{item.mealName}}</text>
+        </view>
+        <view class="right_item_height item_foodanme">
+          <text wx:for="{{item.dishesname}}" wx:for-item="foodname" wx:key="foodname">{{foodname}}</text>
+        </view>
+        <view class="right_item_height">
+          <view class="item_price">￥{{item.mealPice}}</view>
+          <view class="item_cart">
+            <view class="item_cart_minus" wx:for="{{cartlist}}" wx:for-item="cart" wx:key="cart" wx:if="{{item.id==cart.id}}" data-id="{{item.id}}" catchtap="minuscart"></view>
+            <view wx:for="{{cartlist}}" wx:for-item="cart" wx:key="cart" wx:if="{{item.id==cart.id}}" class="item_cart_num" >{{cart.number}}</view>
+            <view class="item_cart_add" data-id="{{item.id}}" data-mealname="{{item.mealName}}" data-price="{{item.mealPice}}" catchtap="addcart"></view>
+            <view class="clear"></view>
+          </view>
+          <view class="clear"></view>
+        </view>
+      </view>
+    </scroll-view> 
+  </view>
+  <view wx:if="{{menubarnum==1}}">
+    <view class="conmment"></view>
+    <view class="none">暂时没有评论哦~</view> 
+  </view>
+  <view wx:if="{{menubarnum==2}}">
+    <view class="merchant"></view>
+    <view class="none">暂时没有商家信息</view>
+  </view> 
+</view> 
+<!-- 悬浮购物车 --> 
+<view class="takeout_cart" wx:if="{{cartlist.length>0}}">
+  <view class="tackout_cart_border"></view>
+  <image src="https://yeecook-shop-pl.oss-cn-shenzhen.aliyuncs.com/upload/20191009/1039434067f758.png" class="takeout_cart_image" bindtap="showcart" style="top: {{top}};">
+    <view class="takeout_cart_num">{{cartnum}}</view>
+  </image>
+  <view class="takeout_price">
+    <text class="takeout_price_txt1">合计</text>
+    <text class="takeout_price_txt2">￥{{totalprice}}</text> 
+  </view>
+  <view class="takeout_sumbit" wx:if="{{totalprice>storelist.sendingfee}}" bindtap="acdount">去结算</view>
+  <view class="takeout_sumbit_else" wx:else>差{{disprice}}起送</view>
+  <view class="clear"></view>
+</view>
+<!-- 购物车的遮罩层 -->
+<view class="tackeout_shade" wx:if="{{showcart && cartlist.length>0}}" bindtap="clonecart" ></view>
+<!-- 购物车详情 -->
+<view class="tackout_cart" wx:if="{{showcart && cartlist.length>0}}" >
+  <view class="tackout_cart_title">
+    <view class="cart_title_left">已加入购物车商品</view>
+    <view class="cart_title_right" bindtap="clearcart">
+    清空<text class="cart_right_icon"></text>
+    </view>
+  </view>
+  <view wx:for="{{cartlist}}" wx:key="{{index}}">
+    <view class="cart_food">
+      <view class="cart_food_name">{{item.goods_name}}</view>
+      <view class="cart_food_price">￥{{item.retail_price}}</view>
+      <view class="item_cart cart_food_count ">
+          <view class="item_cart_minus" data-id="{{item.mealid}}" catchtap="minuscart"></view>
+          <view class="item_cart_num" >{{item.number}}</view>
+          <view class="item_cart_add" data-id="{{item.mealid}}" catchtap="addcart"></view>
+          <view class="clear"></view>
+        </view>
+    </view>
+    <view class="tackout_border"></view>
+  </view>
+  <view class="cart_delivery">
+    <view class="cart_delivery_name">配送费</view>
+    <view class="cart_delivery_price">￥{{feightprice}}</view>
+  </view>
+  <view class="tackout_border"></view>
+</view>
+<!-- 套餐的遮罩层 -->
+<view class="mealdetail_shade" wx:if="{{mealdetailshow}}" bindtap="clonemealdetail"></view>
+<!-- 套餐详情 -->
+<view class="mealdetail" wx:if="{{mealdetailshow}}">
+  <view class="mealdetail_title">{{mealdetail.mealName}}</view>
+  <scroll-view class="scroll_mealdetail" scroll-y  upper-threshold='0'>
+    <view class="scroll_mealdetail_image">
+      <image src="{{mealdetail.mealPriue}}"></image>
+    </view>
+    <view class="scroll_mealdetail_title">菜品详情</view>
+    <view class="scroll_mealdetail_content">该套餐包含以下菜品：
+      <block wx:for="{{mealdetail.dishesname}}" wx:key="{{index}}">{{item}}
+        <block wx:if="{{index==mealdetail.dishesname.length-1}}">。</block>
+        <block wx:else>,</block>
+      </block>
+    </view>
+    <view class="scroll_mealdetail_title">营养说明</view>
+    <view class="scroll_mealdetail_content">{{mealdetail.nutritionExplain}}</view>
+  </scroll-view>
+  <view class="mealdetail_cart">
+    <view class="mealdetail_cart_price">￥{{mealdetail.mealPice}}</view>
+    <view class="item_cart cart_food_count">
+          <view class="item_cart_minus" wx:for="{{cartlist}}" wx:for-item="cart" wx:key="cart" wx:if="{{mealdetail.id==cart.mealid}}" data-id="{{mealdetail.id}}" catchtap="minuscart"></view>
+          <view wx:for="{{cartlist}}" wx:for-item="cart" wx:key="cart" wx:if="{{mealdetail.id==cart.mealid}}" class="item_cart_num" >{{cart.number}}</view>
+          <view class="item_cart_add" data-id="{{mealdetail.id}}" data-mealname="{{mealdetail.mealName}}" data-price="{{mealdetail.mealPice}}" catchtap="addcart"></view>
+          <view class="clear"></view>
+        </view>
+        <view class="clear"></view>
+  </view>
+</view>
+<!-- 浮动的菜单栏 -->
+<view class="float_menubar" hidden="{{is_float_menubar}}">
+  <view class="takeout_menubar">
+    <view class="{{menubarnum==0?'menubar_item_active':'menubar_item'}}" data-num="0" bindtap="menubar_select">点餐</view>
+    <view class="{{menubarnum==1?'menubar_item_active':'menubar_item'}}" data-num="1" bindtap="menubar_select">评价</view>
+    <view class="{{menubarnum==2?'menubar_item_active':'menubar_item'}}" data-num="2" bindtap="menubar_select">商家</view>
+    <view class="munubar_plan" bindtap="togroup" data-id="{{id}}">点餐计划</view>
+  </view>
+ <view class="takeout_border"></view>
+</view>

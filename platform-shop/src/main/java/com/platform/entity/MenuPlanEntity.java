@@ -52,7 +52,7 @@ public class MenuPlanEntity implements Serializable {
     private String serviceStage;
     //0:未签约 1:已签约
     private Long deptId;
-    private Integer menuStatus = 0;
+    private Integer menuStatus;
     //检测周期
     private String inspectionCycle;
     //初始体重

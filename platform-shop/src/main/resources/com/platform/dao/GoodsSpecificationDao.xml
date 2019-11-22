@@ -7,6 +7,10 @@
         <result property="id" column="id"/>
         <result property="goodsId" column="goods_id"/>
         <result property="specificationId" column="specification_id"/>
+        <result property="specificationNumber" column="specification_number"/>
+        <result property="specificationPrice" column="specification_price"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="isSale" column="is_sale"/>
         <result property="value" column="value"/>
         <result property="picUrl" column="pic_url"/>
     </resultMap>
@@ -17,6 +21,10 @@
 			`goods_id`,
 			`specification_id`,
 			`value`,
+			`specification_number`,
+			`specification_price`,
+			`is_default`,
+			`is_sale`,
 			`pic_url`
 		from nideshop_goods_specification
 		where id = #{id}
@@ -29,6 +37,10 @@
         nideshop_goods_specification.specification_id,
         nideshop_goods_specification.value,
         nideshop_goods_specification.pic_url,
+        nideshop_goods_specification.specification_number,
+        nideshop_goods_specification.specification_price,
+        nideshop_goods_specification.is_default,
+        nideshop_goods_specification.is_sale,
         nideshop_goods.name goods_name,
         nideshop_specification.name specification_name
         from nideshop_goods_specification
@@ -78,11 +90,19 @@
 			`goods_id`,
 			`specification_id`,
 			`value`,
+			`specification_number`,
+			`specification_price`,
+			`is_default`,
+			`is_sale`,
 			`pic_url`)
 		values(
 			#{goodsId},
 			#{specificationId},
 			#{value},
+			#{specificationNumber},
+			#{specificationPrice},
+			#{isDefault},
+			#{isSale},
 			#{picUrl})
 	</insert>
 
@@ -92,7 +112,11 @@
             <if test="goodsId != null">`goods_id` = #{goodsId},</if>
             <if test="specificationId != null">`specification_id` = #{specificationId},</if>
             <if test="value != null">`value` = #{value},</if>
-            <if test="picUrl != null">`pic_url` = #{picUrl}</if>
+            <if test="picUrl != null">`pic_url` = #{picUrl},</if>
+            <if test="specificationNumber != null">`specification_number` = #{specificationNumber},</if>
+            <if test="specificationPrice != null">`specification_price` = #{specificationPrice},</if>
+            <if test="isDefault != null">`is_default` = #{isDefault},</if>
+            <if test="isSale != null">`is_sale` = #{isSale}</if>
         </set>
         where id = #{id}
     </update>

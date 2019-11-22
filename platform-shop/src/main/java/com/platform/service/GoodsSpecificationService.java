@@ -61,7 +61,21 @@ public interface GoodsSpecificationService {
      * @return 删除条数
      */
     int delete(Integer id);
+    /**
+     * 启用
+     *
+     * @param id
+     * @return
+     */
+    int enSale(Integer id);
 
+    /**
+     * 关闭
+     *
+     * @param id
+     * @return
+     */
+    int unSale(Integer id);
     /**
      * 根据主键批量删除
      *
