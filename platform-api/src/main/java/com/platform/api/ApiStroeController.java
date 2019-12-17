@@ -1,20 +1,21 @@
 package com.platform.api;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.annotation.IgnoreAuth;
+import com.platform.entity.FootprintVo;
+import com.platform.entity.StroeVo;
+import com.platform.service.ApiFootprintService;
 import com.platform.service.ApiStroeService;
 import com.platform.util.ApiBaseAction;
 import com.platform.util.MapUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.platform.entity.StroeVo;
 
 /**
  * Controller
@@ -29,6 +30,8 @@ import com.platform.entity.StroeVo;
 public class ApiStroeController extends ApiBaseAction {
     @Autowired
     private ApiStroeService stroeService;
+    @Autowired
+    private ApiFootprintService footprintService;
 
     @ApiOperation(value = "门店信息")
     @IgnoreAuth
@@ -64,6 +67,41 @@ public class ApiStroeController extends ApiBaseAction {
                 for(StroeVo stroeVo : stroeVoList){
                     lon2= stroeVo.getLongitude();
                     lat2= stroeVo.getLatitude();
+                    Integer store_status=stroeVo.getStoreStatus();
+                    String time=stroeVo.getStoretime();
+                    String[] stime=time.split("-");
+                    String[] list=new String[2];
+                    for(int i=0;i<stime.length;i++){
+                        String re=stime[i];
+                        list[i]=re;
+                    }
+                    String one=list[0];
+                    String two=list[1];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String datestr=sdf.format(date);
+                    String newone=datestr+" "+one+":00";
+                    String newtwo=datestr+" "+two+":00";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date2 = new Date();
+                    String sde2=sdf2.format(date2);
+                    Date d2=null;
+                    Date d3=null;
+                    Date d4=null;
+                    Long dd1=null;
+                    Long dd2=null;
+                    Long dd3=null;
+                            try{
+                                d2=sdf2.parse(newone);
+                                d3=sdf2.parse(newtwo);
+                                d4=sdf2.parse(sde2);
+                                dd1=d2.getTime();
+                                dd2=d3.getTime();
+                                dd3=d4.getTime();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
@@ -73,16 +111,35 @@ public class ApiStroeController extends ApiBaseAction {
                         String km="km";
                         String dstance4=distance2+km;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-                        result.put("stroeEntityList", stroeVoList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }
+                        }
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-                        result.put("stroeEntityList", stroeVoList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }
+                        }
                     }
+
                 }
             }
         }catch (Exception e) {
@@ -123,6 +180,43 @@ public class ApiStroeController extends ApiBaseAction {
                 for(StroeVo stroeVo :stroeentityList){
                     lon2= stroeVo.getLongitude();
                     lat2= stroeVo.getLatitude();
+                    Integer storeid=stroeVo.getId();
+                    Integer store_status=stroeVo.getStoreStatus();
+                    String time=stroeVo.getStoretime();
+                    String[] stime=time.split("-");
+                    String[] list=new String[2];
+
+                    for(int i=0;i<stime.length;i++){
+                        String re=stime[i];
+                        list[i]=re;
+                    }
+                    String one=list[0];
+                    String two=list[1];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String datestr=sdf.format(date);
+                    String newone=datestr+" "+one+":00";
+                    String newtwo=datestr+" "+two+":00";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date2 = new Date();
+                    String sde2=sdf2.format(date2);
+                    Date d2=null;
+                    Date d3=null;
+                    Date d4=null;
+                    Long dd1=null;
+                    Long dd2=null;
+                    Long dd3=null;
+                    try{
+                        d2=sdf2.parse(newone);
+                        d3=sdf2.parse(newtwo);
+                        d4=sdf2.parse(sde2);
+                        dd1=d2.getTime();
+                        dd2=d3.getTime();
+                        dd3=d4.getTime();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
@@ -132,16 +226,41 @@ public class ApiStroeController extends ApiBaseAction {
                         String km="km";
                         String dstance4=distance2+km;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-                        result.put("stroeentityList",stroeentityList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeentityList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeentityList);
+                            }
+                        }
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-                        result.put("stroeentityList",stroeentityList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeentityList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeentityList);
+                            }
+                        }
                     }
+//                    if(store_status==1){
+//                        result.put("flag",2);
+//                        return result;
+//                     }else{
+//                        result.put("flag", 3);
+//                        return result;
+//                    }
                 }
             }
         }catch (Exception e){
@@ -182,8 +301,8 @@ public class ApiStroeController extends ApiBaseAction {
             String[] realistp=realisticPicture.split(";");
             List list=new ArrayList();
             for(int i=0;i<realistp.length;i++){
-                Map relismap=new HashMap();
-                String re=realistp[i];
+                    Map relismap=new HashMap();
+                    String re=realistp[i];
                 relismap.put("realistp",re);
                 list.add(relismap);
             }
@@ -231,6 +350,7 @@ public class ApiStroeController extends ApiBaseAction {
             Integer deliveryfee=listjson.getInteger("deliveryfee");
             Integer grade=listjson.getInteger("grade");
             Integer number=listjson.getInteger("number");
+            Integer dist=listjson.getInteger("dist");
             if(sendingfee!=null){
                 listmap.put("sidx","sendingfee");
                 listmap.put("order","asc");
@@ -257,34 +377,106 @@ public class ApiStroeController extends ApiBaseAction {
                 for(StroeVo stroeVo : stroeVoList){
                     lon2= stroeVo.getLongitude();
                     lat2= stroeVo.getLatitude();
+                    Integer store_status=stroeVo.getStoreStatus();
+                    String time=stroeVo.getStoretime();
+                    String[] stime=time.split("-");
+                    String[] list=new String[2];
+                    for(int i=0;i<stime.length;i++){
+                        String re=stime[i];
+                        list[i]=re;
+                    }
+                    String one=list[0];
+                    String two=list[1];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String datestr=sdf.format(date);
+                    String newone=datestr+" "+one+":00";
+                    String newtwo=datestr+" "+two+":00";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date2 = new Date();
+                    String sde2=sdf2.format(date2);
+                    Date d2=null;
+                    Date d3=null;
+                    Date d4=null;
+                    Long dd1=null;
+                    Long dd2=null;
+                    Long dd3=null;
+                    try{
+                        d2=sdf2.parse(newone);
+                        d3=sdf2.parse(newtwo);
+                        d4=sdf2.parse(sde2);
+                        dd1=d2.getTime();
+                        dd2=d3.getTime();
+                        dd3=d4.getTime();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
-//                    listst.add(distance1);
-                    Map dista=new HashMap();
+                    listst.add(distance1);
+                    stroeVo.setJuli2(distance1);
                     if(distance1>1000){
                         Double dstance3=distance1/1000;
                         Double distance2=(new Double(df.format(dstance3)));
                         String km="km";
                         String dstance4=distance2+km;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-//                        listst.add(dista);
-                        result.put("stroeEntityList", stroeVoList);
-//                        result.put("listst",listst);
+
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }
+                        }
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-//                        listst.add(dista);
-                        result.put("stroeEntityList", stroeVoList);
-//                        result.put("listst",listst);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+
+                            }
+                        }
                     }
                 }
-
-            }
+                if(dist!=null){
+                    Collections.sort(stroeVoList, new Comparator<StroeVo>(){
+                        public int  compare(StroeVo s1,StroeVo s2){
+                            if(s1.getJuli2()!=s2.getJuli2()){
+                                int d1=Integer.parseInt(new DecimalFormat("0").format(s1.getJuli2()));
+                                int d2=Integer.parseInt(new DecimalFormat("0").format(s2.getJuli2()));
+                                int flag=d1-d2;
+                                return flag;
+                            }else {
+//                                int d1=Integer.parseInt(new java.text.DecimalFormat("0").format(s1.getJuli2()));
+//                                int d2=Integer.parseInt(new java.text.DecimalFormat("0").format(s2.getJuli2()));
+                                return s1.getJuli2().compareTo(s2.getJuli2());
+                            }
+                        }
+                    });
+                    Iterator<StroeVo> iterator=stroeVoList.iterator();
+                    while (iterator.hasNext()){
+                        StroeVo stoe=iterator.next();
+                        result.put("stoe",stoe);
+                        return result;
+                    }
+                }
+                }
         return result;
     }
 }

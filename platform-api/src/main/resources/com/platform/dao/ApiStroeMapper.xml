@@ -26,6 +26,8 @@
         <result property="stroeGrade" column="stroe_grade"/>
         <result property="salesVolume;" column="sales_volume"/>
         <result property="businesslicense" column="business_license"/>
+        <result property="storeStatus" column="store_status"/>
+        <result property="business" column="business"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.StroeVo">
@@ -49,7 +51,8 @@
 			sales_volume,
 			license_Pic,
 			realistic_Picture,
-			store_time
+			store_time,
+			store_status
 		from nideshop_stroe
 		where id = #{id}
 	</select>
@@ -188,7 +191,7 @@
 			<if test="supplierid != null">`supplierid` = #{supplierid},</if>
 			<if test="storePhone !=null">stroe_phone=#{storePhone},</if>
 			<if test="stroeGrade !=null"> stroe_grade=#{stroeGrade},</if>
-			<if test="number !=null"> sales_volume=#{number}</if>
+			<if test="salesVolume !=null"> sales_volume=#{salesVolume}</if>
 		</set>
 		where id = #{id}
 	</update>

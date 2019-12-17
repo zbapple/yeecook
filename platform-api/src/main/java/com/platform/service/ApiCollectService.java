@@ -38,11 +38,13 @@ public class ApiCollectService {
     public void update(CollectVo collect) {
         collectDao.update(collect);
     }
+    public void Updateinfo(CollectVo collectVo){ collectDao.Updateinfo(collectVo);}
 
 
     public int delete(Integer id) {
         return collectDao.delete(id);
     }
+    public void deleteinfo(CollectVo collectVo){collectDao.deleteinfo(collectVo);}
 
 
     public void deleteBatch(Integer[] ids) {

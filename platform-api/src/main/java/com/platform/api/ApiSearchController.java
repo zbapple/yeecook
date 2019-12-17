@@ -226,27 +226,77 @@ public class ApiSearchController extends ApiBaseAction {
                 for(StroeVo stroeVo : stroeVoList){
                     lon2= stroeVo.getLongitude();
                     lat2= stroeVo.getLatitude();
+                    Integer store_status=stroeVo.getStoreStatus();
+                    String time=stroeVo.getStoretime();
+                    String[] stime=time.split("-");
+                    String[] list=new String[2];
+                    for(int i=0;i<stime.length;i++){
+                        String re=stime[i];
+                        list[i]=re;
+                    }
+                    String one=list[0];
+                    String two=list[1];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 = new Date();
+                    String datestr=sdf.format(date1);
+                    String newone=datestr+" "+one+":00";
+                    String newtwo=datestr+" "+two+":00";
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date2 = new Date();
+                    String sde2=sdf2.format(date2);
+                    Date d2=null;
+                    Date d3=null;
+                    Date d4=null;
+                    Long dd1=null;
+                    Long dd2=null;
+                    Long dd3=null;
+                    try{
+                        d2=sdf2.parse(newone);
+                        d3=sdf2.parse(newtwo);
+                        d4=sdf2.parse(sde2);
+                        dd1=d2.getTime();
+                        dd2=d3.getTime();
+                        dd3=d4.getTime();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     s=MapUtils.Distance(lon,lat,lon2,lat2);
                     Double  distance=s;
                     Double  distance1=Math.round(distance*10)/10.0;
                     if(distance1>1000){
-                        Map str=new HashMap();
                         Double dstance3=distance1/1000;
                         Double distance2=(new Double(df.format(dstance3)));
                         String km="km";
                         String dstance4=distance2+km;
                         stroeVo.setJuli(dstance4);
-//                        str.put("",);
-                        result.put("flg",1);
-                        result.put("stroeEntityList", stroeVoList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }
+                        }
                         return result;
                     }else if(distance1<1000){
                         Double dstance2=(new Double(df.format(distance1)));
                         String m="m";
                         String dstance4=dstance2+m;
                         stroeVo.setJuli(dstance4);
-                        result.put("flg",1);
-                        result.put("stroeEntityList", stroeVoList);
+                        if(store_status==1){
+                            if(dd3 > dd1 && dd3 < dd2){
+                                stroeVo.setBusiness(1);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }else {
+                                stroeVo.setBusiness(2);
+                                result.put("flg",1);
+                                result.put("stroeEntityList", stroeVoList);
+                            }
+                        }
                         return result;
                     }
                 }

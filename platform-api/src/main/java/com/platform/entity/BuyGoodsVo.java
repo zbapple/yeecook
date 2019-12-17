@@ -7,6 +7,7 @@ public class BuyGoodsVo implements Serializable {
 
     private Integer goodsId;
     private Integer productId;
+    private Integer Specificationid;
     private Integer number;
     private String name;
 
@@ -40,5 +41,13 @@ public class BuyGoodsVo implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getSpecificationid() {
+        return Specificationid;
+    }
+
+    public void setSpecificationid(Integer specificationid) {
+        Specificationid = specificationid;
     }
 }

@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 作者: @author Harmon <br>
@@ -46,6 +44,8 @@ public class ApiCartController extends ApiBaseAction {
     private ApiMealService mealService;
     @Autowired
     private ApiStroeService stroeService;
+    @Autowired
+    private ApiFootprintService footprintService;
     /**
      * 获取购物车中的数据
      */
@@ -159,6 +159,15 @@ public class ApiCartController extends ApiBaseAction {
                 return resultObj;
             }
         }
+        FootprintVo footprintEntity = new FootprintVo();
+//        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy MM dd ");
+//        Date date=new Date();
+//        Long addtimen=(new);
+        footprintEntity.setAdd_time(System.currentTimeMillis() / 1000);
+        footprintEntity.setStroeid(stroeid);
+        footprintEntity.setChecked(1);
+        footprintEntity.setUser_id(loginUser.getUserId());
+        footprintService.save(footprintEntity);
         resultObj.put("cartst",cartst);
         resultObj.put("cartList",cartList);
         Map<String, Object> cartTotal1 = new HashMap();
@@ -193,7 +202,8 @@ public class ApiCartController extends ApiBaseAction {
      */
     @ApiOperation(value = "添加商品到购物车")
     @PostMapping("add")
-    public Object add(@LoginUser UserVo loginUser,Integer goodsId,Integer productId,Integer number) {
+    public Object add(@LoginUser UserVo loginUser,Integer goodsId,Integer productId,Integer number,Integer Specificationid) {
+
         //判断商品是否可以购买
         GoodsVo goodsInfo = goodsService.queryObject(goodsId);
         //前端无约束
@@ -201,59 +211,109 @@ public class ApiCartController extends ApiBaseAction {
             return this.toResponsObject(400, "商品已下架", "");
         }
         //取得规格的信息,判断规格库存
-        ProductVo productInfo = productService.queryObject(productId);
-        if (null == productInfo || productInfo.getGoods_number() < number) {
-            return this.toResponsObject(400, "库存不足", "");
+//        ProductVo productInfo = productService.queryObject(productId);
+        GoodsSpecificationVo goodSpecification=goodsSpecificationService.queryObject(Specificationid);
+        if(Specificationid!=null){
+            if (null == goodSpecification || goodSpecification.getSpecificationnumber() < number) {
+                return this.toResponsObject(400, "库存不足", "");
+            }
         }
+
+
+//        if (null == productInfo || productInfo.getGoods_number() < number) {
+//            return this.toResponsObject(400, "库存不足", "");
+//        }
 
         //判断购物车中是否存在此规格商品
         Map cartParam = new HashMap();
         cartParam.put("goods_id", goodsId);
-        cartParam.put("product_id", productId);
+//        cartParam.put("product_id", productId);
+        cartParam.put("goods_specifition_ids",Specificationid);
         cartParam.put("user_id", loginUser.getUserId());
         List<CartVo> cartInfoList = cartService.queryList(cartParam);
         CartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
         if (null == cartInfo) {
-            //添加操作
-            //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids() && productInfo.getGoods_specification_ids().length() > 0) {
-                Map specificationParam = new HashMap();
-                String[] idsArray = getSpecificationIdsArray(productInfo.getGoods_specification_ids());
-                specificationParam.put("ids", idsArray);
-                specificationParam.put("goods_id", goodsId);
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
+            if(Specificationid==null){
+                cartInfo = new CartVo();
+                cartInfo.setGoods_id(goodsId);
+                cartInfo.setGoods_name(goodsInfo.getName());
+                cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
+                cartInfo.setNumber(number);
+                cartInfo.setSession_id("1");
+                cartInfo.setUser_id(loginUser.getUserId());
+                cartInfo.setRetail_price(goodsInfo.getRetail_price());
+                cartInfo.setMarket_price(goodsInfo.getMarket_price());
+                cartInfo.setStroeid(0);
+                cartInfo.setChecked(1);
+                cartService.save(cartInfo);
+//                cartInfo.setNumber(cartInfo.getNumber() + number);
+//                cartService.update(cartInfo);
+                return toResponsSuccess(getCart(loginUser));
             }
-            cartInfo = new CartVo();
 
-            cartInfo.setGoods_id(goodsId);
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
-            cartInfo.setGoods_name(goodsInfo.getName());
-            cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
-            cartInfo.setNumber(number);
-            cartInfo.setSession_id("1");
-            cartInfo.setUser_id(loginUser.getUserId());
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getMarket_price());
-            cartInfo.setStroeid(0);
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
-            cartInfo.setChecked(1);
-            cartService.save(cartInfo);
+
+                //添加操作
+                //添加规格名和值
+//            String[] goodsSepcifitionValue = null;
+//            if (null != productInfo.getGoods_specification_ids() && productInfo.getGoods_specification_ids().length() > 0) {
+//                Map specificationParam = new HashMap();
+//                String[] idsArray = getSpecificationIdsArray(productInfo.getGoods_specification_ids());
+//                specificationParam.put("ids", idsArray);
+//                specificationParam.put("goods_id", goodsId);
+//                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+//                goodsSepcifitionValue = new String[specificationEntities.size()];
+//                for (int i = 0; i < specificationEntities.size(); i++) {
+//                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+//                }
+//            }
+                cartInfo = new CartVo();
+
+                cartInfo.setGoods_id(goodsId);
+                cartInfo.setProduct_id(Specificationid);
+//            cartInfo.setGoods_sn(productInfo.getGoods_sn());
+                cartInfo.setGoods_name(goodsInfo.getName());
+                cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
+                cartInfo.setNumber(number);
+                cartInfo.setSession_id("1");
+                cartInfo.setUser_id(loginUser.getUserId());
+                cartInfo.setRetail_price(goodSpecification.getSpecificationPrice());
+                cartInfo.setMarket_price(goodSpecification.getSpecificationPrice());
+                cartInfo.setStroeid(0);
+//            if (null != goodsSepcifitionValue) {
+//                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
+                cartInfo.setSpecificationid(String.valueOf(goodSpecification.getId()));
+                cartInfo.setChecked(1);
+                cartService.save(cartInfo);
+
         } else {
             //如果已经存在购物车中，则数量增加
-            if (productInfo.getGoods_number() < (number + cartInfo.getNumber())) {
-                return this.toResponsObject(400, "库存不足", "");
+            if(Specificationid!=null){
+                if (goodSpecification.getSpecificationnumber() < (number + cartInfo.getNumber())) {
+                    return this.toResponsObject(400, "库存不足", "");
+                }
             }
-            cartInfo.setNumber(cartInfo.getNumber() + number);
-            cartService.update(cartInfo);
+            Integer spec=Integer.valueOf(Specificationid);
+            Integer cartspe=Integer.valueOf(cartInfo.getSpecificationid());
+            if(spec==cartspe){
+                cartInfo.setId(cartInfo.getId());
+                cartInfo.setNumber(cartInfo.getNumber() + number);
+                cartService.update(cartInfo);
+            }else {
+                cartInfo = new CartVo();
+                cartInfo.setGoods_id(goodsId);
+                cartInfo.setGoods_name(goodsInfo.getName());
+                cartInfo.setList_pic_url(goodsInfo.getList_pic_url());
+                cartInfo.setNumber(number);
+                cartInfo.setSession_id("1");
+                cartInfo.setUser_id(loginUser.getUserId());
+                cartInfo.setRetail_price(goodsInfo.getRetail_price());
+                cartInfo.setMarket_price(goodsInfo.getMarket_price());
+                cartInfo.setStroeid(0);
+                cartInfo.setChecked(1);
+                cartInfo.setSpecificationid(String.valueOf(goodSpecification.getId()));
+                cartService.save(cartInfo);
+            }
         }
         return toResponsSuccess(getCart(loginUser));
     }
@@ -277,6 +337,7 @@ public class ApiCartController extends ApiBaseAction {
         if(null == cartVo){
             cartVo=new CartVo();
             cartVo.setStroeid(stroeid1);
+            cartVo.setGoods_id(mealEntity.getId());
             cartVo.setGoods_name(mealEntity.getMealName());
             cartVo.setNumber(number);
             cartVo.setList_pic_url(mealEntity.getMealPriue());
@@ -286,6 +347,7 @@ public class ApiCartController extends ApiBaseAction {
             cartVo.setChecked(1);
             cartVo.setMealid(mealEntity.getId());
             cartService.mealsave(cartVo);
+
         }else{
             Integer num=cartVo.getNumber();
             cartVo.setNumber(num + number);
@@ -306,12 +368,13 @@ public class ApiCartController extends ApiBaseAction {
     public Object minus(@LoginUser UserVo loginUser) {
         JSONObject jsonParam = getJsonRequest();
         Integer goodsId = jsonParam.getInteger("goodsId");
-        Integer productId = jsonParam.getInteger("productId");
+//        Integer productId = jsonParam.getInteger("productId");
+        Integer Specificationid = jsonParam.getInteger("Specificationid");
         Integer number = jsonParam.getInteger("number");
         //判断购物车中是否存在此规格商品
         Map cartParam = new HashMap();
         cartParam.put("goods_id", goodsId);
-        cartParam.put("product_id", productId);
+        cartParam.put("Specificationid", Specificationid);
         cartParam.put("user_id", loginUser.getUserId());
         List<CartVo> cartInfoList = cartService.queryList(cartParam);
         CartVo cartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
@@ -365,80 +428,105 @@ public class ApiCartController extends ApiBaseAction {
     public Object update( @LoginUser UserVo loginUser ) {
         JSONObject jsonParam = getJsonRequest();
         Integer goodsId = jsonParam.getInteger("goodsId");
-        Integer productId = jsonParam.getInteger("productId");
+        Integer Specificationid = jsonParam.getInteger("Specificationid");
         Integer number = jsonParam.getInteger("number");
         Integer id = jsonParam.getInteger("id");
         //取得规格的信息,判断规格库存
-        ProductVo productInfo = productService.queryObject(productId);
-        if (null == productInfo || productInfo.getGoods_number() < number) {
-            return this.toResponsObject(400, "库存不足", "");
-        }
-        //判断是否已经存在product_id购物车商品
-        CartVo cartInfo = cartService.queryObject(id);
-        //只是更新number
-        if (cartInfo.getProduct_id().equals(productId)) {
-            cartInfo.setNumber(number);
-            cartService.update(cartInfo);
-            return toResponsSuccess(getCart(loginUser));
+        GoodsSpecificationVo goodSpecification=goodsSpecificationService.queryObject(Specificationid);
+        if(Specificationid!=null){
+            if (null == goodSpecification || goodSpecification.getSpecificationnumber() < number) {
+                return this.toResponsObject(400, "库存不足", "");
+            }
         }
 
+        //判断是否已经存在Specificationid购物车商品
+        CartVo cartInfo = cartService.queryObject(id);
+            //只是更新number
+            if(Specificationid!=null){
+            if (cartInfo.getSpecificationid().equals(Specificationid)) {
+                cartInfo.setId(id);
+                cartInfo.setNumber(number);
+                cartService.update(cartInfo);
+                return toResponsSuccess(getCart(loginUser));
+            }
+        }
+
+
         Map cartParam = new HashMap();
-        cartParam.put("goodsId", goodsId);
-        cartParam.put("productId", productId);
+        cartParam.put("goods_id", goodsId);
+        cartParam.put("Specificationid", Specificationid);
         List<CartVo> cartInfoList = cartService.queryList(cartParam);
         CartVo newcartInfo = null != cartInfoList && cartInfoList.size() > 0 ? cartInfoList.get(0) : null;
         if (null == newcartInfo) {
+            if(Specificationid==null){
+                cartInfo.setId(id);
+                cartInfo.setNumber(number);
+                cartInfo.setRetail_price(cartInfo.getRetail_price());
+                cartInfo.setMarket_price(cartInfo.getMarket_price());
+                cartService.update(cartInfo);
+                return toResponsSuccess(getCart(loginUser));
+            }
             //添加操作
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = new HashMap();
-                specificationParam.put("ids", productInfo.getGoods_specification_ids());
-                specificationParam.put("goodsId", goodsId);
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
-            }
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
+//            String[] goodsSepcifitionValue = null;
+//            if (null != productInfo.getGoods_specification_ids()) {
+//                Map specificationParam = new HashMap();
+//                specificationParam.put("ids", productInfo.getGoods_specification_ids());
+//                specificationParam.put("goodsId", goodsId);
+//                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+//                goodsSepcifitionValue = new String[specificationEntities.size()];
+//                for (int i = 0; i < specificationEntities.size(); i++) {
+//                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+//                }
+//            }
+            cartInfo.setSpecificationid(String.valueOf(Specificationid));
+//            cartInfo.setGoods_sn(productInfo.getGoods_sn());
             cartInfo.setNumber(number);
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getRetail_price());
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            cartInfo.setRetail_price(goodSpecification.getSpecificationPrice());
+            cartInfo.setMarket_price(goodSpecification.getSpecificationPrice());
+//            if (null != goodsSepcifitionValue) {
+//                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
+            cartInfo.setSpecificationid(String.valueOf(Specificationid));
             cartService.update(cartInfo);
         } else {
             //合并购物车已有的product信息，删除已有的数据
             Integer newNumber = number + newcartInfo.getNumber();
-            if (null == productInfo || productInfo.getGoods_number() < newNumber) {
-                return this.toResponsObject(400, "库存不足", "");
-            }
-            cartService.delete(newcartInfo.getId());
-            //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = new HashMap();
-                specificationParam.put("ids", productInfo.getGoods_specification_ids());
-                specificationParam.put("goodsId", goodsId);
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+            if(Specificationid!=null){
+                if (null == goodSpecification || goodSpecification.getSpecificationnumber() < newNumber) {
+                    return this.toResponsObject(400, "库存不足", "");
                 }
             }
-            cartInfo.setProduct_id(productId);
-            cartInfo.setGoods_sn(productInfo.getGoods_sn());
+//            cartService.delete(newcartInfo.getId());
+                if(Specificationid==null){
+                    cartInfo.setId(id);
+                    cartInfo.setNumber(number);
+                    cartInfo.setRetail_price(cartInfo.getRetail_price());
+                    cartInfo.setMarket_price(cartInfo.getMarket_price());
+                    cartService.update(cartInfo);
+                    return toResponsSuccess(getCart(loginUser));
+                }
+//
+            //添加规格名和值
+//            String[] goodsSepcifitionValue = null;
+////            if (null != goodSpecification.getId()) {
+////                Map specificationParam = new HashMap();
+////                specificationParam.put("ids", goodSpecification.getId());
+////                specificationParam.put("goodsId", goodsId);
+////                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+////                goodsSepcifitionValue = new String[specificationEntities.size()];
+////                for (int i = 0; i < specificationEntities.size(); i++) {
+////                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+////                }
+////            }
+            cartInfo.setSpecificationid(String.valueOf(Specificationid));
+//            cartInfo.setGoods_sn(productInfo.getGoods_sn());
             cartInfo.setNumber(number);
-            cartInfo.setRetail_price(productInfo.getRetail_price());
-            cartInfo.setMarket_price(productInfo.getRetail_price());
-            if (null != goodsSepcifitionValue) {
-                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartInfo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            cartInfo.setRetail_price(goodSpecification.getSpecificationPrice());
+            cartInfo.setMarket_price(goodSpecification.getSpecificationPrice());
+//            if (null != goodsSepcifitionValue) {
+//                cartInfo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
             cartService.update(cartInfo);
         }
         return toResponsSuccess(getCart(loginUser));
@@ -449,33 +537,56 @@ public class ApiCartController extends ApiBaseAction {
      */
     @ApiOperation(value = "是否选择商品")
     @PostMapping("checked")
-    public Object checked(@LoginUser UserVo loginUser) {
-        JSONObject jsonParam = getJsonRequest();
-        String productIds = jsonParam.getString("productIds");
-        Integer isChecked = jsonParam.getInteger("isChecked");
-        if (StringUtils.isNullOrEmpty(productIds)) {
-            return this.toResponsFail("删除出错");
+    public Object checked(@LoginUser UserVo loginUser, String Specificationid, Integer isChecked,Integer goodsid) {
+        if(Specificationid!=null && goodsid!=null){
+            CartVo cartVo=new CartVo();
+            cartVo.setSpecificationid(Specificationid);
+            cartVo.setGoods_id(goodsid);
+            cartVo.setChecked(isChecked);
+            cartVo.setUser_id(loginUser.getUserId());
+            cartService.updateusercart(cartVo);
         }
-        String[] productIdArray = productIds.split(",");
-        cartService.updateCheck(productIdArray, isChecked, loginUser.getUserId());
-        return toResponsSuccess(getCart(loginUser));
+        if(Specificationid!=null){
+            if(goodsid!=null && Specificationid.equals("null")){
+                if(isChecked==1){
+                    CartVo cartVo=new CartVo();
+                    cartVo.setGoods_id(goodsid);
+                    cartVo.setChecked(isChecked);
+                    cartVo.setUser_id(loginUser.getUserId());
+                    cartService.updateusercart(cartVo);
+                }else{
+                    CartVo cartVo=new CartVo();
+                    cartVo.setGoods_id(goodsid);
+                    cartVo.setChecked(isChecked);
+                    cartVo.setUser_id(loginUser.getUserId());
+                    cartService.updateusercart(cartVo);
+                }
+            }
+        }
+        if(Specificationid==null && goodsid==null){
+            if(isChecked==1){
+                CartVo cartVo=new CartVo();
+                cartVo.setChecked(1);
+                cartVo.setUser_id(loginUser.getUserId());
+                cartService.updateusercart(cartVo);
+            }else {
+                CartVo cartVo=new CartVo();
+                cartVo.setChecked(0);
+                cartVo.setUser_id(loginUser.getUserId());
+                cartService.updateusercart(cartVo);
+            }
+        }
+            return toResponsSuccess(getCart(loginUser));
     }
 
     //删除选中的购物车商品，批量删除
     @ApiOperation(value = "删除商品")
     @PostMapping("delete")
     public Object delete(@LoginUser UserVo loginUser) {
-        Long userId = loginUser.getUserId();
-        JSONObject jsonObject = getJsonRequest();
-        String productIds = jsonObject.getString("productIds");
-
-        if (StringUtils.isNullOrEmpty(productIds)) {
-            return toResponsFail("删除出错");
-        }
-            String[] productIdsArray = productIds.split(",");
-            cartService.deleteByUserAndProductIds(userId, productIdsArray);
-            return toResponsSuccess(getCart(loginUser));
-
+            CartVo cartVo=new CartVo();
+            cartVo.setUser_id(loginUser.getUserId());
+            cartService.deleteusercart(cartVo);
+        return toResponsSuccess(getCart(loginUser));
     }
 
     //  获取购物车商品的总件件数
@@ -551,35 +662,73 @@ public class ApiCartController extends ApiBaseAction {
             goodsTotalPrice = (BigDecimal) ((HashMap) cartData.get("cartTotal")).get("checkedGoodsAmount");
         } else { // 是直接购买的
             BuyGoodsVo goodsVO = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId() + "");
-            ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
-            Integer value=productInfo.getGoods_id();
-            GoodsVo goodsVolist=goodsService.queryObject(value);
-            String companyname=goodsVolist.getSuppliername();
-            resultObj.put("companyname",companyname);
+//            ProductVo productInfo = productService.queryObject(goodsVO.getProductId());
+            GoodsSpecificationVo goodsSpecificationVo=goodsSpecificationService.queryObject(goodsVO.getSpecificationid());
+            if(goodsSpecificationVo==null){
+                GoodsVo goodsVolist=goodsService.queryObject(goodsVO.getGoodsId());
+                String companyname=goodsVolist.getSuppliername();
+                resultObj.put("companyname",companyname);
+                goodsTotalPrice = goodsVolist.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
+                CartVo cartVo = new CartVo();
+                cartVo.setGoods_name(goodsVolist.getName());
+                cartVo.setNumber(goodsVO.getNumber());
+                cartVo.setRetail_price(goodsVolist.getRetail_price());
+                cartVo.setList_pic_url(goodsVolist.getList_pic_url());
+                checkedGoodsList.add(cartVo);
+                //获取可用的优惠券信息
+                BigDecimal couponPrice = new BigDecimal(0.00);
+                if (couponId != null && couponId != 0) {
+                    CouponVo couponVo = apiCouponMapper.getUserCoupon(couponId);
+                    if (couponVo != null) {
+                        couponPrice = couponVo.getType_money();
+                    }
+                }
+
+                //订单的总价
+                BigDecimal orderTotalPrice = goodsTotalPrice.add(freightPrice);
+
+                //
+                BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+
+                resultObj.put("freightPrice", freightPrice);
+
+                resultObj.put("couponPrice", couponPrice);
+                resultObj.put("checkedGoodsList", checkedGoodsList);
+                resultObj.put("goodsTotalPrice", goodsTotalPrice);
+                resultObj.put("orderTotalPrice", orderTotalPrice);
+                resultObj.put("actualPrice", actualPrice);
+                return toResponsSuccess(resultObj);
+            }
+                Integer value=goodsSpecificationVo.getGoods_id();
+                GoodsVo goodsVolist=goodsService.queryObject(value);
+                String companyname=goodsVolist.getSuppliername();
+                resultObj.put("companyname",companyname);
+
+
             //计算订单的费用
             //商品总价
-            goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVO.getNumber()));
+            goodsTotalPrice = goodsSpecificationVo.getSpecificationPrice().multiply(new BigDecimal(goodsVO.getNumber()));
             //添加规格名和值
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = new HashMap();
-                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
-                specificationParam.put("goodsId", goodsVO.getGoodsId());
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
-            }
+//            String[] goodsSepcifitionValue = null;
+//            if (null != productInfo.getGoods_specification_ids()) {
+//                Map specificationParam = new HashMap();
+//                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
+//                specificationParam.put("goodsId", goodsVO.getGoodsId());
+//                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+//                goodsSepcifitionValue = new String[specificationEntities.size()];
+//                for (int i = 0; i < specificationEntities.size(); i++) {
+//                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+//                }
+//            }
             CartVo cartVo = new CartVo();
-            cartVo.setGoods_name(productInfo.getGoods_name());
+            cartVo.setGoods_name(goodsVolist.getName());
             cartVo.setNumber(goodsVO.getNumber());
-            cartVo.setRetail_price(productInfo.getRetail_price());
-            cartVo.setList_pic_url(productInfo.getList_pic_url());
-            cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
-            if (null != goodsSepcifitionValue) {
-                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-            }
+            cartVo.setRetail_price(goodsSpecificationVo.getSpecificationPrice());
+            cartVo.setList_pic_url(goodsSpecificationVo.getPic_url());
+//            cartVo.setGoods_specifition_ids(String.valueOf(goodsSpecificationVo.getId()));
+//            if (null != goodsSepcifitionValue) {
+//                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
             checkedGoodsList.add(cartVo);
         }
 

@@ -17,7 +17,9 @@
         <result property="retail_product_price" column="retail_product_price"/>
         <result property="number" column="number"/>
         <result property="goods_specifition_name_value" column="goods_specifition_name_value"/>
-        <result property="goods_specifition_ids" column="goods_specifition_ids"/>
+        <result property="Specificationid" column="goods_specifition_ids"/>
+        <result property="specificationname" column="value"/>
+        <result property="specifition_price" column="specification_price"/>
         <result property="checked" column="checked"/>
         <result property="list_pic_url" column="list_pic_url"/>
         <result property="stroeid" column="stroe_id"/>
@@ -32,11 +34,12 @@
     <select id="queryList" resultMap="cartMap">
         select a.*,
         b.list_pic_url as list_pic_url,
-        c.retail_price as retail_product_price,
-        d.deliveryfee
+        c.specification_price ,
+        d.deliveryfee,
+        c.value
         from nideshop_cart a
         left join nideshop_goods b on a.goods_id = b.id
-        left join nideshop_product c on c.goods_id = a.goods_id and c.id = a.product_id
+        left join nideshop_goods_specification c on c.id = a.goods_specifition_ids
         left JOIN nideshop_stroe  d   on d.id=a.stroe_id
         where 1 = 1
         <if test="user_id != null">
@@ -56,6 +59,9 @@
         </if>
         <if test="mealid">
             AND a.meal_id=#{mealid}
+        </if>
+        <if test="Specificationid !=null">
+            AND a.goods_specifition_ids=#{Specificationid}
         </if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -118,7 +124,7 @@
 			#{retail_price}, 
 			#{number}, 
 			#{goods_specifition_name_value}, 
-			#{goods_specifition_ids}, 
+			#{Specificationid},
 			#{checked}, 
 			#{list_pic_url},
 			#{stroeid},
@@ -157,7 +163,7 @@
 			#{retail_price},
 			#{number},
 			#{goods_specifition_name_value},
-			#{goods_specifition_ids},
+			#{Specificationid},
 			#{checked},
 			#{list_pic_url},
 			#{stroeid},
@@ -180,22 +186,44 @@
             <if test="goods_specifition_name_value != null">`goods_specifition_name_value` =
                 #{goods_specifition_name_value},
             </if>
-            <if test="goods_specifition_ids != null">`goods_specifition_ids` = #{goods_specifition_ids},</if>
+            <if test="Specificationid != null">`goods_specifition_ids` = #{Specificationid},</if>
             <if test="checked != null">`checked` = #{checked},</if>
             <if test="list_pic_url != null">`list_pic_url` = #{list_pic_url}</if>
 
         </set>
         where id = #{id}
     </update>
+    <update id="updateusercart"  parameterType="com.platform.entity.CartVo">
+        update  nideshop_cart
+        <set>
+            `checked` = #{checked}
+        </set>
+        where 1=1
+        <if test="user_id !=null">
+            and user_id = #{user_id}
+        </if>
+        <if test=" Specificationid!=null">
+            and goods_specifition_ids=#{Specificationid}
+        </if>
+        <if test=" goods_id!=null">
+            and goods_id=#{goods_id}
+        </if>
+    </update>
 
-    <update id="updateCheck">
+    <update id="updateCheck" parameterType="com.platform.entity.CartVo" >
         update nideshop_cart
-        set `checked` = #{isChecked}
-        where product_id in
-        <foreach item="product_id" collection="productIds" open="(" separator="," close=")">
-            #{product_id}
+        <set>
+            <if test="isChecked!=null">
+                checked = #{Checked}
+            </if>
+        </set>
+        where goods_specifition_ids in
+        <foreach item="goods_specifition_ids" collection="Specificationid" open="(" separator="," close=")">
+            #{Specificationid}
         </foreach>
-        and user_id = #{userId}
+        <if test="userId !=null">
+            and user_id = #{userId}
+        </if>
     </update>
 
     <delete id="delete">
@@ -210,18 +238,21 @@
     </delete>
 
     <delete id="deleteByProductIds">
-        delete from nideshop_cart where product_id in
-        <foreach item="id" collection="productIds" open="(" separator="," close=")">
+        delete from nideshop_cart where goods_specifition_ids in
+        <foreach item="id" collection="Specificationid" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <delete id="deleteByUserAndProductIds">
-        delete from nideshop_cart where product_id in
-        <foreach item="id" collection="productIds" open="(" separator="," close=")">
+        delete from nideshop_cart
+        where checked=1
+        <foreach item="id" collection="Specificationid" open="(" separator="," close=")">
             #{id}
         </foreach>
-          and user_id = #{user_id}
+        <if test="userId !=null">
+            and user_id = #{userId}
+        </if>
     </delete>
 
     <delete id="deleteByCart">
@@ -231,5 +262,13 @@
     <delete id="deleteAll">
         delete from nideshop_cart
         where user_id=#{user_id} and stroe_id=#{stroid}
+    </delete>
+
+    <delete id="deleteusercart" parameterType="com.platform.entity.CartVo" >
+        delete from nideshop_cart
+        where checked=1
+        <if test="user_id!=null">
+            and user_id=#{user_id}
+        </if>
     </delete>
 </mapper>

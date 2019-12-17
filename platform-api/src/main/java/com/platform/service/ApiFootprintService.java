@@ -58,4 +58,7 @@ public class ApiFootprintService {
         footprintDao.deleteBatch(ids);
     }
 
+    public void deleteinfo(FootprintVo footprintVo){footprintDao.deleteinfo(footprintVo);}
+    public void updateinfo(FootprintVo footprintVo){footprintDao.updateinfo(footprintVo);}
+
 }

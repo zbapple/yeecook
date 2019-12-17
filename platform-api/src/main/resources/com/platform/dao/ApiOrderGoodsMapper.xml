@@ -41,7 +41,7 @@
 			nideshop_order_goods a
 		LEFT JOIN nideshop_goods b ON b.id = a.goods_id
 		LEFT JOIN nideshop_supplier c ON c.id=b.supplier_id
-		where id = #{value}
+		where a.id = #{value}
 	</select>
 
     <select id="queryList" resultMap="orderGoodsMap">

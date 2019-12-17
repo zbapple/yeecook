@@ -1,9 +1,9 @@
 package com.platform.api;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.platform.annotation.LoginUser;
-import com.platform.entity.FootprintVo;
-import com.platform.entity.UserVo;
+import com.platform.entity.*;
 import com.platform.service.ApiFootprintService;
 import com.platform.util.ApiBaseAction;
 import com.platform.util.ApiPageUtils;
@@ -14,8 +14,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 作者: @author Harmon <br>
@@ -126,5 +127,96 @@ public class ApiFootprintController extends ApiBaseAction {
         //
         resultObj.put("data", footprintVos);
         return this.toResponsSuccess(resultObj);
+    }
+    @ApiOperation(value = "删除我的足迹")
+    @PostMapping("deleteinfo")
+    public Object deleteinfo(@LoginUser UserVo loginuser){
+        FootprintVo footprintVo=new FootprintVo();
+        footprintVo.setUser_id(loginuser.getUserId());
+        footprintService.deleteinfo(footprintVo);
+        return toResponsSuccess(alllist(loginuser));
+    }
+    @ApiOperation(value = "足迹修改")
+    @PostMapping("updateinfo")
+    public Object updateinfo(@LoginUser UserVo loginuser){
+        JSONObject updatejson=this.getJsonRequest();
+        Integer checke=updatejson.getInteger("checked");
+        Integer valueid=updatejson.getInteger("goods_id");
+        Integer storeid=updatejson.getInteger("stroeid");
+        Map listmap=new HashMap();
+        listmap.put("user_id",loginuser.getUserId());
+        List<FootprintVo> footprintVoList=footprintService.queryList(listmap);
+        if(footprintVoList.size()==0){
+            return toResponsSuccess(list(loginuser,1,10));
+        }
+        if(valueid!=null){
+            if(checke==1){
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintVo.setGoods_id(valueid);
+                footprintService.updateinfo(footprintVo);
+            }else if(checke==0) {
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintVo.setGoods_id(valueid);
+                footprintService.updateinfo(footprintVo);
+            }
+        }
+        if(storeid!=null){
+            if(checke==1){
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintVo.setStroeid(storeid);
+                footprintService.updateinfo(footprintVo);
+            }else if(checke==0) {
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintVo.setStroeid(storeid);
+                footprintService.updateinfo(footprintVo);
+            }
+        }
+
+        if(storeid==null&&valueid==null){
+            if(checke==1){
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintService.updateinfo(footprintVo);
+            }else if(checke==0){
+                FootprintVo footprintVo=new FootprintVo();
+                footprintVo.setUser_id(loginuser.getUserId());
+                footprintVo.setChecked(checke);
+                footprintService.updateinfo(footprintVo);
+            }
+        }
+        return toResponsSuccess(alllist(loginuser));
+    }
+    @ApiOperation(value = "足迹显示")
+    @PostMapping("alllist")
+    public Object alllist(@LoginUser UserVo loginuser){
+        Map<String,Object> result=new HashMap<>();
+        Map listmap=new HashMap();
+        listmap.put("user_id",loginuser.getUserId());
+        List<FootprintVo> footprintVoList=footprintService.queryList(listmap);
+        List<ApiFoodtprintVo> footprintVos=new ArrayList<>();
+        if(footprintVoList.size()==0){
+            result.put("flag",0);
+        }else{
+            Map<Long,List<FootprintVo>> map = footprintVoList.stream().collect(
+                    Collectors.groupingBy(FootprintVo::getAdd_time));
+            for(Long key:map.keySet()){
+                ApiFoodtprintVo FootprintVo=new ApiFoodtprintVo();
+                FootprintVo.setTime(key);
+                    FootprintVo.setFootprintVoList(map.get(key));
+                    footprintVos.add(FootprintVo);
+            }
+            result.put("footprintVos",footprintVos);
+            result.put("flag",1);
+        }
+        return result;
     }
 }

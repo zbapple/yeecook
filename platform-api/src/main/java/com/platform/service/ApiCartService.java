@@ -68,6 +68,8 @@ public class ApiCartService {
         }
     }
     public void mealsave(CartVo cart){cartDao.mealsave(cart);}
+    public void deleteusercart(CartVo cartVo){cartDao.deleteusercart(cartVo);}
+    public void updateusercart(CartVo cartVo){cartDao.updateusercart(cartVo);};
     public void update(CartVo cart) {
         cartDao.update(cart);
     }
@@ -82,8 +84,8 @@ public class ApiCartService {
         cartDao.deleteBatch(ids);
     }
 
-    public void updateCheck(String[] productIds, Integer isChecked, Long userId) {
-        cartDao.updateCheck(productIds, isChecked, userId);
+    public void updateCheck(String[] Specificationid, Integer isChecked, Long userId) {
+        cartDao.updateCheck(Specificationid, isChecked, userId);
 
         // 判断购物车中是否存在此规格商品
         Map cartParam = new HashMap();
@@ -96,8 +98,8 @@ public class ApiCartService {
             if (null != cartItem.getChecked() && 1 == cartItem.getChecked()) {
                 goods_ids.add(cartItem.getGoods_id());
             }
-            if (!cartItem.getRetail_price().equals(cartItem.getRetail_product_price())) {
-                cartItem.setRetail_price(cartItem.getRetail_product_price());
+            if (!cartItem.getRetail_price().equals(cartItem.getSpecifition_price())) {
+                cartItem.setRetail_price(cartItem.getSpecifition_price());
                 cartUpdateList.add(cartItem);
             }
         }
@@ -122,12 +124,12 @@ public class ApiCartService {
         }
     }
 
-    public void deleteByProductIds(String[] productIds) {
-        cartDao.deleteByProductIds(productIds);
+    public void deleteByProductIds(String[] Specificationid) {
+        cartDao.deleteByProductIds(Specificationid);
     }
 
-    public void deleteByUserAndProductIds(Long userId, String[] productIds) {
-        cartDao.deleteByUserAndProductIds(userId, productIds);
+    public void deleteByUserAndProductIds(Long userId, String[] Specificationid) {
+        cartDao.deleteByUserAndProductIds(userId, Specificationid);
     }
 
     public void deleteByCart(Long user_id, Integer session_id, Integer checked) {

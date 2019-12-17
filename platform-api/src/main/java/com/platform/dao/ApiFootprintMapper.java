@@ -16,4 +16,7 @@ public interface ApiFootprintMapper extends BaseDao<FootprintVo> {
     List<FootprintVo> shareList(Map<String, Object> map);
 
 	List<FootprintVo> queryListFootprint(String userid);
+
+	void deleteinfo(FootprintVo footprintVo);
+	void updateinfo(FootprintVo footprintVo);
 }

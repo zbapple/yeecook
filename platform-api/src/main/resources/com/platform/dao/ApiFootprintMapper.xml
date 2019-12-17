@@ -16,6 +16,12 @@
         <result property="referrer" column="referrer"/>
         <result property="nickname" column="nickname"/>
         <result property="avatar" column="avatar"/>
+        <result property="stroeid" column="storeid"/>
+        <result property="storename" column="store_name"/>
+        <result property="storepic" column="store_picrue"/>
+        <result property="storestatus" column="store_status"/>
+        <result property="checked" column="checked"/>
+
     </resultMap>
 
     <select id="queryObject" resultMap="footprintMap">
@@ -25,13 +31,14 @@
     <select id="queryList" resultMap="footprintMap">
         select f.id,f.user_id,f.goods_id,f.add_time,f.referrer,
         g.name as name, g.list_pic_url as list_pic_url, g.goods_brief as goods_brief, g.retail_price as
-        retail_price
+        retail_price,d.store_name,d.store_picrue,d.store_status,f.checked,f.storeid
         from nideshop_footprint f
         <if test="maxFoot == true">
             left join nideshop_footprint max on f.goods_id = max.goods_id and f.user_id = max.user_id
             and max.add_time > f.add_time
         </if>
         left join nideshop_goods g on f.goods_id = g.id
+        left join nideshop_stroe d on f.storeid=d.id
         <where>
             <if test="user_id != null">
                 and f.user_id = #{user_id}
@@ -45,7 +52,7 @@
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by f.id desc
+                order by f.add_time desc
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -62,14 +69,18 @@
 				g. NAME AS NAME,
 				g.list_pic_url AS list_pic_url,
 				g.goods_brief AS goods_brief,
-				g.retail_price AS retail_price
+				g.retail_price AS retail_price,
+				d.store_name,
+				d.store_picrue,
+				d.store_status
 			FROM
 				nideshop_footprint f
 			  LEFT JOIN nideshop_goods g ON f.goods_id = g.id
-			WHERE
-				f.user_id = #{0} GROUP BY goods_id,add_time,referrer
+			  left join nideshop_stroe d on f.storeid=d.id
+		WHERE
+				f.user_id = #{0} GROUP BY f.goods_id,f.add_time,f.referrer
 			 ORDER BY
-				 id DESC
+				 f.id DESC
     </select>
 
     <select id="queryTotal" resultType="int">
@@ -93,14 +104,18 @@
 			`user_id`, 
 			`goods_id`, 
 			`add_time`,
-			`referrer`
+			`referrer`,
+            storeid,
+            checked
 		)
 		values
 		(
 			#{user_id},
 			#{goods_id},
 			#{add_time},
-			#{referrer}
+			#{referrer},
+			#{stroeid},
+			#{checked}
 		)
 	</insert>
 
@@ -109,8 +124,9 @@
         <set>
             <if test="user_id != null">`user_id` = #{user_id},</if>
             <if test="goods_id != null">`goods_id` = #{goods_id},</if>
-            <if test="add_time != null">`add_time` = #{add_time}</if>
-            <if test="referrer != null">`referrer` = #{referrer}</if>
+            <if test="add_time != null">`add_time` = #{add_time},</if>
+            <if test="referrer != null">`referrer` = #{referrer},</if>
+            <if test="checked !=null">checked=#{checked}</if>
         </set>
         where id = #{id}
     </update>
@@ -137,10 +153,11 @@
         select f.id,f.user_id,f.goods_id,f.add_time,f.referrer,
         g.name as name, g.list_pic_url as list_pic_url, g.goods_brief as goods_brief,
         g.retail_price as retail_price,
-        u.nickname as nickname,u.avatar as avatar
+        u.nickname as nickname,u.avatar as avatar,s.store_name,s.store_picrue,s.store_status
         from nideshop_footprint f
         left join nideshop_goods g on f.goods_id = g.id
         left join nideshop_user u on u.id = f.user_id
+        left join nideshop_store s on f.storeid=s.id
         <where>
             u.id is not null
             <if test="user_id != null">
@@ -162,6 +179,28 @@
             limit #{offset}, #{limit}
         </if>
     </select>
-
+    <delete id="deleteinfo" parameterType="com.platform.entity.FootprintVo" >
+        delete from nideshop_footprint
+        where checked=1
+        <if test="user_id!=null">
+            and user_id=#{user_id}
+        </if>
+    </delete>
+    <update id="updateinfo"  parameterType="com.platform.entity.FootprintVo">
+        update  nideshop_footprint
+        <set>
+            `checked` = #{checked}
+        </set>
+        where 1=1
+        <if test="user_id !=null">
+            and user_id = #{user_id}
+        </if>
+        <if test=" goods_id!=null">
+            and goods_id=#{goods_id}
+        </if>
+        <if test=" stroeid!=null">
+            and storeid=#{stroeid}
+        </if>
+    </update>
 
 </mapper>

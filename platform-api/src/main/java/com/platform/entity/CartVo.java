@@ -40,7 +40,7 @@ public class CartVo implements Serializable {
     //规格属性组成的字符串，用来显示用
     private String goods_specifition_name_value;
     //product表对应的goods_specifition_ids
-    private String goods_specifition_ids;
+    private String Specificationid;
     //
     private Integer checked;
     // 节省金额
@@ -56,7 +56,10 @@ public class CartVo implements Serializable {
     private  Integer deliveryfee;
     //送达时间
     private DateTime deliverytime;
-
+    //规格价格
+    private BigDecimal specifition_price;
+    //规格名称
+    private String specificationname;
     public Integer getId() {
         return id;
     }
@@ -145,13 +148,6 @@ public class CartVo implements Serializable {
         this.goods_specifition_name_value = goods_specifition_name_value;
     }
 
-    public String getGoods_specifition_ids() {
-        return goods_specifition_ids;
-    }
-
-    public void setGoods_specifition_ids(String goods_specifition_ids) {
-        this.goods_specifition_ids = goods_specifition_ids;
-    }
 
     public Integer getChecked() {
         return checked;
@@ -218,5 +214,29 @@ public class CartVo implements Serializable {
 
     public void setDeliverytime(DateTime deliverytime) {
         this.deliverytime = deliverytime;
+    }
+
+    public BigDecimal getSpecifition_price() {
+        return specifition_price;
+    }
+
+    public void setSpecifition_price(BigDecimal specifition_price) {
+        this.specifition_price = specifition_price;
+    }
+
+    public String getSpecificationid() {
+        return Specificationid;
+    }
+
+    public void setSpecificationid(String specificationid) {
+        Specificationid = specificationid;
+    }
+
+    public String getSpecificationname() {
+        return specificationname;
+    }
+
+    public void setSpecificationname(String specificationname) {
+        this.specificationname = specificationname;
     }
 }

@@ -33,6 +33,10 @@ public class CollectVo implements Serializable {
     private String list_pic_url;
     private String goods_brief;
     private String retail_price;
+    //门店状态
+    private Integer storestatus;
+    //收藏选定状态
+    private Integer checked;
 
     public Integer getId() {
         return id;
@@ -136,5 +140,21 @@ public class CollectVo implements Serializable {
 
     public void setStroepicrue(String stroepicrue) {
         this.stroepicrue = stroepicrue;
+    }
+
+    public Integer getStorestatus() {
+        return storestatus;
+    }
+
+    public void setStorestatus(Integer storestatus) {
+        this.storestatus = storestatus;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 }

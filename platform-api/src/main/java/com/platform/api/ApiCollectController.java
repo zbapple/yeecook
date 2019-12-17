@@ -70,6 +70,7 @@ public class ApiCollectController extends ApiBaseAction {
             collectEntity.setAdd_time(System.currentTimeMillis() / 1000);
             collectEntity.setType_id(typeId);
             collectEntity.setValue_id(valueId);
+            collectEntity.setChecked(1);
             collectEntity.setIs_attention(0);
             collectEntity.setUser_id(loginUser.getUserId());
             //添加收藏
@@ -107,6 +108,7 @@ public class ApiCollectController extends ApiBaseAction {
             collectEntity.setAdd_time(System.currentTimeMillis() / 1000);
             collectEntity.setType_id(typeId);
             collectEntity.setStroeid(stroeid);
+            collectEntity.setChecked(1);
             collectEntity.setIs_attention(0);
             collectEntity.setUser_id(loginUser.getUserId());
             //添加收藏
@@ -123,5 +125,78 @@ public class ApiCollectController extends ApiBaseAction {
             return toResponsSuccess(data);
         }
         return  toResponsFail("操作失败");
+    }
+
+    @ApiOperation(value = "取消收藏")
+    @PostMapping("deleteinfo")
+    public Object deleteinfo(@LoginUser UserVo loginuser){
+        Map<String,Object> result=new HashMap<>();
+        Integer typeid=0;
+//        JSONObject deletejson=this.getJsonRequest();
+        CollectVo collectVo=new CollectVo();
+        collectVo.setUser_id(loginuser.getUserId());
+        collectService.deleteinfo(collectVo);
+        return toResponsSuccess(list(loginuser,typeid));
+    }
+
+    @ApiOperation(value = "收藏修改")
+    @PostMapping("updateinfo")
+    public Object updateinfo(@LoginUser UserVo loginuser){
+        Integer typeid=0;
+        JSONObject updatejson=this.getJsonRequest();
+            Integer checke=updatejson.getInteger("checked");
+        Integer valueid=updatejson.getInteger("value_id");
+        Integer stroeid=updatejson.getInteger("stroeid");
+        Map listmap=new HashMap();
+        listmap.put("user_id",loginuser.getUserId());
+        List<CollectVo> collectVoList=collectService.queryList(listmap);
+        if(collectVoList.size()==0){
+            return toResponsSuccess(list(loginuser,typeid));
+        }
+        if(valueid!=null){
+            if(checke==1){
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectVo.setValue_id(valueid);
+                collectService.Updateinfo(collectVo);
+            }else if(checke==0) {
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectVo.setValue_id(valueid);
+                collectService.Updateinfo(collectVo);
+            }
+        }
+        if(stroeid!=null){
+            if(checke==1){
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectVo.setStroeid(stroeid);
+                collectService.Updateinfo(collectVo);
+            }else if(checke==0) {
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectVo.setStroeid(stroeid);
+                collectService.Updateinfo(collectVo);
+            }
+        }
+        if(stroeid==null&&valueid==null){
+            if(checke==1){
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectService.Updateinfo(collectVo);
+            }else if(checke==0){
+                CollectVo collectVo=new CollectVo();
+                collectVo.setChecked(checke);
+                collectVo.setUser_id(loginuser.getUserId());
+                collectService.Updateinfo(collectVo);
+            }
+        }
+
+        return toResponsSuccess(list(loginuser,typeid));
     }
 }

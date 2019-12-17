@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.platform.dao.*;
 import com.platform.entity.*;
 import com.platform.printer.PrinterSupplierTanks;
 import com.platform.printer.yly.PrinterSupplierTemplate;
@@ -16,7 +17,6 @@ import com.platform.printer.vo.YeecookSupplierVo;
 import com.platform.printer.vo.YeecookVo;
 import com.platform.utils.JsonUtil;
 import com.platform.xss.SQLFilter;
-import com.qiniu.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.platform.cache.J2CacheUtils;
-import com.platform.dao.ApiAddressMapper;
-import com.platform.dao.ApiCartMapper;
-import com.platform.dao.ApiCouponMapper;
-import com.platform.dao.ApiOrderGoodsMapper;
-import com.platform.dao.ApiOrderMapper;
 import com.platform.util.CommonUtil;
 
 
@@ -66,6 +61,8 @@ public class ApiOrderService {
     private ApiOrderMenuService orderMenuService;
     @Autowired
     private ApiCartService cartService;
+    @Autowired
+    private ApiGoodsService goodsService;
 
     public OrderVo queryObject(Integer id) {
         return orderDao.queryObject(id);
@@ -129,29 +126,150 @@ public class ApiOrderService {
             }
         } else {
             BuyGoodsVo goodsVo = (BuyGoodsVo) J2CacheUtils.get(J2CacheUtils.SHOP_CACHE_NAME, "goods" + loginUser.getUserId());
-            ProductVo productInfo = productService.queryObject(goodsVo.getProductId());
+            GoodsSpecificationVo goodsSpecificationVo=goodsSpecificationService.queryObject(goodsVo.getSpecificationid());
+            if(goodsSpecificationVo==null){
+                GoodsVo goodsVolist=goodsService.queryObject(goodsVo.getGoodsId());
+                String companyname=goodsVolist.getSuppliername();
+                resultObj.put("companyname",companyname);
+                //计算订单的费用
+                //商品总价
+                goodsTotalPrice = goodsVolist.getRetail_price().multiply(new BigDecimal(goodsVo.getNumber()));
+                CartVo cartVo = new CartVo();
+                BeanUtils.copyProperties(goodsVolist, cartVo);
+                cartVo.setNumber(goodsVo.getNumber());
+                cartVo.setGoods_name(goodsVolist.getName());
+                cartVo.setGoods_id(goodsVolist.getId());
+                cartVo.setMarket_price(goodsVolist.getMarket_price());
+                cartVo.setRetail_price(goodsVolist.getRetail_price());
+                cartVo.setList_pic_url(goodsVolist.getList_pic_url());
+                checkedGoodsList.add(cartVo);
+                //获取订单使用的优惠券
+                BigDecimal couponPrice = new BigDecimal(0.00);
+                CouponVo couponVo = null;
+                if (couponId != null && couponId != 0) {
+                    couponVo = apiCouponMapper.getUserCoupon(couponId);
+                    if (couponVo != null && couponVo.getCoupon_status() == 1) {
+                        couponPrice = couponVo.getType_money();
+                    }
+                }
+
+                //订单价格计算
+                BigDecimal orderTotalPrice = goodsTotalPrice.add(new BigDecimal(freightPrice)); //订单的总价
+
+                BigDecimal actualPrice = orderTotalPrice.subtract(couponPrice);  //减去其它支付的金额后，要实际支付的金额
+
+                Long currentTime = System.currentTimeMillis() / 1000;
+                OrderVo orderInfo = new OrderVo();
+                orderInfo.setOrder_sn(CommonUtil.generateOrderNumber());
+                orderInfo.setUser_id(loginUser.getUserId());
+                //收货地址和运费
+                orderInfo.setConsignee(addressVo.getUserName());
+                orderInfo.setMobile(addressVo.getTelNumber());
+                orderInfo.setCountry(addressVo.getNationalCode());
+                orderInfo.setProvince(addressVo.getProvinceName());
+                orderInfo.setCity(addressVo.getCityName());
+                orderInfo.setDistrict(addressVo.getCountyName());
+                orderInfo.setAddress(addressVo.getDetailInfo());
+                //
+                orderInfo.setFreight_price(freightPrice);
+                //留言
+                orderInfo.setPostscript(postscript);
+                //使用的优惠券
+                orderInfo.setCoupon_id(couponId);
+                orderInfo.setCoupon_price(couponPrice);
+                orderInfo.setAdd_time(new Date());
+                orderInfo.setGoods_price(goodsTotalPrice);
+                orderInfo.setOrder_price(orderTotalPrice);
+                orderInfo.setActual_price(actualPrice);
+                // 待付款
+                orderInfo.setOrder_status(0);
+                orderInfo.setShipping_status(0);
+                orderInfo.setPay_status(0);
+                orderInfo.setShipping_id(0);
+                orderInfo.setShipping_fee(new BigDecimal(0));
+                orderInfo.setIntegral(0);
+                orderInfo.setShoptype(1);
+                orderInfo.setIntegral_money(new BigDecimal(0));
+                orderInfo.setSupplierid(supplierid);
+                if (type.equals("cart")) {
+                    orderInfo.setOrder_type("1");
+                } else {
+                    orderInfo.setOrder_type("4");
+                }
+
+                //开启事务，插入订单信息和订单商品
+                apiOrderMapper.save(orderInfo);
+                if (null == orderInfo.getId()) {
+                    resultObj.put("errno", 1);
+                    resultObj.put("errmsg", "订单提交失败");
+                    return resultObj;
+                }
+                //统计商品总价
+                List<OrderGoodsVo> orderGoodsData = new ArrayList<OrderGoodsVo>();
+                for (CartVo goodsItem : checkedGoodsList) {
+                    OrderGoodsVo orderGoodsVo = new OrderGoodsVo();
+                    orderGoodsVo.setOrder_id(orderInfo.getId());
+                    orderGoodsVo.setGoods_id(goodsItem.getGoods_id());
+                    orderGoodsVo.setGoods_sn(goodsItem.getGoods_sn());
+//            orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
+                    orderGoodsVo.setGoods_name(goodsItem.getGoods_name());
+                    orderGoodsVo.setList_pic_url(goodsItem.getList_pic_url());
+                    orderGoodsVo.setMarket_price(goodsItem.getMarket_price());
+                    orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
+                    orderGoodsVo.setNumber(goodsItem.getNumber());
+//            orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
+                    orderGoodsVo.setGoods_specifition_ids(goodsItem.getSpecificationid());
+                    orderGoodsData.add(orderGoodsVo);
+                    orderGoodsVo.setReamarks(reamarks);
+                    apiOrderGoodsMapper.save(orderGoodsVo);
+                }
+
+                //清空已购买的商品
+                apiCartMapper.deleteByCart(loginUser.getUserId(), 1, 1);
+                resultObj.put("errno", 0);
+                resultObj.put("errmsg", "订单提交成功");
+                //
+                Map<String, OrderVo> orderInfoMap = new HashMap<String, OrderVo>();
+                orderInfoMap.put("orderInfo", orderInfo);
+                //
+                resultObj.put("data", orderInfoMap);
+                // 优惠券标记已用
+                if (couponVo != null && couponVo.getCoupon_status() == 1) {
+                    couponVo.setCoupon_status(2);
+                    apiCouponMapper.updateUserCoupon(couponVo);
+                }
+                getGroupByGoosforDept(orderInfo.getId());
+                return resultObj;
+            }
+            Integer value=goodsSpecificationVo.getGoods_id();
+            GoodsVo goodsVolist=goodsService.queryObject(value);
+            String companyname=goodsVolist.getSuppliername();
+            resultObj.put("companyname",companyname);
             //计算订单的费用
             //商品总价
-            goodsTotalPrice = productInfo.getRetail_price().multiply(new BigDecimal(goodsVo.getNumber()));
-            String[] goodsSepcifitionValue = null;
-            if (null != productInfo.getGoods_specification_ids()) {
-                Map specificationParam = new HashMap();
-                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
-                specificationParam.put("goodsId", goodsVo.getGoodsId());
-                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
-                goodsSepcifitionValue = new String[specificationEntities.size()];
-                for (int i = 0; i < specificationEntities.size(); i++) {
-                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
-                }
-            }
+            goodsTotalPrice = goodsSpecificationVo.getSpecificationPrice().multiply(new BigDecimal(goodsVo.getNumber()));
+//            String[] goodsSepcifitionValue = null;
+//            if (null != productInfo.getGoods_specification_ids()) {
+//                Map specificationParam = new HashMap();
+//                specificationParam.put("ids", (productInfo.getGoods_specification_ids()+",").split(","));
+//                specificationParam.put("goodsId", goodsVo.getGoodsId());
+//                List<GoodsSpecificationVo> specificationEntities = goodsSpecificationService.queryList(specificationParam);
+//                goodsSepcifitionValue = new String[specificationEntities.size()];
+//                for (int i = 0; i < specificationEntities.size(); i++) {
+//                    goodsSepcifitionValue[i] = specificationEntities.get(i).getValue();
+//                }
+//            }
             CartVo cartVo = new CartVo();
-            BeanUtils.copyProperties(productInfo, cartVo);
+            BeanUtils.copyProperties(goodsSpecificationVo, cartVo);
             cartVo.setNumber(goodsVo.getNumber());
-            cartVo.setProduct_id(goodsVo.getProductId());
-            if (null != goodsSepcifitionValue) {
-                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
-            }
-            cartVo.setGoods_specifition_ids(productInfo.getGoods_specification_ids());
+            cartVo.setSpecificationid(String.valueOf(goodsSpecificationVo.getId()));
+            cartVo.setGoods_name(goodsSpecificationVo.getValue());
+            cartVo.setMarket_price(goodsSpecificationVo.getSpecificationPrice());
+            cartVo.setRetail_price(goodsSpecificationVo.getSpecificationPrice());
+            cartVo.setList_pic_url(goodsSpecificationVo.getPic_url());
+//            if (null != goodsSepcifitionValue) {
+//                cartVo.setGoods_specifition_name_value(StringUtils.join(goodsSepcifitionValue, ";"));
+//            }
             checkedGoodsList.add(cartVo);
         }
 
@@ -225,14 +343,14 @@ public class ApiOrderService {
             orderGoodsVo.setOrder_id(orderInfo.getId());
             orderGoodsVo.setGoods_id(goodsItem.getGoods_id());
             orderGoodsVo.setGoods_sn(goodsItem.getGoods_sn());
-            orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
+//            orderGoodsVo.setProduct_id(goodsItem.getProduct_id());
             orderGoodsVo.setGoods_name(goodsItem.getGoods_name());
             orderGoodsVo.setList_pic_url(goodsItem.getList_pic_url());
             orderGoodsVo.setMarket_price(goodsItem.getMarket_price());
             orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
             orderGoodsVo.setNumber(goodsItem.getNumber());
-            orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
-            orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
+//            orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
+            orderGoodsVo.setGoods_specifition_ids(goodsItem.getSpecificationid());
             orderGoodsData.add(orderGoodsVo);
             orderGoodsVo.setReamarks(reamarks);
             apiOrderGoodsMapper.save(orderGoodsVo);
@@ -412,7 +530,7 @@ public class ApiOrderService {
                 orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
                 orderGoodsVo.setNumber(goodsItem.getNumber());
                 orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
-                orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
+                orderGoodsVo.setGoods_specifition_ids(goodsItem.getSpecificationid());
                 orderGoodsVo.setDeliery_time(delierytime);
                 orderGoodsVo.setReamarks(reamarks);
 //            orderMenuEntities.add(orderMenuVo);
@@ -497,7 +615,7 @@ public class ApiOrderService {
             orderGoodsVo.setRetail_price(goodsItem.getRetail_price());
             orderGoodsVo.setNumber(goodsItem.getNumber());
             orderGoodsVo.setGoods_specifition_name_value(goodsItem.getGoods_specifition_name_value());
-            orderGoodsVo.setGoods_specifition_ids(goodsItem.getGoods_specifition_ids());
+            orderGoodsVo.setGoods_specifition_ids(goodsItem.getSpecificationid());
             orderGoodsVo.setDeliery_time(delierytime);
             orderGoodsVo.setReamarks(reamarks);
 //            orderMenuEntities.add(orderMenuVo);
@@ -668,6 +786,7 @@ public class ApiOrderService {
 private void  getGroupByGoosforDept(Integer orderId){
 
     OrderVo orderVo =apiOrderService.queryObject(orderId);
+    Long supplierid=orderVo.getSupplierid();
     if(null==orderVo){
         return;
     }
@@ -707,7 +826,7 @@ private void  getGroupByGoosforDept(Integer orderId){
             goodsTotalPrice= goodsTotalPrice.add(vo.getRetail_price().multiply(new BigDecimal(vo.getNumber())));
         }
         orderSupplierVo.setDeptId(voList.get(0).getDept_id());
-        orderSupplierVo.setSupplierId(voList.get(0).getSupplier_id().longValue());
+        orderSupplierVo.setSupplierId(supplierid);
         orderSupplierVo.setOrderPrice(orderTotalPrice);
         orderSupplierVo.setGoodsPrice(goodsTotalPrice);
         orderSupplierVo.setOrderSupSn(CommonUtil.generateOrderNumber());

@@ -35,6 +35,16 @@ public class FootprintVo implements Serializable {
     // 会员
     private String nickname;
     private String avatar;
+    //门店id
+    private Integer stroeid;
+    //门店名字
+    private  String storename;
+    //门店图片
+    private String storepic;
+    //门店状态
+    private Integer storestatus;
+    //
+    private Integer checked;
 
     public Integer getId() {
         return id;
@@ -124,5 +134,45 @@ public class FootprintVo implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+
+    public String getStorename() {
+        return storename;
+    }
+
+    public void setStorename(String storename) {
+        this.storename = storename;
+    }
+
+    public String getStorepic() {
+        return storepic;
+    }
+
+    public void setStorepic(String storepic) {
+        this.storepic = storepic;
+    }
+
+    public Integer getStorestatus() {
+        return storestatus;
+    }
+
+    public void setStorestatus(Integer storestatus) {
+        this.storestatus = storestatus;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
+    }
+    public Integer getStroeid() {
+        return stroeid;
+    }
+
+    public void setStroeid(Integer stroeid) {
+        this.stroeid = stroeid;
     }
 }

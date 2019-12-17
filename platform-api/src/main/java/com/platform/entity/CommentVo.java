@@ -18,8 +18,8 @@ public class CommentVo implements Serializable {
 
     //主键
     private Integer id;
-    //用户评论的类型;0评论的是商品,1评论的是文章
-    private Integer type_id;
+    //用户评论的类型;0评论的是餐单,1评论的是商品
+    private Integer typeId;
     //产品Id
     private Integer value_id;
     //储存为base64编码
@@ -50,6 +50,10 @@ public class CommentVo implements Serializable {
     private Integer type;
     //品论回复id
     private Integer replyid;
+    //用户的微信昵称
+    private String username;
+    //商品的id
+    private Integer goodsid;
 
     public Integer getId() {
         return id;
@@ -58,15 +62,6 @@ public class CommentVo implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public Integer getType_id() {
-        return type_id;
-    }
-
-    public void setType_id(Integer type_id) {
-        this.type_id = type_id;
-    }
-
     public Integer getValue_id() {
         return value_id;
     }
@@ -170,5 +165,45 @@ public class CommentVo implements Serializable {
 
     public void setGoodsnamm(String goodsnamm) {
         this.goodsnamm = goodsnamm;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getReplyid() {
+        return replyid;
+    }
+
+    public void setReplyid(Integer replyid) {
+        this.replyid = replyid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+    public Integer getGoodsid() {
+        return goodsid;
+    }
+
+    public void setGoodsid(Integer goodsid) {
+        this.goodsid = goodsid;
     }
 }

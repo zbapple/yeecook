@@ -2,6 +2,7 @@ package com.platform.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 实体
@@ -60,6 +61,12 @@ public class StroeVo implements Serializable {
     private Integer salesVolume;;
     //食品营业范围
     private String businesslicense;
+    //门店状态
+    private  Integer storeStatus;
+    //营业时间结束
+    private Integer  business;
+    //距离2
+    private Double juli2;
 
     /**
      * 设置：
@@ -329,5 +336,31 @@ public class StroeVo implements Serializable {
 
     public void setSalesVolume(Integer salesVolume) {
         this.salesVolume = salesVolume;
+    }
+
+
+    public Integer getStoreStatus() {
+        return storeStatus;
+    }
+
+    public void setStoreStatus(Integer storeStatus) {
+        this.storeStatus = storeStatus;
+    }
+
+    public Integer getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Integer business) {
+        this.business = business;
+    }
+
+
+    public Double getJuli2() {
+        return juli2;
+    }
+
+    public void setJuli2(Double juli2) {
+        this.juli2 = juli2;
     }
 }

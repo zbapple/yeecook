@@ -15,11 +15,11 @@ $(function () {
             {label: '门店电话', name: 'storePhone', index: 'store_phone', width: 60},
             {label: '门店类型', name: 'storeType', index: 'store_type', width: 60,
                 formatter: function (value) {
-                    if (value == '1') {
+                    if (value == 1) {
                         return '营养餐';
-                    } else if (value == '2') {
+                    } else if (value == 2) {
                         return '月子餐';
-                    } else if (value == '3') {
+                    } else if (value == 3) {
                         return '长者餐';
                     }
                 }},
@@ -158,11 +158,11 @@ let vm = new Vue({
             vm.stroe.storeTimes=this.date;
             vm.stroe.picList=vm.uploadList;
             if (vm.stroe.storeType == '营养餐'){
-                vm.stroe.storeType= '1';
+                vm.stroe.storeType= 1;
             }else if (vm.stroe.storeType == '月子餐'){
-                vm.stroe.storeType= '2';
+                vm.stroe.storeType= 2;
             } else if(vm.stroe.storeType == '老人餐'){
-                vm.stroe.storeType= '3';
+                vm.stroe.storeType= 3;
             }
             Ajax.request({
 			    url: url,
@@ -204,11 +204,11 @@ let vm = new Vue({
                     vm.stroe = r.stroe;
                     console.log(vm.stroe);
                     vm.stroe.storeType = r.stroe.storeType;
-                    if (vm.stroe.storeType == '1') {
+                    if (vm.stroe.storeType == 1) {
                         vm.stroe.storeType = '营养餐';
-                    } else if (vm.stroe.storeType == '2') {
+                    } else if (vm.stroe.storeType == 2) {
                         vm.stroe.storeType = '月子餐';
-                    } else if (vm.stroe.storeType == '3') {
+                    } else if (vm.stroe.storeType == 3) {
                         vm.stroe.storeType = '老人餐';
                     }
                     vm.uploadList = [];

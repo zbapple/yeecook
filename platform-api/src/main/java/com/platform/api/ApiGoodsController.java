@@ -34,7 +34,7 @@ import java.util.*;
 @Api(tags = "商品管理")
 @RestController
 @RequestMapping("/api/goods")
-public class  ApiGoodsController extends ApiBaseAction {
+public class    ApiGoodsController extends ApiBaseAction {
     @Autowired
     private ApiGoodsService goodsService;
     @Autowired
@@ -101,10 +101,10 @@ public class  ApiGoodsController extends ApiBaseAction {
         param.put("goods_id", id);
         List<GoodsSpecificationVo> goodsSpecificationEntityList = goodsSpecificationService.queryList(param);
         //
-        List<ProductVo> productEntityList = productService.queryList(param);
+//        List<ProductVo> productEntityList = productService.queryList(param);
         //
         resultObj.put("specificationList", goodsSpecificationEntityList);
-        resultObj.put("productList", productEntityList);
+//        resultObj.put("productList", productEntityList);
         return toResponsSuccess(resultObj);
     }
 
@@ -132,39 +132,39 @@ public class  ApiGoodsController extends ApiBaseAction {
         specificationParam.put("order", "asc");
         List<GoodsSpecificationVo> goodsSpecificationEntityList = goodsSpecificationService.queryList(specificationParam);
 
-        List<Map> specificationList = new ArrayList();
-        //按规格名称分组
-        for (int i = 0; i < goodsSpecificationEntityList.size(); i++) {
-            GoodsSpecificationVo specItem = goodsSpecificationEntityList.get(i);
-            //
-            List<GoodsSpecificationVo> tempList = null;
-            for (int j = 0; j < specificationList.size(); j++) {
-                if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
-//                    tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
-                    break;
-                }
-            }
-            //
-            if (null == tempList) {
-                Map temp = new HashMap();
-                temp.put("specification_id", specItem.getSpecification_id());
-                temp.put("name", specItem.getName());
-                tempList = new ArrayList();
-                tempList.add(specItem);
-                temp.put("valueList", tempList);
-                specificationList.add(temp);
-            } else {
-                for (int j = 0; j < specificationList.size(); j++) {
-                    if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
-//                        tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
-                        tempList.add(specItem);
-                        break;
-                    }
-                }
-            }
-        }
+//        List<Map> specificationList = new ArrayList();
+//        //按规格名称分组
+//        for (int i = 0; i < goodsSpecificationEntityList.size(); i++) {
+//            GoodsSpecificationVo specItem = goodsSpecificationEntityList.get(i);
+//            //
+//            List<GoodsSpecificationVo> tempList = null;
+//            for (int j = 0; j < specificationList.size(); j++) {
+//                if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
+////                    tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
+//                    break;
+//                }
+//            }
+//            //
+//            if (null == tempList) {
+//                Map temp = new HashMap();
+//                temp.put("specification_id", specItem.getSpecification_id());
+//                temp.put("name", specItem.getName());
+//                tempList = new ArrayList();
+//                tempList.add(specItem);
+//                temp.put("valueList", tempList);
+//                specificationList.add(temp);
+//            } else {
+//                for (int j = 0; j < specificationList.size(); j++) {
+//                    if (specificationList.get(j).get("specification_id").equals(specItem.getSpecification_id())) {
+////                        tempList = (List<GoodsSpecificationVo>) specificationList.get(j).get("valueList");
+//                        tempList.add(specItem);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         //
-        List<ProductVo> productEntityList = productService.queryList(param);
+//        List<ProductVo> productEntityList = productService.queryList(param);
         //
         List<GoodsGalleryVo> gallery = goodsGalleryService.queryList(param);
         Map ngaParam = new HashMap();
@@ -217,6 +217,7 @@ public class  ApiGoodsController extends ApiBaseAction {
         footprintEntity.setName(info.getName());
         footprintEntity.setRetail_price(info.getRetail_price());
         footprintEntity.setUser_id(userId);
+        footprintEntity.setChecked(1);
         if (null != referrer) {
             footprintEntity.setReferrer(referrer);
         } else {
@@ -231,8 +232,8 @@ public class  ApiGoodsController extends ApiBaseAction {
         resultObj.put("issue", issue);
         resultObj.put("comment", comment);
         resultObj.put("brand", brand);
-        resultObj.put("specificationList", specificationList);
-        resultObj.put("productList", productEntityList);
+        resultObj.put("valueList", goodsSpecificationEntityList);
+//        resultObj.put("productList", productEntityList);
         // 记录推荐人是否可以领取红包，用户登录时校验
         try {
             // 是否已经有可用的转发红包

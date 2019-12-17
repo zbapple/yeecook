@@ -42,9 +42,14 @@ public class ApiCommentController extends ApiBaseAction {
     @Autowired
     private ApiUserCouponService apiUserCouponService;
     @Autowired
-    private ApiOrderGoodsService goodsService;
-    @Autowired
     private ApiStroeService stroeService;
+    @Autowired
+    private ApiOrderGoodsService orderGoodsService;
+    @Autowired
+    private ApiOrderService orderService;
+    @Autowired
+    private ApiGoodsService goodsService;
+
     /**
      * 发表评论
      */
@@ -52,32 +57,30 @@ public class ApiCommentController extends ApiBaseAction {
     @PostMapping("post")
     public Object post(@LoginUser UserVo loginUser) {
         Map resultObj = new HashMap();
-        //
-        JSONObject jsonParam = getJsonRequest();
-        Integer typeId = jsonParam.getInteger("typeId");
-//        Integer valueId = jsonParam.getInteger("valueId");
-        //内容
+        JSONObject jsonParam = this.getJsonRequest();
+        Integer typeId=jsonParam.getInteger("typeId");
         Integer stroeid=jsonParam.getInteger("stroeid");
         String content = jsonParam.getString("content");
         String orderid=jsonParam.getString("orderid");
-//        JSONArray imagesList = jsonParam.getJSONArray("imagesList");
-//        Map pram=new HashMap();
-//        pram.put("order_id",orderid);
-//        List<OrderGoodsVo> goodsVoList=goodsService.queryList(pram);
-//        Integer insertId=0;
-//        if(goodsVoList.size()>0){
+            Map ordermap=new HashMap();
+            ordermap.put("order_id",orderid);
+            List<OrderGoodsVo> orderGoodsVos=orderGoodsService.queryList(ordermap);
+            Integer goodsid=0;
+            for(OrderGoodsVo orderGoodsVo:orderGoodsVos){
+                goodsid=orderGoodsVo.getGoods_id();
+            }
             CommentVo commentEntity = new CommentVo();
-            commentEntity.setType_id(typeId);
-//            commentEntity.setValue_id(valueId);
+            commentEntity.setTypeId(typeId);
             commentEntity.setContent(content);
             commentEntity.setStatus(0);
-            //
             commentEntity.setAdd_time(System.currentTimeMillis() / 1000);
             commentEntity.setUser_id(loginUser.getUserId());
             commentEntity.setGrade(jsonParam.getDouble("grade"));
             commentEntity.setOrderid(new Integer(orderid));
             commentEntity.setStroeid(stroeid);
-            Integer  insertId= commentService.save(commentEntity);
+            commentEntity.setGoodsid(goodsid);
+             commentService.save(commentEntity);
+            Integer  insertId=commentEntity.getId();
             Map totalmap=new HashMap();
             totalmap.put("stroeid",stroeid);
             Double avg=commentService.avgGrade(totalmap);
@@ -87,6 +90,7 @@ public class ApiCommentController extends ApiBaseAction {
                 stroeVo.setStroeGrade(avg);
                 stroeVo.setId(stroeid);
                 stroeService.update(stroeVo);
+            StroeVo  stroeVo1=stroeService.queryObject(stroeid);
             resultObj.put("insertId",insertId);
 //        }
 
@@ -154,10 +158,10 @@ public class ApiCommentController extends ApiBaseAction {
                 result.put("e",e);
                 return result;
             }
-            CommentVo commentVo=new CommentVo();
-            commentVo.setId(insertId);
+            CommentPictureVo commentVo=new CommentPictureVo();
+            commentVo.setComment_id(insertId);
             commentVo.setPic_url(url);
-            commentService.update(commentVo);
+            commentPictureService.save(commentVo);
             result.put("flag",1);
         }else{
             result.put("flag",0);
@@ -176,7 +180,7 @@ public class ApiCommentController extends ApiBaseAction {
         String content = jsonreply.getString("content");
         String orderid=jsonreply.getString("orderid");
         CommentVo commentEntity = new CommentVo();
-        commentEntity.setType_id(typeId);
+        commentEntity.setTypeId(typeId);
 //      commentEntity.setValue_id(valueId);
         commentEntity.setContent(content);
         commentEntity.setStatus(0);
@@ -199,8 +203,7 @@ public class ApiCommentController extends ApiBaseAction {
         Map<String, Object> resultObj = new HashMap();
         //
         Map param = new HashMap();
-        param.put("type_id", typeId);
-        param.put("value_id", valueId);
+        param.put("typeId", typeId);
         Integer allCount = commentService.queryTotal(param);
         Integer hasPicCount = commentService.queryhasPicTotal(param);
         //
@@ -211,23 +214,24 @@ public class ApiCommentController extends ApiBaseAction {
 
     /**
      * @param typeId
-     * @param valueId
+     * @param
      * @param showType 选择评论的类型 0 全部， 1 只显示图片
      * @param page
      * @param size
      * @return
      */
-    @ApiOperation(value = "选择评论类型")
+    @ApiOperation(value = "选择查找评论类型")
     @IgnoreAuth
     @PostMapping("list")
-    public Object list(Integer typeId, Integer valueId, Integer showType,
+    public Object list(Integer typeId, Integer orderid, Integer showType,
                        @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
-                       String sort, String order) {
-        Map<String, Object> resultObj = new HashMap();
+                       Integer grader, Integer grade,String sort,String order,Integer stroeid,Integer goodsid) {
         List<CommentVo> commentList = new ArrayList();
         Map param = new HashMap();
-        param.put("type_id", typeId);
-        param.put("value_id", valueId);
+        param.put("typeId", typeId);
+        param.put("stroeid",stroeid);
+        param.put("orderid",orderid);
+        param.put("goodsid", goodsid);
         param.put("page", page);
         param.put("limit", size);
         if (StringUtils.isNullOrEmpty(sort)) {
@@ -240,8 +244,14 @@ public class ApiCommentController extends ApiBaseAction {
         } else {
             param.put("sidx", order);
         }
-        if (null != showType && showType == 1) {
-            param.put("hasPic", 1);
+        if(grade!=null){
+            param.put("grade",grade);
+        }
+        if(grader!=null){
+            param.put("grader",grader);
+        }
+        if (null != showType) {
+            param.put("hasPic", 3);
         }
         //查询列表数据
         Query query = new Query(param);
@@ -249,15 +259,76 @@ public class ApiCommentController extends ApiBaseAction {
         int total = commentService.queryTotal(query);
         ApiPageUtils pageUtil = new ApiPageUtils(commentList, total, query.getLimit(), query.getPage());
         //
+        Integer commentid=0;
         for (CommentVo commentItem : commentList) {
-            commentItem.setContent(Base64.decode(commentItem.getContent()));
+            commentItem.setContent(commentItem.getContent());
             commentItem.setUser_info(userService.queryObject(commentItem.getUser_id()));
-
+            commentid=commentItem.getId();
             Map paramPicture = new HashMap();
-            paramPicture.put("comment_id", commentItem.getId());
+            paramPicture.put("comment_id", commentid);
             List<CommentPictureVo> commentPictureEntities = commentPictureService.queryList(paramPicture);
             commentItem.setPic_list(commentPictureEntities);
         }
         return toResponsSuccess(pageUtil);
+    }
+    @ApiOperation(value = "显示全部的评论")
+    @IgnoreAuth
+    @PostMapping("Alllist")
+    public Object Alllist(Integer stroeid,Integer goodsid){
+        Map<String,Object> result=new HashMap<>();
+        Map listmap=new HashMap();
+        listmap.put("stroeid",stroeid);
+        listmap.put("goodsid", goodsid );
+        List<CommentVo> voList=commentService.queryList(listmap);
+        if(voList!=null){
+            Integer commentid=0;
+            for (CommentVo commentItem : voList) {
+                commentItem.setContent(commentItem.getContent());
+                commentItem.setUser_info(userService.queryObject(commentItem.getUser_id()));
+                commentid=commentItem.getId();
+                Map paramPicture = new HashMap();
+                paramPicture.put("comment_id", commentid);
+                List<CommentPictureVo> commentPictureEntities = commentPictureService.queryList(paramPicture);
+                commentItem.setPic_list(commentPictureEntities);
+            }
+            int total = commentService.queryTotal(listmap);
+            result.put("total",total);
+            result.put("voList",voList);
+            return toResponsSuccessForSelect(result);
+        }else {
+            result.put("voList",voList);
+            return toResponsSuccessForSelect(result);
+        }
+    }
+    @ApiOperation(value = "显示")
+    @PostMapping("reslis")
+    public Object reslis(@LoginUser UserVo loginUser){
+        Map<String,Object> result=new HashMap<>();
+        JSONObject jsonObject=this.getJsonRequest();
+//        Integer stroeid=jsonObject.getInteger("stroeid");
+        Integer id=jsonObject.getInteger("id");
+        OrderGoodsVo orderGoodsVoList=orderGoodsService.queryObject(id);
+        Integer goodsid=orderGoodsVoList.getGoods_id();
+        Integer orederid=orderGoodsVoList.getOrder_id();
+        OrderVo orderVo=orderService.queryObject(orederid);
+        if(orderVo!=null){
+            if(orderVo.getShoptype()==1){
+                GoodsVo goodsVo=goodsService.queryObject(goodsid);
+                if(goodsVo==null){
+                    return toResponsMsgSuccess("goodsVo的值为空");
+                }
+                result.put("picrue",goodsVo.getList_pic_url());
+                result.put("name",goodsVo.getName());
+            }else{
+                Integer storeid=orderVo.getStroeid();
+                StroeVo stroeVo=stroeService.queryObject(storeid);
+                if(stroeVo==null){
+                    return toResponsMsgSuccess("stroeVo的值为空");
+                }
+                result.put("picrue",stroeVo.getStorePicrue());
+                result.put("name",stroeVo.getStoreName());
+            }
+        }
+        return result;
     }
 }

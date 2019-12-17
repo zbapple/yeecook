@@ -269,11 +269,12 @@ public class ApiIndexController extends ApiBaseAction {
     @ApiOperation(value = "banner")
     @IgnoreAuth
     @PostMapping(value = "banner")
-    public Object banner() {
+    public Object banner(Integer ad_ad_position_id) {
         Map<String, Object> resultObj = new HashMap<String, Object>();
         //
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("ad_position_id", 1);
+//        param.put("ad_position_id", 1);
+        param.put("ad_ad_position_id",ad_ad_position_id);
         List<AdVo> banner = adService.queryList(param);
         resultObj.put("banner", banner);
         //

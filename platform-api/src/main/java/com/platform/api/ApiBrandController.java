@@ -45,7 +45,7 @@ public class ApiBrandController extends ApiBaseAction {
         params.put("limit", size);
         params.put("sidx", "id");
         params.put("order", "asc");
-//        params.put("type",num);
+        params.put("type",num);
 
         Query query = new Query(params);
         List<BrandVo> brandEntityList = brandService.queryList(query);
